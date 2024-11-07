@@ -3,7 +3,6 @@
 .svg-design-1, .svg-design-2 {
     position: absolute;
     width: 100px;
-    // height: 50px;
     aspect-ratio: 1;
 
     img {
@@ -21,10 +20,6 @@
 }
 
 main {
-    // @include mix.flex();
-    // @include mix.flex-position(center, center);
-    // width: 100%;
-    // height: 100%;
     width: min(513px, 90%);
     height: fit-content;
     padding-block: 1.5rem;
