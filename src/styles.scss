@@ -35,6 +35,10 @@ app-dashboard-layout {
     grid-template-columns: func.pixelsToRem(250) 1fr 1fr;
     grid-template-rows: func.pixelsToRem(70) auto auto;
 }
+app-company-registration {
+    @include mix.flex(column);
+    
+}
 
 // hides router-outlet tag
 router-outlet {
