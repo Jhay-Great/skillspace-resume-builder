@@ -1,5 +1,6 @@
 @use './app/scss/mixins' as mix;
 @use './app/scss/variables' as var;
+@use './app/scss/functions' as func;
 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
@@ -31,8 +32,8 @@ app-auth-layout {
 }
 app-dashboard-layout {
     display: grid;
-    grid-template-columns: 250px 1fr 1fr;
-    grid-template-rows: 70px auto auto;
+    grid-template-columns: func.pixelsToRem(250) 1fr 1fr;
+    grid-template-rows: func.pixelsToRem(70) auto auto;
 }
 
 // hides router-outlet tag
