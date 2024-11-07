@@ -1,1 +1,92 @@
-<p>company-registration works!</p>
+
+
+<div class="logo">
+    <img src="../../../../assets/svgs/blue-skillspace-logo.svg" alt="SkillSpace svg icon logo">
+    <span>SkillSpace</span>
+</div>
+
+<header>
+    @if (step !== 3) {
+        <h1>Find talent for roles</h1>
+        <p class="description">Provide your details to get started.</p>
+        
+    }@else {
+        <!-- <img src="" alt=""> -->
+        <h1>We've sent you an email</h1>
+        <p class="description">An email has been sent to your email to verify your account.</p>
+    }
+    <nav>
+        <div class="step1 steppers" (click)="onContinue(1)" [ngClass]="{'active': step === 1}">
+            <span>1</span>
+            <p>Credentials</p>
+        </div>
+        <div class="step2 steppers"  (click)="onContinue(2)" [ngClass]="{'active': step === 2}">
+            <span>2</span>
+            <p>Information</p>
+        </div>
+        <div class="step3 steppers"  (click)="onContinue(3)" [ngClass]="{'active': step === 3}">
+            <span>3</span>
+            <p>Verification</p>
+        </div>
+    </nav>
+</header>
+
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+    @if (step === 1) {
+        <section formGroupName="credentials">
+            <div class="company-name fields">
+                <label for="">Company name</label>
+                <input type="text" placeholder="Enter company name" formControlName="name">
+            </div>
+            <div class="email fields">
+                <label for="">Email</label>
+                <input type="email" placeholder="Enter your email address" formControlName="email">
+            </div>
+            <div class="password fields">
+                <label for="">Password</label>
+                <input type="password" placeholder="Enter your password" formControlName="password">
+            </div>
+            <div class="confirm-password fields">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" placeholder="Enter your password" formControlName="confirmPassword">
+            </div>
+
+            
+        </section>
+        <button type="button" (click)="onContinue()" class="continue">Continue</button>
+
+    } @else if (step === 2) {
+        <section class="information-section" formGroupName="information">
+            <div class="website fields">
+                <label for="">Website</label>
+                <input type="text" formControlName="website">
+            </div>
+            <div class="upload-certificate fields">
+                <label for="">Upload certification</label>
+                <input type="file" name="" id="" formControlName="certificate">
+            </div>
+            <div class="logo fields">
+                <label for="">logo</label>
+                <input type="file" name="" id="" formControlName="logo">
+            </div>
+            <div class="contact fields">
+                <label for="">Contact</label>
+                <input type="text" formControlName="contact">
+            </div>
+        </section>
+        <button type="submit">Submit for approval</button>
+    } @else {
+        <p>Didn't receive link? Check your spam folder or  <a>resend link.</a></p>
+    }
+</form>
+
+
+<section class="log-in">
+    <p>Already have an account? <a [routerLink]="['']">Log in</a></p>
+</section>
+
+<section class="info">
+    <p>
+        By continuing, you agree to SkillSpace <a class="terms_policy">Terms of Service</a> and <a class="terms_policy">Privacy Policy</a>
+    </p>
+</section>
