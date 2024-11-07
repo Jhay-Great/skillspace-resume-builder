@@ -1,0 +1,104 @@
+@use '../../../scss/mixins.scss' as mix;
+@use '../../../scss/variables.scss' as var;
+@use '../../../scss/functions.scss' as func;
+
+
+header {
+    @include mix.flex();
+    @include mix.flex-position(space-between, center);
+    width: 100%;
+    grid-column: 2 / -1;
+    grid-row: 1 / 2;
+    box-shadow: 0 func.pixelsToRem(1) func.pixelsToRem(2) #0001;
+    padding-inline: 1rem;
+
+    h1 {
+        font-size: var.$small;
+        font-weight: 400;
+        color: var.$color-blue-gray-800;
+    }
+
+    .user-actions-container {
+        @include mix.flex();
+        @include mix.flex-position(center, center);
+
+        .notification {
+            width: func.pixelsToRem(24);
+            height: func.pixelsToRem(24);
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .user-avatar {
+            width: func.pixelsToRem(36);
+            height: func.pixelsToRem(36);
+            border-radius: 50%;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.sidebar {
+    @include mix.flex(column, 1.5rem);
+    @include mix.flex-position(space-between, stretch);
+    width: 100%;
+    height: 100%;
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    padding-block: 1rem;
+    background-color: var.$color-blue-gray-700;
+    color: var.$color-white;
+
+    .logo_nav-elements {
+        .logo {
+            @include mix.flex(row, 0);
+            @include mix.flex-position(center, center);
+            width: 100%;
+            height: fit-content;
+        }
+        span {
+            font-size: var.$large;
+            font-weight: 600;
+            color: var.$color-white;
+        }
+
+    }
+
+    .operations {
+        @include mix.flex(column);
+        
+        .tab {
+            @include mix.flex();
+            @include mix.flex-position(flex-start, center);
+            padding-inline: 1rem;
+            padding-block: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .tab:hover {
+            background-color: var.$color-white;
+            color: var.$color-blue-gray-800;
+            transition: all 300ms ease-in-out;
+            
+            svg path {
+                fill: var.$color-blue-gray-800;
+                transition: all 300ms ease-in-out;
+
+            }
+        }
+    }
+}
+
+main {
+    grid-row: 2 / -1;
+    grid-column: 2 / -1;
+    background-color: var.$color-blue-gray-50;
+    padding: 1rem;
+}
+

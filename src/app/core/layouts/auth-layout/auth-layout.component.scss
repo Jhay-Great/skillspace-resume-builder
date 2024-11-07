@@ -1,0 +1,27 @@
+@use '../../../scss/mixins.scss' as mix;
+@use '../../../scss/functions.scss' as func;
+
+.svg-design-1, .svg-design-2 {
+    position: absolute;
+    width: func.pixelsToRem(100);
+    aspect-ratio: 1;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+.svg-design-1 {
+    right: 10%;
+    top: 10%
+}
+.svg-design-2 {
+    bottom: 10%;
+    left: 10%;
+}
+
+main {
+    width: min(func.pixelsToRem(513), 90%);
+    height: fit-content;
+    padding-block: 1.5rem;
+}
