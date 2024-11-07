@@ -1,8 +1,9 @@
 @use '../../../scss/mixins.scss' as mix;
+@use '../../../scss/functions.scss' as func;
 
 .svg-design-1, .svg-design-2 {
     position: absolute;
-    width: 100px;
+    width: func.pixelsToRem(100);
     aspect-ratio: 1;
 
     img {
@@ -20,7 +21,7 @@
 }
 
 main {
-    width: min(513px, 90%);
+    width: min(func.pixelsToRem(513), 90%);
     height: fit-content;
     padding-block: 1.5rem;
 }
