@@ -7,4 +7,9 @@ export const routes: Routes = [
         component: AuthLayoutComponent,
         children: []
     },
+    {
+        path: 'dashboard',
+        loadComponent: () => import('./core/layouts/dashboard-layout/dashboard-layout.component').then(d => d.DashboardLayoutComponent),
+        children: [],
+    },
 ];
