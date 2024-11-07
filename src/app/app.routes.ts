@@ -5,7 +5,13 @@ export const routes: Routes = [
     {
         path: 'auth',
         component: AuthLayoutComponent,
-        children: []
+        children: [
+            {
+                path: 'company-registration',
+                loadComponent: () => import('./feature/user-registration/company-registration/company-registration.component').then(cr => cr.CompanyRegistrationComponent),
+                title: 'Company registration'
+            }
+        ]
     },
     {
         path: 'dashboard',
