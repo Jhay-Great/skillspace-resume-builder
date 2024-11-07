@@ -1,4 +1,5 @@
 @use './app/scss/mixins' as mix;
+@use './app/scss/variables' as var;
 
 * {
     margin: 0;
@@ -7,11 +8,31 @@
 }
 
 body {
-    @include mix.flex();
     width: 100%;
     height: 100vh;
+    font-family: var.$font-family;
 }
 
 app-root {
+    @include mix.flex(column, 0);
     @extend body;
+}
+app-auth-layout,
+app-dashboard-layout {
+    @extend app-root;
+}
+app-auth-layout {
+    @include mix.flex();
+    @include mix.flex-position(center, center);
+    position: relative;
+}
+app-dashboard-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr;
+    grid-template-rows: 70px auto auto;
+}
+
+// hides router-outlet tag
+router-outlet {
+    display: none;
 }
