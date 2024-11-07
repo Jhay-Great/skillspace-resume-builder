@@ -17,7 +17,7 @@ export class CompanyRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyForm = this.fb.group({
-      fullName: ['', Validators.required],
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: [''],
