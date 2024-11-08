@@ -83,22 +83,6 @@
             </div>
             <div class="upload-certificate fields">
                 <label for="">Upload certificate</label>
-
-                <!-- <div class="card flex justify-content-center">
-                    <p-toast />
-                    <p-fileUpload 
-                        mode="basic" 
-                        name="demo[]" 
-                        chooseIcon="pi pi-upload" 
-                        url="https://www.primefaces.org/cdn/api/upload.php" 
-                        accept="image/*" maxFileSize="1000000" 
-                        (onUpload)="onBasicUploadAuto($event)" 
-                        [auto]="true" 
-                        chooseLabel="Browse" />
-                </div> -->
-                
-                
-                
                 <div class="input-container upload-container">
                     <!-- <i class="pi pi-upload"></i> -->
                     <input type="file" placeholder="File must be a PDF" formControlName="certificate">
@@ -141,6 +125,7 @@
 
 
 <section class="log-in">
+    <!-- will have to navigate to the login page -->
     <p>Already have an account? <a [routerLink]="['']">Log in</a></p>
 </section>
 
