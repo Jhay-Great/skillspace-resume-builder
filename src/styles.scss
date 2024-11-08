@@ -1,42 +1,144 @@
-@use './app/scss/mixins' as mix;
-@use './app/scss/variables' as var;
-@use './app/scss/functions' as func;
+@use "./app/scss/mixins" as mix;
+@use "./app/scss/variables" as var;
+@use "./app/scss/functions" as func;
 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+// @import "primeicons/primeicons.css";
 
+/* Box sizing rules*/
 * {
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  font-family: var.$font-family;
+
+  &::before,
+  &::after {
     box-sizing: border-box;
+  }
+} /* Prevent font size inflation*/
+
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+/* Remove default margin in favour of better control in authored CSS*/
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin-block-end: 0;
+  margin-block-start: 0;
+}
+body{
+    margin-inline: 0;
+}
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed*/
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+/* Set core body defaults*/
+
+body {
+  line-height: 1.5;
+} //   min-height: 100vh
+
+/* Set shorter line heights on headings and interactive elements*/
+
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+  line-height: 1.1;
+}
+/* Balance text wrapping on headings*/
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+/* A elements that don't have a class get default styles*/
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+/* Make images easier to work with*/
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+/* Inherit fonts for inputs and buttons*/
+
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+/* Make sure textareas without a rows attribute are not tiny*/
+
+textarea:not([rows]) {
+  min-height: 10em;
+}
+/* Anything that has been anchored to should have extra scroll margin*/
+
+\:target {
+  scroll-margin-block: 5ex;
+}
+button {
+  cursor: pointer;
 }
 
 body {
-    width: 100%;
-    height: 100vh;
-    font-family: var.$font-family;
+  width: 100%;
+  height: 100vh;
 }
 
 app-root {
-    @include mix.flex(column, 0);
-    @extend body;
+  @include mix.flex(column, 0);
+  @extend body;
 }
 app-auth-layout,
 app-dashboard-layout {
-    @extend app-root;
+  @extend app-root;
 }
 app-auth-layout {
-    @include mix.flex();
-    @include mix.flex-position(center, center);
-    position: relative;
+  @include mix.flex();
+  @include mix.flex-position(center, center);
+  position: relative;
 }
 app-dashboard-layout {
-    display: grid;
-    grid-template-columns: func.pixelsToRem(250) 1fr 1fr;
-    grid-template-rows: func.pixelsToRem(70) auto auto;
+  display: grid;
+  grid-template-columns: func.pixelsToRem(250) 1fr 1fr;
+  grid-template-rows: func.pixelsToRem(70) auto auto;
 }
 
 // hides router-outlet tag
 router-outlet {
-    display: none;
+  display: none;
+}
+
+// UTILITY CLASSES
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
