@@ -1,0 +1,125 @@
+<main class="login" [formGroup]="loginForm" (submit)="onSubmit()">
+  <form>
+    <div class="form-header">
+      <div class="logo">
+        <img src="assets/svgs/blue-skillspace-logo.svg" alt="logo" />
+      </div>
+
+      <div class="header-content">
+        <h1>Welcome back!</h1>
+        <p>Enter your email and password to get started</p>
+      </div>
+    </div>
+
+    <div class="form-content">
+      <!-- Login input fields -->
+
+      <!-- Email  -->
+      <div class="input-group">
+        <label for="email">Email</label>
+        <p-iconField iconPosition="left">
+          <p-inputIcon styleClass="pi pi-envelope" />
+          <input
+            formControlName="email"
+            type="text"
+            pInputText
+            placeholder="Enter your email address"
+            [class]="{
+              'ng-dirty':
+                loginForm.get('email')?.invalid &&
+                loginForm.get('email')?.touched
+            }"
+          />
+        </p-iconField>
+        <!-- Error message -->
+        <!-- @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+        @if(loginForm.get('email')?.errors?.['required']){
+        <small class="text-warning">Email is required</small>
+        } @if(loginForm.get('email')?.errors?.['email']){
+        <small class="text-warning">Invalid email format</small>
+        } } -->
+        @if(getErrorMessage('email')) {
+        <small class="text-warning">{{ getErrorMessage("email") | capitalize }}</small>
+        }
+      </div>
+
+      <!-- Custom password input field with icon -->
+      <div class="input-group password-input" style="position: relative">
+        <label for="password">Password</label>
+        <div style="position: relative; display: flex; align-items: center">
+          <i
+            class="pi pi-lock"
+            style="position: absolute; left: 1rem; z-index: 1; color: #999"
+          ></i>
+
+          <p-password
+            inputId="password"
+            [toggleMask]="true"
+            placeholder="Enter your password"
+            [feedback]="false"
+            [style]="{ width: '100%' }"
+            formControlName="password"
+            [class]="{
+              'ng-dirty':
+                loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.touched
+            }"
+          >
+          </p-password>
+        </div>
+        <!-- Error message -->
+        <!-- @if(loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.touched){
+        @if(loginForm.get('password')?.errors?.['required']){
+        <small class="text-warning">Password is required</small>
+        } } -->
+        @if(getErrorMessage('password')) {
+        <small class="text-warning">{{ getErrorMessage("password") | capitalize }}</small>
+        }
+      </div>
+      <!--  -->
+
+      <!-- Stay logged in and forgot password -->
+      <div class="flex-between">
+        <div class="stay-logged-in">
+          <p-checkbox
+            formControlName="stayLoggedIn"
+            value="stay-logged-in"
+            inputId="stay-logged-in"
+          />
+          <label for="stay-logged-in">Stay logged in</label>
+        </div>
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <!--  -->
+
+      <!-- Login button -->
+      <div class="login-btn">
+        <button
+          pButton
+          pRipple
+          [loading]="loginLoading"
+          class="p-button-primary full-width-button"
+        >
+          <span class="full-width-button-label">Login</span>
+        </button>
+      </div>
+      <!--  -->
+      <!-- login with google -->
+      <div class="login-with-google">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-google"
+          type="button"
+          class="p-button-primary full-width-button"
+          [outlined]="true"
+        >
+          <span class="full-width-button-label">Login with Google</span>
+        </button>
+      </div>
+      <!--  -->
+    </div>
+  </form>
+</main>
