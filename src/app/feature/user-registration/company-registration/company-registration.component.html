@@ -36,19 +36,31 @@
         <section formGroupName="credentials">
             <div class="company-name fields">
                 <label for="">Company name</label>
-                <input type="text" placeholder="Enter company name" formControlName="name">
+                <div class="input-container">
+                    <img src="../../../../assets/svgs/user.svg" alt="user svg icon">
+                    <input type="text" placeholder="Enter company name" formControlName="name">
+                </div>
             </div>
             <div class="email fields">
                 <label for="">Email</label>
-                <input type="email" placeholder="Enter your email address" formControlName="email">
+                <div class="input-container">
+                    <img src="../../../../assets/svgs/email.svg" alt="user svg icon">
+                    <input type="email" placeholder="Enter your email address" formControlName="email">
+                </div>
             </div>
             <div class="password fields">
                 <label for="">Password</label>
-                <input type="password" placeholder="Enter your password" formControlName="password">
+                <div class="input-container">
+                    <!-- <i class="pi pi-lock"></i> -->
+                    <input type="password" placeholder="Enter your password" formControlName="password">
+                </div>
             </div>
             <div class="confirm-password fields">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" placeholder="Enter your password" formControlName="confirmPassword">
+                <div class="input-container">
+                    <!-- <i class="pi pi-lock"></i> -->
+                    <input type="password" placeholder="Enter your password" formControlName="confirmPassword">
+                </div>
             </div>
 
             
@@ -58,20 +70,49 @@
     } @else if (step === 2) {
         <section class="information-section" formGroupName="information">
             <div class="website fields">
-                <label for="">Website</label>
-                <input type="text" formControlName="website">
+                <label for="">Company website</label>
+                <div class="input-container">
+                    <!-- <i class="pi pi-globe"></i> -->
+                    <img src="../../../../assets/svgs/globe.svg" alt="globe svg icon">
+                    <input type="text" placeholder="Eg: apexmedia.com" formControlName="website">
+                </div>
             </div>
             <div class="upload-certificate fields">
-                <label for="">Upload certification</label>
-                <input type="file" name="" id="" formControlName="certificate">
+                <label for="">Upload certificate</label>
+
+                <!-- <div class="card flex justify-content-center">
+                    <p-toast />
+                    <p-fileUpload 
+                        mode="basic" 
+                        name="demo[]" 
+                        chooseIcon="pi pi-upload" 
+                        url="https://www.primefaces.org/cdn/api/upload.php" 
+                        accept="image/*" maxFileSize="1000000" 
+                        (onUpload)="onBasicUploadAuto($event)" 
+                        [auto]="true" 
+                        chooseLabel="Browse" />
+                </div> -->
+                
+                
+                
+                <div class="input-container">
+                    <!-- <i class="pi pi-upload"></i> -->
+                    <input type="file" placeholder="File must be a PDF" formControlName="certificate">
+                </div>
             </div>
-            <div class="logo fields">
-                <label for="">logo</label>
-                <input type="file" name="" id="" formControlName="logo">
+            <div class="company-logo fields">
+                <label for="">Logo</label>
+                <div class="input-container">
+                    <!-- <i class="pi pi-upload"></i> -->
+                    <input type="file" placeholder="Image must be a PNG" formControlName="logo">
+                </div>
             </div>
             <div class="contact fields">
                 <label for="">Contact</label>
-                <input type="text" formControlName="contact">
+                <div class="input-container">
+                    <!-- <i class="pi pi-globe"></i> -->
+                    <input type="text" placeholder="Enter your telephone number" formControlName="contact">
+                </div>
             </div>
         </section>
         <button type="submit">Submit for approval</button>

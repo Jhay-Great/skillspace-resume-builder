@@ -23,6 +23,10 @@ header {
         font-size: var.$xxlarge;
         color: var.$color-blue-gray-800;
     }
+    .description {
+        font-size: var.$medium;
+        color: #667085;
+    }
     nav {
         @include mix.flex();
         @include mix.flex-position(center, center);
@@ -74,10 +78,28 @@ form {
         label {
             @include mix.label();
         }
+        .input-container {
+            @include mix.flex();
+            width: 100%;
+            height: fit-content;
+            position: relative;
+
+            img {
+                width: func.pixelsToRem(20);
+                aspect-ratio: 1;
+                position: absolute;
+                top: 50%;
+                left: func.pixelsToRem(10);
+                transform: translateY(-50%);
+            }
+        }
         input {
+            width: 100%;
+            height: 100%;
             height: func.pixelsToRem(48);
             border-radius: func.pixelsToRem(4);
             padding: func.pixelsToRem(12);
+            padding-left: 2.5rem;
             border: func.pixelsToRem(1) solid var.$color-blue-gray-300;
             outline: none;
     
