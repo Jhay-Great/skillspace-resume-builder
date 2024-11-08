@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}
 
 @Component({
   selector: 'app-company-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, InputIconModule, IconFieldModule, InputTextModule, FormsModule, NgClass],
+  imports: [FileUploadModule, ToastModule, ReactiveFormsModule, RouterLink, InputIconModule, IconFieldModule, InputTextModule, FormsModule, NgClass],
+  providers: [MessageService],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss'
 })
@@ -20,6 +31,7 @@ export class CompanyRegistrationComponent implements OnInit {
 
   constructor (
     private fb: FormBuilder,
+    private messageService:MessageService,
   ) {};
 
   ngOnInit(): void {
@@ -51,5 +63,10 @@ export class CompanyRegistrationComponent implements OnInit {
   onBack() {
     this.step = this.step - 1;
   }
+
+  onBasicUploadAuto(event: UploadEvent) {
+    console.log(event);
+    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Auto Mode' });
+}
 
 }
