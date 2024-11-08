@@ -92,6 +92,10 @@ form {
                 left: func.pixelsToRem(10);
                 transform: translateY(-50%);
             }
+            .password-icon {
+                right: func.pixelsToRem(10);
+                left: auto;
+            }
         }
         input {
             width: 100%;
@@ -102,9 +106,11 @@ form {
             padding-left: 2.5rem;
             border: func.pixelsToRem(1) solid var.$color-blue-gray-300;
             outline: none;
+            font-size: var.$medium;
     
             &::placeholder {
                 color: var.$color-blue-gray-500;
+                font-size: var.$medium;
             }
     
             &:focus, &:active {
@@ -112,6 +118,38 @@ form {
             }
         }
         @include mix.flex(column, 0.5rem);
+    }
+
+    .upload-container {
+        position: relative;
+        border-radius: func.pixelsToRem(4);
+        border: func.pixelsToRem(1) solid var.$color-blue-gray-300;
+        outline: none;
+        input {
+            opacity: 0;
+            z-index: 10;
+        }
+        span {
+            width: fit-content;
+        }
+        .custom-placeholder {
+            position: absolute;
+            inset: 0;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var.$color-blue-gray-500;
+            font-size: var.$medium;
+        }
+        .choose-file {
+            border-bottom: func.pixelsToRem(1) solid #0F4B5F;
+            color: #0F4B5F;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
     }
 
     button {

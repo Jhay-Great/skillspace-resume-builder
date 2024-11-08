@@ -52,14 +52,18 @@
                 <label for="">Password</label>
                 <div class="input-container">
                     <!-- <i class="pi pi-lock"></i> -->
+                    <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
                     <input type="password" placeholder="Enter your password" formControlName="password">
+                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
                 </div>
             </div>
             <div class="confirm-password fields">
                 <label for="confirm-password">Confirm Password</label>
                 <div class="input-container">
                     <!-- <i class="pi pi-lock"></i> -->
+                    <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
                     <input type="password" placeholder="Enter your password" formControlName="confirmPassword">
+                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
                 </div>
             </div>
 
@@ -95,16 +99,30 @@
                 
                 
                 
-                <div class="input-container">
+                <div class="input-container upload-container">
                     <!-- <i class="pi pi-upload"></i> -->
                     <input type="file" placeholder="File must be a PDF" formControlName="certificate">
+                    <img src="../../../../assets/svgs/upload.svg" alt="upload svg icon">
+                    <span class="custom-placeholder">
+                        File must be a PDF
+                    </span>
+                    <span class="choose-file">
+                        Choose file
+                    </span>
                 </div>
             </div>
             <div class="company-logo fields">
                 <label for="">Logo</label>
-                <div class="input-container">
+                <div class="input-container upload-container">
                     <!-- <i class="pi pi-upload"></i> -->
                     <input type="file" placeholder="Image must be a PNG" formControlName="logo">
+                    <img src="../../../../assets/svgs/image-upload.svg" alt="upload svg icon">
+                    <span class="custom-placeholder">
+                        Image must be a PNG
+                    </span>
+                    <span class="choose-file">
+                        Choose file
+                    </span>
                 </div>
             </div>
             <div class="contact fields">
