@@ -1,1 +1,15 @@
-<p>input-field works!</p>
+<div class="confirm-password fields">
+    <label for="confirm-password"> {{ label }}  </label>
+    <div class="input-container">
+        <!-- <i class="pi pi-lock"></i> can use this when primeicons package is installed -->
+        <img [src]="imagePath" alt="user svg icon">
+        <input [type]="type" [placeholder]="placeholder" formControlName="name">
+        
+        @if (type === 'password') {
+            <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
+        }
+    </div>
+    @if(hasError) {
+        <!-- <p class="error-message">{{ errorMessage }}</p> -->
+    }
+</div>
