@@ -7,7 +7,6 @@
   <!-- table here -->
 
   <div class="table">
-
     <!-- search -->
     <div class="search-wrap">
       <div class="search-container">
@@ -28,11 +27,15 @@
     <!--  -->
 
     <!-- tabMenu -->
-    <p-tabMenu [model]="items" [activeItem]="activeItem">
-      <ng-template pTemplate="item" let-item>
-        <a pRipple class="flex align-items-center gap-2 p-menuitem-link">
+    <p-tabMenu [model]="tabMenuList" [activeItem]="activeItem">
+      <ng-template pTemplate="item" let-tabMenu>
+        <a
+          (click)="setActiveTab(tabMenu.label)"
+          pRipple
+          class="flex align-items-center gap-2 p-menuitem-link"
+        >
           <span class="font-bold">
-            {{ item.label }}
+            {{ tabMenu.label }}
           </span>
           <p-badge value="8" />
         </a>
@@ -40,15 +43,39 @@
     </p-tabMenu>
     <!--  -->
 
-    <!-- table content -->
+    <!-- Table content-->
     <p-table
       #dt1
-      [value]="users"
-      [globalFilterFields]="['name', 'category', 'price']"
+      [value]="activeTabData === 0 ? users : draft"
+      [globalFilterFields]="['name']"
       [tableStyle]="{ 'min-width': '50rem' }"
     >
+      <!-- table header -->
       <ng-template pTemplate="header">
-        <tr>
+        <!-- Career programmes -->
+        <tr *ngIf="careerProgrammes">
+          <th style="width: 20%">Programme name</th>
+          <th style="width: 20%">Description</th>
+          <th style="width: 20%">Start date</th>
+          <th style="width: 20%">End date</th>
+          <th style="width: 20%">Status</th>
+          <th></th>
+        </tr>
+
+        <!-- saved drafts -->
+        <tr *ngIf="savedDraft">
+          <th style="width: 20%">Title</th>
+          <th style="width: 20%">Location</th>
+          <th style="width: 20%">Duration</th>
+          <th style="width: 20%">Scores</th>
+          <th pSortableColumn="date" style="width: 20%">
+            Date created <p-sortIcon field="date" />
+          </th>
+          <th></th>
+        </tr>
+
+        <!-- published programmes -->
+        <tr *ngIf="publishedProgrammes">
           <th style="width: 20%">Title</th>
           <th style="width: 20%">Location</th>
           <th style="width: 20%">Duration</th>
@@ -59,15 +86,35 @@
           <th></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-users>
-        <tr>
-          <td>{{ users.username }}</td>
-          <td>{{ users.name }}</td>
-          <td>another</td>
-          <td>{{ users.name }}</td>
+
+      <!-- table body -->
+      <ng-template pTemplate="body" let-data>
+        <!-- Career programmes -->
+        <tr *ngIf="careerProgrammes">
+          <td class="special">{{ data.name }}</td>
+          <td>{{ data.name }}</td>
+          <td>career programmes</td>
+          <td>career programmes</td>
+          <td>August 21.2024</td>
+        </tr>
+        <!-- saved drafts -->
+        <tr *ngIf="savedDraft">
+          <td>{{ data.name }}</td>
+          <td>saved draft</td>
+          <td>draft</td>
+          <td>draft names</td>
+          <td>{{ data.username }}</td>
+        </tr>
+        <!-- published programmes -->
+        <tr *ngIf="publishedProgrammes">
+          <td class="special">published</td>
+          <td>published joana</td>
+          <td>published john</td>
+          <td>doe</td>
           <td>August 21.2024</td>
         </tr>
       </ng-template>
+      <!--  -->
     </p-table>
   </div>
 </div>

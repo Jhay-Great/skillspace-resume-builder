@@ -32,8 +32,26 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CompanyComponent {
   users: any = [];
-  items: any = [];
+  tabMenuList: any = [];
   activeItem: any;
+  activeTabData = 0
+
+  draft: any = [
+    { name: 'draft Mary', username: 'another one' },
+    { name: 'draft John', username: 'another one' },
+    { name: 'draft Agnes', username: 'another one' },
+    { name: 'Draft Mavis', username: 'another one' },
+    { name: 'Draft Doe', username: 'another one' },
+    { name: 'Draft Crentsil', username: 'another one' },
+    { name: 'Draft Jane', username: 'another one' },
+    { name: 'Draft John', username: 'another one' },
+    { name: 'Draft Nancy', username: 'another one' },
+    { name: 'Draft Doris', username: 'another one' },
+  ];
+  // tabMenu
+  careerProgrammes = true;
+  savedDraft = false;
+  publishedProgrammes = false;
 
   constructor(private http: HttpClient) {}
 
@@ -43,18 +61,58 @@ export class CompanyComponent {
       .subscribe((data: any) => {
         // console.log(data);
         this.users = data;
-        console.log(this.users);
       });
   }
 
   ngOnInit() {
     this.getUsers();
-    this.items = [
-      { label: 'Skills quiz' },
-      { label: 'Local repository' },
-      { label: 'Global repository' },
+    this.tabMenuList = [
+      { label: 'Career programmes' },
+      { label: 'Saved drafts' },
+      { label: 'Published programmes' },
     ];
 
-    this.activeItem = this.items[0];
+    this.activeItem = this.tabMenuList[0];
+  }
+
+  // TabMenu control function
+  setCareerProgrammesTab() {
+    this.resetTab();
+    this.careerProgrammes = true;
+    this.activeTabData = 0
+  }
+
+  setSavedDraftTab() {
+    this.resetTab();
+    this.savedDraft = true;
+    this.activeTabData = 1
+  }
+
+  setPublishedProgrammesTab() {
+    this.resetTab();
+    this.publishedProgrammes = true;
+    this.activeTabData = 2
+  }
+
+  resetTab() {
+    this.careerProgrammes = false;
+    this.savedDraft = false;
+    this.publishedProgrammes = false;
+  }
+  
+  setActiveTab(title: string) {
+    switch (title) {
+      case 'Career programmes':
+        this.setCareerProgrammesTab();
+        break;
+      case 'Saved drafts':
+        this.setSavedDraftTab();
+        break;
+      case 'Published programmes':
+        this.setPublishedProgrammesTab();
+        break;
+      default:
+        break;
+    }
   }
 }
