@@ -35,11 +35,17 @@
     @if (step === 1) {
         <section formGroupName="credentials">
             <div class="company-name fields">
+
                 <label for="">Company name</label>
                 <div class="input-container">
                     <img src="../../../../assets/svgs/user.svg" alt="user svg icon">
                     <input type="text" placeholder="Enter company name" formControlName="name">
                 </div>
+                <!-- error handling -->
+                @if (getFormControl('credentials.name')?.touched && getFormControl('credentials.name')?.errors?.['required']) {
+                    <p>This field is required</p>
+                  }
+                  
             </div>
             <div class="email fields">
                 <label for="">Email</label>
@@ -47,26 +53,83 @@
                     <img src="../../../../assets/svgs/email.svg" alt="user svg icon">
                     <input type="email" placeholder="Enter your email address" formControlName="email">
                 </div>
+                <!-- error handling -->
+                @if (getFormControl('credentials.email')?.touched) {
+                    @if (getFormControl('credentials.email')?.errors?.['required']) {
+                        <p class="error-message">This field is required</p>
+                    }
+                    @if (getFormControl('credentials.email')?.dirty && getFormControl('credentials.email')?.errors?.['email']) {
+                        <p>Email is invalid</p>
+                    }
+                }
             </div>
             <div class="password fields">
                 <label for="">Password</label>
                 <div class="input-container">
                     <!-- <i class="pi pi-lock"></i> -->
                     <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
-                    <input type="password" placeholder="Enter your password" formControlName="password">
-                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
+                    <input type="password" placeholder="Enter your password" formControlName="password" #passwordInput >
+                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon" (click)="togglePasswordVisibility(passwordInput)">
                 </div>
+                <!-- error handling -->
+                @if (getFormControl('credentials.password')?.touched) {
+                    @if (getFormControl('credentials.password')?.errors?.['required']) {
+                        <p class="error-message">This field is required</p>
+                    }@else {
+                        @if(getFormControl('credentials.password')?.errors?.['minlength']) {
+                            <p class="error-message">Password length should be at least 8 characters long</p>
+                        }
+                        @if(getFormControl('credentials.password')?.errors?.['weakPassword']) {
+                            <p class="error-message">Password should contain numbers, symbol, upper or lower case letter</p>
+                        }
+
+                    }
+                }
             </div>
             <div class="confirm-password fields">
                 <label for="confirm-password">Confirm Password</label>
                 <div class="input-container">
                     <!-- <i class="pi pi-lock"></i> -->
                     <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
-                    <input type="password" placeholder="Enter your password" formControlName="confirmPassword">
-                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
+                    <input type="password" placeholder="Enter your password" formControlName="confirmPassword" #confirmPasswordInput >
+                    <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon" (click)="togglePasswordVisibility(confirmPasswordInput)">
                 </div>
+
+                @if(companyForm.errors?.['passwordMismatch'] && (companyForm.get('credentials.confirmPassword')?.touched || companyForm.get('credentials.confirmPassword')?.dirty)) {
+                    <p class="error-message">
+                        Confirm password is invalid
+                    </p>
+                }
+                
+                
+                <!-- @if (getFormControl('credentials.confirmPassword')?.dirty || getFormControl('credentials.confirmPassword')?.touched) {
+                    @if (companyForm.get('credentials')?.errors?.['passwordMismatch']) {
+                      <p class="error-message">Confirm password does not match the password</p>
+                    }
+                  } -->
+                
+                <!-- @if (getFormControl('credentials.confirmPassword')?.touched) {
+                    @if (getFormControl('credentials.confirmPassword')?.errors?.['required']) {
+                      <p class="error-message">This field is required</p>
+                    } @else if (companyForm.errors?.['passwordMismatch']) {
+                      <p class="error-message">Passwords do not match</p>
+                    }
+                } -->
+                 
+                <!-- @if(getFormControl('credentials.confirmPassword')?.dirty || getFormControl('credentials.confirmPassword')?.touched) {
+                    <p>touched</p>
+                    @if(companyForm.errors?.['passwordMismatch']) {
+                        <p class="error-message">Confirm password is invalid</p>
+                    }
+                } -->
             </div>
 
+            <!-- <p>
+                <!-- {{ companyForm.errors | json }} --
+                form error: {{ companyForm.get('credentials.password')?.errors | json }}
+                confirmPassword: {{ getFormControl('credentials.confirmPassword')?.errors | json }}
+                password: {{ getFormControl('credentials.password')?.errors | json }}
+            </p> -->
             
         </section>
         <button type="button" (click)="onContinue()" class="continue">Continue</button>
