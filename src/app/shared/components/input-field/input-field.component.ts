@@ -19,7 +19,6 @@ export class InputFieldComponent implements OnInit {
   constructor () {}
 
   ngOnInit() {
-    console.log({label: this.label, imagePath: this.imagePath, type:this.type})
 
   }
 
