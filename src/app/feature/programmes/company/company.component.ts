@@ -31,22 +31,62 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './company.component.scss',
 })
 export class CompanyComponent {
-  users: any = [];
+  mockProgrammes: any = [
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+  ];
   tabMenuList: any = [];
   activeItem: any;
-  activeTabData = 0
+  activeTabData = 0;
 
-  draft: any = [
-    { name: 'draft Mary', username: 'another one' },
-    { name: 'draft John', username: 'another one' },
-    { name: 'draft Agnes', username: 'another one' },
-    { name: 'Draft Mavis', username: 'another one' },
-    { name: 'Draft Doe', username: 'another one' },
-    { name: 'Draft Crentsil', username: 'another one' },
-    { name: 'Draft Jane', username: 'another one' },
-    { name: 'Draft John', username: 'another one' },
-    { name: 'Draft Nancy', username: 'another one' },
-    { name: 'Draft Doris', username: 'another one' },
+  mockdraft: any = [
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+    {
+      name: 'Data Science',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
+    {
+      name: 'Graduate Trainee Frontend',
+      description: 'This programme is built for everyone',
+      start: '4th June 2023',
+      end: '4th June 2024',
+      status: 'Draft',
+    },
   ];
   // tabMenu
   careerProgrammes = true;
@@ -55,17 +95,7 @@ export class CompanyComponent {
 
   constructor(private http: HttpClient) {}
 
-  getUsers() {
-    this.http
-      .get('https://jsonplaceholder.typicode.com/users')
-      .subscribe((data: any) => {
-        // console.log(data);
-        this.users = data;
-      });
-  }
-
   ngOnInit() {
-    this.getUsers();
     this.tabMenuList = [
       { label: 'Career programmes' },
       { label: 'Saved drafts' },
@@ -79,19 +109,19 @@ export class CompanyComponent {
   setCareerProgrammesTab() {
     this.resetTab();
     this.careerProgrammes = true;
-    this.activeTabData = 0
+    this.activeTabData = 0;
   }
 
   setSavedDraftTab() {
     this.resetTab();
     this.savedDraft = true;
-    this.activeTabData = 1
+    this.activeTabData = 1;
   }
 
   setPublishedProgrammesTab() {
     this.resetTab();
     this.publishedProgrammes = true;
-    this.activeTabData = 2
+    this.activeTabData = 2;
   }
 
   resetTab() {
@@ -99,7 +129,7 @@ export class CompanyComponent {
     this.savedDraft = false;
     this.publishedProgrammes = false;
   }
-  
+
   setActiveTab(title: string) {
     switch (title) {
       case 'Career programmes':
