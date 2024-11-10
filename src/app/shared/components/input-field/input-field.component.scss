@@ -1,0 +1,50 @@
+@use '../../../scss/mixins' as mix;
+@use '../../../scss/variables' as var;
+@use '../../../scss/functions' as func;
+
+
+.fields {
+    label {
+        @include mix.label();
+    }
+    .input-container {
+        @include mix.flex();
+        width: 100%;
+        height: fit-content;
+        position: relative;
+
+        img {
+            width: func.pixelsToRem(20);
+            aspect-ratio: 1;
+            position: absolute;
+            top: 50%;
+            left: func.pixelsToRem(10);
+            transform: translateY(-50%);
+        }
+        .password-icon {
+            right: func.pixelsToRem(10);
+            left: auto;
+        }
+    }
+    input {
+        width: 100%;
+        height: 100%;
+        height: func.pixelsToRem(48);
+        border-radius: func.pixelsToRem(4);
+        padding: func.pixelsToRem(12);
+        padding-left: 2.5rem;
+        border: func.pixelsToRem(1) solid var.$color-blue-gray-300;
+        outline: none;
+        font-size: var.$medium;
+
+        &::placeholder {
+            color: var.$color-blue-gray-500;
+            font-size: var.$medium;
+        }
+
+        &:focus, &:active {
+            border: func.pixelsToRem(1) solid var.$color-blue-500;
+        }
+    }
+    @include mix.flex(column, 0.5rem);
+}
