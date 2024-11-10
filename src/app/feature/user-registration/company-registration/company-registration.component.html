@@ -123,14 +123,6 @@
                     }
                 } -->
             </div>
-
-            <!-- <p>
-                <!-- {{ companyForm.errors | json }} --
-                form error: {{ companyForm.get('credentials.password')?.errors | json }}
-                confirmPassword: {{ getFormControl('credentials.confirmPassword')?.errors | json }}
-                password: {{ getFormControl('credentials.password')?.errors | json }}
-            </p> -->
-            
         </section>
         <button type="button" (click)="onContinue()" class="continue">Continue</button>
 
@@ -148,21 +140,30 @@
                 <label for="">Upload certificate</label>
                 <div class="input-container upload-container">
                     <!-- <i class="pi pi-upload"></i> -->
-                    <input type="file" placeholder="File must be a PDF" formControlName="certificate">
+                    <input type="file" accept=".pdf"  (change)="onUpload($event)">
                     <img src="../../../../assets/svgs/upload.svg" alt="upload svg icon">
                     <span class="custom-placeholder">
-                        File must be a PDF
+                        {{ placeholder }}
                     </span>
                     <span class="choose-file">
                         Choose file
                     </span>
                 </div>
             </div>
-            <div class="company-logo fields">
+
+            <app-file-upload-input-field 
+                [label]="'Logo'"
+                [acceptType]="'image/png'"
+                [svgIconPath]="'../../../../assets/svgs/image-upload.svg'"
+                [defaultPlaceholder]="'Image must be a PNG'"
+                (fileSelected)="onPngUpload($event)"
+            />
+            
+            
+            <!-- <div class="company-logo fields">
                 <label for="">Logo</label>
                 <div class="input-container upload-container">
-                    <!-- <i class="pi pi-upload"></i> -->
-                    <input type="file" placeholder="Image must be a PNG" formControlName="logo">
+                    <input type="file" accept="image/png" placeholder="Image must be a PNG" formControlName="logo">
                     <img src="../../../../assets/svgs/image-upload.svg" alt="upload svg icon">
                     <span class="custom-placeholder">
                         Image must be a PNG
@@ -171,14 +172,25 @@
                         Choose file
                     </span>
                 </div>
-            </div>
-            <div class="contact fields">
+            </div> -->
+            <!-- <div class="contact fields">
                 <label for="">Contact</label>
                 <div class="input-container">
-                    <!-- <i class="pi pi-globe"></i> -->
+                    <!-- <i class="pi pi-globe"></i> --
                     <input type="text" placeholder="Enter your telephone number" formControlName="contact">
                 </div>
-            </div>
+            </div> -->
+
+            <!-- international tel number -->
+            <ngx-material-intl-tel-input 
+            [fieldControl]="contactControl"
+            [iconMakeCall]="false"
+            [enablePlaceholder]="true"
+            [autoSelectedCountry]="selectedCountry"
+            placeholder="Enter your telephone number"
+            [required]="true" 
+            [autoIpLookup]="false"
+            ></ngx-material-intl-tel-input>
         </section>
         <button type="submit">Submit for approval</button>
     } @else {

@@ -12,8 +12,11 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
+import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
+
 import { passwordStrengthValidator, confirmPasswordValidator } from '../../../shared/utils/password.validator';
 import { InputFieldComponent } from "../../../shared/components/input-field/input-field.component";
+import { FileUploadInputFieldComponent } from '../../../shared/components/file-upload-input-field/file-upload-input-field.component';
 
 interface UploadEvent {
     originalEvent: Event;
@@ -23,7 +26,7 @@ interface UploadEvent {
 @Component({
   selector: 'app-company-registration',
   standalone: true,
-  imports: [FileUploadModule, ToastModule, CommonModule, ReactiveFormsModule, RouterLink, InputIconModule, IconFieldModule, InputTextModule, FormsModule, NgClass, InputFieldComponent],
+  imports: [FileUploadModule, ToastModule, CommonModule, ReactiveFormsModule, RouterLink, InputIconModule, IconFieldModule, InputTextModule, FormsModule, NgClass, InputFieldComponent, NgxMaterialIntlTelInputComponent, FileUploadInputFieldComponent, ],
   providers: [MessageService],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss'
@@ -31,8 +34,16 @@ interface UploadEvent {
 export class CompanyRegistrationComponent implements OnInit {
   companyForm!:FormGroup;
   step:number = 1;
-  placeholder = 'enter your name'
+  placeholder = 'File must be a PDF'
   label = 'something'
+
+  selectedCountry: CountryISO = CountryISO.Ghana;
+
+  preferredCountries: CountryISO[] = [
+    CountryISO.Ghana,
+    // Add other preferred countries if needed
+  ];
+  
   constructor (
     private fb: FormBuilder,
     private messageService:MessageService,
@@ -82,11 +93,37 @@ export class CompanyRegistrationComponent implements OnInit {
     }, { validators: confirmPasswordValidator() })
   }
 
+  get contactControl () {
+    return this.companyForm.get('information.contact') as FormControl<string | null>;
+  }
+
   onBasicUploadAuto(event: UploadEvent) {
     console.log(event);
     this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Auto Mode' });
-}
+  }
 
-
-
+  onPngUpload(file:File | null) {
+    console.log('logging file name: ', file?.name);
+    if (file) {
+      this.companyForm.get('information.logo')?.setValue(file.name);
+    }
+    // console.log(event.target.files[0].name)
+    // const file = event.target.files[0];
+    // if (file) {
+    //   this.placeholder = file.name;
+    //   this.companyForm.get('information.certificate')?.setValue(file.name);
+      
+    // }
+  }
+  onUpload(event:any) {
+    // console.log(event.target);
+    // console.log(event.target.files[0].name)
+    const file = event.target.files[0];
+    if (file) {
+      this.placeholder = file.name;
+      this.companyForm.get('information.certificate')?.setValue(file.name);
+      
+    }
+  }
+  
 }
