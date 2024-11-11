@@ -10,9 +10,10 @@ import { BadgeModule } from 'primeng/badge';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
-
 // http module
 import { HttpClient } from '@angular/common/http';
+// import career creation form component
+import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 
 @Component({
   selector: 'app-company',
@@ -26,6 +27,7 @@ import { HttpClient } from '@angular/common/http';
     InputIconModule,
     InputTextModule,
     IconFieldModule,
+    CareerCreationFormComponent,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -64,6 +66,7 @@ export class CompanyComponent {
   tabMenuList: any = [];
   activeItem: any;
   activeTabData = 0;
+  formModal = true;
 
   mockdraft: any = [
     {

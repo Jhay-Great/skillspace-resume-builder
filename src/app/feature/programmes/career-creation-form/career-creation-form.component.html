@@ -1,0 +1,88 @@
+<div class="container">
+  <form [formGroup]="careerForm">
+    <!-- form title -->
+
+    <div class="header">
+      <h1>Add career programme</h1>
+      <span
+        ><svg
+          width="12"
+          height="13"
+          viewBox="0 0 12 13"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11 1.5L1 11.5M1 1.5L11 11.5"
+            stroke="#3F4555"
+            stroke-width="1.66667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+    </div>
+
+    <!-- programme name -->
+    <div class="name">
+      <label for="name">Programme name</label>
+      <input id="name" type="text" pInputText formControlName="name" />
+    </div>
+
+    <!-- Requirements -->
+    <div formArrayName="requirements" class="requirement">
+      <label>Requirements</label>
+      <div
+        class="requirementInput"
+        *ngFor="let require of requirements.controls; let i = index"
+      >
+        <input
+          [formControlName]="i"
+          placeholder="Enter programme requirement"
+          pInputText
+        />
+        <button
+          class="removeRequirement"
+          *ngIf="i > 0"
+          type="button"
+          (click)="removeField(i)"
+        >
+          <span
+            ><svg
+              width="12"
+              height="13"
+              viewBox="0 0 12 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 1.5L1 11.5M1 1.5L11 11.5"
+                stroke="#3F4555"
+                stroke-width="1.66667"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <button
+        class="addRequirement-Btn"
+        type="button"
+        (click)="addRequirement()"
+      >
+        Add More
+      </button>
+    </div>
+
+    <!-- Required badges -->
+    <div class="name">
+      <label for="requiredBadges">Required badges</label>
+      <p-chips
+        [style]="{ width: '100%' }"
+        formControlName="requiredBadges"
+        placeholder="Enter required badges"
+      />
+    </div>
+  </form>
+</div>
