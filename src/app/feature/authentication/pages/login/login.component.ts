@@ -12,6 +12,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { CapitalizePipe } from '../../../../core/pipes/capitalize/capitalize.pipe';
+import { getFormErrorMessage } from '../../../../shared/utils/form-utils';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,8 +26,8 @@ import { CapitalizePipe } from '../../../../core/pipes/capitalize/capitalize.pip
     ButtonModule,
     CheckboxModule,
     ReactiveFormsModule,
-    CapitalizePipe
-    
+    CapitalizePipe,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -56,13 +58,6 @@ export class LoginComponent {
   }
 
   getErrorMessage(controlName: string): string {
-    const control = this.loginForm.get(controlName);
-    if (control?.hasError('required') && control.touched) {
-      return `${controlName} is required!`;
-    }
-    if (control?.hasError('email') && control.touched) {
-      return 'Invalid email format!';
-    }
-    return '';
+    return getFormErrorMessage(controlName, this.loginForm);
   }
 }

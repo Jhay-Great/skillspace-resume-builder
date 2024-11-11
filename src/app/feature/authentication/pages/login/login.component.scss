@@ -35,17 +35,13 @@
           cursor: pointer;
           align-items: center;
         }
-
-        a {
-          color: $color-blue-500;
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-          }
-        }
       }
     }
+    .form-footer { 
+      text-align: center;
+      margin-top: 1rem;
+    }
+      
   }
 }
 
