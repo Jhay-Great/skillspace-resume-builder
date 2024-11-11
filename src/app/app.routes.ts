@@ -27,6 +27,13 @@ export const routes: Routes = [
             './feature/authentication/pages/forgot-password-otp/forgot-password-otp.component'
           ).then((d) => d.ForgotPasswordOtpComponent),
       },
+      {
+        path: 'create-password',
+        loadComponent: () =>
+          import(
+            './feature/authentication/pages/create-password/create-password.component'
+          ).then((d) => d.CreatePasswordComponent),
+      },
     ],
   },
   {
