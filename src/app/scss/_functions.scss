@@ -1,5 +1,2 @@
 @use 'sass:math';
 
-@function pixelsToRem ($size) {
-    @return math.div($size, 16) + rem;
-}

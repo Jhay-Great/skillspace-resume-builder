@@ -160,8 +160,8 @@ app-auth-layout {
 }
 app-dashboard-layout {
     display: grid;
-    grid-template-columns: func.pixelsToRem(250) 1fr 1fr;
-    grid-template-rows: func.pixelsToRem(70) auto auto;
+    grid-template-columns: 15.625rem 1fr 1fr;
+    grid-template-rows: 4.375rem auto auto;
 }
 
 // hides router-outlet tag
