@@ -6,12 +6,15 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), 
     provideAnimationsAsync(), 
-    provideStore(), provideEffects(), 
+    provideAnimations(),
+    provideStore(), 
+    provideEffects(), 
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
   ]
 };
