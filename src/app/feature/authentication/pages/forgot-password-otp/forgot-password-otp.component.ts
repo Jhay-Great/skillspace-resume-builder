@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password-otp',
@@ -17,6 +18,9 @@ import { ButtonModule } from 'primeng/button';
 })
 export class ForgotPasswordOtpComponent {
   @ViewChild(OtpVerificationComponent) otpComponent!: OtpVerificationComponent;
+
+  constructor(private router: Router){};
+
   verifyOTP(verificationCode: any) {
     console.log('about to verify otp code: ', verificationCode);
 
@@ -25,6 +29,7 @@ export class ForgotPasswordOtpComponent {
       .then((response) => {
         console.log('OTP verified successfully:', response);
         this.otpComponent.setLoadingStatus(false); // Set loading to false on success
+        this.router.navigate(['/auth/create-password']);
       })
       .catch((error) => {
         console.error('Failed to verify OTP:', error);
