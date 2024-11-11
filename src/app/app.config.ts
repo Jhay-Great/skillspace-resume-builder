@@ -8,5 +8,10 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), provideStore(), provideEffects(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })]
+  providers: [
+    provideRouter(routes), 
+    provideAnimationsAsync(), 
+    provideStore(), provideEffects(), 
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+  ]
 };
