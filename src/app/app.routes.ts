@@ -20,6 +20,13 @@ export const routes: Routes = [
             './feature/authentication/pages/forgot-password/forgot-password.component'
           ).then((d) => d.ForgotPasswordComponent),
       },
+      {
+        path: 'forgot-password/otp',
+        loadComponent: () =>
+          import(
+            './feature/authentication/pages/forgot-password-otp/forgot-password-otp.component'
+          ).then((d) => d.ForgotPasswordOtpComponent),
+      },
     ],
   },
   {
