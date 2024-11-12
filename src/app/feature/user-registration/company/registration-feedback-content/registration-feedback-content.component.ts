@@ -4,10 +4,10 @@ import { Component, Input } from '@angular/core';
   selector: 'app-registration-feedback',
   standalone: true,
   imports: [],
-  templateUrl: './registration-feedback.component.html',
-  styleUrl: './registration-feedback.component.scss'
+  templateUrl: './registration-feedback-content.component.html',
+  styleUrl: './registration-feedback-content.component.scss'
 })
-export class RegistrationFeedbackComponent {
+export class RegistrationFeedbackContentComponent {
   @Input() title:string | null = null;
   @Input() description:string | null = null;
   @Input() activeButton:boolean = true;
