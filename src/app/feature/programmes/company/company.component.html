@@ -79,7 +79,14 @@
             <span>{{ data.status }}</span>
           </td>
           <td class="action">
+            <p-overlayPanel #op>
+              <div class="float">
+                <p>Move</p>
+                <p>Delete</p>
+              </div>
+            </p-overlayPanel>
             <svg
+              (click)="op.toggle($event)"
               width="20"
               height="20"
               viewBox="0 0 20 20"

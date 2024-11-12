@@ -10,6 +10,8 @@ import { BadgeModule } from 'primeng/badge';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
+// Overlay panel overlay
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
@@ -27,6 +29,7 @@ import { CareerCreationFormComponent } from '../career-creation-form/career-crea
     InputTextModule,
     IconFieldModule,
     CareerCreationFormComponent,
+    OverlayPanelModule,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -63,7 +66,7 @@ export class CompanyComponent {
     },
   ];
   tabMenuList: any = [];
-  activeItem: any;
+  activeItem: any;  
   activeTabData = 0;
   formModal = false;
 
