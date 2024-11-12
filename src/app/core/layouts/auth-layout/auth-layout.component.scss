@@ -3,7 +3,7 @@
 
 .svg-design-1, .svg-design-2 {
     position: absolute;
-    width: func.pixelsToRem(100);
+    width: 6.25rem;
     aspect-ratio: 1;
 
     img {
@@ -21,7 +21,7 @@
 }
 
 main {
-    width: min(func.pixelsToRem(513), 90%);
+    width: min(32.063rem, 90%);
     height: fit-content;
     padding-block: 1.5rem;
 }
