@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import {
   FormGroup,
@@ -17,7 +17,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 @Component({
   selector: 'app-career-creation-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ChipsModule, InputTextModule, CalendarModule,InputTextareaModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    ChipsModule,
+    InputTextModule,
+    CalendarModule,
+    InputTextareaModule,
+  ],
   templateUrl: './career-creation-form.component.html',
   styleUrl: './career-creation-form.component.scss',
 })
@@ -25,6 +32,7 @@ export class CareerCreationFormComponent {
   careerForm!: FormGroup;
   badgesRequired: string[] = [];
   badgesOptional: string[] = [];
+  @Output() closeForm: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder) {
     this.careerForm = this.fb.group({
@@ -55,5 +63,10 @@ export class CareerCreationFormComponent {
   // Method to remove a field at a specified index
   removeField(index: number) {
     this.requirements.removeAt(index);
+  }
+
+  // closeform
+  close() {
+    this.closeForm.emit();
   }
 }

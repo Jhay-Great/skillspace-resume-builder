@@ -24,7 +24,7 @@
         </p-iconField>
       </div>
 
-      <button class="addform">Add career programme</button>
+      <button (click)="openForm()" class="addform">Add career programme</button>
     </div>
     <!--  -->
 
@@ -259,10 +259,11 @@
   </div>
 </div>
 
-
 <!-- modal -->
- <div class="formmodal" *ngIf="formModal">
+<div class="formmodal" *ngIf="formModal">
   <div class="form">
-    <app-career-creation-form></app-career-creation-form>
+    <app-career-creation-form
+      (closeForm)="closeForm()"
+    ></app-career-creation-form>
   </div>
- </div>
+</div>

@@ -6,6 +6,7 @@
       <h1>Add career programme</h1>
       <span
         ><svg
+         (click)="close()"
           width="12"
           height="13"
           viewBox="0 0 12 13"
@@ -127,8 +128,14 @@
         rows="5"
         cols="30"
         pInputTextarea
-        formControlName="text"
+        formControlName="description"
       ></textarea>
+    </div>
+
+    <!--form control buttons -->
+    <div class="formcontrol-btn">
+      <button class="draft-btn">Save as draft</button>
+      <button class="publish-btn">Publish programme</button>
     </div>
   </form>
 </div>

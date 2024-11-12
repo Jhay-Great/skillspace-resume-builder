@@ -1,9 +1,9 @@
 @use "../../../scss/variables" as var;
 
 .container {
-  // border: 1px solid red;
   padding: 1rem;
   font-size: 1rem;
+
   // form styling
   form {
     display: flex;
@@ -24,11 +24,20 @@
       h1 {
         font-size: var.$medium;
       }
+
+      span {
+        cursor: pointer;
+      }
     }
 
     // programme name
     .name,
-    .requirement,.requiredBadges,.optionalBadges,.startDate,.endDate,.description {
+    .requirement,
+    .requiredBadges,
+    .optionalBadges,
+    .startDate,
+    .endDate,
+    .description {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -58,16 +67,41 @@
       border: none;
     }
 
-    
     // badge styling
-    ::ng-deep .p-inputtext{
+    ::ng-deep .p-inputtext {
       width: 100%;
     }
 
     // calender
-    ::ng-deep .p-calendar{
+    ::ng-deep .p-calendar {
       width: 100%;
     }
-    
+
+    // form control buttons
+    .formcontrol-btn {
+      display: flex;
+      justify-content: end;
+      gap: 1rem;
+      font-size: var.$small;
+      border: none;
+
+      // draft button
+      .draft-btn {
+        border: 1px solid #5e98f7;
+        border-radius: 0.2rem;
+        background-color: transparent;
+        color: #5e98f7;
+        padding: 5px 10px;
+      }
+
+      // publish button
+      .publish-btn {
+        border: 1px solid #5e98f7;
+        border-radius: 0.2rem;
+        background-color: #5e98f7;
+        color: white;
+        padding: 5px 10px;
+      }
+    }
   }
 }

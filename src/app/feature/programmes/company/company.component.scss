@@ -39,7 +39,7 @@
       height: 3rem;
       display: flex;
 
-      .addform{
+      .addform {
         background-color: var.$color-blue-500;
         height: 2.2rem;
         display: flex;
@@ -54,8 +54,8 @@
     }
 
     /* Styling even rows of p-table */
-     .stylerowsbackground:nth-child(even) {
-      background-color: #F9FAFB; /* Light grey background for even rows */
+    .stylerowsbackground:nth-child(even) {
+      background-color: #f9fafb; /* Light grey background for even rows */
     }
 
     // programme status styling
@@ -111,7 +111,7 @@
 }
 
 // form modal
-.formmodal{
+.formmodal {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.346);
   inset: 0;
@@ -121,11 +121,15 @@
   overflow: hidden;
   padding: 2rem;
 
-  .form{
-    border: 1px solid green;
+  .form {
     background-color: white;
     width: 25rem;
     height: 100%;
     overflow-y: auto;
+    // hide scroll bar
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
   }
 }
