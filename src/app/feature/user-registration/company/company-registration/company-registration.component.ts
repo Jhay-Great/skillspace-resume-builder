@@ -46,6 +46,7 @@ interface UploadEvent {
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
+    RegistrationFeedbackComponent
   ],
   providers: [MessageService],
   templateUrl: './company-registration.component.html',
@@ -56,6 +57,9 @@ export class CompanyRegistrationComponent implements OnInit {
   step: number = 1;
   placeholder = 'File must be a PDF';
   label = 'something';
+  isAwaitingReview:boolean = false;
+  isRejected:boolean = false;
+  isSuccessful:boolean = false;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
