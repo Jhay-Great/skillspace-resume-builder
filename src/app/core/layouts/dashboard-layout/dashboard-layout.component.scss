@@ -9,7 +9,7 @@ header {
     width: 100%;
     grid-column: 2 / -1;
     grid-row: 1 / 2;
-    box-shadow: 0 func.pixelsToRem(1) func.pixelsToRem(2) #0001;
+    box-shadow: 0 0.063rem 0.125rem #0001;
     padding-inline: 1rem;
 
     h1 {
@@ -23,8 +23,8 @@ header {
         @include mix.flex-position(center, center);
 
         .notification {
-            width: func.pixelsToRem(24);
-            height: func.pixelsToRem(24);
+            width: 1.5rem;
+            height: 1.5rem;
             img {
                 width: 100%;
                 height: 100%;
@@ -32,8 +32,8 @@ header {
         }
 
         .user-avatar {
-            width: func.pixelsToRem(36);
-            height: func.pixelsToRem(36);
+            width: 2.25rem;
+            height: 2.25rem;
             border-radius: 50%;
 
             img {
