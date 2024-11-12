@@ -167,6 +167,14 @@ app-company-registration {
     @include mix.flex(column);
     
 }
+app-registration-feedback {
+    @include mix.flex(column, 2rem);
+    @include mix.flex-position(center, center);
+    position: fixed;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+}
 
 // hides router-outlet tag
 router-outlet {

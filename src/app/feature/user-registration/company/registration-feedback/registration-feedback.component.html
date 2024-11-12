@@ -1,1 +1,38 @@
-<p>registration-feedback works!</p>
+<main>
+    <div class="skillspace-logo">
+      <img
+        src="../../../../assets/svgs/blue-skillspace-logo.svg"
+        alt="SkillSpace svg icon logo"
+      />
+      <span>SkillSpace</span>
+    </div>
+    
+    <section class="container">
+      <!-- svg image -->
+      <img src="assets/svgs/review-awaiting.svg" alt="awaiting review svg image" />
+    
+      <!-- header -->
+      <!-- <h1>Your account is still under review</h1> -->
+    
+      <!-- description -->
+      <!-- <p class="description">
+        Your account will be reviewed by our System Administrator before activation.
+        This process may take 1-3 business days. We will notify you via email once
+        your account has been approved.
+      </p> -->
+    
+      <h1> {{ title }} </h1>
+    
+      <!-- description --
+      <p class="description">
+        {{ description }}
+      </p>
+    
+      <!-- conditional button -->
+      @if(activeButton && buttonType) {
+        <button class="button">
+            {{ buttonType }}
+        </button>
+      }
+    </section>
+</main>

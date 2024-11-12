@@ -29,6 +29,7 @@ import {
 } from '../../../../shared/utils/password.validator';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
+import { RegistrationFeedbackComponent } from "../registration-feedback/registration-feedback.component";
 
 interface UploadEvent {
   originalEvent: Event;
