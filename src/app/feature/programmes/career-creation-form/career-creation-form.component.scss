@@ -1,9 +1,9 @@
 @use "../../../scss/variables" as var;
 
 .container {
-  border: 1px solid red;
+  // border: 1px solid red;
   padding: 1rem;
-
+  font-size: 1rem;
   // form styling
   form {
     display: flex;
@@ -16,7 +16,6 @@
     }
 
     .header {
-      border: 1px solid red;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -29,7 +28,7 @@
 
     // programme name
     .name,
-    .requirement {
+    .requirement,.requiredBadges,.optionalBadges,.startDate,.endDate,.description {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -61,7 +60,14 @@
 
     
     // badge styling
-    
+    ::ng-deep .p-inputtext{
+      width: 100%;
+    }
+
+    // calender
+    ::ng-deep .p-calendar{
+      width: 100%;
+    }
     
   }
 }

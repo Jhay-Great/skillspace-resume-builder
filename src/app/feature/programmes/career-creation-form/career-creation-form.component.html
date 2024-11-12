@@ -40,6 +40,7 @@
           [formControlName]="i"
           placeholder="Enter programme requirement"
           pInputText
+          class="requirementInput"
         />
         <button
           class="removeRequirement"
@@ -76,13 +77,58 @@
     </div>
 
     <!-- Required badges -->
-    <div class="name">
+    <div class="requiredBadges">
       <label for="requiredBadges">Required badges</label>
       <p-chips
+        class="requiredBadge"
         [style]="{ width: '100%' }"
         formControlName="requiredBadges"
         placeholder="Enter required badges"
       />
+    </div>
+
+    <!-- Optional badges -->
+    <div class="optionalBadges">
+      <label>Optional badges</label>
+      <p-chips
+        class="optionalBadge"
+        [style]="{ width: '100%' }"
+        formControlName="optionalBadges"
+        placeholder="These badges are optional"
+      />
+    </div>
+
+    <!-- starts date-->
+    <div class="startDate">
+      <label for="startDate" class="font-bold block mb-2"> Start date </label>
+      <p-calendar
+        formGroupName="startDate"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="startDate"
+      />
+    </div>
+
+    <!-- end date-->
+    <div class="endDate">
+      <label for="endDate" class="font-bold block mb-2"> End date </label>
+      <p-calendar
+        formGroupName="endDate"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="endDate"
+      />
+    </div>
+
+    <!-- description -->
+    <div class="description">
+      <label for="description">Description</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        formControlName="text"
+      ></textarea>
     </div>
   </form>
 </div>

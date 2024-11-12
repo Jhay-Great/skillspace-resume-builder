@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-// import form modules
+
 import {
   FormGroup,
   FormBuilder,
@@ -11,11 +11,13 @@ import {
 // import primeng modules
 import { ChipsModule } from 'primeng/chips';
 import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
   selector: 'app-career-creation-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ChipsModule, InputTextModule],
+  imports: [ReactiveFormsModule, CommonModule, ChipsModule, InputTextModule, CalendarModule,InputTextareaModule],
   templateUrl: './career-creation-form.component.html',
   styleUrl: './career-creation-form.component.scss',
 })
@@ -29,6 +31,7 @@ export class CareerCreationFormComponent {
       name: ['', Validators.required],
       requirements: this.fb.array([]),
       requiredBadges: ['', Validators.required],
+      optionalBadges: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       description: ['', Validators.required],
