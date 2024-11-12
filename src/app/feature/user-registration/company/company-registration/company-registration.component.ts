@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -12,30 +18,50 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
+import {
+  NgxMaterialIntlTelInputComponent,
+  CountryISO,
+} from 'ngx-material-intl-tel-input';
 
-import { passwordStrengthValidator, confirmPasswordValidator } from '../../../../shared/utils/password.validator';
-import { InputFieldComponent } from "../../../../shared/components/input-field/input-field.component";
+import {
+  passwordStrengthValidator,
+  confirmPasswordValidator,
+} from '../../../../shared/utils/password.validator';
+import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
 
 interface UploadEvent {
-    originalEvent: Event;
-    files: File[];
+  originalEvent: Event;
+  files: File[];
 }
 
 @Component({
   selector: 'app-company-registration',
   standalone: true,
-  imports: [FileUploadModule, ToastModule, CommonModule, ReactiveFormsModule, RouterLink, InputIconModule, IconFieldModule, InputTextModule, FormsModule, NgClass, InputFieldComponent, NgxMaterialIntlTelInputComponent, FileUploadInputFieldComponent, ],
+  imports: [
+    FileUploadModule,
+    ToastModule,
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    InputIconModule,
+    IconFieldModule,
+    InputTextModule,
+    FormsModule,
+    NgClass,
+    InputFieldComponent,
+    NgxMaterialIntlTelInputComponent,
+    FileUploadInputFieldComponent,
+  ],
   providers: [MessageService],
   templateUrl: './company-registration.component.html',
-  styleUrl: './company-registration.component.scss'
+  styleUrl: './company-registration.component.scss',
 })
 export class CompanyRegistrationComponent implements OnInit {
-  companyForm!:FormGroup;
-  step:number = 1;
-  placeholder = 'File must be a PDF'
-  label = 'something'
+  companyForm!: FormGroup;
+  step: number = 1;
+  placeholder = 'File must be a PDF';
+  label = 'something';
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
@@ -43,27 +69,26 @@ export class CompanyRegistrationComponent implements OnInit {
     CountryISO.Ghana,
     // Add other preferred countries if needed
   ];
-  
-  constructor (
+
+  constructor(
     private fb: FormBuilder,
-    private messageService:MessageService,
-  ) {};
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.companyForm = this.formInitialization();
-
   }
-  
+
   onSubmit() {
     const formData = this.companyForm.value;
-    console.log(formData)
+    console.log(formData);
   }
 
   onContinue(step = 2) {
     this.step = step;
   }
 
-  getFormControl(controlName:string) {
+  getFormControl(controlName: string) {
     return this.companyForm.get(controlName);
   }
 
@@ -72,37 +97,53 @@ export class CompanyRegistrationComponent implements OnInit {
   }
 
   togglePasswordVisibility(inputElement: HTMLInputElement) {
-    console.log('called...')
+    console.log('called...');
     inputElement.type = inputElement.type === 'password' ? 'text' : 'password';
   }
 
-  private formInitialization () {
-    return this.fb.group({
-      credentials: this.fb.group({
-        name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
-        confirmPassword: ['', [Validators.required]],
-      }),
-      information: this.fb.group({
-        website: ['', Validators.required],
-        certificate: ['', Validators.required],
-        logo: '',
-        contact: ['', Validators.required],
-      })
-    }, { validators: confirmPasswordValidator() })
+  private formInitialization() {
+    return this.fb.group(
+      {
+        credentials: this.fb.group({
+          name: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]],
+          password: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(8),
+              passwordStrengthValidator(),
+            ],
+          ],
+          confirmPassword: ['', [Validators.required]],
+        }),
+        information: this.fb.group({
+          website: ['', Validators.required],
+          certificate: ['', Validators.required],
+          logo: '',
+          contact: ['', Validators.required],
+        }),
+      },
+      { validators: confirmPasswordValidator() }
+    );
   }
 
-  get contactControl () {
-    return this.companyForm.get('information.contact') as FormControl<string | null>;
+  get contactControl() {
+    return this.companyForm.get('information.contact') as FormControl<
+      string | null
+    >;
   }
 
   onBasicUploadAuto(event: UploadEvent) {
     console.log(event);
-    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Auto Mode' });
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Success',
+      detail: 'File Uploaded with Auto Mode',
+    });
   }
 
-  onPngUpload(file:File | null) {
+  onPngUpload(file: File | null) {
     console.log('logging file name: ', file?.name);
     if (file) {
       this.companyForm.get('information.logo')?.setValue(file);
@@ -112,21 +153,19 @@ export class CompanyRegistrationComponent implements OnInit {
     // if (file) {
     //   this.placeholder = file.name;
     //   this.companyForm.get('information.certificate')?.setValue(file.name);
-      
+
     // }
   }
-  onUpload(event:any) {
+  onUpload(event: any) {
     // console.log(event.target);
     // console.log(event.target.files[0].name)
     const file = event.target.files[0];
-    const formData = new FormData;
+    const formData = new FormData();
     formData.append('file', file, file.name);
     console.log(formData);
     if (file) {
       this.placeholder = file.name;
       this.companyForm.get('information.certificate')?.setValue(file.name);
-      
     }
   }
-  
 }
