@@ -39,16 +39,9 @@ interface UploadEvent {
   selector: 'app-company-registration',
   standalone: true,
   imports: [
-    FileUploadModule,
-    ToastModule,
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    InputIconModule,
-    IconFieldModule,
-    InputTextModule,
-    FormsModule,
-    NgClass,
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
@@ -85,6 +78,12 @@ export class CompanyRegistrationComponent implements OnInit {
   }
 
   onContinue(step = 2) {
+    // checks if the stepper 1 is valid before changing to the next step
+    if (this.getFormControl('credentials')?.invalid) {
+      return;
+    }
+
+    // handles the stepper changes
     this.step = step;
   }
 
