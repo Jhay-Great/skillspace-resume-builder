@@ -29,7 +29,6 @@ import {
 } from '../../../../shared/utils/password.validator';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
-import { RegistrationFeedbackComponent } from "../registration-feedback/registration-feedback.component";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -46,7 +45,6 @@ interface UploadEvent {
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
-    RegistrationFeedbackComponent
   ],
   providers: [MessageService],
   templateUrl: './company-registration.component.html',
@@ -79,6 +77,10 @@ export class CompanyRegistrationComponent implements OnInit {
 
   onSubmit() {
     const formData = this.companyForm.value;
+    if (this.companyForm.valid) {
+      this.isAwaitingReview = true;
+
+    }
     console.log(formData);
   }
 
