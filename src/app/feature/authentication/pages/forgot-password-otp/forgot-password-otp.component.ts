@@ -1,13 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { OtpVerificationComponent } from '../../../../shared/components/otp-verification/otp-verification.component';
 import {
-  FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password-otp',
@@ -19,31 +15,14 @@ import { Router } from '@angular/router';
 export class ForgotPasswordOtpComponent {
   @ViewChild(OtpVerificationComponent) otpComponent!: OtpVerificationComponent;
 
-  constructor(private router: Router){};
+  constructor(){};
 
   verifyOTP(verificationCode: any) {
     console.log('about to verify otp code: ', verificationCode);
 
     // Verify user OTP
-    this.fakeApiCall(verificationCode)
-      .then((response) => {
-        console.log('OTP verified successfully:', response);
-        this.otpComponent.setLoadingStatus(false); // Set loading to false on success
-        this.router.navigate(['/auth/create-password']);
-      })
-      .catch((error) => {
-        console.error('Failed to verify OTP:', error);
-        this.otpComponent.setLoadingStatus(false); // Set loading to false on error
-      });
+    // redirect route to create password page
+   
   }
 
-  fakeApiCall(verificationCode: any): Promise<any> {
-    // Simulate an API call
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate a successful response
-        resolve({ success: true });
-      }, 2000);
-    });
-  }
 }
