@@ -14,9 +14,9 @@ import { ToastModule } from 'primeng/toast';
 
 import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
 
-import { passwordStrengthValidator, confirmPasswordValidator } from '../../../shared/utils/password.validator';
-import { InputFieldComponent } from "../../../shared/components/input-field/input-field.component";
-import { FileUploadInputFieldComponent } from '../../../shared/components/file-upload-input-field/file-upload-input-field.component';
+import { passwordStrengthValidator, confirmPasswordValidator } from '../../../../shared/utils/password.validator';
+import { InputFieldComponent } from "../../../../shared/components/input-field/input-field.component";
+import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
 
 interface UploadEvent {
     originalEvent: Event;
@@ -105,7 +105,7 @@ export class CompanyRegistrationComponent implements OnInit {
   onPngUpload(file:File | null) {
     console.log('logging file name: ', file?.name);
     if (file) {
-      this.companyForm.get('information.logo')?.setValue(file.name);
+      this.companyForm.get('information.logo')?.setValue(file);
     }
     // console.log(event.target.files[0].name)
     // const file = event.target.files[0];
@@ -119,6 +119,9 @@ export class CompanyRegistrationComponent implements OnInit {
     // console.log(event.target);
     // console.log(event.target.files[0].name)
     const file = event.target.files[0];
+    const formData = new FormData;
+    formData.append('file', file, file.name);
+    console.log(formData);
     if (file) {
       this.placeholder = file.name;
       this.companyForm.get('information.certificate')?.setValue(file.name);

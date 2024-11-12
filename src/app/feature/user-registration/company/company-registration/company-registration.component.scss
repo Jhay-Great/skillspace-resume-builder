@@ -1,6 +1,6 @@
-@use '../../../scss/mixins' as mix;
-@use '../../../scss/variables' as var;
-@use '../../../scss/functions' as func;
+@use '../../../../scss/mixins' as mix;
+@use '../../../../scss/variables' as var;
+@use '../../../../scss/functions' as func;
 
 .logo {
     @include mix.flex(row, 0);
