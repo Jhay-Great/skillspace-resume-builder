@@ -48,7 +48,7 @@
                     </div>
                     <!-- error handling -->
                     @if (getFormControl('credentials.name')?.touched && getFormControl('credentials.name')?.errors?.['required']) {
-                        <p>This field is required</p>
+                        <p class="error-message">This field is required</p>
                       }
                       
                 </div>
@@ -64,7 +64,7 @@
                             <p class="error-message">This field is required</p>
                         }
                         @if (getFormControl('credentials.email')?.dirty && getFormControl('credentials.email')?.errors?.['email']) {
-                            <p>Email is invalid</p>
+                            <p class="error-message">Email is invalid</p>
                         }
                     }
                 </div>
@@ -105,28 +105,6 @@
                             Confirm password is invalid
                         </p>
                     }
-                    
-                    
-                    <!-- @if (getFormControl('credentials.confirmPassword')?.dirty || getFormControl('credentials.confirmPassword')?.touched) {
-                        @if (companyForm.get('credentials')?.errors?.['passwordMismatch']) {
-                          <p class="error-message">Confirm password does not match the password</p>
-                        }
-                      } -->
-                    
-                    <!-- @if (getFormControl('credentials.confirmPassword')?.touched) {
-                        @if (getFormControl('credentials.confirmPassword')?.errors?.['required']) {
-                          <p class="error-message">This field is required</p>
-                        } @else if (companyForm.errors?.['passwordMismatch']) {
-                          <p class="error-message">Passwords do not match</p>
-                        }
-                    } -->
-                     
-                    <!-- @if(getFormControl('credentials.confirmPassword')?.dirty || getFormControl('credentials.confirmPassword')?.touched) {
-                        <p>touched</p>
-                        @if(companyForm.errors?.['passwordMismatch']) {
-                            <p class="error-message">Confirm password is invalid</p>
-                        }
-                    } -->
                 </div>
             </section>
             <button type="button" (click)="onContinue()" class="continue">Continue</button>
@@ -140,6 +118,10 @@
                         <img src="../../../../assets/svgs/globe.svg" alt="globe svg icon">
                         <input type="text" placeholder="Eg: apexmedia.com" formControlName="website">
                     </div>
+                    <!-- error handling -->
+                    @if (getFormControl('information.name')?.touched && getFormControl('credentials.name')?.errors?.['required']) {
+                        <p class="error-message">This field is required</p>
+                    }
                 </div>
                 <div class="upload-certificate fields">
                     <label for="">Upload certificate</label>

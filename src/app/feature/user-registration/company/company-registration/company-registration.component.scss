@@ -194,6 +194,12 @@ form {
     }
 }
 
+// error-message
+.error-message {
+    font-size: var.$small;
+    color: var.$color-red-600;
+}
+
 // Remove or modify the phone icon
 ::ng-deep {
     svg.icon.icon-tabler.icon-tabler-phone,
