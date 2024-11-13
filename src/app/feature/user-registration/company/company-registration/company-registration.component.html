@@ -10,15 +10,8 @@
 
 @if (!isAwaitingReview) {
     <header>
-        @if (step !== 3) {
-            <h1>Find talent for roles</h1>
-            <p class="description">Provide your details to get started.</p>
-            
-        }@else {
-            <!-- <img src="" alt=""> -->
-            <h1>We've sent you an email</h1>
-            <p class="description">An email has been sent to your email to verify your account.</p>
-        }
+        <h1>Find talent for roles</h1>
+        <p class="description">Provide your details to get started.</p>
         <nav>
             <div class="step1 steppers" (click)="onContinue(1)" [ngClass]="{'active': step === 1}">
                 <span>1</span>
@@ -28,11 +21,6 @@
                 <span>2</span>
                 <p>Information</p>
             </div>
-            <!-- remove -->
-            <!-- <div class="step3 steppers"  (click)="onContinue(3)" [ngClass]="{'active': step === 3}">
-                <span>3</span>
-                <p>Verification</p>
-            </div> -->
         </nav>
     </header>
     
@@ -71,7 +59,6 @@
                 <div class="password fields">
                     <label for="">Password</label>
                     <div class="input-container">
-                        <!-- <i class="pi pi-lock"></i> -->
                         <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
                         <input type="password" placeholder="Enter your password" formControlName="password" #passwordInput >
                         <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon" (click)="togglePasswordVisibility(passwordInput)">
@@ -94,7 +81,6 @@
                 <div class="confirm-password fields">
                     <label for="confirm-password">Confirm Password</label>
                     <div class="input-container">
-                        <!-- <i class="pi pi-lock"></i> -->
                         <img src="../../../../assets/svgs/lock.svg" alt="user svg icon">
                         <input type="password" placeholder="Enter your password" formControlName="confirmPassword" #confirmPasswordInput >
                         <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon" (click)="togglePasswordVisibility(confirmPasswordInput)">
@@ -114,7 +100,6 @@
                 <div class="website fields">
                     <label for="">Company website</label>
                     <div class="input-container">
-                        <!-- <i class="pi pi-globe"></i> -->
                         <img src="../../../../assets/svgs/globe.svg" alt="globe svg icon">
                         <input type="text" placeholder="Eg: apexmedia.com" formControlName="website">
                     </div>
@@ -126,7 +111,6 @@
                 <div class="upload-certificate fields">
                     <label for="">Upload certificate</label>
                     <div class="input-container upload-container">
-                        <!-- <i class="pi pi-upload"></i> -->
                         <input type="file" accept=".pdf"  (change)="onUpload($event)">
                         <img src="../../../../assets/svgs/upload.svg" alt="upload svg icon">
                         <span class="custom-placeholder">
