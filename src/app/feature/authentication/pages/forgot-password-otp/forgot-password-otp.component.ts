@@ -4,6 +4,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { ToastService } from '../../../../core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-forgot-password-otp',
@@ -15,12 +16,14 @@ import { ButtonModule } from 'primeng/button';
 export class ForgotPasswordOtpComponent {
   @ViewChild(OtpVerificationComponent) otpComponent!: OtpVerificationComponent;
 
-  constructor(){};
+  constructor(private toastService: ToastService){};
 
   verifyOTP(verificationCode: any) {
     console.log('about to verify otp code: ', verificationCode);
 
     // Verify user OTP
+    // Show success or error toast notification 
+    this.toastService.showSuccess('Congratulations!', 'Your verification was successful.');
     // redirect route to create password page
    
   }
