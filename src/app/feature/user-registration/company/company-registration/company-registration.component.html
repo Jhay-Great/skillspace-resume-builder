@@ -165,18 +165,6 @@
         [message]="'This field is required'"
     />
     }
-          
-    <!-- <div class="upload-certificate fields">
-      <label for="">Upload certificate</label>
-      <div class="input-container upload-container">
-        <input type="file" accept=".pdf" (change)="onUpload($event)" />
-        <img src="../../../../assets/svgs/upload.svg" alt="upload svg icon" />
-        <span class="custom-placeholder">
-          {{ placeholder }}
-        </span>
-        <span class="choose-file"> Choose file </span>
-      </div>
-    </div> -->
 
     <app-file-upload-input-field 
         [label]="'Upload certificate'"
@@ -193,27 +181,6 @@
       [defaultPlaceholder]="'Image must be a PNG'"
       (fileSelected)="onFileUpload($event, 'logo')"
     />
-
-    <!-- <div class="company-logo fields">
-                    <label for="">Logo</label>
-                    <div class="input-container upload-container">
-                        <input type="file" accept="image/png" placeholder="Image must be a PNG" formControlName="logo">
-                        <img src="../../../../assets/svgs/image-upload.svg" alt="upload svg icon">
-                        <span class="custom-placeholder">
-                            Image must be a PNG
-                        </span>
-                        <span class="choose-file">
-                            Choose file
-                        </span>
-                    </div>
-                </div> -->
-    <!-- <div class="contact fields">
-                    <label for="">Contact</label>
-                    <div class="input-container">
-                        <!-- <i class="pi pi-globe"></i> --
-                        <input type="text" placeholder="Enter your telephone number" formControlName="contact">
-                    </div>
-                </div> -->
 
     <!-- international tel number -->
     <ngx-material-intl-tel-input
