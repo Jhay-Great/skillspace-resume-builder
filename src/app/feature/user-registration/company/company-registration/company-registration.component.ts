@@ -29,6 +29,7 @@ import {
 } from '../../../../shared/utils/password.validator';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
+import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -45,7 +46,8 @@ interface UploadEvent {
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
-  ],
+    FormErrorMessageComponent
+],
   providers: [MessageService],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
