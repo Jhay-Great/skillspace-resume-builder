@@ -67,7 +67,7 @@ export class CompanyComponent {
     },
   ];
   tabMenuList: TabMenuList[] = [];
-  activeItem: number = 0;  
+  activeItem!: TabMenuList 
   activeTabData = 0;
   formModal = false;
 
