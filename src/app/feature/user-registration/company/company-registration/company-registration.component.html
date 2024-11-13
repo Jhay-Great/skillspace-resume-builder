@@ -78,60 +78,13 @@
             <app-form-error-message 
             [message]="'This field is required'"
         />
-        <!-- <p class="error-message">This field is required</p> -->
         } @if (getFormControl('credentials.email')?.dirty &&
         getFormControl('credentials.email')?.errors?.['email']) {
             <app-form-error-message 
             [message]="'Email is invalid'"
         />
-        <!-- <p class="error-message">Email is invalid</p> -->
         } }
     
-    <!-- <div class="company-name fields">
-      <label for="">Company name</label>
-      <div class="input-container">
-        <img src="assets/svgs/user.svg" alt="user svg icon" />
-        <input
-          type="text"
-          placeholder="Enter company name"
-          formControlName="name"
-          [ngClass]="{
-            'has-error': getFormControl('credentials.name')?.touched && 
-                         (getFormControl('credentials.name')?.errors?.['required'] || 
-                          getFormControl('credentials.name')?.errors)
-          }"
-        />
-      </div>
-      <!-- error handling --
-      @if ( getFormControl('credentials.name')?.touched &&
-      getFormControl('credentials.name')?.errors?.['required'] ) {
-      <p class="error-message">This field is required</p>
-      }
-    </div> -->
-
-
-
-
-    
-    <!-- <div class="email fields">
-      <label for="">Email</label>
-      <div class="input-container">
-        <img src="assets/svgs/email.svg" alt="user svg icon" />
-        <input
-          type="email"
-          placeholder="Enter your email address"
-          formControlName="email"
-        />
-      </div>
-      <!-- error handling --
-      @if (getFormControl('credentials.email')?.touched) { @if
-      (getFormControl('credentials.email')?.errors?.['required']) {
-      <p class="error-message">This field is required</p>
-      } @if (getFormControl('credentials.email')?.dirty &&
-      getFormControl('credentials.email')?.errors?.['email']) {
-      <p class="error-message">Email is invalid</p>
-      } }
-    </div> -->
 
     <!-- password -->
     <app-input-field 
@@ -152,57 +105,17 @@
         <app-form-error-message 
         [message]="'This field is required'"
     />
-    <!-- <p class="error-message">This field is required</p> -->
     }@else {
     @if(getFormControl('credentials.password')?.errors?.['minlength']) {
         <app-form-error-message 
         [message]="'Password length should be at least 8 characters long'"
     />
-    <!-- <p class="error-message">
-        Password length should be at least 8 characters long
-    </p> -->
     } @if(getFormControl('credentials.password')?.errors?.['weakPassword']) {
         <app-form-error-message 
         [message]="'Password should contain numbers, symbol, upper or lower case letter'"
     />
-    <!-- <p class="error-message">
-        Password should contain numbers, symbol, upper or lower case letter
-    </p> -->
     } } }
-
-    <!-- <div class="password fields">
-      <label for="">Password</label>
-      <div class="input-container">
-        <img src="../../../../assets/svgs/lock.svg" alt="user svg icon" />
-        <input
-          type="password"
-          placeholder="Enter your password"
-          formControlName="password"
-          #passwordInput
-        />
-        <img
-          src="../../../../assets/svgs/hide-password.svg"
-          alt="hidden password svg icon"
-          class="password-icon"
-          (click)="togglePasswordVisibility(passwordInput)"
-        />
-      </div>
-      <!-- error handling --
-      @if (getFormControl('credentials.password')?.touched) { @if
-      (getFormControl('credentials.password')?.errors?.['required']) {
-      <p class="error-message">This field is required</p>
-      }@else {
-      @if(getFormControl('credentials.password')?.errors?.['minlength']) {
-      <p class="error-message">
-        Password length should be at least 8 characters long
-      </p>
-      } @if(getFormControl('credentials.password')?.errors?.['weakPassword']) {
-      <p class="error-message">
-        Password should contain numbers, symbol, upper or lower case letter
-      </p>
-      } } }
-    </div> -->
-
+    
     <!-- confirm password -->
     <app-input-field 
         [svgIcon]="'lock'"
@@ -223,34 +136,8 @@
         <app-form-error-message 
             [message]="'Confirm password is invalid'"
         />
-    <!-- <p class="error-message">Confirm password is invalid</p> -->
     }
     
-    
-    <!-- <div class="confirm-password fields">
-      <label for="confirm-password">Confirm Password</label>
-      <div class="input-container">
-        <img src="../../../../assets/svgs/lock.svg" alt="user svg icon" />
-        <input
-          type="password"
-          placeholder="Enter your password"
-          formControlName="confirmPassword"
-          #confirmPasswordInput
-        />
-        <img
-          src="../../../../assets/svgs/hide-password.svg"
-          alt="hidden password svg icon"
-          class="password-icon"
-          (click)="togglePasswordVisibility(confirmPasswordInput)"
-        />
-      </div>
-
-      @if(companyForm.errors?.['passwordMismatch'] &&
-      (companyForm.get('credentials.confirmPassword')?.touched ||
-      companyForm.get('credentials.confirmPassword')?.dirty)) {
-      <p class="error-message">Confirm password is invalid</p>
-      }
-    </div> -->
   </section>
   <button type="button" (click)="onContinue()" class="continue">
     Continue
@@ -258,22 +145,24 @@
 
   } @else if (step === 2) {
   <section class="information-section" formGroupName="information">
-    <div class="website fields">
-      <label for="">Company website</label>
-      <div class="input-container">
-        <img src="../../../../assets/svgs/globe.svg" alt="globe svg icon" />
-        <input
-          type="text"
-          placeholder="Eg: apexmedia.com"
-          formControlName="website"
-        />
-      </div>
-      <!-- error handling -->
-      @if (getFormControl('information.name')?.touched &&
-      getFormControl('credentials.name')?.errors?.['required']) {
-      <p class="error-message">This field is required</p>
-      }
-    </div>
+    <app-input-field 
+    [svgIcon]="'globe'"
+    [label]="'Company website'"
+    [type]="'text'"
+    [placeholder]="'Eg: apexmedia.com'"
+    formControlName="website"
+    [hasError]="
+        getFormControl('information.website')?.touched && 
+        (getFormControl('information.website')?.errors?.['required'] || 
+        getFormControl('information.website')?.errors)
+    "
+    />
+    <!-- error handling -->
+    @if (getFormControl('information.website')?.touched &&
+    getFormControl('information.website')?.errors?.['required']) {
+    <p class="error-message">This field is required</p>
+    }
+          
     <div class="upload-certificate fields">
       <label for="">Upload certificate</label>
       <div class="input-container upload-container">
@@ -285,6 +174,11 @@
         <span class="choose-file"> Choose file </span>
       </div>
     </div>
+
+    <!-- <app-file-upload-input-field 
+
+    /> -->
+    
 
     <app-file-upload-input-field
       [label]="'Logo'"
