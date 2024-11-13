@@ -1,0 +1,43 @@
+<main
+  class="otp-verification"
+  [formGroup]="verificationForm"
+  (submit)="onSubmit()"
+>
+  <form>
+    <div class="form-header">
+      <div class="logo">
+        <img src="assets/svgs/blue-skillspace-logo.svg" alt="logo" />
+      </div>
+
+      <div class="header-content">
+        <h1>Verification Code</h1>
+        <p>Enter the verification code we just sent to your email.</p>
+      </div>
+    </div>
+
+    <div class="form-content">
+      <!-- Verification input fields -->
+      <p-inputOtp formControlName="verificationCode" [length]="5"/>
+
+      @if(getErrorMessage('verificationCode')) {
+      <small class="text-warning">{{
+        getErrorMessage("verificationCode") | capitalize
+      }}</small>
+      }
+
+      <p>Code expires in <span class="timer">01:00</span></p>
+    </div>
+
+    <!-- Verify button -->
+    <div class="verify-btn">
+      <button
+        pButton
+        pRipple
+        [loading]="verificationLoading"
+        class="p-button-primary full-width-button"
+      >
+        <span class="full-width-button-label">Verify</span>
+      </button>
+    </div>
+  </form>
+</main>

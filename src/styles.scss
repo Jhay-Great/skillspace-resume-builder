@@ -146,17 +146,17 @@ button {
 }
 
 app-root {
-    @include mix.flex(column, 0);
-    @extend body;
+  @include mix.flex(column, 0);
+  @extend body;
 }
 app-auth-layout,
 app-dashboard-layout {
-    @extend app-root;
+  @extend app-root;
 }
 app-auth-layout {
-    @include mix.flex();
-    @include mix.flex-position(center, center);
-    position: relative;
+  @include mix.flex();
+  @include mix.flex-position(center, center);
+  position: relative;
 }
 app-dashboard-layout {
     display: grid;
@@ -166,7 +166,7 @@ app-dashboard-layout {
 
 // hides router-outlet tag
 router-outlet {
-    display: none;
+  display: none;
 }
 
 // UTILITY CLASSES

@@ -1,0 +1,59 @@
+@use '../../../scss/_variables.scss' as *;
+@use '../../../scss/_mixins.scss' as *;
+@use '../../../scss/_functions.scss' as *;
+
+.otp-verification {
+  form {
+    .form-header {
+      .logo {
+        margin-bottom: 2rem;
+        margin-inline: auto;
+      }
+      @include flex(column, 1rem);
+      margin-bottom: 2rem;
+
+      .header-content {
+        text-align: center;
+        h1 {
+          color: $color-blue-gray-800;
+        }
+        p {
+          color: $color-blue-gray-500;
+        }
+      }
+    }
+
+    .form-content {
+      @include flex(column, 1rem);
+      justify-content: center;
+      align-items: center;
+
+      .timer { 
+        color: $color-blue-500 ;
+
+      }
+
+    }
+  }
+}
+
+::ng-deep .p-inputtext {
+  width: 4rem;
+  height: 4rem
+}
+
+.full-width-button {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-width-button {
+  margin-right: 0.5rem;
+
+  .full-width-button-label {
+    margin-left: 0.5rem;
+  }
+}
