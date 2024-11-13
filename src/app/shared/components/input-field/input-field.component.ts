@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss'
 })
-export class InputFieldComponent implements OnInit, ControlValueAccessor {
+export class InputFieldComponent implements ControlValueAccessor {
   @Input ({required: true}) svgIcon:string | null = null;
   @Input ({required: true}) label!:string;
   @Input ({required: true}) type:string | null = null;
@@ -28,12 +28,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   value:string = '';
   onChange = (value:string) => {};
   onTouched = () => {};
-
-  constructor () {}
-
-  ngOnInit() {
-
-  }
 
   onInputChange(value:string) {
     this.value = value;
@@ -53,11 +47,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   // register changes when the field is touched
   registerOnTouched(fn: any): void {
     this.onTouched = fn
-  }
-
-  // called when the form control is enabled and disabled
-  setDisabledState(isDisabled: boolean): void {
-    
   }
 
   // Emit changes to the form control
