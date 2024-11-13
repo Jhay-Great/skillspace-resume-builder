@@ -1,0 +1,10 @@
+<div class="custom-toast" [class]="getToastType()">
+  <div class="status">
+    <i class="pi {{ getToastIcon() }}" ></i>
+    <p>{{summary}}</p>
+  </div>
+
+  <p class="content">
+    {{ detail }}
+  </p>
+</div>
