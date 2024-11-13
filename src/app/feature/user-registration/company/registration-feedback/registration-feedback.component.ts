@@ -9,10 +9,6 @@ import { RegistrationFeedbackContentComponent } from '../registration-feedback-c
   styleUrl: './registration-feedback.component.scss'
 })
 export class RegistrationFeedbackComponent implements OnInit {
-  isAwaitingReview:boolean = false;
-  isRejected:boolean = false;
-  isSuccessful:boolean = false;
-
   svgImage!:string;
   title!:string;
   description!:string;
@@ -39,19 +35,21 @@ export class RegistrationFeedbackComponent implements OnInit {
     
   }
 
-  private handleAwaitingResponse () {
+  private handleAwaitingResponse ():void {
     this.svgImage = 'review-awaiting';
     this.title = 'Your account is still under review'
     this.description = ' Your account will be reviewed by our System Administrator before activation. This process may take 1-3 business days. We will notify you via email once your account has been approved.';
     this.buttonText = 'Return to home page';
   }
-  private handleRejectedResponse () {
+
+  private handleRejectedResponse ():void {
     this.svgImage = 'review-rejected';
     this.title = 'Sorry, your account has been rejected'
     this.description = ' Your account was reviewed by our System Administrator (1-3 business days). We have notified you via email. Click ‘Sign up’ to restart the process.';
     this.buttonText = 'Sign up';
   }
-  private handleSuccessResponse () {
+
+  private handleSuccessResponse ():void {
     this.svgImage = 'review-successful';
     this.title = 'Congratulation!'
     this.description = ' Your account will be reviewed by our System Administrator before activation. This process may take 1-3 business days. We will notify you via email once your account has been approved.';
