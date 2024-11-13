@@ -42,6 +42,14 @@ export const routes: Routes = [
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then(
         (d) => d.DashboardLayoutComponent
       ),
-    children: [],
+    children: [
+      {
+        path: 'career-programme',
+        loadComponent: () =>
+          import(
+            './feature/programmes/career-creation-form/career-creation-form.component'
+          ).then((d) => d.CareerCreationFormComponent),
+      },
+    ],
   },
 ];

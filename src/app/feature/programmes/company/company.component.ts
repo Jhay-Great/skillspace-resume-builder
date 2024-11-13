@@ -15,6 +15,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
+import { TabMenuList } from '../../../core/interfaces/interfaces';
 
 @Component({
   selector: 'app-company',
@@ -65,8 +66,8 @@ export class CompanyComponent {
       status: 'Draft',
     },
   ];
-  tabMenuList: any = [];
-  activeItem: any;  
+  tabMenuList: TabMenuList[] = [];
+  activeItem: number = 0;  
   activeTabData = 0;
   formModal = false;
 
@@ -98,7 +99,7 @@ export class CompanyComponent {
   savedDraft = false;
   publishedProgrammes = false;
 
-  constructor() {}
+  
 
   ngOnInit() {
     this.tabMenuList = [
@@ -111,31 +112,31 @@ export class CompanyComponent {
   }
 
   // TabMenu control function
-  setCareerProgrammesTab() {
+   private setCareerProgrammesTab() {
     this.resetTab();
     this.careerProgrammes = true;
     this.activeTabData = 0;
   }
 
-  setSavedDraftTab() {
+  private setSavedDraftTab() {
     this.resetTab();
     this.savedDraft = true;
     this.activeTabData = 1;
   }
 
-  setPublishedProgrammesTab() {
+  private setPublishedProgrammesTab() {
     this.resetTab();
     this.publishedProgrammes = true;
     this.activeTabData = 2;
   }
 
-  resetTab() {
+  private resetTab() {
     this.careerProgrammes = false;
     this.savedDraft = false;
     this.publishedProgrammes = false;
   }
 
-  setActiveTab(title: string) {
+   setActiveTab(title: string) {
     switch (title) {
       case 'Career programmes':
         this.setCareerProgrammesTab();
