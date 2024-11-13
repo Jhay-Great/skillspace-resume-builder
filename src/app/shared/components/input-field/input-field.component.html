@@ -3,7 +3,10 @@
     <div class="input-container">
         <!-- <i class="pi pi-lock"></i> can use this when primeicons package is installed -->
         <img [src]="imagePath" alt="user svg icon">
-        <input [type]="type" [placeholder]="placeholder" formControlName="name">
+        <input [type]="type" [placeholder]="placeholder" formControlName="name"
+        (input)="onInput($event)"
+        (blur)="onTouched()"
+        >
         
         @if (type === 'password') {
             <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
