@@ -146,7 +146,7 @@ export class CompanyRegistrationComponent implements OnInit {
     });
   }
 
-  onPngUpload(file: File | null, control:string) {
+  onFileUpload(file: File | null, control:string) {
     console.log('logging file name: ', file?.name);
     if (file) {
       this.companyForm.get(`information.${control}`)?.setValue(file);

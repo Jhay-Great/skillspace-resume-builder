@@ -182,7 +182,7 @@
         [label]="'Upload certificate'"
         [acceptType]="'.pdf'"
         [svgIconPath]="'assets/svgs/upload.svg'"
-        (fileSelected)="onPngUpload($event, 'certificate')"
+        (fileSelected)="onFileUpload($event, 'certificate')"
     />
     
 
@@ -191,7 +191,7 @@
       [acceptType]="'image/png'"
       [svgIconPath]="'assets/svgs/image-upload.svg'"
       [defaultPlaceholder]="'Image must be a PNG'"
-      (fileSelected)="onPngUpload($event, 'logo')"
+      (fileSelected)="onFileUpload($event, 'logo')"
     />
 
     <!-- <div class="company-logo fields">
