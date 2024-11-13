@@ -2,14 +2,20 @@
     <label for="confirm-password"> {{ label }}  </label>
     <div class="input-container">
         <!-- <i class="pi pi-lock"></i> can use this when primeicons package is installed -->
-        <img [src]="imagePath" alt="user svg icon">
-        <input [type]="type" [placeholder]="placeholder" formControlName="name"
+        <img [src]="'assets/svgs/' + svgIcon + '.svg' " alt="user svg icon">
+        <input [type]="type" [placeholder]="placeholder"
         (input)="onInput($event)"
         (blur)="onTouched()"
+        [ngClass]="{'has-error': hasError}"
+        #Input
         >
         
         @if (type === 'password') {
-            <img src="../../../../assets/svgs/hide-password.svg" alt="hidden password svg icon" class="password-icon">
+            <img src="assets/svgs/hide-password.svg" 
+            alt="hidden password svg icon" 
+            class="password-icon"
+            (click)="togglePasswordVisibility()"
+        >
         }
     </div>
     @if(hasError) {
