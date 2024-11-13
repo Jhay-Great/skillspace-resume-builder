@@ -17,7 +17,16 @@
 
     <div class="form-content">
       <!-- Verification input fields -->
-      <p-inputOtp formControlName="verificationCode" [length]="5"/>
+      <p-inputOtp
+        formControlName="verificationCode"
+        [length]="5"
+        [integerOnly]="true"
+        [class]="{
+          'invalid-input': 
+            verificationForm.get('verificationCode')?.invalid && 
+            verificationForm.get('verificationCode')?.touched
+        }"
+      />
 
       @if(getErrorMessage('verificationCode')) {
       <small class="text-warning">{{
