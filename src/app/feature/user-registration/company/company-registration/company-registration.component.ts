@@ -61,11 +61,6 @@ export class CompanyRegistrationComponent implements OnInit {
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
-  preferredCountries: CountryISO[] = [
-    CountryISO.Ghana,
-    // Add other preferred countries if needed
-  ];
-
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService
