@@ -21,9 +21,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   @Input ({required: true}) label!:string;
   @Input ({required: true}) type:string | null = null;
   @Input ({required: true}) placeholder:string | null = null;
-  // @Input () controlName:string | null = null;
   @Input () hasError:boolean = false;
-  @Input () errorMessage:string | null = null;
 
   @ViewChild ('Input') inputElement!:ElementRef;
 
@@ -69,7 +67,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
     this.onChange(this.value);
   }
 
-  togglePasswordVisibility():void {
+  togglePasswordVisibility(): void {
     const input = this.inputElement.nativeElement
     input.type = input.type === 'password' ? 'text' : 'password';
   }
