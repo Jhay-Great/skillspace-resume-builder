@@ -20,4 +20,24 @@ describe('InputFieldComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle between password and text type', () => {
+    const input = fixture.nativeElement.querySelector('input');
+    // initial type
+    expect(input.type).toBe('password');
+
+    component.togglePasswordVisibility();
+    fixture.detectChanges();
+    
+    // after change
+    expect(input.type).toBe('text');
+
+    component.togglePasswordVisibility();
+    fixture.detectChanges();
+    
+    // after change
+    expect(input.type).toBe('password');
+  })
+  
+  
 });
