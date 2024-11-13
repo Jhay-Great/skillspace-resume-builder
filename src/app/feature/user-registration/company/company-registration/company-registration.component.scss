@@ -193,7 +193,10 @@ form {
 
     }
 }
-
+// error handling
+.has-error {
+    border: 0.063rem solid var.$color-red-600;
+}
 // error-message
 .error-message {
     font-size: var.$small;
