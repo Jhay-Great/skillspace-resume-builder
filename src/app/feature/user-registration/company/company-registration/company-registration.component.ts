@@ -56,16 +56,12 @@ export class CompanyRegistrationComponent implements OnInit {
   companyForm!: FormGroup;
   step: number = 1;
   placeholder = 'File must be a PDF';
-  label = 'something';
   isAwaitingReview:boolean = false;
-  isRejected:boolean = false;
-  isSuccessful:boolean = false;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -131,19 +127,11 @@ export class CompanyRegistrationComponent implements OnInit {
     );
   }
 
+  // specific for ngx-material-intl-tel-input component
   get contactControl() {
     return this.companyForm.get('information.contact') as FormControl<
       string | null
     >;
-  }
-
-  onBasicUploadAuto(event: UploadEvent) {
-    console.log(event);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Success',
-      detail: 'File Uploaded with Auto Mode',
-    });
   }
 
   onFileUpload(file: File | null, control:string) {
@@ -152,6 +140,7 @@ export class CompanyRegistrationComponent implements OnInit {
       this.companyForm.get(`information.${control}`)?.setValue(file);
     }
   }
+  
   onUpload(event: any) {
     const file = event.target.files[0];
     const formData = new FormData();
