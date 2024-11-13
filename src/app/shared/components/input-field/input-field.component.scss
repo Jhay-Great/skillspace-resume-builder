@@ -37,6 +37,11 @@
         outline: none;
         font-size: var.$medium;
 
+        // error handling
+        &.has-error {
+            border: 0.063rem solid var.$color-red-600;
+        }
+
         &::placeholder {
             color: var.$color-blue-gray-500;
             font-size: var.$medium;
