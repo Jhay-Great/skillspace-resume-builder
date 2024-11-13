@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input-field',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -16,13 +17,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   styleUrl: './input-field.component.scss'
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
-  @Input ({required: true}) imagePath:string | null = null;
+  @Input ({required: true}) svgIcon:string | null = null;
   @Input ({required: true}) label!:string;
   @Input ({required: true}) type:string | null = null;
   @Input ({required: true}) placeholder:string | null = null;
-  @Input () controlName:string | null = null;
+  // @Input () controlName:string | null = null;
   @Input () hasError:boolean = false;
   @Input () errorMessage:string | null = null;
+
+  @ViewChild ('Input') inputElement!:ElementRef;
 
   value:string = '';
   onChange = (value:string) => {};
@@ -64,6 +67,11 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
     const input = event.target as HTMLInputElement;
     this.value = input.value;
     this.onChange(this.value);
+  }
+
+  togglePasswordVisibility():void {
+    const input = this.inputElement.nativeElement
+    input.type = input.type === 'password' ? 'text' : 'password';
   }
 
 
