@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-// import ng modules needed
-import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-// TabMenu
+// import primeng modules needed
+import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { RippleModule } from 'primeng/ripple';
 import { BadgeModule } from 'primeng/badge';
-// input Icon
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
-// Overlay panel overlay
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import { DialogModule } from 'primeng/dialog';
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
+// import interface
 import { TabMenuList } from '../../../core/interfaces/interfaces';
 
 @Component({
@@ -31,6 +29,7 @@ import { TabMenuList } from '../../../core/interfaces/interfaces';
     IconFieldModule,
     CareerCreationFormComponent,
     OverlayPanelModule,
+    DialogModule,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -67,9 +66,15 @@ export class CompanyComponent {
     },
   ];
   tabMenuList: TabMenuList[] = [];
-  activeItem!: TabMenuList 
+  activeItem!: TabMenuList;
   activeTabData = 0;
+
+  // form modal
   formModal = false;
+  // delete modal
+  deleteModal = false;
+  // move to draft modal
+  moveToDraftModal = false;
 
   mockdraft: any = [
     {
@@ -99,8 +104,6 @@ export class CompanyComponent {
   savedDraft = false;
   publishedProgrammes = false;
 
-  
-
   ngOnInit() {
     this.tabMenuList = [
       { label: 'Career programmes' },
@@ -112,7 +115,7 @@ export class CompanyComponent {
   }
 
   // TabMenu control function
-   private setCareerProgrammesTab() {
+  private setCareerProgrammesTab() {
     this.resetTab();
     this.careerProgrammes = true;
     this.activeTabData = 0;
@@ -136,7 +139,7 @@ export class CompanyComponent {
     this.publishedProgrammes = false;
   }
 
-   setActiveTab(title: string) {
+  setActiveTab(title: string) {
     switch (title) {
       case 'Career programmes':
         this.setCareerProgrammesTab();
@@ -152,6 +155,12 @@ export class CompanyComponent {
     }
   }
 
+  // Modals Functionalities
+  visible: boolean = false;
+  showDialog() {
+    this.visible = true;
+    console.log('clicked');
+  }
   // open form
   openForm() {
     this.formModal = true;

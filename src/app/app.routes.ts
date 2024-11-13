@@ -44,11 +44,11 @@ export const routes: Routes = [
       ),
     children: [
       {
-        path: 'career-programme',
+        path: 'company-programmes',
         loadComponent: () =>
-          import(
-            './feature/programmes/career-creation-form/career-creation-form.component'
-          ).then((d) => d.CareerCreationFormComponent),
+          import('./feature/programmes/company/company.component').then(
+            (d) => d.CompanyComponent
+          ),
       },
     ],
   },

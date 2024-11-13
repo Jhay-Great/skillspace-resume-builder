@@ -1,14 +1,12 @@
 @use "../../../scss/variables" as var;
 
 .container {
-  // border: 1px solid red;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 
   .header {
-    // border: 1px solid blue;
     min-height: 3rem;
     display: flex;
     flex-direction: column;
@@ -28,14 +26,12 @@
 
   // data table styling
   .table {
-    // border: 1px solid red;
     height: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
     .search-wrap {
-      // border: 1px solid red;
       height: 3rem;
       display: flex;
 
@@ -55,7 +51,7 @@
 
     /* Styling even rows of p-table */
     .stylerowsbackground:nth-child(even) {
-      background-color: #f9fafb; /* Light grey background for even rows */
+      background-color: #f9fafb; 
     }
 
     // programme status styling
@@ -79,7 +75,6 @@
     .special {
       .wrapper {
         background-color: #eff6ff;
-        // border: 1px solid red;
         padding-inline: 1rem;
         height: 100%;
         display: flex;
@@ -115,7 +110,7 @@
 }
 
 // form modal
-.formmodal {
+.modal {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.346);
   inset: 0;

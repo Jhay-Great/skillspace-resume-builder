@@ -81,8 +81,8 @@
           <td class="action">
             <p-overlayPanel #op>
               <div class="float">
-                <p>Move</p>
-                <p>Delete</p>
+                <p (click)="showDialog()" label="Show">Move</p>
+                <p (click)="showDialog()" label="Show">Delete</p>
               </div>
             </p-overlayPanel>
             <svg
@@ -267,10 +267,22 @@
 </div>
 
 <!-- modal -->
-<div class="formmodal" *ngIf="formModal">
-  <div class="form">
+<div class="modal" *ngIf="formModal">
+  <!-- form modal -->
+  <div *ngIf="formModal" class="form">
     <app-career-creation-form
       (closeForm)="closeForm()"
     ></app-career-creation-form>
   </div>
+
+  <!-- confirm delete modal -->
+  <p-dialog
+    header="Header"
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '25rem' }"
+  >
+    <h1>IT works</h1>
+  </p-dialog>
+  <!-- confirm move to draft modal -->
 </div>
