@@ -9,15 +9,6 @@ import {
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { InputIconModule } from 'primeng/inputicon';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
-
-import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-
 import {
   NgxMaterialIntlTelInputComponent,
   CountryISO,
@@ -31,10 +22,6 @@ import { InputFieldComponent } from '../../../../shared/components/input-field/i
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
 
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
 
 @Component({
   selector: 'app-company-registration',
@@ -48,7 +35,6 @@ interface UploadEvent {
     FileUploadInputFieldComponent,
     FormErrorMessageComponent
 ],
-  providers: [MessageService],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
 })
@@ -95,12 +81,7 @@ export class CompanyRegistrationComponent implements OnInit {
     this.step = this.step - 1;
   }
 
-  togglePasswordVisibility(inputElement: HTMLInputElement) {
-    console.log('called...');
-    inputElement.type = inputElement.type === 'password' ? 'text' : 'password';
-  }
-
-  private formInitialization() {
+  formInitialization() {
     return this.fb.group(
       {
         credentials: this.fb.group({
@@ -135,12 +116,11 @@ export class CompanyRegistrationComponent implements OnInit {
   }
 
   onFileUpload(file: File | null, control:string) {
-    console.log('logging file name: ', file?.name);
     if (file) {
       this.companyForm.get(`information.${control}`)?.setValue(file);
     }
   }
-  
+
   onUpload(event: any) {
     const file = event.target.files[0];
     const formData = new FormData();
