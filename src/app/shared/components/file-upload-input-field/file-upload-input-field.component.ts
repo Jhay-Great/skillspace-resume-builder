@@ -34,12 +34,9 @@ export class FileUploadInputFieldComponent {
     }
 
   onUpload(event:any) {
-    // console.log(event.target);
-    // console.log(event.target.files[0].name)
     const file = event.target.files[0];
     if (file) {
       this.placeholder = file.name;
-      // this.companyForm.get('information.certificate')?.setValue(file.name);
       
     }
   }
