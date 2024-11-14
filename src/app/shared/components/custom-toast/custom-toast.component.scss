@@ -1,0 +1,42 @@
+@use "../../../scss/variables" as *;
+@use "../../../scss/mixins" as *;
+
+.custom-toast {
+  @include flex(column, 0.3rem);
+  padding: 0.5rem 1rem;
+  border-left: 4px solid black;
+  .status {
+    @include flex(row, 1rem);
+    align-items: center;
+  }
+}
+
+.error-toast {
+  background: $color-red-50;
+  border-color: $color-red-600;
+  .status { 
+    i{ 
+      color: $color-red-600;
+    }
+  }
+}
+
+.success-toast {
+  background: $color-green-50;
+  border-color: $color-green-600;
+  .status { 
+    i{ 
+      color: $color-green-600;
+    }
+  }
+}
+
+.warning-toast { 
+  background: $color-yellow-50;
+  border-color: $color-yellow-600;
+  .status { 
+    i{ 
+      color: $color-yellow-600;
+    }
+  }
+}

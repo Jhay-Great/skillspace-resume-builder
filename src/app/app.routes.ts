@@ -22,6 +22,34 @@ export const routes: Routes = [
           ).then((rf) => rf.RegistrationFeedbackComponent),
         title: 'Review Feedback',
       },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./feature/authentication/pages/login/login.component').then(
+            (d) => d.LoginComponent
+          ),
+      },
+      {
+        path: 'forgot-password',
+        loadComponent: () =>
+          import(
+            './feature/authentication/pages/forgot-password/forgot-password.component'
+          ).then((d) => d.ForgotPasswordComponent),
+      },
+      {
+        path: 'forgot-password/otp',
+        loadComponent: () =>
+          import(
+            './feature/authentication/pages/forgot-password-otp/forgot-password-otp.component'
+          ).then((d) => d.ForgotPasswordOtpComponent),
+      },
+      {
+        path: 'create-password',
+        loadComponent: () =>
+          import(
+            './feature/authentication/pages/create-password/create-password.component'
+          ).then((d) => d.CreatePasswordComponent),
+      },
     ],
   },
   {
@@ -30,6 +58,14 @@ export const routes: Routes = [
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then(
         (d) => d.DashboardLayoutComponent
       ),
-    children: [],
+    children: [
+      {
+        path: 'company-programmes',
+        loadComponent: () =>
+          import('./feature/programmes/company/company.component').then(
+            (d) => d.CompanyComponent
+          ),
+      },
+    ],
   },
 ];

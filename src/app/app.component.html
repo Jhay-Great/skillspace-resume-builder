@@ -1,2 +1,13 @@
-
 <router-outlet />
+
+<!-- Toast  -->
+<p-toast [position]="toastService.toastPosition()" key="confirm" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="headless" let-closeFn="closeFn">
+    <app-custom-toast
+      [summary]="message.summary"
+      [detail]="message.detail"
+      [severity]="message.severity"
+    />
+  </ng-template>
+</p-toast>
+<!-- Toast  -->
