@@ -30,6 +30,16 @@
     font-size: var.$medium;
     cursor: pointer;
 }
+@mixin secondary-button ($width:100%, $height:fit-content) {
+    width: $width;
+    height: $height;
+    border-radius: 0.25rem;
+    background-color: var.$color-white;
+    border: 0.06rem solid var.$color-blue-500;
+    color: var.$color-blue-500;
+    font-size: var.$medium;
+    cursor: pointer;
+}
 
 @mixin link($color:var.$color-blue-500) {
     text-decoration: none;
