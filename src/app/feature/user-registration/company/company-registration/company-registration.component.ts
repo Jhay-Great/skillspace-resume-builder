@@ -7,7 +7,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import {
   NgxMaterialIntlTelInputComponent,
@@ -21,6 +21,8 @@ import {
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
+import { ICompany } from '../../../../core/interfaces/user-managment.interface';
+import { UserRegistrationService } from '../../service/user-management.service';
 
 
 @Component({
@@ -48,6 +50,8 @@ export class CompanyRegistrationComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
+    private userRegistrationService:UserRegistrationService,
   ) {}
 
   ngOnInit(): void {
@@ -55,12 +59,19 @@ export class CompanyRegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    const formData = this.companyForm.value;
-    if (this.companyForm.valid) {
-      this.isAwaitingReview = true;
-
+    const companyForm = this.companyForm;
+    if (companyForm.invalid) {
+      return;
     }
-    console.log(formData);
+
+    const data:ICompany = {
+      ...companyForm.value.credentials, 
+      ...companyForm.value.information,
+    }
+
+    this.userRegistrationService.companySignUp(data);
+    this.reset();
+    this.router.navigate(['']);
   }
 
   onContinue(step = 2) {
@@ -113,6 +124,10 @@ export class CompanyRegistrationComponent implements OnInit {
     return this.companyForm.get('information.contact') as FormControl<
       string | null
     >;
+  }
+
+  reset () {
+    this.companyForm.reset();
   }
 
   onFileUpload(file: File | null, control:string) {
