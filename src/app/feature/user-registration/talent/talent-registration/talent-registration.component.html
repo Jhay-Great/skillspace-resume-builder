@@ -1,1 +1,149 @@
-<p>talent-registration works!</p>
+
+<div class="logo">
+    <img
+      src="assets/svgs/blue-skillspace-logo.svg"
+      alt="SkillSpace svg icon logo"
+    />
+  </div>
+  
+  <header>
+    <h1>Find talent for roles</h1>
+    <p class="description">Provide your details to get started.</p>
+  </header>
+  
+  <form [formGroup]="talentForm" (ngSubmit)="onSubmit()">
+    
+    <section>
+      <!-- company name -->
+      <app-input-field 
+          [label]="'Full name'"
+          [svgIcon]="'user'"
+          [type]="'text'"
+          [placeholder]="'Enter company name'"
+          formControlName="fullName"
+          [hasError]=" 
+              getFormControl('fullName')?.touched && 
+              (getFormControl('fullName')?.errors?.['required'] || 
+              getFormControl('fullName')?.errors)
+            "
+      />
+  
+      <!-- company name error handling -->
+      @if ( getFormControl('name')?.touched &&
+      getFormControl('name')?.errors?.['required'] ) {
+          <app-form-error-message 
+              [message]="'This field is required'"
+          />
+      }
+  
+      <!-- company email -->
+      <app-input-field 
+          [label]="'Email'"
+          [svgIcon]="'email'"
+          [type]="'email'"
+          [placeholder]="'Enter your email address'"
+          formControlName="email"
+          [hasError]="
+              getFormControl('email')?.touched && 
+              (getFormControl('email')?.errors?.['required'] || 
+              getFormControl('email')?.errors)
+          "
+      />
+      <!-- email error handling -->
+      @if (getFormControl('email')?.touched) { @if
+          (getFormControl('email')?.errors?.['required']) {
+              <app-form-error-message 
+              [message]="'This field is required'"
+          />
+          } @if (getFormControl('email')?.dirty &&
+          getFormControl('email')?.errors?.['email']) {
+              <app-form-error-message 
+              [message]="'Email is invalid'"
+          />
+          } }
+      
+  
+      <!-- password -->
+      <app-input-field 
+          [svgIcon]="'lock'"
+          [label]="'Password'"
+          [type]="'password'"
+          [placeholder]="'Enter your password'"
+          formControlName="password"
+          [hasError]="
+              getFormControl('password')?.touched && 
+              (getFormControl('password')?.errors?.['required'] || 
+              getFormControl('password')?.errors)
+          "
+      />
+      <!-- password error handling -->
+      @if (getFormControl('password')?.touched) { @if
+      (getFormControl('password')?.errors?.['required']) {
+          <app-form-error-message 
+          [message]="'This field is required'"
+      />
+      }@else {
+      @if(getFormControl('password')?.errors?.['minlength']) {
+          <app-form-error-message 
+          [message]="'Password length should be at least 8 characters long'"
+      />
+      } @if(getFormControl('password')?.errors?.['weakPassword']) {
+          <app-form-error-message 
+          [message]="'Password should contain numbers, symbol, upper or lower case letter'"
+      />
+      } } }
+      
+      <!-- confirm password -->
+      <app-input-field 
+          [svgIcon]="'lock'"
+          [label]="'Confirm Password'"
+          [type]="'password'"
+          [placeholder]="'Enter your password'"
+          formControlName="confirmPassword"
+          [hasError]="
+              getFormControl('confirmPassword')?.touched && 
+              (getFormControl('confirmPassword')?.errors?.['required'] || 
+              getFormControl('confirmPassword')?.errors)
+          "
+      />
+      <!-- confirm password error handling -->
+      @if(talentForm.errors?.['passwordMismatch'] &&
+      (talentForm.get('confirmPassword')?.touched ||
+      talentForm.get('confirmPassword')?.dirty)) {
+          <app-form-error-message 
+              [message]="'Confirm password is invalid'"
+          />
+      }
+      <!-- international tel number -->
+      <ngx-material-intl-tel-input
+        [fieldControl]="contactControl"
+        [iconMakeCall]="false"
+        [enablePlaceholder]="true"
+        [autoSelectedCountry]="selectedCountry"
+        placeholder="Enter your telephone number"
+        [required]="true"
+        [autoIpLookup]="false"
+      ></ngx-material-intl-tel-input>
+      
+    </section>
+    
+    
+    <button type="submit">Submit for approval</button>
+    
+  </form>
+  
+  <section class="log-in">
+    <!-- will have to navigate to the login page -->
+    <p>Already have an account? <a [routerLink]="['/auth/login']">Log in</a></p>
+  </section>
+  
+  <section class="info">
+    <p>
+      By continuing, you agree to SkillSpace
+      <a class="terms_policy">Terms of Service</a> and
+      <a class="terms_policy">Privacy Policy</a>
+    </p>
+  </section>
+  
+  
+  
