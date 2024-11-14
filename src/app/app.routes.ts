@@ -42,6 +42,14 @@ export const routes: Routes = [
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then(
         (d) => d.DashboardLayoutComponent
       ),
-    children: [],
+    children: [
+      {
+        path: 'company-programmes',
+        loadComponent: () =>
+          import('./feature/programmes/company/company.component').then(
+            (d) => d.CompanyComponent
+          ),
+      },
+    ],
   },
 ];

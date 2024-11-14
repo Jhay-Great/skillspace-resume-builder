@@ -1,0 +1,141 @@
+<div class="container">
+  <form [formGroup]="careerForm">
+    <!-- form title -->
+
+    <div class="header">
+      <h1>Add career programme</h1>
+      <span
+        ><svg
+         (click)="close()"
+          width="12"
+          height="13"
+          viewBox="0 0 12 13"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11 1.5L1 11.5M1 1.5L11 11.5"
+            stroke="#3F4555"
+            stroke-width="1.66667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+    </div>
+
+    <!-- programme name -->
+    <div class="name">
+      <label for="name">Programme name</label>
+      <input id="name" type="text" pInputText formControlName="name" />
+    </div>
+
+    <!-- Requirements -->
+    <div formArrayName="requirements" class="requirement">
+      <label>Requirements</label>
+      <div
+        class="requirementInput"
+        *ngFor="let require of requirements.controls; let i = index"
+      >
+        <input
+          [formControlName]="i"
+          placeholder="Enter programme requirement"
+          pInputText
+          class="requirementInput"
+        />
+        <button
+          class="removeRequirement"
+          *ngIf="i > 0"
+          type="button"
+          (click)="removeField(i)"
+        >
+          <span
+            ><svg
+              width="12"
+              height="13"
+              viewBox="0 0 12 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 1.5L1 11.5M1 1.5L11 11.5"
+                stroke="#3F4555"
+                stroke-width="1.66667"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <button
+        class="addRequirement-Btn"
+        type="button"
+        (click)="addRequirement()"
+      >
+        Add More
+      </button>
+    </div>
+
+    <!-- Required badges -->
+    <div class="requiredBadges">
+      <label for="requiredBadges">Required badges</label>
+      <p-chips
+        class="requiredBadge"
+        [style]="{ width: '100%' }"
+        formControlName="requiredBadges"
+        placeholder="Enter required badges"
+      />
+    </div>
+
+    <!-- Optional badges -->
+    <div class="optionalBadges">
+      <label>Optional badges</label>
+      <p-chips
+        class="optionalBadge"
+        [style]="{ width: '100%' }"
+        formControlName="optionalBadges"
+        placeholder="These badges are optional"
+      />
+    </div>
+
+    <!-- starts date-->
+    <div class="startDate">
+      <label for="startDate" class="font-bold block mb-2"> Start date </label>
+      <p-calendar
+        formGroupName="startDate"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="startDate"
+      />
+    </div>
+
+    <!-- end date-->
+    <div class="endDate">
+      <label for="endDate" class="font-bold block mb-2"> End date </label>
+      <p-calendar
+        formGroupName="endDate"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="endDate"
+      />
+    </div>
+
+    <!-- description -->
+    <div class="description">
+      <label for="description">Description</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        formControlName="description"
+      ></textarea>
+    </div>
+
+    <!--form control buttons -->
+    <div class="formcontrol-btn">
+      <button class="draft-btn">Save as draft</button>
+      <button class="publish-btn">Publish programme</button>
+    </div>
+  </form>
+</div>
