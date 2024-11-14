@@ -7,6 +7,11 @@ export const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       {
+        path: 'sign-up',
+        loadComponent: () => import('./feature/user-registration/sign-up-options/sign-up-options.component').then(sg => sg.SignUpOptionsComponent),
+        title: 'Sign up'
+      },
+      {
         path: 'company-registration',
         loadComponent: () =>
           import(
