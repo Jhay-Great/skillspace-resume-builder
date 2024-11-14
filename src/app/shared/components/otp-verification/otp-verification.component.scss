@@ -57,3 +57,12 @@
     margin-left: 0.5rem;
   }
 }
+
+
+.invalid-input{
+  ::ng-deep .p-inputtext{ 
+    border: 1px solid red !important; /* Ensure priority */
+    border-radius: 4px; /* Match the input styling if needed */
+
+  }
+}
