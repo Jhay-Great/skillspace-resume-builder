@@ -175,6 +175,10 @@ app-registration-feedback {
     height: 100%;
     width: 100%;
 }
+app-company-registration {
+    @include mix.flex(column);
+    
+}
 
 // hides router-outlet tag
 router-outlet {
