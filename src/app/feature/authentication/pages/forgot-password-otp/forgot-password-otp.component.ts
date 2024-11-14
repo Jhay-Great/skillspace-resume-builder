@@ -18,9 +18,7 @@ export class ForgotPasswordOtpComponent {
 
   constructor(private toastService: ToastService){};
 
-  verifyOTP(verificationCode: any) {
-    console.log('about to verify otp code: ', verificationCode);
-
+  verifyOTP(verificationCode: string) {
     // Verify user OTP
     // Show success or error toast notification 
     this.toastService.showSuccess('Congratulations!', 'Your verification was successful.');
