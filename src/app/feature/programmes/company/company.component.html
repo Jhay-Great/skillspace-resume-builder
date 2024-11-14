@@ -81,8 +81,8 @@
           <td class="action">
             <p-overlayPanel #op>
               <div class="float">
-                <p (click)="showDialog()" label="Show">Move</p>
-                <p (click)="showDialog()" label="Show">Delete</p>
+                <p (click)="confirmModal('moveToDraft')" label="Show">Move</p>
+                <p (click)="confirmModal('delete')" label="Show">Delete</p>
               </div>
             </p-overlayPanel>
             <svg
@@ -266,7 +266,8 @@
   </div>
 </div>
 
-<!-- modal -->
+<!-- modals -->
+
 <div class="modal" *ngIf="formModal">
   <!-- form modal -->
   <div *ngIf="formModal" class="form">
@@ -274,15 +275,45 @@
       (closeForm)="closeForm()"
     ></app-career-creation-form>
   </div>
-
-  <!-- confirm delete modal -->
-  <p-dialog
-    header="Header"
-    [(visible)]="visible"
-    [modal]="true"
-    [style]="{ width: '25rem' }"
-  >
-    <h1>IT works</h1>
-  </p-dialog>
-  <!-- confirm move to draft modal -->
 </div>
+
+<p-dialog
+  [header]="
+    deleteModal ? 'Delete career programme' : 'Move career programme to draft'
+  "
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '35rem' }"
+>
+  <!-- confirm move to draft content -->
+  <ng-container *ngIf="moveToDraftModal">
+    <div class="confirmDraft-wrap">
+      <p>
+        Are you sure that you want to move career programme to draft? This
+        action cannot be reversed.
+      </p>
+      <div class="control-btn">
+        <button (click)="visible = false" class="cancel-btn">Cancel</button>
+        <button (click)="visible = false" class="confirm-btn-move">
+          Move
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- confirm delete content -->
+  <ng-container *ngIf="deleteModal">
+    <div class="confirmDelete-wrap">
+      <p>
+        Are you sure that you want to delete career programme? This action
+        cannot be reversed.
+      </p>
+      <div class="control-btn">
+        <button (click)="visible = false" class="cancel-btn">Cancel</button>
+        <button (click)="visible = false" class="confirm-btn-delete">
+          Delete
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</p-dialog>

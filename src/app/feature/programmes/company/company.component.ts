@@ -14,6 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 // import interface
 import { TabMenuList } from '../../../core/interfaces/interfaces';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-company',
@@ -30,6 +31,7 @@ import { TabMenuList } from '../../../core/interfaces/interfaces';
     CareerCreationFormComponent,
     OverlayPanelModule,
     DialogModule,
+    ButtonModule,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -159,7 +161,19 @@ export class CompanyComponent {
   visible: boolean = false;
   showDialog() {
     this.visible = true;
-    console.log('clicked');
+  }
+  // confirmation modal
+  confirmModal(type: string) {
+    if (type === 'delete') {
+      this.moveToDraftModal = false;
+      this.deleteModal = true;
+      this.showDialog();
+    }
+    if (type === 'moveToDraft') {
+      this.deleteModal = false;
+      this.moveToDraftModal = true;
+      this.showDialog();
+    }
   }
   // open form
   openForm() {
