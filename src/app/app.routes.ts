@@ -23,6 +23,14 @@ export const routes: Routes = [
         title: 'Company registration',
       },
       {
+        path: 'talent-registration',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/talent/talent-registration/talent-registration.component'
+          ).then((tr) => tr.TalentRegistrationComponent),
+        title: 'Talent registration',
+      },
+      {
         path: 'review',
         loadComponent: () =>
           import(
