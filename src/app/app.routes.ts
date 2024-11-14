@@ -8,8 +8,11 @@ export const routes: Routes = [
     children: [
       {
         path: 'sign-up',
-        loadComponent: () => import('./feature/user-registration/sign-up-options/sign-up-options.component').then(sg => sg.SignUpOptionsComponent),
-        title: 'Sign up'
+        loadComponent: () =>
+          import(
+            './feature/user-registration/sign-up-options/sign-up-options.component'
+          ).then((sg) => sg.SignUpOptionsComponent),
+        title: 'Sign up',
       },
       {
         path: 'company-registration',
