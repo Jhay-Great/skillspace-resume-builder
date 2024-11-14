@@ -40,5 +40,12 @@ section {
         @include mix.secondary-button();
         padding: 0.7rem;
     }
+
+    .small {
+        font-size: var.$small;
+        link {
+            @include mix.link();
+        }
+    }
     
 }

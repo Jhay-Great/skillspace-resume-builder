@@ -12,11 +12,13 @@
         </h1>
 
         <div class="btns">
-            <button class="company-sign-up">Sign up as a company</button>
+            <button class="company-sign-up"
+                [routerLink]="['/auth/company-registration']"
+            >Sign up as a company</button>
             <button class="talent-sign-up">Sign up as a talent</button>
         </div>
 
-        <p class="small">Already have an account? <span>Log in</span> </p>
+        <p class="small">Already have an account? <a class="link" [routerLink]="['/auth/login']">Log in</a> </p>
 
     </section>
 </main>
