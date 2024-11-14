@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -37,6 +37,9 @@ export class InputFieldComponent implements ControlValueAccessor {
   // for writing values to this component
   writeValue(value: any): void {
     this.value = value || ''
+    if (this.inputElement) {
+      this.inputElement.nativeElement.value = this.value;
+    }
   }
 
   // used to register changes that occurs in the component
