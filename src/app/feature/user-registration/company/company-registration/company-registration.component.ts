@@ -20,10 +20,9 @@ import {
 } from '../../../../shared/utils/password.validator';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
-import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
+import { FormErrorMessageComponent } from '../../../../shared/components/form-error-message/form-error-message.component';
 import { ICompanyRegistrationDetails } from '../../../../core/interfaces/user-managment.interface';
 import { UserRegistrationService } from '../../service/user-management.service';
-
 
 @Component({
   selector: 'app-company-registration',
@@ -35,8 +34,8 @@ import { UserRegistrationService } from '../../service/user-management.service';
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
-    FormErrorMessageComponent
-],
+    FormErrorMessageComponent,
+  ],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
 })
@@ -44,14 +43,14 @@ export class CompanyRegistrationComponent implements OnInit {
   companyForm!: FormGroup;
   step: number = 1;
   placeholder = 'File must be a PDF';
-  isAwaitingReview:boolean = false;
+  isAwaitingReview: boolean = false;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userRegistrationService:UserRegistrationService,
+    private userRegistrationService: UserRegistrationService
   ) {}
 
   ngOnInit(): void {
@@ -64,10 +63,10 @@ export class CompanyRegistrationComponent implements OnInit {
       return;
     }
 
-    const data:ICompanyRegistrationDetails = {
-      ...companyForm.value.credentials, 
+    const data: ICompanyRegistrationDetails = {
+      ...companyForm.value.credentials,
       ...companyForm.value.information,
-    }
+    };
 
     this.userRegistrationService.companySignUp(data);
     this.reset();
@@ -86,6 +85,45 @@ export class CompanyRegistrationComponent implements OnInit {
 
   getFormControl(controlName: string) {
     return this.companyForm.get(controlName);
+  }
+
+  hasError(controlName: string) {
+    const control = this.getFormControl(controlName);
+
+    if (control?.touched && control.errors) {
+      if (control.errors['required']) {
+        return 'This field is required';
+      }
+      if (control?.errors?.['email']) {
+        return 'Email is invalid';
+      }
+      if (controlName.includes('password') && control?.errors?.['minlength']) {
+        return 'Password length should be at least 8 characters long';
+      }
+      if (
+        controlName.includes('password') &&
+        control?.errors?.['weakPassword']
+      ) {
+        return 'Password should contain numbers, symbols, and uppercase or lowercase letters';
+      }
+    }
+    return null;
+  }
+
+  hasFormError(errorKey: string): string | null {
+    if (this.getFormControl('credentials.confirmPassword')?.touched) {
+      if (
+        this.getFormControl('credentials.confirmPassword')?.errors?.['required']
+      ) {
+        return 'This field is required';
+      } else if (
+        this.companyForm.errors?.[errorKey] ||
+        this.getFormControl('credentials.confirmPassword')?.dirty
+      ) {
+        return 'Confirm password is invalid';
+      }
+    }
+    return null;
   }
 
   onBack() {
@@ -126,11 +164,11 @@ export class CompanyRegistrationComponent implements OnInit {
     >;
   }
 
-  reset () {
+  reset() {
     this.companyForm.reset();
   }
 
-  onFileUpload(file: File | null, control:string) {
+  onFileUpload(file: File | null, control: string) {
     if (file) {
       this.companyForm.get(`information.${control}`)?.setValue(file);
     }
