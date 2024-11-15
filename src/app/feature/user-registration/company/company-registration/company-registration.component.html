@@ -48,12 +48,9 @@
     />
 
     <!-- company name error handling -->
-    @if ( getFormControl('credentials.name')?.touched &&
-    getFormControl('credentials.name')?.errors?.['required'] ) {
-        <app-form-error-message 
-            [message]="'This field is required'"
-        />
-    }
+     @if(hasError('credentials.name')) {
+      <app-form-error-message [message]="hasError('credentials.name')" />
+     }
 
     <!-- company email -->
     <app-input-field 
@@ -69,18 +66,11 @@
         "
     />
     <!-- email error handling -->
-    @if (getFormControl('credentials.email')?.touched) { @if
-        (getFormControl('credentials.email')?.errors?.['required']) {
-            <app-form-error-message 
-            [message]="'This field is required'"
+    @if (hasError('credentials.email')) {
+      <app-form-error-message 
+            [message]="hasError('credentials.email')"
         />
-        } @if (getFormControl('credentials.email')?.dirty &&
-        getFormControl('credentials.email')?.errors?.['email']) {
-            <app-form-error-message 
-            [message]="'Email is invalid'"
-        />
-        } }
-    
+    }
 
     <!-- password -->
     <app-input-field 
@@ -96,21 +86,9 @@
         "
     />
     <!-- password error handling -->
-    @if (getFormControl('credentials.password')?.touched) { @if
-    (getFormControl('credentials.password')?.errors?.['required']) {
-        <app-form-error-message 
-        [message]="'This field is required'"
-    />
-    }@else {
-    @if(getFormControl('credentials.password')?.errors?.['minlength']) {
-        <app-form-error-message 
-        [message]="'Password length should be at least 8 characters long'"
-    />
-    } @if(getFormControl('credentials.password')?.errors?.['weakPassword']) {
-        <app-form-error-message 
-        [message]="'Password should contain numbers, symbol, upper or lower case letter'"
-    />
-    } } }
+    @if (hasError('credentials.password')) {
+      <app-form-error-message [message]="hasError('credentials.password')" />
+    }
     
     <!-- confirm password -->
     <app-input-field 
@@ -126,12 +104,8 @@
         "
     />
     <!-- confirm password error handling -->
-    @if(companyForm.errors?.['passwordMismatch'] &&
-    (companyForm.get('credentials.confirmPassword')?.touched ||
-    companyForm.get('credentials.confirmPassword')?.dirty)) {
-        <app-form-error-message 
-            [message]="'Confirm password is invalid'"
-        />
+    @if(hasFormError('passwordMismatch')) {
+      <app-form-error-message [message]="hasFormError('passwordMismatch')" />
     }
     
   </section>
