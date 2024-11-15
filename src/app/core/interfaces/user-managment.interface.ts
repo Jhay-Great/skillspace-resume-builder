@@ -8,3 +8,10 @@ export interface ICompany {
     logo:FormData;
     contact: string;
 }
+export interface ITalent {
+    fullName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    contact: string;
+}
