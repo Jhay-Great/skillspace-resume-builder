@@ -26,7 +26,6 @@ export class FileUploadInputFieldComponent {
         this.selectedFile = file.name;
         this.defaultPlaceholder = this.selectedFile;
         this.fileSelected.emit(file);
-        console.log(this.selectedFile);
       }else {
         this.selectedFile = null;
         this.fileSelected.emit(null);

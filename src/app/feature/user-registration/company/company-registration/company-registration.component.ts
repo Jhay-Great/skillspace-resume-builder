@@ -140,7 +140,6 @@ export class CompanyRegistrationComponent implements OnInit {
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('file', file, file.name);
-    console.log(formData);
     if (file) {
       this.placeholder = file.name;
       this.companyForm.get('information.certificate')?.setValue(file.name);
