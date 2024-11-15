@@ -55,30 +55,4 @@ describe('FileUploadInputFieldComponent', () => {
     expect(component.fileSelected.emit).toHaveBeenCalledWith(null);
   });
   
-  // it('should update selectedFile and emit fileSelected when a file is uploaded', () => {
-  //   // Create a mock event
-  //   // const mockEvent = {
-  //   //   target: {
-  //   //     files: [new File([''], 'testfile.txt', { type: 'text/plain' })]
-  //   //   }
-  //   // } ;
-
-  //   const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' });
-  //   const mockEvent = { target: { files: [mockFile] } } as unknown as Event;
-
-  //   // Spy on the fileSelected emitter to capture the emitted value
-  //   spyOn(component.fileSelected, 'emit');
-
-  //   // Call the onUploadFile method
-  //   component.onUploadFile(mockEvent);
-
-  //   // Check that the selectedFile and defaultPlaceholder were updated
-  //   expect(component.selectedFile).toBe('testfile.txt');
-  //   expect(component.defaultPlaceholder).toBe('testfile.txt');
-
-  //   // Check that the fileSelected event was emitted with the correct file
-  //   expect(component.fileSelected.emit).toHaveBeenCalledWith(mockEvent.target.files[0]);
-  // });
-  
-  
 });
