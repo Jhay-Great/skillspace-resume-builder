@@ -1,4 +1,4 @@
-export interface ICompany {
+export interface ICompanyRegistrationDetails  {
     name: string;
     email: string;
     password: string;
@@ -8,7 +8,7 @@ export interface ICompany {
     logo:FormData;
     contact: string;
 }
-export interface ITalent {
+export interface ITalentRegistrationDetails {
     fullName: string;
     email: string;
     password: string;

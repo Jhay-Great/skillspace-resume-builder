@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
 
 import { UserRegistrationService } from './user-management.service';
-import { ICompany } from '../../../core/interfaces/user-managment.interface';
+import { ICompanyRegistrationDetails, ITalentRegistrationDetails } from '../../../core/interfaces/user-managment.interface';
 
 describe('UserRegistrationService', () => {
   let service: UserRegistrationService;
@@ -28,7 +28,7 @@ describe('UserRegistrationService', () => {
   it('should call companySignUp with the correct data', () => {
     const api = 'https://www.thisisalink.com';
     const endpoint = '/compnay';
-    const mockCompanyData: ICompany = {
+    const mockCompanyData: ICompanyRegistrationDetails = {
       name: 'AmaliTech',
       email: 'amalitechtraining@amalitech.org',
       password: 'som#th1ngNice',
@@ -50,14 +50,11 @@ describe('UserRegistrationService', () => {
   it('should call talentSignUp with the correct data', () => {
     const api = 'https://www.thisisalink.com';
     const endpoint = '/compnay';
-    const mockTalentData: ICompany = {
-      name: 'AmaliTech',
+    const mockTalentData: ITalentRegistrationDetails = {
+      fullName: 'AmaliTech',
       email: 'amalitechtraining@amalitech.org',
       password: 'som#th1ngNice',
       confirmPassword: 'som#th1ngNice',
-      website: 'amalitech.org',
-      certificate: new FormData(),
-      logo:new FormData(),
       contact: '+2338493984'
     };
 
