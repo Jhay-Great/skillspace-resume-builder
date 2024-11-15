@@ -7,9 +7,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserRegistrationService {
-  private api:string = environment.baseApi;
-  private companyEndpoint:string  = environment.companyEndpoint;
-  private talentEndpoint:string  = environment.talentEndpoint;
+  private api:string = environment.BASE_API;
+  private companyEndpoint:string  = environment.COMPANY_ENDPOINT;
+  private talentEndpoint:string  = environment.TALENT_ENDPOINT;
 
   constructor(
     private http:HttpClient,
