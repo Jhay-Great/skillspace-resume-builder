@@ -7,19 +7,19 @@
   </div>
   
   <header>
-    <h1>Find talent for roles</h1>
+    <h1>Start your career now</h1>
     <p class="description">Provide your details to get started.</p>
   </header>
   
   <form [formGroup]="talentForm" (ngSubmit)="onSubmit()">
     
     <section>
-      <!-- company name -->
+      <!-- full name -->
       <app-input-field 
           [label]="'Full name'"
           [svgIcon]="'user'"
           [type]="'text'"
-          [placeholder]="'Enter company name'"
+          [placeholder]="'Enter your full name'"
           formControlName="fullName"
           [hasError]=" 
               getFormControl('fullName')?.touched && 
@@ -68,7 +68,7 @@
           [svgIcon]="'lock'"
           [label]="'Password'"
           [type]="'password'"
-          [placeholder]="'Enter your password'"
+          [placeholder]="'Create password'"
           formControlName="password"
           [hasError]="
               getFormControl('password')?.touched && 
@@ -98,7 +98,7 @@
           [svgIcon]="'lock'"
           [label]="'Confirm Password'"
           [type]="'password'"
-          [placeholder]="'Enter your password'"
+          [placeholder]="'Confirm password'"
           formControlName="confirmPassword"
           [hasError]="
               getFormControl('confirmPassword')?.touched && 

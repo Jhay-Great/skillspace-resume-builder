@@ -7,6 +7,7 @@ import {
   NgxMaterialIntlTelInputComponent,
   CountryISO,
 } from 'ngx-material-intl-tel-input';
+import { UserRegistrationService } from '../../service/user-management.service';
 
 @Component({
   selector: 'app-talent-registration',
@@ -19,9 +20,10 @@ export class TalentRegistrationComponent implements OnInit {
   talentForm!:FormGroup;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
-  
+
   constructor (
     private fb: FormBuilder,
+    private userRegistrationService: UserRegistrationService,
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,10 @@ export class TalentRegistrationComponent implements OnInit {
       // handle any invalidity here
       return;
     }
+    const data = {...this.talentForm.value}
+    this.userRegistrationService.talentSignUp(data).subscribe(value => {
+      console.log('response from api: ', value);
+    });
   }
 
   getFormControl(control:string) {
