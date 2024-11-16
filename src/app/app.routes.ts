@@ -82,6 +82,14 @@ export const routes: Routes = [
             (d) => d.CompanyComponent
           ),
       },
+      {
+        path: 'company-profile',
+        loadComponent: () =>
+          import(
+            './feature/profile-management/company/profile-management/profile-management.component'
+          ).then((cp) => cp.ProfileManagementComponent),
+        title: 'Your Profile',
+      },
     ],
   },
 ];
