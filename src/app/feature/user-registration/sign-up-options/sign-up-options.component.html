@@ -1,0 +1,26 @@
+<main>
+    <div class="skillspace-logo">
+      <img
+        src="assets/svgs/blue-skillspace-logo.svg"
+        alt="SkillSpace svg icon logo"
+      />
+    </div>
+    
+    <section class="container">
+        <h1>
+            Create an account
+        </h1>
+
+        <div class="btns">
+            <button class="company-sign-up"
+                routerLink="/auth/company-registration"
+            >Sign up as a company</button>
+            <button class="talent-sign-up"
+                routerLink="/auth/talent-registration"
+            >Sign up as a talent</button>
+        </div>
+
+        <p class="small">Already have an account? <a class="link" [routerLink]="['/auth/login']">Log in</a> </p>
+
+    </section>
+</main>

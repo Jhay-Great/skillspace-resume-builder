@@ -1,0 +1,8 @@
+@use 'variables' as var;
+
+// error-message
+.error-message {
+    font-size: var.$small;
+    color: var.$color-red-600;
+    margin-top: -10px;
+}

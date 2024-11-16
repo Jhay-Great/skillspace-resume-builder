@@ -1,0 +1,14 @@
+<div class="upload-certificate fields">
+    <label for="">{{label}}</label>
+    <div class="input-container upload-container">
+        <!-- <i class="pi pi-upload"></i> -->
+        <input type="file" [accept]="acceptType"  (change)="onUploadFile($event)">
+        <img [src]="svgIconPath" alt="upload svg icon">
+        <span class="custom-placeholder">
+            {{ defaultPlaceholder }}
+        </span>
+        <span class="choose-file">
+            Choose file
+        </span>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+@use 'variables' as var;
+@use 'mixins' as mix;
+
+main {
+    @include mix.flex(column, 2rem);
+    width: 31.25rem;
+}
+.skillspace-logo {
+    @include mix.flex(row, 0);
+    @include mix.flex-position(center, center);
+}
+
+section {
+    @include mix.flex(column, 1rem);
+    @include mix.flex-position(center, center);
+    width: 100%;
+    height: 100%;
+
+    h1, p {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: var.$xxlarge;
+        color: var.$color-blue-gray-800;
+    }
+
+    .btns {
+        @include mix.flex(row);
+        width: 100%;
+        height: fit-content;
+        padding: 1rem;
+    }
+
+    .company-sign-up {
+        @include mix.primary-button();
+        padding: 0.7rem;
+    }
+    .talent-sign-up {
+        @include mix.secondary-button();
+        padding: 0.7rem;
+    }
+
+    .small {
+        font-size: var.$small;
+        link {
+            @include mix.link();
+        }
+    }
+    
+}
