@@ -27,7 +27,13 @@ export class TalentRegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.talentForm = this.onInit();
+    this.talentForm = this.fb.group({
+      fullName:['', Validators.required],
+      email:['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required],
+      contact: ['', Validators.required],
+    });
   }
 
   onSubmit() {
@@ -44,17 +50,7 @@ export class TalentRegistrationComponent implements OnInit {
   getFormControl(control:string) {
     return this.talentForm.get(control);
   }
-
-  onInit () {
-    return this.fb.group({
-      fullName:['', Validators.required],
-      email:['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-      contact: ['', Validators.required],
-    })
-  }
-
+  
   get contactControl() {
     return this.talentForm.get('contact') as FormControl<
       string | null

@@ -54,7 +54,30 @@ export class CompanyRegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.companyForm = this.formInitialization();
+    this.companyForm = this.fb.group(
+      {
+        credentials: this.fb.group({
+          name: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]],
+          password: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(8),
+              passwordStrengthValidator(),
+            ],
+          ],
+          confirmPassword: ['', [Validators.required]],
+        }),
+        information: this.fb.group({
+          website: ['', Validators.required],
+          certificate: ['', Validators.required],
+          logo: '',
+          contact: ['', Validators.required],
+        }),
+      },
+      { validators: confirmPasswordValidator() }
+    );
   }
 
   onSubmit() {
@@ -128,33 +151,6 @@ export class CompanyRegistrationComponent implements OnInit {
 
   onBack() {
     this.step = this.step - 1;
-  }
-
-  formInitialization() {
-    return this.fb.group(
-      {
-        credentials: this.fb.group({
-          name: ['', Validators.required],
-          email: ['', [Validators.required, Validators.email]],
-          password: [
-            '',
-            [
-              Validators.required,
-              Validators.minLength(8),
-              passwordStrengthValidator(),
-            ],
-          ],
-          confirmPassword: ['', [Validators.required]],
-        }),
-        information: this.fb.group({
-          website: ['', Validators.required],
-          certificate: ['', Validators.required],
-          logo: '',
-          contact: ['', Validators.required],
-        }),
-      },
-      { validators: confirmPasswordValidator() }
-    );
   }
 
   // specific for ngx-material-intl-tel-input component
