@@ -1,59 +1,81 @@
 <header>
-    <h1>Manage profile</h1>
-    <p class="description">Easily manage your profile to stay up to date</p>
+  <h1>Manage profile</h1>
+  <p class="description">Easily manage your profile to stay up to date</p>
 </header>
 
-<main class="container">
-    <p-tabView>
-        <!-- company details -->
-        <p-tabPanel header="Company details">
-            <!-- content goes here -->
-            <form>
-                <!-- company name -->
-                <div class="card flex flex-wrap justify-content-center gap-3">
-                    <label for="username">Company Name</label>
-                    <p class="description"> {{ description }} </p>
-                    <p-iconField iconPosition="left">
-                        <p-inputIcon styleClass="pi pi-user" />
-                        <input type="text" pInputText placeholder="Enter company name " />
-                    </p-iconField>
-                </div>
-                
-                <!-- email -->
-                <div class="card flex flex-wrap justify-content-center gap-3">
-                    <label for="username">Email</label>
-                    <p class="description"> {{ description }} </p>
-                    <p-iconField iconPosition="left">
-                        <p-inputIcon styleClass="pi pi-envelope" />
-                        <input type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
-                    </p-iconField>
-                </div>
+<section class="container">
+  <p-tabView>
+    <!-- company details -->
+    <p-tabPanel class="content-container" header="Company details">
+      <!-- content goes here -->
+      <form>
+        <!-- company name -->
+        <div class="card flex flex-wrap justify-content-center gap-3">
+          <label for="username">Company Name</label>
+          <p class="description">{{ description }}</p>
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-user" />
+            <input type="text" pInputText placeholder="Enter company name " />
+          </p-iconField>
+        </div>
 
-                <!-- website -->
-                <div class="card flex flex-wrap justify-content-center gap-3">
-                    <label for="username">Website Links</label>
-                    <p class="description"> {{ description }} </p>
-                    <p-iconField iconPosition="left">
-                        <p-inputIcon styleClass="pi pi-link" />
-                        <input type="text" pInputText placeholder="www.Seanlifer.com" />
-                    </p-iconField>
-                </div>
-                
-                
-            </form>
-        </p-tabPanel>
-        
-        <!-- documents -->
-        <p-tabPanel header="Documents">
-            <!-- content goes here -->
-            <p>hi</p>
-        </p-tabPanel>
-        
-        <!-- security -->
-        <p-tabPanel header="Security">
-            <!-- content goes here -->
-            <p>Bye</p>
-        </p-tabPanel>
-        
-    </p-tabView>
-</main>
+        <!-- email -->
+        <div class="card flex flex-wrap justify-content-center gap-3">
+          <label for="username">Email</label>
+          <p class="description">{{ description }}</p>
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-envelope" />
+            <input
+              class="email"
+              type="text"
+              [disabled]="true"
+              pInputText
+              placeholder="amalitech.ghana@gmail.com"
+            />
+          </p-iconField>
+        </div>
+
+        <!-- website -->
+        <div class="card flex flex-wrap justify-content-center gap-3">
+          <label for="username">Website Links</label>
+          <p class="description">{{ description }}</p>
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-link" />
+            <input type="text" pInputText placeholder="www.Seanlifer.com" />
+          </p-iconField>
+        </div>
+
+        <!-- upload -->
+        <div class="card upload">
+          <label for="username">Upload Logo</label>
+          <p class="description">{{ description }}</p>
+          <!-- would change false to property value when integration functionality -->
+          @if (false) {
+              <div class="uploaded-file">
+                <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
+                <button>
+                    <img src="assets/svgs/cross.svg" alt="close button svg icon">
+                </button>
+              </div>
+          }
+          <div class="upload-section">
+              <input type="file" name="" id="">
+              <img src="../../../../../assets/svgs/upload.svg" alt="">
+          </div>
+        </div>
+      </form>
+    </p-tabPanel>
+
+    <!-- documents -->
+    <p-tabPanel header="Documents">
+      <!-- content goes here -->
+      <p>hi</p>
+    </p-tabPanel>
+
+    <!-- security -->
+    <p-tabPanel header="Security">
+      <!-- content goes here -->
+      <p>Bye</p>
+    </p-tabPanel>
+  </p-tabView>
+</section>
