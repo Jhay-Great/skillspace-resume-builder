@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
-import { InputFieldComponent } from "../../../../shared/components/input-field/input-field.component";
-import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
+import { InputFieldComponent } from "@shared/components/input-field/input-field.component";
+import { FormErrorMessageComponent } from "@shared/components/form-error-message/form-error-message.component";
 import { RouterLink } from '@angular/router';
 import {
   NgxMaterialIntlTelInputComponent,

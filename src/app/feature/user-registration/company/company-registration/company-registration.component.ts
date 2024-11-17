@@ -17,11 +17,11 @@ import {
 import {
   passwordStrengthValidator,
   confirmPasswordValidator,
-} from '../../../../shared/utils/password.validator';
-import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
-import { FileUploadInputFieldComponent } from '../../../../shared/components/file-upload-input-field/file-upload-input-field.component';
-import { FormErrorMessageComponent } from '../../../../shared/components/form-error-message/form-error-message.component';
-import { ICompanyRegistrationDetails } from '../../../../core/interfaces/user-managment.interface';
+} from '@shared/utils/password.validator';
+import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { FileUploadInputFieldComponent } from '@shared/components/file-upload-input-field/file-upload-input-field.component';
+import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
+import { ICompanyRegistrationDetails } from '@core/interfaces/user-managment.interface';
 import { UserRegistrationService } from '../../service/user-management.service';
 
 @Component({
