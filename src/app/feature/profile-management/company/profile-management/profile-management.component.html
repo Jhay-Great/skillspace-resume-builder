@@ -63,10 +63,20 @@
             (dragleave)="onDragLeave($event)"
             (drop)="onDrop($event)"
           >
-              <input type="file" accept="image/png" name="" id="">
-              <img src="assets/svgs/drop-here-image.svg" alt="">
-              <p class="drop-here">Drop image here</p>
-              <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
+              <input type="file" accept="image/png" (change)="selectFile($event)" name="" id="">
+              @if (!fileUploaded) {
+                <div class="instructions">
+                  <img src="assets/svgs/drop-here-image.svg" alt="">
+                  <p class="drop-here">Drop image here</p>
+                  <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
+                </div>
+              }@else {
+                <div class="preview">
+                  <!-- <img [src]="fileUploaded[0].name" alt=""> -->
+                  <img [src]="previewImage" alt="">
+                </div>
+
+              }
           </div>
         </div>
       </form>
