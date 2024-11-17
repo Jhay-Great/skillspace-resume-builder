@@ -50,7 +50,7 @@
           <label for="username">Upload Logo</label>
           <p class="description">{{ description }}</p>
           <!-- would change false to property value when integration functionality -->
-          @if (false) {
+          @if (fileUploaded) {
               <div class="uploaded-file">
                 <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
                 <button>
@@ -58,8 +58,12 @@
                 </button>
               </div>
           }
-          <div class="upload-section">
-              <input type="file" name="" id="">
+          <div class="upload-section"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+          >
+              <input type="file" accept="image/png" name="" id="">
               <img src="assets/svgs/drop-here-image.svg" alt="">
               <p class="drop-here">Drop image here</p>
               <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
