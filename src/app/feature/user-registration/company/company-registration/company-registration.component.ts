@@ -22,7 +22,7 @@ import { InputFieldComponent } from '@shared/components/input-field/input-field.
 import { FileUploadInputFieldComponent } from '@shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
 import { ICompanyRegistrationDetails } from '@core/interfaces/user-managment.interface';
-import { UserRegistrationService } from '../../service/user-management.service';
+import { UserRegistrationService } from '../../service/user-registration.service';
 
 @Component({
   selector: 'app-company-registration',
