@@ -31,6 +31,62 @@
     flex-direction: column;
     gap: 1rem;
 
+    .tablescontainer {
+      display: flex;
+
+      // programmes table
+      .shrink {
+        width: 70%;
+      }
+      .expand {
+        width: 100%;
+      }
+
+      // history table
+      .historytable {
+        width: 30%;
+        padding-block-start: 1.5rem;
+
+        th {
+          text-align: start;
+          padding-block-end: 1rem;
+          padding-inline: 0.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          svg {
+            cursor: pointer;
+          }
+        }
+
+        td {
+          padding: 1rem 1rem;
+        }
+      }
+
+      // history table data styling
+      .history-td:nth-child(odd) {
+        background-color: #f0fdf4;
+      }
+
+      .history-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 4rem;
+        padding: 0.5rem;
+
+        .date {
+          font-size: var.$medium;
+          font-weight: 500;
+        }
+        .infotext {
+          font-size: var.$xsmall;
+        }
+      }
+    }
+
     .search-wrap {
       height: 3rem;
       display: flex;
@@ -103,6 +159,11 @@
           justify-content: end;
           align-items: center;
           gap: 0.5rem;
+
+          // styles inside the tools text
+          .interactive-txt {
+            cursor: pointer;
+          }
         }
       }
     }
@@ -134,7 +195,10 @@
 }
 
 // primeng styling
-
+// table
+::ng-deep p-table {
+  // border: 1px solid blue;
+}
 // float Menu
 
 ::ng-deep .p-overlaypanel {
@@ -164,7 +228,8 @@
 }
 
 ::ng-deep p-dialog {
-  .confirmDraft-wrap, .confirmDelete-wrap {
+  .confirmDraft-wrap,
+  .confirmDelete-wrap {
     display: flex;
     flex-direction: column;
     gap: 1rem;

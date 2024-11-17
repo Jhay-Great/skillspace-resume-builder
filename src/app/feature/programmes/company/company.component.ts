@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DialogModule } from 'primeng/dialog';
+import { CalendarModule } from 'primeng/calendar';
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 // import interface
@@ -32,6 +33,7 @@ import { ButtonModule } from 'primeng/button';
     OverlayPanelModule,
     DialogModule,
     ButtonModule,
+    CalendarModule,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -105,6 +107,9 @@ export class CompanyComponent {
   careerProgrammes = true;
   savedDraft = false;
   publishedProgrammes = false;
+
+  // change history table
+  changeHistoryTable = false;
 
   ngOnInit() {
     this.tabMenuList = [
@@ -182,5 +187,43 @@ export class CompanyComponent {
   // close form
   closeForm() {
     this.formModal = false;
+  }
+
+  // hide history table
+  hideChangeHistoryTable() {
+    this.changeHistoryTable = false;
+  }
+  // open history table
+  openChangeHistoryTable() {
+    this.changeHistoryTable = true;
+  }
+
+  // date filter function
+  logSelectedDate(event: any) {
+    const selectedDate = event
+    // Get the day, month, and year
+    const day = selectedDate.getDate();
+    const month = selectedDate.toLocaleString('default', { month: 'long' }); // "June"
+    const year = selectedDate.getFullYear();
+    // Get the day suffix (st, nd, rd, th)
+    const suffix = this.getDaySuffix(day);
+    // Format the date as "4th June 2023"
+    const formattedDate = `${day}${suffix} ${month} ${year}`;
+    return formattedDate;
+  }
+
+  // Function to get the suffix for the day (st, nd, rd, th)
+  getDaySuffix(day: number): string {
+    if (day > 3 && day < 21) return 'th'; // Special case for 11th to 19th
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
   }
 }
