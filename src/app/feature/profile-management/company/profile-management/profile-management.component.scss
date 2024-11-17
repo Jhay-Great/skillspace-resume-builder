@@ -1,5 +1,5 @@
-@use '../../../../scss/mixins' as mix;
-@use '../../../../scss/variables' as var;
+@use 'mixins' as mix;
+@use 'variables' as var;
 
 header {
     @include mix.flex(column, 0.375rem);
