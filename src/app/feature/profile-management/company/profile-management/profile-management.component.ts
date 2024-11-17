@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+// local imports
+import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
+
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
@@ -20,6 +23,7 @@ import { InputTextModule } from 'primeng/inputtext';
     IconFieldModule,
     TabViewModule,
     ButtonModule,
+    PageHeaderDescriptionComponent,
   ],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss',
