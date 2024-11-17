@@ -23,11 +23,12 @@
           />
         </p-iconField>
       </div>
+
       <!-- date filter -->
       <div class="flex align-items-center">
         <p-calendar
           [style]="{ width: '20rem' }"
-          (onSelect)="dt1.filter(logSelectedDate($event), 'start', 'equals')"
+          (onSelect)="dt1.filter(formatSelectedDate($event), 'start', 'equals')"
           placeholder="Filter by Date"
           [showButtonBar]="true"
           (onClearClick)="dt1.filter(null, 'start', 'equals')"

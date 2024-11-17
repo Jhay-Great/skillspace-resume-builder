@@ -199,7 +199,7 @@ export class CompanyComponent {
   }
 
   // date filter function
-  logSelectedDate(event: any) {
+  formatSelectedDate(event: any) {
     const selectedDate = event
     // Get the day, month, and year
     const day = selectedDate.getDate();
