@@ -21,7 +21,7 @@ import {
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '@shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
-import { ICompanyRegistrationDetails } from '@core/interfaces/user-managment.interface';
+import { ICompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
 import { UserRegistrationService } from '../../service/user-registration.service';
 
 @Component({

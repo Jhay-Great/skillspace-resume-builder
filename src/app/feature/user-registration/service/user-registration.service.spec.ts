@@ -8,7 +8,7 @@ import { UserRegistrationService } from './user-registration.service';
 import {
   ICompanyRegistrationDetails,
   ITalentRegistrationDetails,
-} from '../../../core/interfaces/user-managment.interface';
+} from '../../../core/interfaces/user-registration.interface';
 
 describe('UserRegistrationService', () => {
   let service: UserRegistrationService;
