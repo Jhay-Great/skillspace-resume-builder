@@ -76,7 +76,7 @@ export class CompanyRegistrationComponent implements OnInit {
           contact: ['', Validators.required],
         }),
       },
-      { validators: confirmPasswordValidator() }
+      { validators: confirmPasswordValidator('credentials.password', 'credentials.confirmPassword') }
     );
   }
 

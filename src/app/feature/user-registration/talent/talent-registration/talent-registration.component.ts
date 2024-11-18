@@ -14,6 +14,7 @@ import {
   CountryISO,
 } from 'ngx-material-intl-tel-input';
 import { UserRegistrationService } from '../../service/user-registration.service';
+import { confirmPasswordValidator } from '@src/app/shared/utils/password.validator';
 
 @Component({
   selector: 'app-talent-registration',
@@ -45,7 +46,7 @@ export class TalentRegistrationComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
       contact: ['', Validators.required],
-    });
+    }, {validators: confirmPasswordValidator('password', 'confirmPassword')});
   }
 
   onSubmit() {
