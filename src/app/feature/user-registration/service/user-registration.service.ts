@@ -16,7 +16,8 @@ export class UserRegistrationService {
   private otpEndpoint: string = environment.OTP_ENDPOINT;
 
   // signals
-  otpResponse = signal<string | null> (null)
+  otpResponse = signal<string | null> (null);
+  user = signal<string | null>(null);
 
   constructor(private http: HttpClient) {}
 
