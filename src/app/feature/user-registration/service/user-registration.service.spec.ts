@@ -1,8 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
-import { UserRegistrationService } from './user-management.service';
-import { ICompanyRegistrationDetails, ITalentRegistrationDetails } from '../../../core/interfaces/user-managment.interface';
+import { UserRegistrationService } from './user-registration.service';
+import {
+  ICompanyRegistrationDetails,
+  ITalentRegistrationDetails,
+} from '../../../core/interfaces/user-registration.interface';
 
 describe('UserRegistrationService', () => {
   let service: UserRegistrationService;
@@ -35,8 +41,8 @@ describe('UserRegistrationService', () => {
       confirmPassword: 'som#th1ngNice',
       website: 'amalitech.org',
       certificate: new FormData(),
-      logo:new FormData(),
-      contact: '+2338493984'
+      logo: new FormData(),
+      contact: '+2338493984',
     };
 
     service.companySignUp(mockCompanyData).subscribe();
@@ -55,7 +61,7 @@ describe('UserRegistrationService', () => {
       email: 'amalitechtraining@amalitech.org',
       password: 'som#th1ngNice',
       confirmPassword: 'som#th1ngNice',
-      contact: '+2338493984'
+      contact: '+2338493984',
     };
 
     service.talentSignUp(mockTalentData).subscribe();
@@ -65,6 +71,4 @@ describe('UserRegistrationService', () => {
     expect(req.request.body).toEqual(mockTalentData);
     req.flush({});
   });
-  
-  
 });
