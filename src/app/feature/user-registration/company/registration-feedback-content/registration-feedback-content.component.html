@@ -1,0 +1,26 @@
+<main>
+    <div class="skillspace-logo">
+      <img
+        src="assets/svgs/blue-skillspace-logo.svg"
+        alt="SkillSpace svg icon logo"
+      />
+    </div>
+    
+    <section class="container">
+      <!-- svg image -->
+      <img [src]="'assets/svgs/' + svgImage + '.svg'" alt="awaiting review svg image" />
+    
+      <h1> {{ title }} </h1>
+    
+      <!-- description -->
+      <p class="description">
+        {{ description }}
+      </p>
+    
+      <!-- conditional button -->
+        <button class="button">
+            {{ buttonText }}
+        </button>
+
+    </section>
+</main>

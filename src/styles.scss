@@ -163,6 +163,22 @@ app-dashboard-layout {
     grid-template-columns: 15.625rem 1fr 1fr;
     grid-template-rows: 4.375rem auto auto;
 }
+app-company-registration {
+    @include mix.flex(column);
+    
+}
+app-registration-feedback {
+    @include mix.flex(column, 2rem);
+    @include mix.flex-position(center, center);
+    position: fixed;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+}
+app-company-registration {
+    @include mix.flex(column);
+    
+}
 
 // hides router-outlet tag
 router-outlet {

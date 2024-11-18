@@ -1,0 +1,21 @@
+<div class="confirm-password fields">
+    <label for="confirm-password"> {{ label }}  </label>
+    <div class="input-container">
+        <img [src]="'assets/svgs/' + svgIcon + '.svg' " alt="user svg icon">
+        <input [type]="type" [placeholder]="placeholder"
+        (input)="onInput($event)"
+        (blur)="onTouched()"
+        [ngClass]="{'has-error': hasError}"
+        #Input
+        [value]="value"
+        >
+        
+        @if (type === 'password') {
+            <img src="assets/svgs/hide-password.svg" 
+            alt="hidden password svg icon" 
+            class="password-icon"
+            (click)="togglePasswordVisibility()"
+        >
+        }
+    </div>
+</div>

@@ -1,0 +1,185 @@
+
+<div class="logo">
+  <img
+    src="assets/svgs/blue-skillspace-logo.svg"
+    alt="SkillSpace svg icon logo"
+  />
+</div>
+
+@if (!isAwaitingReview) {
+<header>
+  <h1>Find talent for roles</h1>
+  <p class="description">Provide your details to get started.</p>
+  <nav>
+    <div
+      class="step1 steppers"
+      (click)="onContinue(1)"
+      [ngClass]="{ active: step === 1 }"
+    >
+      <span>1</span>
+      <p>Credentials</p>
+    </div>
+    <div
+      class="step2 steppers"
+      (click)="onContinue(2)"
+      [ngClass]="{ active: step === 2 }"
+    >
+      <span>2</span>
+      <p>Information</p>
+    </div>
+  </nav>
+</header>
+
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  @if (step === 1) {
+  <section formGroupName="credentials">
+    <!-- company name -->
+    <app-input-field 
+        [label]="'Company name'"
+        [svgIcon]="'user'"
+        [type]="'text'"
+        [placeholder]="'Enter company name'"
+        formControlName="name"
+        [hasError]=" 
+            getFormControl('credentials.name')?.touched && 
+            (getFormControl('credentials.name')?.errors?.['required'] || 
+            getFormControl('credentials.name')?.errors)
+          "
+    />
+
+    <!-- company name error handling -->
+     @if(hasError('credentials.name')) {
+      <app-form-error-message [message]="hasError('credentials.name')" />
+     }
+
+    <!-- company email -->
+    <app-input-field 
+        [label]="'Email'"
+        [svgIcon]="'email'"
+        [type]="'email'"
+        [placeholder]="'Enter your email address'"
+        formControlName="email"
+        [hasError]="
+            getFormControl('credentials.email')?.touched && 
+            (getFormControl('credentials.email')?.errors?.['required'] || 
+            getFormControl('credentials.email')?.errors)
+        "
+    />
+    <!-- email error handling -->
+    @if (hasError('credentials.email')) {
+      <app-form-error-message 
+            [message]="hasError('credentials.email')"
+        />
+    }
+
+    <!-- password -->
+    <app-input-field 
+        [svgIcon]="'lock'"
+        [label]="'Password'"
+        [type]="'password'"
+        [placeholder]="'Enter your password'"
+        formControlName="password"
+        [hasError]="
+            getFormControl('credentials.password')?.touched && 
+            (getFormControl('credentials.password')?.errors?.['required'] || 
+            getFormControl('credentials.password')?.errors)
+        "
+    />
+    <!-- password error handling -->
+    @if (hasError('credentials.password')) {
+      <app-form-error-message [message]="hasError('credentials.password')" />
+    }
+    
+    <!-- confirm password -->
+    <app-input-field 
+        [svgIcon]="'lock'"
+        [label]="'Confirm Password'"
+        [type]="'password'"
+        [placeholder]="'Enter your password'"
+        formControlName="confirmPassword"
+        [hasError]="
+            getFormControl('credentials.confirmPassword')?.touched && 
+            (getFormControl('credentials.confirmPassword')?.errors?.['required'] || 
+            getFormControl('credentials.confirmPassword')?.errors)
+        "
+    />
+    <!-- confirm password error handling -->
+    @if(hasFormError('passwordMismatch')) {
+      <app-form-error-message [message]="hasFormError('passwordMismatch')" />
+    }
+    
+  </section>
+  <button type="button" (click)="onContinue()" class="continue">
+    Continue
+  </button>
+
+  } @else if (step === 2) {
+  <section class="information-section" formGroupName="information">
+    <!-- company website -->
+    <app-input-field 
+    [svgIcon]="'globe'"
+    [label]="'Company website'"
+    [type]="'text'"
+    [placeholder]="'Eg: apexmedia.com'"
+    formControlName="website"
+    [hasError]="
+        getFormControl('information.website')?.touched && 
+        (getFormControl('information.website')?.errors?.['required'] || 
+        getFormControl('information.website')?.errors)
+    "
+    />
+    <!-- website error handling -->
+    @if (getFormControl('information.website')?.touched &&
+    getFormControl('information.website')?.errors?.['required']) {
+        <app-form-error-message 
+        [message]="'This field is required'"
+    />
+    }
+
+    <app-file-upload-input-field 
+        [label]="'Upload certificate'"
+        [acceptType]="'.pdf'"
+        [svgIconPath]="'assets/svgs/upload.svg'"
+        (fileSelected)="onFileUpload($event, 'certificate')"
+    />
+    
+
+    <app-file-upload-input-field
+      [label]="'Logo'"
+      [acceptType]="'image/png'"
+      [svgIconPath]="'assets/svgs/image-upload.svg'"
+      [defaultPlaceholder]="'Image must be a PNG'"
+      (fileSelected)="onFileUpload($event, 'logo')"
+    />
+
+    <!-- international tel number -->
+    <ngx-material-intl-tel-input
+      [fieldControl]="contactControl"
+      [iconMakeCall]="false"
+      [enablePlaceholder]="true"
+      [autoSelectedCountry]="selectedCountry"
+      placeholder="Enter your telephone number"
+      [required]="true"
+      [autoIpLookup]="false"
+    ></ngx-material-intl-tel-input>
+  </section>
+  <button type="submit">Submit for approval</button>
+  } @else {
+  <p>Didn't receive link? Check your spam folder or <a>resend link.</a></p>
+  }
+</form>
+
+<section class="log-in">
+  <!-- will have to navigate to the login page -->
+  <p>Already have an account? <a [routerLink]="['/auth/login']">Log in</a></p>
+</section>
+
+<section class="info">
+  <p>
+    By continuing, you agree to SkillSpace
+    <a class="terms_policy">Terms of Service</a> and
+    <a class="terms_policy">Privacy Policy</a>
+  </p>
+</section>
+
+}
