@@ -9,6 +9,38 @@ export const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       {
+        path: 'sign-up',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/sign-up-options/sign-up-options.component'
+          ).then((sg) => sg.SignUpOptionsComponent),
+        title: 'Sign up',
+      },
+      {
+        path: 'company-registration',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/company/company-registration/company-registration.component'
+          ).then((cr) => cr.CompanyRegistrationComponent),
+        title: 'Company registration',
+      },
+      {
+        path: 'talent-registration',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/talent/talent-registration/talent-registration.component'
+          ).then((tr) => tr.TalentRegistrationComponent),
+        title: 'Talent registration',
+      },
+      {
+        path: 'review',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/company/registration-feedback/registration-feedback.component'
+          ).then((rf) => rf.RegistrationFeedbackComponent),
+        title: 'Review Feedback',
+      },
+      {
         path: 'login',
         loadComponent: () =>
           import('./feature/authentication/pages/login/login.component').then(
