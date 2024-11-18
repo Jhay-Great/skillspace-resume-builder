@@ -39,7 +39,7 @@ export const routes: Routes = [
         title: 'Talent registration',
       },
       {
-        path: 'review',
+        path: 'review/:status',
         loadComponent: () =>
           import(
             './feature/user-registration/company/registration-feedback/registration-feedback.component'
