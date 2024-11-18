@@ -13,7 +13,10 @@ import {
 } from '@angular/forms';
 import { CapitalizePipe } from '../../../../core/pipes/capitalize/capitalize.pipe';
 import { getFormErrorMessage } from '../../../../shared/utils/form-utils';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ToastService } from '../../../../core/services/toast-service/toast.service';
+import { AuthService } from '../../services/auth-service/auth.service';
+import { User } from '../../models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +30,7 @@ import { RouterLink } from '@angular/router';
     CheckboxModule,
     ReactiveFormsModule,
     CapitalizePipe,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -36,7 +39,12 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private authService: AuthService,
+    private router: Router
+  ) {
     // Initialize login form
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -45,13 +53,50 @@ export class LoginComponent {
     });
   }
 
+  navigateByRole(role: string) {
+    switch (role) {
+      case 'ADMIN':
+        this.router.navigate(['dashboard/admin']);
+        break;
+      case 'COMPANY':
+        this.router.navigate(['dashboard/company']);
+        break;
+      case 'TALENT':
+        this.router.navigate(['dashboard/talent']);
+        break;
+    }
+  }
+
+  handleAuthSuccess(user: User) {
+    this.loginLoading = false;
+    // store user role and access token in local storage 
+    this.authService.setUserRole(user.role);
+    this.authService.setAccessToken(user.accessToken);
+
+    // navigate to dashboard based on user's role 
+    this.navigateByRole(user.role);
+
+    // show success toast
+    this.toastService.showSuccess(
+      'Congratulations',
+      'Account has been successfully logged into.'
+    );
+  }
+
+  handleAuthError(error: Error) {
+    this.loginLoading = false;
+    this.toastService.showError('Error', 'Invalid log in credentials');
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
       this.loginLoading = true;
-
-      console.log(this.loginForm.value);
       const { email, password } = this.loginForm.value;
       // sign user in
+      this.authService.login({ email, password }).subscribe({
+        next: (user: User) => this.handleAuthSuccess(user),
+        error: (error: Error) => this.handleAuthError(error),
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }
