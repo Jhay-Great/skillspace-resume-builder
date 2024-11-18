@@ -75,7 +75,7 @@ describe('AuthService', () => {
       expect(response).toEqual(mockResponse as unknown as User);
     });
 
-    const req = httpMock.expectOne(`${environment.BASE_URL}/v1/auth/login`);
+    const req = httpMock.expectOne(`${environment.BASE_API}/v1/auth/login`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(mockCredentials);
     req.flush(mockResponse);
