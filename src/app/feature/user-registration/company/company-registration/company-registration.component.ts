@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -13,6 +13,7 @@ import {
   NgxMaterialIntlTelInputComponent,
   CountryISO,
 } from 'ngx-material-intl-tel-input';
+import { InputIconModule } from 'primeng/inputicon';
 
 import {
   passwordStrengthValidator,
@@ -23,6 +24,7 @@ import { FileUploadInputFieldComponent } from '@shared/components/file-upload-in
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
 import { ICompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
 import { UserRegistrationService } from '../../service/user-registration.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-company-registration',
@@ -35,22 +37,25 @@ import { UserRegistrationService } from '../../service/user-registration.service
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
     FormErrorMessageComponent,
+    InputIconModule,
   ],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
 })
-export class CompanyRegistrationComponent implements OnInit {
+export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   companyForm!: FormGroup;
   step: number = 1;
   placeholder = 'File must be a PDF';
   isAwaitingReview: boolean = false;
+  isLoading:boolean = false;
+  subscription!: Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userRegistrationService: UserRegistrationService
+    private userRegistrationService: UserRegistrationService,
   ) {}
 
   ngOnInit(): void {
@@ -81,19 +86,35 @@ export class CompanyRegistrationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     const companyForm = this.companyForm;
     if (companyForm.invalid) {
+      this.isLoading = false;
       return;
     }
+    console.log('llkd')
 
     const data: ICompanyRegistrationDetails = {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
 
-    this.userRegistrationService.companySignUp(data);
-    this.reset();
-    this.router.navigate(['']);
+    this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
+      next: response => {
+        this.isLoading = false;
+        this.reset();
+        console.log('logging response: ', response);
+        this.router.navigate(['/auth/user-verification']);
+      },
+      error: error => {
+        this.isLoading = false;
+        console.log('error: ', error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+    console.log('end....')
   }
 
   onContinue(step = 2) {
@@ -178,5 +199,9 @@ export class CompanyRegistrationComponent implements OnInit {
       this.placeholder = file.name;
       this.companyForm.get('information.certificate')?.setValue(file.name);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
