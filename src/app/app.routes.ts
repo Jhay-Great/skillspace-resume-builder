@@ -23,6 +23,14 @@ export const routes: Routes = [
         title: 'Company registration',
       },
       {
+        path: 'user-verification',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/user-verification/user-verification.component'
+          ).then(uv => uv.UserVerificationComponent),
+          title: 'Verification'
+      },
+      {
         path: 'talent-registration',
         loadComponent: () =>
           import(
