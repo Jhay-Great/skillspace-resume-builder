@@ -1,4 +1,4 @@
-@use "../../../scss/variables" as var;
+@use "variables" as var;
 
 .container {
   height: 100%;
@@ -196,9 +196,7 @@
 
 // primeng styling
 // table
-::ng-deep p-table {
-  // border: 1px solid blue;
-}
+
 // float Menu
 
 ::ng-deep .p-overlaypanel {

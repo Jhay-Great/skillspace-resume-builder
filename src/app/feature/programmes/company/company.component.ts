@@ -16,6 +16,8 @@ import { CareerCreationFormComponent } from '../career-creation-form/career-crea
 // import interface
 import { TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
+// import toast service
+import { ToastService } from '../../../core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-company',
@@ -39,6 +41,8 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './company.component.scss',
 })
 export class CompanyComponent {
+  constructor(private toastService: ToastService) {}
+
   mockProgrammes: any = [
     {
       name: 'Graduate Trainee Frontend',
@@ -119,6 +123,7 @@ export class CompanyComponent {
     ];
 
     this.activeItem = this.tabMenuList[0];
+    this.successToast()
   }
 
   // TabMenu control function
@@ -200,7 +205,7 @@ export class CompanyComponent {
 
   // date filter function
   formatSelectedDate(event: any) {
-    const selectedDate = event
+    const selectedDate = event;
     // Get the day, month, and year
     const day = selectedDate.getDate();
     const month = selectedDate.toLocaleString('default', { month: 'long' }); // "June"
@@ -225,5 +230,14 @@ export class CompanyComponent {
       default:
         return 'th';
     }
+  }
+
+  // Toast functions
+  successToast() {
+    this.toastService.showSuccess(
+      'Congratulations',
+      'Career programme has been successfully added',
+      'top-right'
+    );
   }
 }
