@@ -140,7 +140,7 @@ export class CompanyRegistrationComponent implements OnInit {
       ) {
         return 'This field is required';
       } else if (
-        this.companyForm.errors?.[errorKey] ||
+        this.companyForm.errors?.[errorKey] &&
         this.getFormControl('credentials.confirmPassword')?.dirty
       ) {
         return 'Confirm password is invalid';
