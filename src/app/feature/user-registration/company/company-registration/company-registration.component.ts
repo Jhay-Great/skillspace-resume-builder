@@ -25,6 +25,7 @@ import { FormErrorMessageComponent } from '@shared/components/form-error-message
 import { ICompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
 import { UserRegistrationService } from '../../service/user-registration.service';
 import { Subscription } from 'rxjs';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-company-registration',
@@ -56,6 +57,7 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private userRegistrationService: UserRegistrationService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -86,35 +88,40 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.isLoading = true;
+    this.isLoading = true;   // display loader
     const companyForm = this.companyForm;
     if (companyForm.invalid) {
       this.isLoading = false;
       return;
     }
-    console.log('llkd')
 
     const data: ICompanyRegistrationDetails = {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
 
-    this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
-      next: response => {
-        this.isLoading = false;
-        this.reset();
-        console.log('logging response: ', response);
-        this.router.navigate(['/auth/user-verification']);
-      },
-      error: error => {
-        this.isLoading = false;
-        console.log('error: ', error);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
-    console.log('end....')
+    // for quick testing
+    this.router.navigate(['/auth/user-verification']);
+    this.userRegistrationService.user.set('COMPANY');
+    
+    // this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
+      //   next: response => {
+        //     this.isLoading = false; // hides loader
+        //     this.reset();
+        //     console.log('logging response: ', response);
+        // this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
+    //     this.router.navigate(['/auth/user-verification']);
+    //   },
+    //   error: error => {
+    //     this.isLoading = false;
+    //     this.toastService.showError('Invalid detail', error.message);
+    //     // console.log('error: ', error);
+    //   },
+    //   complete: () => {
+    //     this.isLoading = false;
+    //   }
+    // });
+    
   }
 
   onContinue(step = 2) {
@@ -202,6 +209,6 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 }
