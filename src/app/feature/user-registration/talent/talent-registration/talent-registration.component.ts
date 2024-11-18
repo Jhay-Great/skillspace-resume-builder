@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormBuilder,
@@ -13,8 +14,11 @@ import {
   NgxMaterialIntlTelInputComponent,
   CountryISO,
 } from 'ngx-material-intl-tel-input';
+import { InputIconModule } from 'primeng/inputicon';
 import { UserRegistrationService } from '../../service/user-registration.service';
 import { confirmPasswordValidator } from '@src/app/shared/utils/password.validator';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-talent-registration',
@@ -25,18 +29,23 @@ import { confirmPasswordValidator } from '@src/app/shared/utils/password.validat
     ReactiveFormsModule,
     RouterLink,
     NgxMaterialIntlTelInputComponent,
+    InputIconModule,
   ],
   templateUrl: './talent-registration.component.html',
   styleUrl: './talent-registration.component.scss',
 })
-export class TalentRegistrationComponent implements OnInit {
+export class TalentRegistrationComponent implements OnInit, OnDestroy {
   talentForm!: FormGroup;
+  isLoading: boolean = false;
+  subscription!:Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   constructor(
     private fb: FormBuilder,
-    private userRegistrationService: UserRegistrationService
+    private userRegistrationService: UserRegistrationService,
+    private router: Router,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -50,14 +59,30 @@ export class TalentRegistrationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     if (this.talentForm.invalid) {
       // handle any invalidity here
       return;
     }
     const data = { ...this.talentForm.value };
-    this.userRegistrationService.talentSignUp(data).subscribe((value) => {
-      console.log('response from api: ', value);
-    });
+    this.toastService.showSuccess('congratulations', 'verify otp')
+    this.userRegistrationService.user.set('TALENT');
+    this.router.navigate(['/auth/user-verification'])
+    // this.subscription = this.userRegistrationService.talentSignUp(data).subscribe({
+      //   next: response => {
+        //     this.reset();
+        //     this.isLoading = false;
+        // this.userRegistrationService.user.set('TALENT');
+    //     this.router.navigate(['/auth/user-verification']);
+    //   },
+    //   error: error => {
+    //     this.isLoading = false;
+    //     this.toastService.showError('Invalid data', error.message);
+    //   },
+    //   complete: () => {
+    //     this.isLoading = false;
+    //   }
+    // });
   }
 
   getFormControl(control: string) {
@@ -66,5 +91,12 @@ export class TalentRegistrationComponent implements OnInit {
 
   get contactControl() {
     return this.talentForm.get('contact') as FormControl<string | null>;
+  }
+  reset() {
+    this.talentForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
