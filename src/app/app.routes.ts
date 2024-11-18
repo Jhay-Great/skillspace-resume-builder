@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
+import { authGuard } from './core/guards/auth-guard/auth.guard';
+import { roleGuard } from './core/guards/role-guard/role.guard';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then(
         (d) => d.DashboardLayoutComponent
@@ -45,6 +48,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'company-programmes',
+        data: {role: 'ADMIN'},
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/programmes/company/company.component').then(
             (d) => d.CompanyComponent
