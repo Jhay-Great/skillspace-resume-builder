@@ -123,7 +123,6 @@ export class CompanyComponent {
     ];
 
     this.activeItem = this.tabMenuList[0];
-    this.successToast()
   }
 
   // TabMenu control function
