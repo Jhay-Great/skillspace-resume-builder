@@ -110,7 +110,6 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
       error: error => {
         this.isLoading = false;
         this.toastService.showError('Invalid detail', error.message);
-        // console.log('error: ', error);
       },
       complete: () => {
         this.isLoading = false;

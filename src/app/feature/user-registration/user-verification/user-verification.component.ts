@@ -27,16 +27,12 @@ export class UserVerificationComponent {
     this.user = this.userRegistration.user()
 
     if (this.user === 'COMPANY') {
-      console.log('user is a company')
       this.router.navigate(['auth/review/awaiting']);
     }
     if (this.user === 'TALENT') {
-      console.log('user is a talent')
       this.router.navigate(['auth/login']);
 
     }
-    console.log(this.user === 'TALENT')
-    console.log(this.userRegistration.user());
   }
 
 }
