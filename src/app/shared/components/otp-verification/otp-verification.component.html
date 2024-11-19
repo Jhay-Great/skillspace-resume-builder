@@ -34,7 +34,12 @@
       }}</small>
       }
 
-      <p>Code expires in <span class="timer">01:00</span></p>
+      @if(!timerService.isTimerExpired) {
+        <p>Code expires in <span class="timer">{{ timerService.remainingTime| formatTime }}</span></p>
+      }
+      @else if(timerService.isTimerExpired) {
+        <p>Code expired. <span (click)="requestNewVerificationCode()" class="link">Request for a new code</span></p>
+      }
     </div>
 
     <!-- Verify button -->
