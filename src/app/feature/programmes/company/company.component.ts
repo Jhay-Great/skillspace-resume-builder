@@ -14,7 +14,7 @@ import { CalendarModule } from 'primeng/calendar';
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 // import interface
-import { TabMenuList } from '../../../core/interfaces/interfaces';
+import { mockDetails, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import toast service
 import { ToastService } from '../../../core/services/toast-service/toast.service';
@@ -43,7 +43,7 @@ import { ToastService } from '../../../core/services/toast-service/toast.service
 export class CompanyComponent {
   constructor(private toastService: ToastService) {}
 
-  mockProgrammes: any = [
+  mockProgrammes: mockDetails[] = [
     {
       name: 'Graduate Trainee Frontend',
       description: 'This programme is built for everyone',
@@ -84,7 +84,7 @@ export class CompanyComponent {
   // move to draft modal
   moveToDraftModal = false;
 
-  mockdraft: any = [
+  mockdraft: mockDetails[] = [
     {
       name: 'Graduate Trainee Frontend',
       description: 'This programme is built for everyone',
@@ -203,7 +203,7 @@ export class CompanyComponent {
   }
 
   // date filter function
-  formatSelectedDate(event: any) {
+  formatSelectedDate(event: Date) {
     const selectedDate = event;
     // Get the day, month, and year
     const day = selectedDate.getDate();
