@@ -4,6 +4,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 // local imports
 import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
 
+// local imports
+import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
+
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
@@ -24,6 +27,7 @@ import { InputTextModule } from 'primeng/inputtext';
     TabViewModule,
     ButtonModule,
     PageHeaderDescriptionComponent,
+    InputFieldComponent,
   ],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss',
