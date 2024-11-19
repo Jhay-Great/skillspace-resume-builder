@@ -16,8 +16,7 @@ import { CareerCreationFormComponent } from '../career-creation-form/career-crea
 // import interface
 import { mockDetails, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
-// import toast service
-import { ToastService } from '../../../core/services/toast-service/toast.service';
+
 
 @Component({
   selector: 'app-company',
@@ -41,7 +40,6 @@ import { ToastService } from '../../../core/services/toast-service/toast.service
   styleUrl: './company.component.scss',
 })
 export class CompanyComponent {
-  constructor(private toastService: ToastService) {}
 
   mockProgrammes: mockDetails[] = [
     {
@@ -231,12 +229,5 @@ export class CompanyComponent {
     }
   }
 
-  // Toast functions
-  successToast() {
-    this.toastService.showSuccess(
-      'Congratulations',
-      'Career programme has been successfully added',
-      'top-right'
-    );
-  }
+  
 }

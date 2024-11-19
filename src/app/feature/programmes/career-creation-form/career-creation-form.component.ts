@@ -13,6 +13,9 @@ import { ChipsModule } from 'primeng/chips';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+// import toast service
+// import toast service
+import { ToastService } from '../../../core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-career-creation-form',
@@ -30,11 +33,11 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 })
 export class CareerCreationFormComponent {
   careerForm!: FormGroup;
-  badgesRequired: string[] = [];
-  badgesOptional: string[] = [];
+  selectedDate!: Date;
+
   @Output() closeForm: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private toastService: ToastService) {
     this.careerForm = this.fb.group({
       name: ['', Validators.required],
       requirements: this.fb.array([]),
@@ -68,5 +71,49 @@ export class CareerCreationFormComponent {
   // closeform
   close() {
     this.closeForm.emit();
+  }
+
+  // Toast notification
+  successToast() {
+    this.toastService.showSuccess(
+      'Congratulations',
+      'Career programme has been successfully added',
+      'top-right'
+    );
+  }
+
+  // format date
+  formatCustomDate(date: Date): string {
+    if (!date) return '';
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+
+    const suffix =
+      day % 10 === 1 && day !== 11
+        ? 'st'
+        : day % 10 === 2 && day !== 12
+        ? 'nd'
+        : day % 10 === 3 && day !== 13
+        ? 'rd'
+        : 'th';
+
+    return `${day}${suffix} ${month} ${year}`;
+  }
+  // start and end date
+  startDateSelect(event: Date): void {
+    const formattedDate = this.formatCustomDate(event);
+    this.careerForm.patchValue({ startDate: formattedDate });
+  }
+  endDateSelect(event: Date): void {
+    const formattedDate = this.formatCustomDate(event);
+    this.careerForm.patchValue({ endDate: formattedDate });
+  }
+
+  // onSubmit
+  onSubmit() {
+    const formData = this.careerForm.value;
+    formData.startDate = this.formatCustomDate(formData.startDate);
+    formData.endDate = this.formatCustomDate(formData.endDate);
   }
 }
