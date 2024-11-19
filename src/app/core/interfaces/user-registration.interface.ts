@@ -18,3 +18,10 @@ export interface ITalentRegistrationDetails {
 }
 
 export type Status = string;
+
+export interface IApplicantData {
+    name: string;
+    email: string;
+    status: string;
+    date: string;
+}
