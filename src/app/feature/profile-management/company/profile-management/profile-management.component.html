@@ -125,7 +125,34 @@
     <!-- security -->
     <p-tabPanel header="Security">
       <!-- content goes here -->
-      <p>Bye</p>
+      <header>
+        <p class="title">Change Password</p>
+        <p class="description">Update password details for security reasons</p>
+      </header>
+
+      <!-- old password -->
+      <app-input-field 
+        [label]="'Old Password'"
+        [type]="'password'"
+        [svgIcon]="'lock'"
+        [placeholder]="'Old password'"
+      />
+      
+      <!-- new password -->
+      <app-input-field 
+        [label]="'New Password'"
+        [type]="'password'"
+        [svgIcon]="'lock'"
+        [placeholder]="'New password'"
+      />
+      
+      <!-- confirm password -->
+      <app-input-field 
+        [label]="'Confirm Password'"
+        [type]="'password'"
+        [svgIcon]="'lock'"
+        [placeholder]="'Confirm password'"
+      />
     </p-tabPanel>
   </p-tabView>
 </section>
