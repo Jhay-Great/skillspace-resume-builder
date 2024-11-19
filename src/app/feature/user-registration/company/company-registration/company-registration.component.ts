@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -58,11 +58,12 @@ export class CompanyRegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userRegistrationService: UserRegistrationService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {
-    this.companyForm = this.fb.group(
+;    this.companyForm = this.fb.group(
       {
         credentials: this.fb.group({
           name: ['', Validators.required],
@@ -90,9 +91,28 @@ export class CompanyRegistrationComponent implements OnInit {
           'credentials.confirmPassword'
         ),
       }
-    );
+    )
   }
 
+  createFromData<T>(data: Record<string, T>) {
+    const formData = new FormData();
+  
+    Object.entries(data).forEach(([key, value]) => {
+      if (value instanceof File || value instanceof Blob) {
+        console.log(key, value)
+        formData.append(key, value);
+      } else if (typeof value === 'string') {
+        console.log(key, value)
+        formData.append(key, value);
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, JSON.stringify(value));
+        console.log('called as well...', value)
+      }
+    });
+    
+    return formData;
+  }
+  
   onSubmit() {
     this.isLoading = true; // display loader
     const companyForm = this.companyForm;
@@ -101,14 +121,17 @@ export class CompanyRegistrationComponent implements OnInit {
       return;
     }
 
-    const data: ICompanyRegistrationDetails = {
+    const data = {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
 
+    const formData = this.createFromData(data);
+    console.log(formData);
+
     this.userRegistrationService
-      .companySignUp(data)
-      .pipe(takeUntilDestroyed())
+      .companySignUp(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           this.isLoading = false; // hides loader

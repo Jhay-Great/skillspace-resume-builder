@@ -21,7 +21,7 @@ export class UserRegistrationService {
 
   constructor(private http: HttpClient) {}
 
-  companySignUp(data: ICompanyRegistrationDetails) {
+  companySignUp(data: FormData) {
     return this.submitForApproval(`${this.api}${this.companyEndpoint}`, data);
   }
 
