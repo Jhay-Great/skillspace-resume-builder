@@ -1,10 +1,10 @@
-import { ValidationErrors, ValidatorFn, AbstractControl } from "@angular/forms";
+import { ValidationErrors, ValidatorFn, AbstractControl, FormControl } from "@angular/forms";
 
-export const confirmPasswordValidator = ():ValidatorFn => {
+export const confirmPasswordValidator = (passwordControl:string, confirmPasswordControl:string):ValidatorFn => {
     return (control:AbstractControl):ValidationErrors | null => {
 
-        const password = control.get('credentials.password')?.value;
-        const confirmPassword = control.get('credentials.confirmPassword')?.value;
+        const password = control.get(passwordControl)?.value;
+        const confirmPassword = control.get(confirmPasswordControl)?.value;
 
         return password === confirmPassword ? null : { passwordMismatch: true };
         

@@ -243,6 +243,9 @@ form {
         background-color: red !important;
 
     }
+    .mdc-floating-label.mat-mdc-floating-label {
+        display: none;
+    }
     
     .tel-form {
         height: 3.125rem;
