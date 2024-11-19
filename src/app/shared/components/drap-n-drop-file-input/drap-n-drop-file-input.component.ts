@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-drag-n-drop-file-input',
@@ -11,6 +11,9 @@ export class DrapNDropFileInputComponent {
   description:string = 'This is what applicants will see on your profile.'
   fileUploaded: FileList | null = null;
   previewImage:string | null = null;
+
+  @Input () label:string | null = null;
+  @Input () accept:string | null = null;
 
   constructor () {};
 
