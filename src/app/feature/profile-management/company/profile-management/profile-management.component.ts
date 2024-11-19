@@ -15,6 +15,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
+import { DrapNDropFileInputComponent } from "../../../../shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component";
 
 @Component({
   selector: 'app-profile-management',
@@ -28,7 +29,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     PageHeaderDescriptionComponent,
     InputFieldComponent,
-  ],
+    DrapNDropFileInputComponent
+],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss',
 })
