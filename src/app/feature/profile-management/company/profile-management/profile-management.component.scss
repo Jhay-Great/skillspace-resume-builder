@@ -122,6 +122,66 @@ header {
     }
 }
 
+// for file uploads
+.upload {
+    .upload-section {
+        @include mix.flex(column, 0.1rem);
+        @include mix.flex-position(center, center);
+        width: 100%;
+        height: 207px;
+        position: relative;
+        border: 1px dashed var.$color-blue-gray-500;
+        border-radius: var.$small;
+        .instructions {
+            @include mix.flex(column, 0.1rem);
+            @include mix.flex-position(flex-start, center);
+        }
+        p {
+            font-size: var.$small;
+        }
+        input {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            position: absolute;
+        }
+        img {
+            width: 3.57906rem;
+            height: 2.79319rem;
+        }
+        .drop-here {
+            color: var.$color-blue-500;
+            margin-top: 0.88rem;
+        }
+    }
+    .preview {
+        width: 100%;
+        height: 100%;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+      
+}
+.uploaded-file {
+    @include mix.flex(row, 0.1rem);
+    @include mix.flex-position(flex-start, flex-start);
+    margin-bottom: 1rem;
+
+    button {
+        border: none;
+        background-color: transparent;
+    }
+    &.on-drag {
+        border-color: var.$color-blue-500;
+        transition: all 500ms ease-in-out;
+    }
+}
+
+
+
 .upload-file {
     display: flex;
     width: 39.4375rem;
