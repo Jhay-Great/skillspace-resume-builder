@@ -10,7 +10,7 @@
       </div>
 
       <div class="header-content">
-        <h1>Verification Code</h1>
+        <h1>We've sent you a email</h1>
         <p>Enter the verification code we just sent to your email.</p>
       </div>
     </div>
@@ -34,7 +34,12 @@
       }}</small>
       }
 
-      <p>Code expires in <span class="timer">01:00</span></p>
+      @if(!timerService.isTimerExpired) {
+        <p>Code expires in <span class="timer">{{ timerService.remainingTime| formatTime }}</span></p>
+      }
+      @else if(timerService.isTimerExpired) {
+        <p>Code expired. <span (click)="requestNewVerificationCode()" class="link">Request for a new code</span></p>
+      }
     </div>
 
     <!-- Verify button -->
