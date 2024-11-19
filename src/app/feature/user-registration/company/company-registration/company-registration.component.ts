@@ -99,28 +99,23 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
-
-    // for quick testing
-    this.router.navigate(['/auth/user-verification']);
-    this.userRegistrationService.user.set('COMPANY');
     
-    // this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
-      //   next: response => {
-        //     this.isLoading = false; // hides loader
-        //     this.reset();
-        //     console.log('logging response: ', response);
-        // this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
-    //     this.router.navigate(['/auth/user-verification']);
-    //   },
-    //   error: error => {
-    //     this.isLoading = false;
-    //     this.toastService.showError('Invalid detail', error.message);
-    //     // console.log('error: ', error);
-    //   },
-    //   complete: () => {
-    //     this.isLoading = false;
-    //   }
-    // });
+    this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
+        next: response => {
+            this.isLoading = false; // hides loader
+            this.reset();
+        this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
+        this.router.navigate(['/auth/user-verification']);
+      },
+      error: error => {
+        this.isLoading = false;
+        this.toastService.showError('Invalid detail', error.message);
+        // console.log('error: ', error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
     
   }
 

@@ -65,24 +65,22 @@ export class TalentRegistrationComponent implements OnInit, OnDestroy {
       return;
     }
     const data = { ...this.talentForm.value };
-    this.toastService.showSuccess('congratulations', 'verify otp')
-    this.userRegistrationService.user.set('TALENT');
-    this.router.navigate(['/auth/user-verification'])
-    // this.subscription = this.userRegistrationService.talentSignUp(data).subscribe({
-      //   next: response => {
-        //     this.reset();
-        //     this.isLoading = false;
-        // this.userRegistrationService.user.set('TALENT');
-    //     this.router.navigate(['/auth/user-verification']);
-    //   },
-    //   error: error => {
-    //     this.isLoading = false;
-    //     this.toastService.showError('Invalid data', error.message);
-    //   },
-    //   complete: () => {
-    //     this.isLoading = false;
-    //   }
-    // });
+    
+    this.subscription = this.userRegistrationService.talentSignUp(data).subscribe({
+        next: response => {
+            this.reset();
+            this.isLoading = false;
+        this.userRegistrationService.user.set('TALENT');
+        this.router.navigate(['/auth/user-verification']);
+      },
+      error: error => {
+        this.isLoading = false;
+        this.toastService.showError('Error', error.message);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   getFormControl(control: string) {
