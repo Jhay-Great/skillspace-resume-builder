@@ -16,7 +16,7 @@ export class AuthService {
     private localStorageService: LocalStorageService
   ) {
     this._userRole.set(
-      this.localStorageService.getItem('USER_ROLE') as UserRole
+      this.localStorageService.getItem<UserRole>('USER_ROLE')
     );
   }
 
@@ -26,7 +26,7 @@ export class AuthService {
 
   setUserRole(role: UserRole): void {
     this._userRole.set(role);
-    this.localStorageService.setItem('USER_ROLE', role);
+    this.localStorageService.setItem<UserRole>('USER_ROLE', role);
   }
 
   clearUserRole(): void {
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   setAccessToken(token: string): void {
-    this.localStorageService.setItem('TOKEN', token);
+    this.localStorageService.setItem<string>('TOKEN', token);
   }
 
   clearAccessToken(): void {
