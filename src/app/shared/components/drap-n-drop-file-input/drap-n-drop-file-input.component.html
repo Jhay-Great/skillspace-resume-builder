@@ -1,1 +1,39 @@
-<p>drap-n-drop-file-input works!</p>
+      <!-- upload -->
+      <div class="card upload">
+        <section class="upload-file">
+          <header>
+            <label class="username">Certificates</label>
+            <p class="description">{{ description }}</p>
+          </header>
+          <!-- would change false to property value when integration functionality -->
+          @if (fileUploaded) {
+              <div class="uploaded-file">
+                <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
+                <button>
+                    <img src="assets/svgs/cross.svg" alt="close button svg icon">
+                </button>
+              </div>
+          }
+          <div class="upload-section"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+          >
+              <input type="file" accept="image/png" (change)="selectFile($event)" name="" id="">
+              @if (!fileUploaded) {
+                <div class="instructions">
+                  <img src="assets/svgs/drop-here-image.svg" alt="">
+                  <p class="drop-here">Drop image here</p>
+                  <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
+                </div>
+              }@else {
+                <div class="preview">
+                  <!-- <img [src]="fileUploaded[0].name" alt=""> -->
+                  <img [src]="previewImage" alt="">
+                </div>
+  
+              }
+          </div>
+
+        </section>
+      </div>
