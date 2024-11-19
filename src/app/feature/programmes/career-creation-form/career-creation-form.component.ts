@@ -112,8 +112,12 @@ export class CareerCreationFormComponent {
 
   // onSubmit
   onSubmit() {
-    const formData = this.careerForm.value;
-    formData.startDate = this.formatCustomDate(formData.startDate);
-    formData.endDate = this.formatCustomDate(formData.endDate);
+    if (this.careerForm.valid) {
+      const formData = this.careerForm.value;
+      formData.startDate = this.formatCustomDate(formData.startDate);
+      formData.endDate = this.formatCustomDate(formData.endDate);
+      this.closeForm.emit();
+      this.successToast();
+    }
   }
 }
