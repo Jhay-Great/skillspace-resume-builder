@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
   NgxMaterialIntlTelInputComponent,
@@ -43,12 +44,12 @@ import { ToastService } from '@src/app/core/services/toast-service/toast.service
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
 })
-export class CompanyRegistrationComponent implements OnInit, OnDestroy {
+export class CompanyRegistrationComponent implements OnInit {
   companyForm!: FormGroup;
   step: number = 1;
   placeholder = 'File must be a PDF';
   isAwaitingReview: boolean = false;
-  isLoading:boolean = false;
+  isLoading: boolean = false;
   subscription!: Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
@@ -57,7 +58,7 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private userRegistrationService: UserRegistrationService,
-    private toastService: ToastService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -83,12 +84,17 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
           contact: ['', Validators.required],
         }),
       },
-      { validators: confirmPasswordValidator('credentials.password', 'credentials.confirmPassword') }
+      {
+        validators: confirmPasswordValidator(
+          'credentials.password',
+          'credentials.confirmPassword'
+        ),
+      }
     );
   }
 
   onSubmit() {
-    this.isLoading = true;   // display loader
+    this.isLoading = true; // display loader
     const companyForm = this.companyForm;
     if (companyForm.invalid) {
       this.isLoading = false;
@@ -99,23 +105,25 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
-    
-    this.subscription = this.userRegistrationService.companySignUp(data).subscribe({
-        next: response => {
-            this.isLoading = false; // hides loader
-            this.reset();
-        this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
-        this.router.navigate(['/auth/user-verification']);
-      },
-      error: error => {
-        this.isLoading = false;
-        this.toastService.showError('Invalid detail', error.message);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
-    
+
+    this.userRegistrationService
+      .companySignUp(data)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (response) => {
+          this.isLoading = false; // hides loader
+          this.reset();
+          this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
+          this.router.navigate(['/auth/user-verification']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.toastService.showError('Invalid detail', error.message);
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   onContinue(step = 2) {
@@ -200,9 +208,5 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
       this.placeholder = file.name;
       this.companyForm.get('information.certificate')?.setValue(file.name);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
   }
 }

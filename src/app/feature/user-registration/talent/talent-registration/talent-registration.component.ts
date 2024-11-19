@@ -7,6 +7,7 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
 import { RouterLink } from '@angular/router';
@@ -34,10 +35,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './talent-registration.component.html',
   styleUrl: './talent-registration.component.scss',
 })
-export class TalentRegistrationComponent implements OnInit, OnDestroy {
+export class TalentRegistrationComponent implements OnInit {
   talentForm!: FormGroup;
   isLoading: boolean = false;
-  subscription!:Subscription;
+  subscription!: Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
@@ -45,17 +46,20 @@ export class TalentRegistrationComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private userRegistrationService: UserRegistrationService,
     private router: Router,
-    private toastService: ToastService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.talentForm = this.fb.group({
-      fullName: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-      contact: ['', Validators.required],
-    }, {validators: confirmPasswordValidator('password', 'confirmPassword')});
+    this.talentForm = this.fb.group(
+      {
+        fullName: ['', Validators.required],
+        email: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+        contact: ['', Validators.required],
+      },
+      { validators: confirmPasswordValidator('password', 'confirmPassword') }
+    );
   }
 
   onSubmit() {
@@ -65,22 +69,25 @@ export class TalentRegistrationComponent implements OnInit, OnDestroy {
       return;
     }
     const data = { ...this.talentForm.value };
-    
-    this.subscription = this.userRegistrationService.talentSignUp(data).subscribe({
-        next: response => {
-            this.reset();
-            this.isLoading = false;
-        this.userRegistrationService.user.set('TALENT');
-        this.router.navigate(['/auth/user-verification']);
-      },
-      error: error => {
-        this.isLoading = false;
-        this.toastService.showError('Error', error.message);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
+
+    this.subscription = this.userRegistrationService
+      .talentSignUp(data)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (response) => {
+          this.reset();
+          this.isLoading = false;
+          this.userRegistrationService.user.set('TALENT');
+          this.router.navigate(['/auth/user-verification']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.toastService.showError('Error', error.message);
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   getFormControl(control: string) {
@@ -93,8 +100,5 @@ export class TalentRegistrationComponent implements OnInit, OnDestroy {
   reset() {
     this.talentForm.reset();
   }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
+  
 }
