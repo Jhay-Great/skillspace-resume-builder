@@ -28,7 +28,6 @@ export class RegistrationFeedbackComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       params => {
         const status = params['status'];
-        console.log(status);
         this.getFeedbackResponse(status);
 
       }
