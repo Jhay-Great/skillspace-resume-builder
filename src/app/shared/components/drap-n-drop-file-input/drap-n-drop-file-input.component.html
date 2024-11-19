@@ -2,7 +2,7 @@
       <div class="card upload">
         <section class="upload-file">
           <header>
-            <label class="username">Certificates</label>
+            <label class="username">{{ label }}</label>
             <p class="description">{{ description }}</p>
           </header>
           <!-- would change false to property value when integration functionality -->
@@ -19,7 +19,7 @@
             (dragleave)="onDragLeave($event)"
             (drop)="onDrop($event)"
           >
-              <input type="file" accept="image/png" (change)="selectFile($event)" name="" id="">
+              <input type="file" [accept]="accept" (change)="selectFile($event)" name="" id="">
               @if (!fileUploaded) {
                 <div class="instructions">
                   <img src="assets/svgs/drop-here-image.svg" alt="">
