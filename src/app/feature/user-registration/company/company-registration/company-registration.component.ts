@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -8,11 +8,13 @@ import {
 } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
   NgxMaterialIntlTelInputComponent,
   CountryISO,
 } from 'ngx-material-intl-tel-input';
+import { InputIconModule } from 'primeng/inputicon';
 
 import {
   passwordStrengthValidator,
@@ -21,8 +23,10 @@ import {
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '@shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
-import { ICompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
+import { CompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
 import { UserRegistrationService } from '../../service/user-registration.service';
+import { Subscription } from 'rxjs';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-company-registration',
@@ -35,6 +39,7 @@ import { UserRegistrationService } from '../../service/user-registration.service
     NgxMaterialIntlTelInputComponent,
     FileUploadInputFieldComponent,
     FormErrorMessageComponent,
+    InputIconModule,
   ],
   templateUrl: './company-registration.component.html',
   styleUrl: './company-registration.component.scss',
@@ -44,13 +49,17 @@ export class CompanyRegistrationComponent implements OnInit {
   step: number = 1;
   placeholder = 'File must be a PDF';
   isAwaitingReview: boolean = false;
+  isLoading: boolean = false;
+  subscription!: Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userRegistrationService: UserRegistrationService
+    private userRegistrationService: UserRegistrationService,
+    private toastService: ToastService,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
@@ -76,24 +85,66 @@ export class CompanyRegistrationComponent implements OnInit {
           contact: ['', Validators.required],
         }),
       },
-      { validators: confirmPasswordValidator() }
+      {
+        validators: confirmPasswordValidator(
+          'credentials.password',
+          'credentials.confirmPassword'
+        ),
+      }
     );
   }
 
+  createFromData<T>(data: Record<string, T>) {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value instanceof File || value instanceof Blob) {
+        formData.append(key, value);
+      } else if (typeof value === 'string') {
+        formData.append(key, value);
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+
+    return formData;
+  }
+
   onSubmit() {
+    this.isLoading = true; // display loader
     const companyForm = this.companyForm;
     if (companyForm.invalid) {
+      this.isLoading = false;
       return;
     }
 
-    const data: ICompanyRegistrationDetails = {
+    const data = {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
 
-    this.userRegistrationService.companySignUp(data);
-    this.reset();
-    this.router.navigate(['']);
+    const formData = this.createFromData(data);
+
+    this.userRegistrationService
+      .companySignUp(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          const { email, role } = response;
+          this.userRegistrationService.userEmail.set(email);
+          this.isLoading = false; // hides loader
+          this.reset();
+          this.userRegistrationService.user.set(role); // get this value from the response object later
+          this.router.navigate(['/auth/user-verification']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.toastService.showError('Invalid detail', error.message);
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   onContinue(step = 2) {
@@ -140,7 +191,7 @@ export class CompanyRegistrationComponent implements OnInit {
       ) {
         return 'This field is required';
       } else if (
-        this.companyForm.errors?.[errorKey] ||
+        this.companyForm.errors?.[errorKey] &&
         this.getFormControl('credentials.confirmPassword')?.dirty
       ) {
         return 'Confirm password is invalid';

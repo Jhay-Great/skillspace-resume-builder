@@ -26,6 +26,7 @@ export class InputFieldComponent implements ControlValueAccessor {
   @ViewChild ('Input') inputElement!:ElementRef;
 
   value:string = '';
+  isVisible:boolean = false;
   onChange = (value:string) => {};
   onTouched = () => {};
 
@@ -62,6 +63,7 @@ export class InputFieldComponent implements ControlValueAccessor {
   togglePasswordVisibility(): void {
     const input = this.inputElement.nativeElement
     input.type = input.type === 'password' ? 'text' : 'password';
+    this.isVisible = !this.isVisible;
   }
 
 
