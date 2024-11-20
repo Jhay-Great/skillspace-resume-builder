@@ -11,7 +11,7 @@
         >
         
         @if (type === 'password') {
-            <img src="assets/svgs/hide-password.svg" 
+            <img [src]="isVisible ?'assets/svgs/hide-password.svg' : 'assets/svgs/view-password.svg' " 
             alt="hidden password svg icon" 
             class="password-icon"
             (click)="togglePasswordVisibility()"

@@ -9,11 +9,19 @@ import { getFormErrorMessage } from '../../utils/form-utils';
 import { ButtonModule } from 'primeng/button';
 import { CapitalizePipe } from '../../../core/pipes/capitalize/capitalize.pipe';
 import { InputOtpModule } from 'primeng/inputotp';
+import { FormatTimePipe } from '@src/app/core/pipes/format-time/format-time.pipe';
+import { TimerService } from '@src/app/core/services/timer-service/timer.service';
 
 @Component({
   selector: 'app-otp-verification',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule, CapitalizePipe, InputOtpModule],
+  imports: [
+    ButtonModule,
+    ReactiveFormsModule,
+    CapitalizePipe,
+    InputOtpModule,
+    FormatTimePipe,
+  ],
   templateUrl: './otp-verification.component.html',
   styleUrl: './otp-verification.component.scss',
 })
@@ -22,10 +30,12 @@ export class OtpVerificationComponent {
   verificationLoading: boolean = false;
   @Output() onVerify: EventEmitter<any> = new EventEmitter();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, public timerService: TimerService) {
     this.verificationForm = this.fb.group({
       verificationCode: ['', [Validators.required]],
     });
+
+    this.timerService.startTimer();
   }
 
   onSubmit() {
@@ -33,7 +43,7 @@ export class OtpVerificationComponent {
     if (this.verificationForm.valid) {
       this.verificationLoading = true;
 
-      const {verificationCode} = this.verificationForm.value
+      const { verificationCode } = this.verificationForm.value;
 
       this.onVerify.emit(verificationCode);
 
@@ -49,5 +59,11 @@ export class OtpVerificationComponent {
 
   getErrorMessage(controlName: string): string {
     return getFormErrorMessage(controlName, this.verificationForm);
+  }
+
+  requestNewVerificationCode() {
+    // request a new verification code .
+    // restart timer on success
+    this.timerService.restartTimer();
   }
 }

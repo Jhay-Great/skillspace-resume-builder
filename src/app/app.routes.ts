@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
+import { authGuard } from './core/guards/auth-guard/auth.guard';
+import { roleGuard } from './core/guards/role-guard/role.guard';
 
 export const routes: Routes = [
   {
@@ -23,6 +25,14 @@ export const routes: Routes = [
         title: 'Company registration',
       },
       {
+        path: 'user-verification',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/user-verification/user-verification.component'
+          ).then(uv => uv.UserVerificationComponent),
+          title: 'Verification'
+      },
+      {
         path: 'talent-registration',
         loadComponent: () =>
           import(
@@ -31,7 +41,7 @@ export const routes: Routes = [
         title: 'Talent registration',
       },
       {
-        path: 'review',
+        path: 'review/:status',
         loadComponent: () =>
           import(
             './feature/user-registration/company/registration-feedback/registration-feedback.component'
@@ -70,6 +80,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then(
         (d) => d.DashboardLayoutComponent
@@ -77,6 +88,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'company-programmes',
+        data: {role: 'ADMIN'},
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/programmes/company/company.component').then(
             (d) => d.CompanyComponent

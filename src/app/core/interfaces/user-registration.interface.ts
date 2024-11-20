@@ -8,6 +8,7 @@ export interface ICompanyRegistrationDetails  {
     logo:FormData;
     contact: string;
 }
+
 export interface ITalentRegistrationDetails {
     fullName: string;
     email: string;
@@ -15,3 +16,5 @@ export interface ITalentRegistrationDetails {
     confirmPassword: string;
     contact: string;
 }
+
+export type Status = string;

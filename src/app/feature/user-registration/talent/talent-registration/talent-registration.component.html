@@ -128,7 +128,12 @@
     </section>
     
     
-    <button type="submit">Submit for approval</button>
+    <button type="submit">
+      @if (isLoading) {
+        <p-inputIcon styleClass="pi pi-spinner pi-spin" />
+      }
+      Submit for approval
+    </button>
     
   </form>
   
