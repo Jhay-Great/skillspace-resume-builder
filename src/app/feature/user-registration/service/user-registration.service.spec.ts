@@ -6,8 +6,8 @@ import {
 
 import { UserRegistrationService } from './user-registration.service';
 import {
-  ICompanyRegistrationDetails,
-  ITalentRegistrationDetails,
+  CompanyRegistrationDetails,
+  TalentRegistrationDetails,
 } from '../../../core/interfaces/user-registration.interface';
 
 describe('UserRegistrationService', () => {
@@ -33,30 +33,22 @@ describe('UserRegistrationService', () => {
 
   it('should call companySignUp with the correct data', () => {
     const api = 'https://www.thisisalink.com';
-    const endpoint = '/compnay';
-    const mockCompanyData: ICompanyRegistrationDetails = {
-      name: 'AmaliTech',
-      email: 'amalitechtraining@amalitech.org',
-      password: 'som#th1ngNice',
-      confirmPassword: 'som#th1ngNice',
-      website: 'amalitech.org',
-      certificate: new FormData(),
-      logo: new FormData(),
-      contact: '+2338493984',
-    };
+    const endpoint = '/company';
 
-    service.companySignUp(mockCompanyData).subscribe();
+    const mockFormData = new FormData();
+
+    service.companySignUp(mockFormData).subscribe();
 
     const req = httpMock.expectOne(`${api}${endpoint}`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(mockCompanyData);
+    expect(req.request.body).toEqual(mockFormData);
     req.flush({});
   });
 
   it('should call talentSignUp with the correct data', () => {
     const api = 'https://www.thisisalink.com';
     const endpoint = '/compnay';
-    const mockTalentData: ITalentRegistrationDetails = {
+    const mockTalentData: TalentRegistrationDetails = {
       fullName: 'AmaliTech',
       email: 'amalitechtraining@amalitech.org',
       password: 'som#th1ngNice',

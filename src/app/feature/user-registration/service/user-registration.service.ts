@@ -1,10 +1,14 @@
-import { Injectable, signal, } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
 import {
-  ICompanyRegistrationDetails,
-  ITalentRegistrationDetails,
+  CompanyRegistrationDetails,
+  CompanyRegistrationResponse,
+  OtpData,
+  TalentRegistrationDetails,
+  TalentRegistrationResponse,
 } from '@src/app/core/interfaces/user-registration.interface';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,28 +18,38 @@ export class UserRegistrationService {
   private companyEndpoint: string = environment.COMPANY_ENDPOINT;
   private talentEndpoint: string = environment.TALENT_ENDPOINT;
   private otpEndpoint: string = environment.OTP_ENDPOINT;
+  private otpBase = environment.OTP_BASE_API;
 
   // signals
-  otpResponse = signal<string | null> (null);
+  otpResponse = signal<string | null>(null);
   user = signal<string | null>(null);
+  userEmail = signal<string | null>(null);
 
   constructor(private http: HttpClient) {}
 
-  companySignUp(data: ICompanyRegistrationDetails) {
-    return this.submitForApproval(`${this.api}${this.companyEndpoint}`, data);
+  private submitForApproval<D, T>(api: string, data: D) {
+    return this.http.post<T>(api, data);
   }
 
-  talentSignUp(data: ITalentRegistrationDetails) {
-    return this.submitForApproval(`${this.api}${this.talentEndpoint}`, data);
+  companySignUp(data: FormData): Observable<CompanyRegistrationResponse> {
+    return this.submitForApproval<FormData, CompanyRegistrationResponse>(
+      `${this.api}/${this.companyEndpoint}`,
+      data
+    );
   }
 
-  private submitForApproval<T>(api: string, data: T) {
-    return this.http.post(api, data);
+  talentSignUp(
+    data: TalentRegistrationDetails
+  ): Observable<TalentRegistrationResponse> {
+    return this.submitForApproval<
+      TalentRegistrationDetails,
+      TalentRegistrationResponse
+    >(`${this.api}/${this.talentEndpoint}`, data);
   }
 
-  verifyOTP(otp: string) {
-    return this.submitForApproval(
-      `${this.api}${this.otpEndpoint}`,
+  verifyOTP(otp: OtpData) {
+    return this.submitForApproval<OtpData, null>(
+      `${this.otpBase}/${this.otpEndpoint}`,
       otp
     )
   }
