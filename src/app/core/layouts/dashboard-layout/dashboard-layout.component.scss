@@ -61,6 +61,7 @@ header {
             @include mix.flex-position(center, center);
             width: 100%;
             height: fit-content;
+            margin-bottom: .8rem;
         }
         span {
             font-size: var.$large;
@@ -70,17 +71,22 @@ header {
 
     }
 
-    .operations {
+    .operations, .sidebar-tabs {
         @include mix.flex(column);
-        
+        button { 
+            box-shadow: none;
+            border : none;
+        }
         .tab {
             @include mix.flex();
             @include mix.flex-position(flex-start, center);
             padding-inline: 1rem;
-            padding-block: 0.5rem;
+            padding-block: 0.7rem;
             cursor: pointer;
+            background-color: transparent;
+            color: white;
         }
-        
+       
         .tab:hover {
             background-color: var.$color-white;
             color: var.$color-blue-gray-800;
@@ -92,6 +98,14 @@ header {
 
             }
         }
+        .active { 
+            background-color: var.$color-white;
+            color: var.$color-blue-gray-800;
+            svg path {
+                fill: var.$color-blue-gray-800;
+            }
+        }
+        
     }
 }
 
