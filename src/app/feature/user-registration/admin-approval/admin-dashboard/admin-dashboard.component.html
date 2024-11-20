@@ -32,7 +32,7 @@
 
                             }
                         <span class="ml-1 vertical-align-middle">
-                            {{ applicant.name }}
+                            {{ applicant.name }} 
                         </span>
                         </td>
                         <td>{{ applicant.email }}</td>
@@ -45,9 +45,26 @@
                         </td>
                         <td>{{ applicant.date }}</td>
                         <td>
-                            <button>
-                                <i class="pi pi-ellipsis-v" style="color: #98A2B3"></i>
-                            </button>
+
+                            <div class="card flex justify-content-center">
+                                <p-button (onClick)="op.toggle($event)" icon="pi pi-ellipsis-v" />
+                                <p-overlayPanel #op>
+                                    <div class="flex flex-column gap-3 w-25rem">
+                                        <div class="company-name">
+                                            <!-- initials -->
+                                            <p-avatar label="JA" shape="circle" />
+                                            <!-- name & email -->
+                                            <div class="name_email">
+                                                <p class="name">Amalitech Ghana</p>
+                                                <p class="email">julia&#64;amalitechtraining.org</p>
+                                            </div>
+                                        </div>
+                                        <button>
+                                            View profile
+                                        </button>
+                                    </div>
+                                </p-overlayPanel>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>

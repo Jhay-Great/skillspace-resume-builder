@@ -6,11 +6,12 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [TableModule, ButtonModule, TagModule, AvatarModule,  ],
+  imports: [TableModule, ButtonModule, TagModule, AvatarModule, OverlayPanelModule, ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
 })
