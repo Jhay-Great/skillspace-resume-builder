@@ -88,8 +88,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'company-programmes',
-        data: {role: 'ADMIN'},
-        canActivate: [roleGuard],
+        // data: { role: 'ADMIN' },
+        // canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/programmes/company/company.component').then(
             (d) => d.CompanyComponent
