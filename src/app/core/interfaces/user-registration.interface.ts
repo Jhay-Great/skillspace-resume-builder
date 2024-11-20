@@ -1,4 +1,4 @@
-export interface ICompanyRegistrationDetails  {
+export interface CompanyRegistrationDetails  {
     name: string;
     email: string;
     password: string;
@@ -7,14 +7,36 @@ export interface ICompanyRegistrationDetails  {
     certificate: FormData;
     logo:FormData;
     contact: string;
+
+    // role?: string;
+    // approvalStatus?: string;
+    // isOtpVerified?: boolean;
+}
+export interface CompanyRegistrationResponse extends CompanyRegistrationDetails {
+    role: string;
+    approvalStatus: string;
+    isOtpVerified: boolean;
 }
 
-export interface ITalentRegistrationDetails {
+export interface TalentRegistrationDetails {
     fullName: string;
     email: string;
     password: string;
     confirmPassword: string;
     contact: string;
+
+    // role?: string;
+    // isOtpVerified?: boolean;
+}
+export interface TalentRegistrationResponse extends TalentRegistrationDetails {
+    role: string;
+    isOtpVerified: boolean;
+
 }
 
 export type Status = string;
+
+export interface OtpData {
+    token: string;
+    email: string;
+}
