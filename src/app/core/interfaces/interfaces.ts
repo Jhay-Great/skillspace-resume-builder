@@ -10,3 +10,9 @@ export interface mockDetails {
   end: string;
   status: string;
 }
+
+
+export interface Country{
+  name: string;
+  flag: string
+}

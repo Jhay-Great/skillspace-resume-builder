@@ -1,4 +1,4 @@
-<app-page-header-description 
+<app-page-header-description
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
@@ -7,13 +7,16 @@
   <p-tabView>
     <!-- closable text -->
     <section class="pro-reminder">
-        <div class="reminder-tes">
-            <!-- svg -->
-            <!-- text -->
-            <p>Upgrade to use our <strong>Resume builder</strong></p>
-        </div>
-        <!-- would be using prime icons for this -->
-        <button class="close-btn">x</button>
+      <div class="reminder-tes">
+        <!-- svg -->
+        <img src="assets/svgs/proicon.svg" alt="icon" />
+        <!-- text -->
+        <p>Upgrade to use our <strong>Resume builder</strong></p>
+      </div>
+      <!-- would be using prime icons for this -->
+      <button class="close-btn">
+        <img src="assets/svgs/close.svg" alt="cancel" />
+      </button>
     </section>
 
     <!-- company details -->
@@ -45,7 +48,6 @@
             />
           </p-iconField>
         </div>
-
 
         <!-- upload --
         <div class="card upload">
@@ -84,21 +86,20 @@
 
         <!-- email -->
         <div class="card flex flex-wrap justify-content-center gap-3">
-            <label for="username">Portfolio links</label>
-            <p class="description">{{ description }}</p>
-            <p-iconField iconPosition="left">
-                <p-inputIcon styleClass="pi pi-envelope" />
-                <input
-                class="email"
-                type="text"
-                [disabled]="true"
-                pInputText
-                placeholder="amalitech.ghana@gmail.com"
-                />
-            </p-iconField>
+          <label for="username">Portfolio links</label>
+          <p class="description">{{ description }}</p>
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-envelope" />
+            <input
+              class="email"
+              type="text"
+              [disabled]="true"
+              pInputText
+              placeholder="amalitech.ghana@gmail.com"
+            />
+          </p-iconField>
         </div>
 
-            
         <!-- Social media Links -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Social media Links</label>
@@ -108,14 +109,60 @@
             <input type="text" pInputText placeholder="www.Seanlifer.com" />
           </p-iconField>
         </div>
-        
       </form>
     </p-tabPanel>
 
     <!-- documents -->
     <p-tabPanel header="Education">
       <!-- content goes here -->
-      <p>hi</p>
+      <div class="educationFromWrap">
+        <!-- education form -->
+
+        <form [formGroup]="educationForm">
+          <!-- name and adress wrap -->
+          <div class="nameAddress-wrap">
+            <!-- name wrap -->
+            <div class="name-wrap">
+              <label for="name">Name</label>
+              <p>This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-building"></i>
+                <input
+                  id="name"
+                  type="text"
+                  pInputText
+                  formControlName="name"
+                  placeholder="Enter school's name"
+                />
+              </div>
+            </div>
+
+            <!-- address wrap -->
+            <div class="address-wrap">
+              <label for="address">Address</label>
+              <p>This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-map-marker"></i>
+                <input
+                  type="text"
+                  pInputText
+                  formControlName="address"
+                  placeholder="Enter address of school"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- country -->
+          <div class="country-wrap">
+            <label for="country">Country</label>
+            <p>{{ educationDescription }}</p>
+            <!-- testing -->
+            
+          </div>
+          <!--  -->
+        </form>
+      </div>
     </p-tabPanel>
 
     <!-- security -->
