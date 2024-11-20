@@ -1,1 +1,58 @@
-<p>admin-dashboard works!</p>
+<div class="main-container">
+    <div class="header">
+        <p class="header-title">Manage career programmes</p>
+        <p class="header-subtitle">Easily manage companies and engage with them.</p>
+    </div>
+
+    <!-- search N filter -->
+    
+    <section>
+        <div class="card">
+            <p-table [value]="applicants" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Application date</th>
+                        <th style="width: 5rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-applicant>
+                    <tr>
+                        <td>
+                            @if(!applicant.image) {
+                                <p-avatar label="P" shape="circle" />
+                            }@else {
+                                <img 
+                                [alt]="applicant.name" 
+                                [src]="applicant.image" 
+                                width="32" 
+                                style="vertical-align: middle" />
+
+                            }
+                        <span class="ml-1 vertical-align-middle">
+                            {{ applicant.name }}
+                        </span>
+                        </td>
+                        <td>{{ applicant.email }}</td>
+                        <td>
+                            <p-tag 
+                            [rounded]="true"
+                        [value]="applicant.status" 
+                        [severity]="getSeverity(applicant.status)" />
+                            <!-- {{ applicant.status }} -->
+                        </td>
+                        <td>{{ applicant.date }}</td>
+                        <td>
+                            <button>
+                                <i class="pi pi-ellipsis-v" style="color: #98A2B3"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </section>
+
+</div>
