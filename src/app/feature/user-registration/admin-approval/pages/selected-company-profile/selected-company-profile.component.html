@@ -1,6 +1,7 @@
 <div class="main-container">
-    <p class="header-title">Company's profile</p>
+    <h1 class="header-title">Company's profile</h1>
 
+    <!-- company details or information -->
     <section class="company-details">
 
         <!-- details -->
@@ -10,19 +11,21 @@
             </div>
             <div class="information">
                 <div class="personal-info data">
-                    <p>Personal Information:</p>
+                    <p class="title">Personal Information:</p>
                     <p>Amalitech Ghana</p>
                     <p>+233 030 456 7889</p>
                     <p>amalitech.ghana&#64;.org</p>
                 </div>
                 <div class="social-media-info data">
-                    <p>Social media links:</p>
+                    <p class="title">Social media links:</p>
                     <div class="links">
-                        <p-button 
+                        <!-- <p-button 
                             pTooltip="Confirm to proceed" 
                             tooltipPosition="bottom"
                             tooltipEvent="hover"
                             icon="pi pi-linkedin"
+                            severity="secondary"
+                            [outlined]="true"
                              />
                         <p-button 
                             pTooltip="Confirm to proceed" 
@@ -35,14 +38,24 @@
                             tooltipPosition="bottom"
                             tooltipEvent="hover"
                             icon="pi pi-globe"
-                             />
+                             /> -->
                         <i class="pi pi-linkedin"
-                        pTooltip="Confirm to proceed" 
-                        tooltipPosition="bottom"
-                        tooltipEvent="hover"
+                            pTooltip="Confirm to proceed" 
+                            tooltipPosition="bottom"
+                            tooltipEvent="hover"
                         ></i> 
-                        <!-- <i class="pi pi-twitter"></i>
-                        <i class="pi pi-globe"></i> -->
+
+                        <i class="pi pi-twitter"
+                            pTooltip="Confirm to proceed" 
+                            tooltipPosition="bottom"
+                            tooltipEvent="hover"
+                        ></i>
+
+                        <i class="pi pi-globe"
+                            pTooltip="Confirm to proceed" 
+                            tooltipPosition="bottom"
+                            tooltipEvent="hover"
+                        ></i>
                     </div>
                 </div>
 
@@ -50,56 +63,92 @@
         </div>
 
         <!-- status -->
-        <p>
+        <p-tag value="Pending" 
+        [rounded]="true" 
+        />
+        <!-- <p>
             pending
-        </p>
+        </p> -->
 
     </section>
 
-    <section>
-        <!-- button -->
+    <!-- certificate -->
+    <section class="display-certificate">
+        <!-- buttons -->
         <div class="btns">
             <p-button (onClick)="reject()" label="Reject company" [outlined]="true" />
             <p-button (onClick)="confirm()" label="Accept company" />
         </div>
 
-        <!-- header -->
-        <h2>Registered certificate</h2>
+        <div class="company-registered-certificate">
+            <!-- header -->
+            <h2>Registered certificate</h2>
+    
+            <!-- certificate -->
+            <div class="uploaded-certificate">
+                <img src="" alt="">
+            </div>
 
-        <!-- certificate -->
-        <img src="" alt="">
+        </div>
     </section>
 
 </div>
 
-<div class="card flex justify-content-center">
-    <!-- <p-toast /> -->
-    <p-confirmDialog #cd>
-        <ng-template pTemplate="headless" let-message>
-            <div class="flex flex-column align-items-center p-5 surface-overlay border-round">
-                <div class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem">
-                    <i class="pi pi-question text-5xl"></i>
+<p-confirmDialog #cd>
+    <ng-template pTemplate="headless" let-message>
+        <!-- approved -->
+        @if (isApproved) {
+                <div class="dialog-container flex flex-column align-items-center p-5 surface-overlay border-round">
+                    <span class="header font-bold text-2xl block mb-2 mt-4">
+                        {{ message.header }}
+                    </span>
+                    <p class="description mb-0">{{ message.message }}</p>
+                    <div class="dialog-btns flex align-items-center gap-2 mt-4">
+                        <button 
+                            pButton 
+                            label="Cancel"
+                            (click)="cd.reject()"
+                            [text]="true" 
+                            class="p-button-outlined w-8rem ">
+                        </button>
+                        <button 
+                            pButton 
+                            label="Save" 
+                            (click)="cd.accept()" 
+                            class="w-8rem">
+                        </button>
+                    </div>
                 </div>
-                <span class="font-bold text-2xl block mb-2 mt-4">
-                    {{ message.header }}
-                </span>
-                <p class="mb-0">{{ message.message }}</p>
-                <div class="flex align-items-center gap-2 mt-4">
-                    <button 
-                        pButton 
-                        label="Save" 
-                        (click)="cd.accept()" 
-                        class="w-8rem">
-                    </button>
-                    <button 
-                        pButton 
-                        label="Cancel"
-                        (click)="cd.reject()" 
-                        class="p-button-outlined w-8rem ">
-                    </button>
+                
+            }
+
+        <!-- rejected -->
+        @if (isRejected) {
+                <div class="dialog-container flex flex-column align-items-center p-5 surface-overlay border-round">
+                    <span class="header font-bold text-2xl block mb-2 mt-4">
+                        {{ message.header }}
+                    </span>
+                    <p class="description mb-0">{{ message.message }}</p>
+                    <div class="dialog-btns flex align-items-center gap-2 mt-4">
+                        <button 
+                            pButton 
+                            label="Cancel"
+                            (click)="cd.reject()"
+                            [text]="true" 
+                            class="p-button-outlined w-8rem ">
+                        </button>
+                        <button 
+                            pButton 
+                            label="Rejected" 
+                            (click)="cd.accept()" 
+                            severity="danger"
+                            class="rejected-btn w-8rem">
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </ng-template>
-    </p-confirmDialog>
-    <!-- <p-button (onClick)="confirm()" label="Confirm" /> -->
-</div>
+                
+            }
+    </ng-template>
+</p-confirmDialog>
+
+    
