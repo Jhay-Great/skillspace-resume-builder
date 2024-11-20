@@ -76,7 +76,9 @@ export class TalentRegistrationComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          const { email, role } = response; 
+          console.log(response);
+          const { email, role } = response.data; 
+          console.log(email, role);
           this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
@@ -86,6 +88,7 @@ export class TalentRegistrationComponent implements OnInit {
         error: (error) => {
           this.isLoading = false;
           this.toastService.showError('Error', error.error);
+          console.log('error: ', error);
         },
         complete: () => {
           this.isLoading = false;
