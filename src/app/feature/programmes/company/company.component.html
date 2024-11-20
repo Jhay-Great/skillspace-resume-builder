@@ -289,7 +289,7 @@
 
       <!-- Change History Data Table -->
       <p-table
-        [value]="mockdraft"
+        [value]="mockHistory"
         *ngIf="publishedProgrammes && changeHistoryTable"
         class="historytable"
       >
@@ -317,7 +317,7 @@
             <td>
               <div class="history-wrap">
                 <p class="date">{{ data.name }}</p>
-                <p class="infotext">{{ data.name }}</p>
+                <p class="infotext">{{ data.description }}</p>
               </div>
             </td>
           </tr>
