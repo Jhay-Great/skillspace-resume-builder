@@ -99,14 +99,11 @@ export class CompanyRegistrationComponent implements OnInit {
   
     Object.entries(data).forEach(([key, value]) => {
       if (value instanceof File || value instanceof Blob) {
-        console.log(key, value)
         formData.append(key, value);
       } else if (typeof value === 'string') {
-        console.log(key, value)
         formData.append(key, value);
       } else if (value !== undefined && value !== null) {
         formData.append(key, JSON.stringify(value));
-        console.log('called as well...', value)
       }
     });
     
@@ -125,21 +122,26 @@ export class CompanyRegistrationComponent implements OnInit {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
+    console.log('data: ', data);
 
     const formData = this.createFromData(data);
-    console.log(formData);
+    // console.log(formData);
 
     this.userRegistrationService
       .companySignUp(formData)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
+          console.log(response);
+          const { email, role } = response; 
+          this.userRegistrationService.userEmail.set(email) 
           this.isLoading = false; // hides loader
           this.reset();
           this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
           this.router.navigate(['/auth/user-verification']);
         },
         error: (error) => {
+          console.log(error);
           this.isLoading = false;
           this.toastService.showError('Invalid detail', error.message);
         },

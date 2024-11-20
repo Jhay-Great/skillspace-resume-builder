@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormGroup,
@@ -46,7 +46,8 @@ export class TalentRegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private userRegistrationService: UserRegistrationService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {
@@ -69,20 +70,25 @@ export class TalentRegistrationComponent implements OnInit {
       return;
     }
     const data = { ...this.talentForm.value };
+    console.log('data: ', data);
 
     this.subscription = this.userRegistrationService
       .talentSignUp(data)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
+          const { email, role } = response; 
+          console.log('response: ', role);
+          this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
-          this.userRegistrationService.user.set('TALENT');
+          this.userRegistrationService.user.set(role);
           this.router.navigate(['/auth/user-verification']);
         },
         error: (error) => {
           this.isLoading = false;
-          this.toastService.showError('Error', error.message);
+          this.toastService.showError('Error', error.error);
+          console.log(error);
         },
         complete: () => {
           this.isLoading = false;
