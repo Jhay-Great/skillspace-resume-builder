@@ -4,6 +4,7 @@ import { environment } from '../../../../../environments/environment.development
 import { LoginCredentials, User, UserRole } from '../../models/auth.model';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from '../../../../core/services/localStorageService/local-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +14,10 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private router: Router
   ) {
-    this._userRole.set(
-      this.localStorageService.getItem<UserRole>('USER_ROLE')
-    );
+    this._userRole.set(this.localStorageService.getItem<UserRole>('USER_ROLE'));
   }
 
   get userRole(): UserRole | null {
@@ -48,7 +48,7 @@ export class AuthService {
 
   login(credentials: LoginCredentials): Observable<User> {
     return this.http.post<User>(
-      `${environment.BASE_API}/v1/auth/login`,
+      `${environment.BASE_API}v1/auth/login`,
       credentials
     );
   }
@@ -56,5 +56,8 @@ export class AuthService {
   logout() {
     // Remove access token from local storage
     // Remove user role from local storage
+    this.clearAccessToken();
+    this.clearUserRole();
+    this.router.navigate(['auth/login'])
   }
 }
