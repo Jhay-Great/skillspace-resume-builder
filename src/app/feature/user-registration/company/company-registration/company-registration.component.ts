@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -23,7 +23,7 @@ import {
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { FileUploadInputFieldComponent } from '@shared/components/file-upload-input-field/file-upload-input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
-import { ICompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
+import { CompanyRegistrationDetails } from '@src/app/core/interfaces/user-registration.interface';
 import { UserRegistrationService } from '../../service/user-registration.service';
 import { Subscription } from 'rxjs';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
@@ -58,7 +58,8 @@ export class CompanyRegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userRegistrationService: UserRegistrationService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +94,22 @@ export class CompanyRegistrationComponent implements OnInit {
     );
   }
 
+  createFromData<T>(data: Record<string, T>) {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value instanceof File || value instanceof Blob) {
+        formData.append(key, value);
+      } else if (typeof value === 'string') {
+        formData.append(key, value);
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+
+    return formData;
+  }
+
   onSubmit() {
     this.isLoading = true; // display loader
     const companyForm = this.companyForm;
@@ -101,19 +118,23 @@ export class CompanyRegistrationComponent implements OnInit {
       return;
     }
 
-    const data: ICompanyRegistrationDetails = {
+    const data = {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
 
+    const formData = this.createFromData(data);
+
     this.userRegistrationService
-      .companySignUp(data)
-      .pipe(takeUntilDestroyed())
+      .companySignUp(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
+          const { email, role } = response;
+          this.userRegistrationService.userEmail.set(email);
           this.isLoading = false; // hides loader
           this.reset();
-          this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
+          this.userRegistrationService.user.set(role); // get this value from the response object later
           this.router.navigate(['/auth/user-verification']);
         },
         error: (error) => {
