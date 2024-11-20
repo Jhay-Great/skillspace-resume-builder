@@ -56,14 +56,11 @@ export class CreatePasswordComponent {
         password,
       };
 
-      console.log("create password payload: ", newUserCredentials);
-
       this.forgotPasswordService
         .createNewPassword(newUserCredentials)
         .subscribe({
           next: (response) => {
             this.createPasswordLoading = false;
-            console.log('create password response: ', response);
             this.toastService.showSuccess(
               'Congratulations',
               'Password has been set successfully'
@@ -72,7 +69,6 @@ export class CreatePasswordComponent {
           },
           error: (error) => {
             this.createPasswordLoading = false;
-            console.log('create password error: ', error);
             this.toastService.showError('Error', error.error);
           },
         });

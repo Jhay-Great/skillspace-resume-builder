@@ -46,8 +46,6 @@ export class OtpVerificationComponent {
       const { verificationCode } = this.verificationForm.value;
 
       this.onVerify.emit(verificationCode);
-
-      console.log('verification code : ', this.verificationForm.value);
     } else {
       this.verificationForm.markAllAsTouched();
     }

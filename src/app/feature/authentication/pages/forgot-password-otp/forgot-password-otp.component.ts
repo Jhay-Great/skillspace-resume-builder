@@ -29,7 +29,6 @@ export class ForgotPasswordOtpComponent {
       token: verificationCode,
     };
 
-    console.log('payload for verify otp: ', payload);
     this.forgotPasswordService.verifyOtp(payload);
     // Show success or error toast notification
     this.toastService.showSuccess(

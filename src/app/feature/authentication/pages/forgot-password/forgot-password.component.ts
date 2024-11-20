@@ -49,20 +49,17 @@ export class ForgotPasswordComponent {
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
       this.forgotPasswordLoading = true;
-      console.log(this.forgotPasswordForm.value);
       // send forgot password request
       const { email } = this.forgotPasswordForm.value;
       this.forgotPasswordService.setUserEmail(email);
       this.forgotPasswordService.makeOtpRequest(email).subscribe({
         next: (response) => {
-          console.log('response from api: ', response);
           this.forgotPasswordLoading = false;
           this.toastService.showSuccess('Success', 'OTP has been sent. Check your mail');
           this.router.navigate(['/auth/forgot-password/otp']);
 
         },
         error: (error) => {
-          console.log('error from api: ', error);
           this.forgotPasswordLoading = false;
           this.toastService.showError('Error', error.error);
         },
