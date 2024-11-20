@@ -28,8 +28,6 @@ export class UserRegistrationService {
   constructor(private http: HttpClient) {}
 
   private submitForApproval<D, T>(api: string, data: D) {
-    console.log('api: ', api);
-    console.log('data: ', data);
     return this.http.post<T>(api, data);
   }
 
@@ -53,11 +51,6 @@ export class UserRegistrationService {
     return this.submitForApproval<IOtpData, null>(
       `${this.otpBase}/${this.otpEndpoint}`,
       otp
-    ).pipe(
-      map(data => {
-        console.log(data);
-        return data;
-      })
-    );
+    )
   }
 }

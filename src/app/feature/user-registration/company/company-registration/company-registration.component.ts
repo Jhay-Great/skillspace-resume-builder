@@ -59,11 +59,11 @@ export class CompanyRegistrationComponent implements OnInit {
     private router: Router,
     private userRegistrationService: UserRegistrationService,
     private toastService: ToastService,
-    private destroyRef: DestroyRef,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
-;    this.companyForm = this.fb.group(
+    this.companyForm = this.fb.group(
       {
         credentials: this.fb.group({
           name: ['', Validators.required],
@@ -91,12 +91,12 @@ export class CompanyRegistrationComponent implements OnInit {
           'credentials.confirmPassword'
         ),
       }
-    )
+    );
   }
 
   createFromData<T>(data: Record<string, T>) {
     const formData = new FormData();
-  
+
     Object.entries(data).forEach(([key, value]) => {
       if (value instanceof File || value instanceof Blob) {
         formData.append(key, value);
@@ -106,10 +106,10 @@ export class CompanyRegistrationComponent implements OnInit {
         formData.append(key, JSON.stringify(value));
       }
     });
-    
+
     return formData;
   }
-  
+
   onSubmit() {
     this.isLoading = true; // display loader
     const companyForm = this.companyForm;
@@ -122,26 +122,22 @@ export class CompanyRegistrationComponent implements OnInit {
       ...companyForm.value.credentials,
       ...companyForm.value.information,
     };
-    console.log('data: ', data);
 
     const formData = this.createFromData(data);
-    // console.log(formData);
 
     this.userRegistrationService
       .companySignUp(formData)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          console.log(response);
-          const { email, role } = response; 
-          this.userRegistrationService.userEmail.set(email) 
+          const { email, role } = response;
+          this.userRegistrationService.userEmail.set(email);
           this.isLoading = false; // hides loader
           this.reset();
-          this.userRegistrationService.user.set('COMPANY'); // get this value from the response object later
+          this.userRegistrationService.user.set(role); // get this value from the response object later
           this.router.navigate(['/auth/user-verification']);
         },
         error: (error) => {
-          console.log(error);
           this.isLoading = false;
           this.toastService.showError('Invalid detail', error.message);
         },

@@ -70,7 +70,6 @@ export class TalentRegistrationComponent implements OnInit {
       return;
     }
     const data = { ...this.talentForm.value };
-    console.log('data: ', data);
 
     this.subscription = this.userRegistrationService
       .talentSignUp(data)
@@ -78,7 +77,6 @@ export class TalentRegistrationComponent implements OnInit {
       .subscribe({
         next: (response) => {
           const { email, role } = response; 
-          console.log('response: ', role);
           this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
@@ -88,7 +86,6 @@ export class TalentRegistrationComponent implements OnInit {
         error: (error) => {
           this.isLoading = false;
           this.toastService.showError('Error', error.error);
-          console.log(error);
         },
         complete: () => {
           this.isLoading = false;
