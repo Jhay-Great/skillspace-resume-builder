@@ -29,8 +29,8 @@ export const routes: Routes = [
         loadComponent: () =>
           import(
             './feature/user-registration/user-verification/user-verification.component'
-          ).then(uv => uv.UserVerificationComponent),
-          title: 'Verification'
+          ).then((uv) => uv.UserVerificationComponent),
+        title: 'Verification',
       },
       {
         path: 'talent-registration',
@@ -88,11 +88,19 @@ export const routes: Routes = [
     children: [
       {
         path: 'approvals',
-        loadComponent: () => 
-          import('./feature/user-registration/admin-approval/admin-dashboard/admin-dashboard.component').then(
-            (a) => a.AdminDashboardComponent
-          ),
-          title: 'Company Approvals',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/admin-approval/admin-dashboard/admin-dashboard.component'
+          ).then((a) => a.AdminDashboardComponent),
+        title: 'Company Approvals',
+      },
+      {
+        path: 'approvals/:company',
+        loadComponent: () =>
+          import(
+            './feature/user-registration/admin-approval/pages/selected-company-profile/selected-company-profile.component'
+          ).then((cp) => cp.SelectedCompanyProfileComponent),
+        title: 'Company Approval',
       },
       {
         path: 'company-programmes',
