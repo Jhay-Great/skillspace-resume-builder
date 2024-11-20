@@ -24,4 +24,5 @@ export interface IApplicantData {
     email: string;
     status: string;
     date: string;
+    image?:string;
 }
