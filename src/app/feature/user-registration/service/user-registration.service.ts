@@ -2,11 +2,11 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
 import {
-  ICompanyRegistrationDetails,
-  ICompanyRegistrationResponse,
-  IOtpData,
-  ITalentRegistrationDetails,
-  ITalentRegistrationResponse,
+  CompanyRegistrationDetails,
+  CompanyRegistrationResponse,
+  OtpData,
+  TalentRegistrationDetails,
+  TalentRegistrationResponse,
 } from '@src/app/core/interfaces/user-registration.interface';
 import { map, Observable } from 'rxjs';
 
@@ -31,24 +31,24 @@ export class UserRegistrationService {
     return this.http.post<T>(api, data);
   }
 
-  companySignUp(data: FormData): Observable<ICompanyRegistrationResponse> {
-    return this.submitForApproval<FormData, ICompanyRegistrationResponse>(
+  companySignUp(data: FormData): Observable<CompanyRegistrationResponse> {
+    return this.submitForApproval<FormData, CompanyRegistrationResponse>(
       `${this.api}/${this.companyEndpoint}`,
       data
     );
   }
 
   talentSignUp(
-    data: ITalentRegistrationDetails
-  ): Observable<ITalentRegistrationResponse> {
+    data: TalentRegistrationDetails
+  ): Observable<TalentRegistrationResponse> {
     return this.submitForApproval<
-      ITalentRegistrationDetails,
-      ITalentRegistrationResponse
+      TalentRegistrationDetails,
+      TalentRegistrationResponse
     >(`${this.api}/${this.talentEndpoint}`, data);
   }
 
-  verifyOTP(otp: IOtpData) {
-    return this.submitForApproval<IOtpData, null>(
+  verifyOTP(otp: OtpData) {
+    return this.submitForApproval<OtpData, null>(
       `${this.otpBase}/${this.otpEndpoint}`,
       otp
     )

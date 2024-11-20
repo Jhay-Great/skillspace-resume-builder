@@ -1,4 +1,4 @@
-export interface ICompanyRegistrationDetails  {
+export interface CompanyRegistrationDetails  {
     name: string;
     email: string;
     password: string;
@@ -12,13 +12,13 @@ export interface ICompanyRegistrationDetails  {
     // approvalStatus?: string;
     // isOtpVerified?: boolean;
 }
-export interface ICompanyRegistrationResponse extends ICompanyRegistrationDetails {
+export interface CompanyRegistrationResponse extends CompanyRegistrationDetails {
     role: string;
     approvalStatus: string;
     isOtpVerified: boolean;
 }
 
-export interface ITalentRegistrationDetails {
+export interface TalentRegistrationDetails {
     fullName: string;
     email: string;
     password: string;
@@ -28,7 +28,7 @@ export interface ITalentRegistrationDetails {
     // role?: string;
     // isOtpVerified?: boolean;
 }
-export interface ITalentRegistrationResponse extends ITalentRegistrationDetails {
+export interface TalentRegistrationResponse extends TalentRegistrationDetails {
     role: string;
     isOtpVerified: boolean;
 
@@ -36,7 +36,7 @@ export interface ITalentRegistrationResponse extends ITalentRegistrationDetails 
 
 export type Status = string;
 
-export interface IOtpData {
+export interface OtpData {
     token: string;
     email: string;
 }

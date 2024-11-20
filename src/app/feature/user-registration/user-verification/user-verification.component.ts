@@ -4,7 +4,7 @@ import { UserRegistrationService } from '../service/user-registration.service';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ITalentRegistrationResponse } from '@src/app/core/interfaces/user-registration.interface';
+import { TalentRegistrationResponse } from '@src/app/core/interfaces/user-registration.interface';
 
 @Component({
   selector: 'app-user-verification',
