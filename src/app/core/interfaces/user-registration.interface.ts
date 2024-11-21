@@ -48,3 +48,21 @@ export interface IApplicantData {
     date: string;
     image?:string;
 }
+
+export interface ApplicantResponse {
+    statusCode: number;
+    message: string;
+    data: ApplicantsData[]
+}
+export interface ApplicantsData {
+    id: number;
+    role: string;
+    isOtpVerified: boolean;
+    approvalStatus: string;
+    logo: string;
+    certificate: string;
+    name: string;
+    email: string;
+    website: string;
+    contact: string;
+}
