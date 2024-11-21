@@ -76,7 +76,7 @@ export class TalentRegistrationComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          const { email, role } = response; 
+          const { email, role } = response.data; 
           this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
