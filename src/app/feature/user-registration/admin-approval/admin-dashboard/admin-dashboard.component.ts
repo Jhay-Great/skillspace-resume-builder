@@ -11,6 +11,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
     TagModule,
     AvatarModule,
     OverlayPanelModule,
+    DatePipe,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
@@ -41,7 +43,6 @@ export class AdminDashboardComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
-          console.log(response.data);
           this.applicants = response.data;
 
         },

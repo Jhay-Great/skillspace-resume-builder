@@ -71,4 +71,5 @@ export interface ApplicantsData {
     email: string;
     website: string;
     contact: string;
+    createdAt: string;
 }
