@@ -130,7 +130,7 @@ export class CompanyRegistrationComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          const { email, role } = response;
+          const { email, role } = response.data;
           this.userRegistrationService.userEmail.set(email);
           this.isLoading = false; // hides loader
           this.reset();
