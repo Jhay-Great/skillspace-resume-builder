@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
+import { AdminApprovalService } from '../../../service/admin-approval/admin-approval.service';
 
 @Component({
   selector: 'app-selected-company-profile',
@@ -13,11 +15,21 @@ import { TagModule } from 'primeng/tag';
   templateUrl: './selected-company-profile.component.html',
   styleUrl: './selected-company-profile.component.scss',
 })
-export class SelectedCompanyProfileComponent {
+export class SelectedCompanyProfileComponent implements OnInit {
   isApproved:boolean = false;
   isRejected:boolean = false;
   
-  constructor(private confirmationService: ConfirmationService) {}
+  constructor(
+    private confirmationService: ConfirmationService,
+    private adminApprovalService: AdminApprovalService,
+    private destroyRef: DestroyRef,
+  ) {}
+
+  ngOnInit(): void {
+    // this.adminApprovalService.getCompanies().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
+    //   value => console.log(value),
+    // )
+  }
 
   confirm() {
     this.isApproved = true;
