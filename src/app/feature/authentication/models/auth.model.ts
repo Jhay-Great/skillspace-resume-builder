@@ -19,3 +19,18 @@ export interface LoginCredentials {
   email: string;
   password: string;
 }
+
+export interface CustomError  extends Error{ 
+  error: string
+}
+
+
+export interface VerifyPasswordOtp { 
+  email: string;
+  token: string;
+}
+
+export interface createUserCredentials { 
+  email: string; 
+  password: string;
+}
