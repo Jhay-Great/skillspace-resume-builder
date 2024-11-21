@@ -5,11 +5,25 @@ import { LocalStorageService } from '../../services/localStorageService/local-st
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorage = inject(LocalStorageService);
   const token = localStorage.getItem('TOKEN');
-  
-  const authRequest = token ? req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`,
-    }
-  }) : req;
+
+  const excludeUrls = [
+    'v1/users/company/register',
+    'v1/users/talent/register',
+    'v1/users/registration-otp/verify',
+  ];
+
+  const isExcluded = excludeUrls.some(url => req.url.includes(url));
+
+  if (isExcluded) {
+    return next(req);
+  }
+
+  const authRequest = token
+    ? req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    : req;
   return next(authRequest);
 };
