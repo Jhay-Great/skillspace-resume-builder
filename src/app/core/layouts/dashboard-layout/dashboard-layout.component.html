@@ -38,33 +38,20 @@
       <!-- all tabs list  -->
       @if(authService.userRole === 'ADMIN') { @for(tab of adminTabs; track tab)
       {
-      <div
-        class="tab"
-        routerLink="{{ tab.path }}"
-        routerLinkActive="active"
-      >
+      <div class="tab" routerLink="{{ tab.path }}" routerLinkActive="active">
         <i [className]="tab.icon"></i>
         <p>{{ tab.name }}</p>
       </div>
       } } @if(authService.userRole === 'COMPANY') { @for(tab of companyTabs;
       track tab) {
-      <div
-        class="tab "
-        routerLink="{{ tab.path }}"
-        routerLinkActive="active"
-      >
-      <i [className]="tab.icon"></i>
+      <div class="tab" routerLink="{{ tab.path }}" routerLinkActive="active">
+        <i [className]="tab.icon"></i>
         <p>{{ tab.name }}</p>
       </div>
-      } }
-      @if(authService.userRole === 'TALENT')  { 
-      @for(tab of talentTabs; track tab) {
-      <div
-        class="tab"
-        routerLink="{{ tab.path }}"
-        routerLinkActive="active"
-      >
-      <i [className]="tab.icon"></i>
+      } } @if(authService.userRole === 'TALENT') { @for(tab of talentTabs; track
+      tab) {
+      <div class="tab" routerLink="{{ tab.path }}" routerLinkActive="active">
+        <i [className]="tab.icon"></i>
         <p>{{ tab.name }}</p>
       </div>
       }}
