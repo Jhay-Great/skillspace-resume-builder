@@ -19,7 +19,6 @@ export class DashboardLayoutComponent {
       name: 'Company Approvals',
       path: 'dashboard/company-approvals',
       icon: 'pi pi-check-circle',
-      role: ['ADMIN', 'COMPANY', 'TALENT'],
     },
   ];
 
@@ -77,7 +76,6 @@ export class DashboardLayoutComponent {
   ];
 
   logout() {
-    console.log('about to logout');
     this.authService.logout();
   }
 }
