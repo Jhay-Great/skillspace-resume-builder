@@ -18,7 +18,6 @@ export class UserRegistrationService {
   private companyEndpoint: string = environment.COMPANY_ENDPOINT;
   private talentEndpoint: string = environment.TALENT_ENDPOINT;
   private otpEndpoint: string = environment.OTP_ENDPOINT;
-  private otpBase = environment.OTP_BASE_API;
 
   // signals
   otpResponse = signal<string | null>(null);
@@ -49,7 +48,7 @@ export class UserRegistrationService {
 
   verifyOTP(otp: OtpData) {
     return this.submitForApproval<OtpData, null>(
-      `${this.otpBase}/${this.otpEndpoint}`,
+      `${this.api}/${this.otpEndpoint}`,
       otp
     )
   }
