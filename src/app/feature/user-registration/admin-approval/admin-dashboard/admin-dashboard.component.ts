@@ -10,6 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -31,6 +32,7 @@ export class AdminDashboardComponent {
     private adminApprovalService: AdminApprovalService,
     private destroyRef: DestroyRef,
     private toastService: ToastService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -54,5 +56,12 @@ export class AdminDashboardComponent {
     if (status === 'approved') return 'success';
     if (status === 'rejected') return 'danger';
     else return 'info';
+  }
+
+  selectedApplicant(id:number) {
+    const applicant = this.applicants.find(user => user.id === id);
+    if (!applicant) return;
+    this.adminApprovalService.selectedUser.set(applicant);
+    this.router.navigate([`/dashboard/approvals/${id}`])
   }
 }
