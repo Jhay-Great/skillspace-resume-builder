@@ -12,9 +12,9 @@
             <div class="information">
                 <div class="personal-info data">
                     <p class="title">Personal Information:</p>
-                    <p>Amalitech Ghana</p>
-                    <p>+233 030 456 7889</p>
-                    <p>amalitech.ghana&#64;.org</p>
+                    <p>{{ applicant?.name }}</p>
+                    <p>{{ applicant?.contact }}</p>
+                    <p>{{ applicant?.email }}</p>
                 </div>
                 <div class="social-media-info data">
                     <p class="title">Social media links:</p>
@@ -63,7 +63,7 @@
         </div>
 
         <!-- status -->
-        <p-tag value="Pending" 
+        <p-tag [value]="applicant?.approvalStatus" 
         [rounded]="true" 
         />
         <!-- <p>
@@ -76,8 +76,10 @@
     <section class="display-certificate">
         <!-- buttons -->
         <div class="btns">
-            <p-button (onClick)="reject()" label="Reject company" [outlined]="true" />
-            <p-button (onClick)="confirm()" label="Accept company" />
+            @if (applicant) {
+                <p-button (onClick)="reject(applicant.id)" label="Reject company" [outlined]="true" />
+                <p-button (onClick)="confirm(applicant.id)" label="Accept company" />
+            }
         </div>
 
         <div class="company-registered-certificate">
@@ -113,7 +115,7 @@
                         </button>
                         <button 
                             pButton 
-                            label="Save" 
+                            label="Accept" 
                             (click)="cd.accept()" 
                             class="w-8rem">
                         </button>
