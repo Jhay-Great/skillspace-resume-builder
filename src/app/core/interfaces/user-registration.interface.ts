@@ -1,3 +1,7 @@
+export interface Response {
+    statusCode: number;
+    message: string;
+}
 export interface CompanyRegistrationDetails  {
     name: string;
     email: string;
@@ -7,15 +11,14 @@ export interface CompanyRegistrationDetails  {
     certificate: FormData;
     logo:FormData;
     contact: string;
-
-    // role?: string;
-    // approvalStatus?: string;
-    // isOtpVerified?: boolean;
 }
-export interface CompanyRegistrationResponse extends CompanyRegistrationDetails {
+export interface CompanyResponseData extends CompanyRegistrationDetails {
     role: string;
     approvalStatus: string;
     isOtpVerified: boolean;
+}
+export interface CompanyRegistrationResponse extends Response {
+    data: CompanyResponseData;
 }
 
 export interface TalentRegistrationDetails {
@@ -24,15 +27,18 @@ export interface TalentRegistrationDetails {
     password: string;
     confirmPassword: string;
     contact: string;
-
-    // role?: string;
-    // isOtpVerified?: boolean;
+    
 }
-export interface TalentRegistrationResponse extends TalentRegistrationDetails {
+
+export interface TalentResponseData extends TalentRegistrationDetails {
     role: string;
     isOtpVerified: boolean;
 
 }
+export interface TalentRegistrationResponse extends Response {
+    data: TalentResponseData
+}
+
 
 export type Status = string;
 
