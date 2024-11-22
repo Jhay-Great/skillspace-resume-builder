@@ -47,7 +47,7 @@ export interface OtpData {
     email: string;
 }
 
-export interface IApplicantData {
+export interface ApplicantData {
     name: string;
     email: string;
     status: string;

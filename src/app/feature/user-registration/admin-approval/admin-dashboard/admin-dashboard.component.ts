@@ -1,5 +1,5 @@
 import { Component, DestroyRef } from '@angular/core';
-import { ApplicantResponse, ApplicantsData, IApplicantData } from '@src/app/core/interfaces/user-registration.interface';
+import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 
