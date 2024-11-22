@@ -1,1 +1,6 @@
-<p>tag works!</p>
+<div class="container" [ngClass]="getSeverityClass()">
+    <p class="status">
+      {{ status || 'Pending' | capitalize }}
+    </p>
+  </div>
+  

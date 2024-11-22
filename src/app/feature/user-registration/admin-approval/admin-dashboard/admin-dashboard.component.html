@@ -5,6 +5,23 @@
   </div>
 
   <!-- search N filter -->
+  <section>
+    <app-search-input 
+      (search)="onSearch($event)"
+    />
+
+    <!-- status filter -->
+    <p-dropdown 
+    [options]="handleStatus()" 
+    [(ngModel)]="selectedStatus" 
+    (ngModelChange)="chooseStatus($event)" 
+    optionLabel="name" 
+    placeholder="Status" 
+    #InputValue
+    />
+
+    <!-- application date filter -->
+  </section>
 
   <section>
     <div class="card">
@@ -42,10 +59,9 @@
             </td>
             <td>{{ applicant.email }}</td>
             <td>
-              <p-tag
-                [rounded]="true"
-                [value]="applicant.approvalStatus"
-                [severity]="getSeverity(applicant.status)"
+              <app-tag 
+                [status]="applicant.approvalStatus"
+                [severity]="getSeverity(applicant.approvalStatus.toLowerCase())"
               />
               <!-- {{ applicant.status }} -->
             </td>
