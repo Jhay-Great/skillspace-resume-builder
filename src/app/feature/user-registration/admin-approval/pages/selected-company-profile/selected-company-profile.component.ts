@@ -33,10 +33,6 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.applicant = this.adminApprovalService.selectedUser();
-    console.log(this.applicant);
-    // this.adminApprovalService.getCompanies().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-    //   value => console.log(value),
-    // )
   }
 
   navigateToHome() {
@@ -45,7 +41,6 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   confirm(id:number) {
     this.isApproved = true;
-    console.log(this.isRejected, this.isApproved);
     this.confirmationService.confirm({
       header: 'Accept company',
       message:
@@ -54,14 +49,10 @@ export class SelectedCompanyProfileComponent implements OnInit {
         this.adminApprovalService.acceptApplicant(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
           {
             next: response => {
-              console.log(response);
               this.toastService.showSuccess('Successful', 'Applicant approved successfully')
-
               this.isApproved = false;
-              // this.navigateToHome();
             },
             error: error => {
-              console.log(error);
               this.toastService.showError('Failed', 'Failed to approve Application')
               this.isApproved = false;
               this.isApproved = false;
@@ -86,7 +77,6 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   reject(id:number) {
     this.isRejected = true;
-    console.log(this.isRejected, this.isApproved);
     this.confirmationService.confirm({
       header: 'Accept company',
       message:
@@ -95,14 +85,10 @@ export class SelectedCompanyProfileComponent implements OnInit {
         this.adminApprovalService.rejectApplicant(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
           {
             next: response => {
-              console.log(response);
               this.toastService.showSuccess('Successful', 'Applicant rejected successfully')
-
               this.isRejected = false;
-              // this.navigateToHome();
             },
             error: error => {
-              console.log(error);
               this.toastService.showError('Failed', 'Failed to rejected Application')
               this.isRejected = false;
               this.isRejected = false;
