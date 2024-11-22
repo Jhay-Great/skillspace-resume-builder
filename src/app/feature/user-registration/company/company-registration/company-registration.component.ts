@@ -139,7 +139,7 @@ export class CompanyRegistrationComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.toastService.showError('Invalid detail', error.message);
+          this.toastService.showError('Invalid detail', error.error.message);
         },
         complete: () => {
           this.isLoading = false;
