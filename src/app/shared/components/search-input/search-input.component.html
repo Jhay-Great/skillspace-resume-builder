@@ -1,1 +1,10 @@
-<p>search-input works!</p>
+<p-iconField iconPosition="left">
+  <p-inputIcon styleClass="pi pi-search" />
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+      (input)="onInput()"
+    pInputText
+    placeholder="Search company by name"
+  />
+</p-iconField>
