@@ -42,10 +42,9 @@
             </td>
             <td>{{ applicant.email }}</td>
             <td>
-              <p-tag
-                [rounded]="true"
-                [value]="applicant.approvalStatus"
-                [severity]="getSeverity(applicant.status)"
+              <app-tag 
+                [status]="applicant.approvalStatus"
+                [severity]="getSeverity(applicant.approvalStatus.toLowerCase())"
               />
               <!-- {{ applicant.status }} -->
             </td>
