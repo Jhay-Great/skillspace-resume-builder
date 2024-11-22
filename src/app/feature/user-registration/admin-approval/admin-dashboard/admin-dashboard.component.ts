@@ -3,6 +3,7 @@ import { ApplicantResponse, ApplicantsData, IApplicantData } from '@src/app/core
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 import { TagComponent } from '@shared/components/tag/tag.component';
+import { SearchInputComponent } from '@src/app/shared/components/search-input/search-input.component';
 
 // primeng modules
 import { TableModule } from 'primeng/table';
@@ -23,6 +24,7 @@ import { Router } from '@angular/router';
     AvatarModule,
     OverlayPanelModule,
     TagComponent,
+    SearchInputComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
@@ -55,7 +57,6 @@ export class AdminDashboardComponent {
   }
 
   getSeverity(status: string) {
-    console.log(status);
     if (status === 'approved') return 'success';
     if (status === 'rejected') return 'danger';
     else return 'warning';
@@ -66,5 +67,9 @@ export class AdminDashboardComponent {
     if (!applicant) return;
     this.adminApprovalService.selectedUser.set(applicant);
     this.router.navigate([`/dashboard/approvals/${id}`])
+  }
+
+  onSearch(query:string) {
+    console.log(query);
   }
 }
