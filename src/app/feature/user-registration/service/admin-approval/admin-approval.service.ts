@@ -24,7 +24,6 @@ export class AdminApprovalService {
   }
 
   post<D, T>(api:string, data: D) {
-    console.log('api: ', api);
     return this.http.post<T>(api, data);
   }
 

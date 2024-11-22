@@ -70,8 +70,6 @@ export class AdminDashboardComponent {
         complete: () => {},
       });
 
-      console.log(this.selectedStatus);
-
   }
 
   getSeverity(status: string) {
@@ -87,9 +85,7 @@ export class AdminDashboardComponent {
     this.router.navigate([`/dashboard/approvals/${id}`])
   }
 
-  onSearch(query:string) {
-    console.log(query);
-  }
+  onSearch(query:string) {}
 
   handleStatus() {
     return [
@@ -103,7 +99,6 @@ export class AdminDashboardComponent {
   chooseStatus(value:Status) {
     if (!value) return;
     const {value: status} = value
-    console.log(status);
   }
 }
 
