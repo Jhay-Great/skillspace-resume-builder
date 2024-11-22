@@ -57,7 +57,7 @@ export class LoginComponent {
   navigateByRole(role: string) {
     switch (role) {
       case 'ADMIN':
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['/dashboard/approvals']);
         // this.router.navigate(['dashboard/admin']);
         break;
       case 'COMPANY':
