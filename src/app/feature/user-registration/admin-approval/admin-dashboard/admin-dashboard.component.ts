@@ -1,5 +1,4 @@
 import { Component, DestroyRef } from '@angular/core';
-import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,7 +13,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DropdownModule } from 'primeng/dropdown';
 
 // local modules or imports
-import { ApplicantResponse, ApplicantsData, IApplicantData } from '@src/app/core/interfaces/user-registration.interface';
+import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
 import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SearchInputComponent } from '@src/app/shared/components/search-input/search-input.component';
