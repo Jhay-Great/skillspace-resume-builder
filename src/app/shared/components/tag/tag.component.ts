@@ -17,13 +17,10 @@ export class TagComponent {
   getSeverityClass(): string {
     switch (this.severity) {
       case 'danger':
-        console.log('danger was called...')
         return 'danger-class';
         case 'success':
-        console.log('danger was called...')
         return 'success-class';
         case 'warning':
-        console.log('danger was called...')
         return 'warning-class';
       default:
         return '';
