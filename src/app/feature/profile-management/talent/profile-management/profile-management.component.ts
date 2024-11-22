@@ -25,6 +25,8 @@ import { CountryCode } from 'ngx-material-intl-tel-input/lib/data/country-code';
 import { ProfileService } from '../../profile service/profile.service';
 import { Country } from '@src/app/core/interfaces/interfaces';
 import { DropdownModule } from 'primeng/dropdown';
+import { Subject, takeUntil } from 'rxjs';
+import { Status } from '@src/app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-profile-management',
@@ -49,16 +51,19 @@ export class ProfileManagementComponent {
   countries: Country[] = [];
   selectedCountry: Country = {
     name: 'Ghana',
-    flag: 'https://flagcdn.com/gs.svg',
+    flag: 'https://flagcdn.com/gh.svg',
   };
   isOpen: boolean = false;
+  private destroy$ = new Subject<void>();
+  // education form status
+  status: Status[] = [];
 
   constructor(private fb: FormBuilder, private profileService: ProfileService) {
     // education form
     this.educationForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
-      Country: ['', Validators.required],
+      country: [this.selectedCountry, Validators.required],
       qualificationLevel: ['', Validators.required],
       programme: ['', Validators.required],
       status: ['', Validators.required],
@@ -68,14 +73,34 @@ export class ProfileManagementComponent {
     });
   }
 
+  // get Countries for form
+  getCountries() {
+    this.profileService
+      .getCountries()
+      .pipe(takeUntil(this.destroy$)) // Automatically unsubscribes when component is destroyed
+      .subscribe({
+        next: (countries) => {
+          this.countries = countries;
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
   ngOnInit() {
-    this.profileService.getCountries().subscribe((countries) => {
-      this.countries = countries;
-    });
+    this.getCountries();
+    this.status = [{ label: 'Graduated' }, { label: 'Still in school' }];
   }
 
   description =
     'This is what employers will see on your profile and what will appear on all your earned certificates.';
 
   educationDescription = 'This is what employers will see on your profile';
+
+  ngOnDestroy() {
+    // Trigger the unsubscription when the component is destroyed
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

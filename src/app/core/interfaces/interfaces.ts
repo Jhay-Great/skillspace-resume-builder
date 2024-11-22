@@ -16,3 +16,8 @@ export interface Country{
   name: string;
   flag: string
 }
+
+// for talent  profile management education form
+export interface Status{
+  label: string;
+}

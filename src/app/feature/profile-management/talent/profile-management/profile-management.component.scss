@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     padding: 0.5rem;
-    background-color: #fef9c3;
+    background-color: var.$color-yellow-100;
 
     .reminder-tes {
       width: 90%;
@@ -27,80 +27,49 @@
     min-height: 20rem;
 
     form {
-        border: 1px solid red;
-        width: fit-content;
-        margin: auto;
-        padding: 0.5rem;
-        // name and address wrap
+      width: fit-content;
+      margin: auto;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      // form label and description texts
+      label {
+        font-weight: bold;
+      }
+      .description-txt {
+        font-size: var.$xsmall;
+      }
+
+      input {
+        font-size: var.$small;
+      }
+      // name and address wrap
       .nameAddress-wrap {
-        border: 1px solid blue;
         display: flex;
         gap: 1rem;
 
-        p {
-          font-size: var.$xsmall;
-        }
-
-        .name-wrap,
-        .address-wrap {
+        .wrap {
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
         }
       }
 
-       // country
-       .country-wrap{
-        border: 1px solid red;
-
-
-        /* country-dropdown.component.css */
-.dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-btn {
-    padding: 10px 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .dropdown-btn:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: white;
-    width: 100%;
-    border: 1px solid #ccc;
-    z-index: 1;
-    max-height: 300px; /* Limit the height */
-    overflow-y: auto; /* Add vertical scrolling */
-  }
-  
-  .dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown-item span {
-    margin-right: 10px;
-    font-size: 18px;
-  }
-    }
+      // country
+      .country-wrap {
+        .country-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+      }
     }
   }
+}
+
+// prime ng styling
+::ng-deep .p-dropdown-trigger-icon {
+  display: none;
 }

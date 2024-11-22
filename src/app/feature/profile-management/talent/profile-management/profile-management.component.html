@@ -117,14 +117,15 @@
       <!-- content goes here -->
       <div class="educationFromWrap">
         <!-- education form -->
-
         <form [formGroup]="educationForm">
           <!-- name and adress wrap -->
           <div class="nameAddress-wrap">
             <!-- name wrap -->
             <div class="name-wrap">
               <label for="name">Name</label>
-              <p>This is what employers will see on your <br />profile</p>
+              <p class="description-txt">
+                This is what employers will see on your <br />profile
+              </p>
               <div class="p-input-icon-left">
                 <i class="pi pi-building"></i>
                 <input
@@ -140,10 +141,13 @@
             <!-- address wrap -->
             <div class="address-wrap">
               <label for="address">Address</label>
-              <p>This is what employers will see on your <br />profile</p>
+              <p class="description-txt">
+                This is what employers will see on your <br />profile
+              </p>
               <div class="p-input-icon-left">
                 <i class="pi pi-map-marker"></i>
                 <input
+                  id="address"
                   type="text"
                   pInputText
                   formControlName="address"
@@ -156,11 +160,107 @@
           <!-- country -->
           <div class="country-wrap">
             <label for="country">Country</label>
-            <p>{{ educationDescription }}</p>
+            <p class="description-txt">{{ educationDescription }}</p>
             <!-- testing -->
-            
+            <p-dropdown
+              id="country"
+              [options]="countries"
+              formControlName="country"
+              optionLabel="name"
+              [filter]="true"
+              [style]="{ width: '100%' }"
+              showClear="true"
+              placeholder="Select country"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item">
+                  <img
+                    [src]="educationForm.get('country')?.value.flag"
+                    alt="{{ educationForm.get('country')?.value.name }}"
+                    width="20"
+                  />
+
+                  <div>
+                    <img
+                      src="../../../../../assets/svgs/arrow-drop-down.svg"
+                      alt="arrow"
+                    />
+                  </div>
+
+                  <span>{{ educationForm.get("country")?.value.name }}</span>
+                </div>
+              </ng-template>
+
+              <ng-template let-country pTemplate="item">
+                <div class="country-item">
+                  <img
+                    [src]="country.flag"
+                    alt="{{ country.name }}"
+                    width="20"
+                  />
+                  <span>{{ country.name }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
           </div>
-          <!--  -->
+
+          <!-- Qualification -->
+          <div class="wrap">
+            <label for="qualificationLevel">Qualification level</label>
+            <p class="description-txt">
+              This is what employers will see on yourprofile
+            </p>
+            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+              <i class="pi pi-graduation-cap"></i>
+              <input
+                [style]="{ width: '100%' }"
+                id="qualificationLevel"
+                type="text"
+                pInputText
+                formControlName="qualificationLevel"
+                placeholder="Enter school's name"
+              />
+            </div>
+          </div>
+
+          <!-- Programme -->
+          <div class="wrap">
+            <label for="programme">Programme</label>
+            <p class="description-txt">
+              This is what employers will see on yourprofile
+            </p>
+            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+              <i class="pi pi-receipt"></i>
+              <input
+                [style]="{ width: '100%' }"
+                id="programme"
+                type="text"
+                pInputText
+                formControlName="programme"
+                placeholder="Enter programme name"
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="wrap">
+            <label for="status">Status</label>
+            <p class="description-txt">
+              This is what employers will see on yourprofile
+            </p>
+            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+              <i class="pi pi-list-check" style="margin-right: 8px"></i>
+              <p-dropdown
+                id="status"
+                [style]="{ width: '100%' }"
+                [options]="status"
+                placeholder="Select a City"
+                formControlName="status"
+                [editable]="true"
+                optionLabel="label"
+              />
+            </div>
+          </div>
         </form>
       </div>
     </p-tabPanel>

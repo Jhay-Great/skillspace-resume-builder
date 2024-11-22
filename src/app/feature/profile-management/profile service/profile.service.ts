@@ -13,11 +13,14 @@ export class ProfileService {
 
   getCountries(): Observable<Country[]> {
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map((countries: any[]) =>
-        countries.map((country) => ({
-          name: country.name?.common || 'Unknown',
-          flag: country.flags?.svg || '',
-        }))
+      map(
+        (countries: any[]) =>
+          countries
+            .map((country) => ({
+              name: country.name?.common || 'Unknown',
+              flag: country.flags?.svg || '',
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sorting in ascending order by name
       )
     );
   }
