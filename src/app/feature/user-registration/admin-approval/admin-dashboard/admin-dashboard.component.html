@@ -29,7 +29,16 @@
         [value]="applicants"
         styleClass="p-datatable-striped"
         [tableStyle]="{ 'min-width': '50rem' }"
+        
+        #dt1
+        dataKey="id"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="isLoading"
+        [paginator]="true"
+        [globalFilterFields]="['name', 'status']"
       >
+      <!-- table header -->
         <ng-template pTemplate="header">
           <tr>
             <th>Name</th>
@@ -39,6 +48,8 @@
             <th style="width: 5rem"></th>
           </tr>
         </ng-template>
+
+        <!-- table data -->
         <ng-template pTemplate="body" let-applicant>
           <tr>
             <td>
