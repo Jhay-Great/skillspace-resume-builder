@@ -25,11 +25,15 @@
       </div>
 
       <!-- date filter -->
-      <div *ngIf="careerProgrammes" [style]="{marginLeft: '1rem' }" class="flex align-items-center">
+      <div
+        *ngIf="careerProgrammes"
+        [style]="{ marginLeft: '1rem' }"
+        class="flex align-items-center"
+      >
         <p-calendar
           [style]="{ width: '7rem' }"
           (onSelect)="dt1.filter(formatSelectedDate($event), 'start', 'equals')"
-          placeholder="Date"
+          placeholder="Select Date"
           [showButtonBar]="true"
           (onClearClick)="dt1.filter(null, 'start', 'equals')"
         ></p-calendar>
