@@ -11,6 +11,14 @@
     />
 
     <!-- status filter -->
+    <p-dropdown 
+    [options]="handleStatus()" 
+    [(ngModel)]="selectedStatus" 
+    (ngModelChange)="chooseStatus($event)" 
+    optionLabel="name" 
+    placeholder="Status" 
+    #InputValue
+    />
 
     <!-- application date filter -->
   </section>
