@@ -5,13 +5,14 @@
   </div>
 
   <!-- search N filter -->
-  <section>
+  <section class="search-filter-container">
     <app-search-input 
       (search)="onSearch($event)"
     />
 
     <!-- status filter -->
     <p-dropdown 
+    class="status-filter-dropdown"
     [options]="handleStatus()" 
     [(ngModel)]="selectedStatus" 
     (ngModelChange)="chooseStatus($event)" 
@@ -29,6 +30,7 @@
         [value]="applicants"
         styleClass="p-datatable-striped"
         [tableStyle]="{ 'min-width': '50rem' }"
+        [filters]="filters"
         
         #dt1
         dataKey="id"
@@ -36,7 +38,7 @@
         [rowsPerPageOptions]="[10, 25, 50]"
         [loading]="isLoading"
         [paginator]="true"
-        [globalFilterFields]="['name', 'status']"
+        [globalFilterFields]="['name', 'approvalStatus',]"
       >
       <!-- table header -->
         <ng-template pTemplate="header">
@@ -54,7 +56,7 @@
           <tr>
             <td>
               @if(!applicant.image) {
-              <p-avatar label="P" shape="circle" />
+              <p-avatar [label]="applicant.name | initials" shape="circle" />
               }@else {
               <img
                 [alt]="applicant.name"
@@ -65,10 +67,10 @@
 
               }
               <span class="ml-1 vertical-align-middle">
-                {{ applicant.name }}
+                {{ applicant.name | capitalize }}
               </span>
             </td>
-            <td>{{ applicant.email }}</td>
+            <td>{{ applicant.email | ellipsis:15 }}</td>
             <td>
               <app-tag 
                 [status]="applicant.approvalStatus"
@@ -78,21 +80,22 @@
             <td>{{ applicant.createdAt | date:'dd MMM yyyy' }}</td>
             <td>
               <div class="card flex justify-content-center">
-                <p-button
+                <p-button class="view-profile-btn"
                   (onClick)="op.toggle($event)"
                   icon="pi pi-ellipsis-v"
                 />
                 <p-overlayPanel #op>
-                  <div class="flex flex-column gap-3 w-25rem">
+                  <div class="view-profile-popup flex flex-column gap-3 w-25rem">
                     <div class="company-name">
                       <!-- initials -->
-                      <p-avatar label="JA" shape="circle" />
+                      <p-avatar [label]="applicant.name | initials" shape="circle" />
                       <!-- name & email -->
                       <div class="name_email">
-                        <p class="name">{{ applicant.name }}</p>
-                        <p class="email">{{ applicant.email }}</p>
+                        <p class="name">{{ applicant.name | capitalize }}</p>
+                        <p class="email">{{ applicant.email | ellipsis:15 }}</p>
                       </div>
                     </div>
+                    <hr>
                     <button (click)="selectedApplicant(applicant.id)">View profile</button>
                   </div>
                 </p-overlayPanel>
