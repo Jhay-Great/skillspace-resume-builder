@@ -3,9 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 // primeng modules
 import { TableModule, Table } from 'primeng/table';
+import { FilterMatchMode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
@@ -18,12 +20,14 @@ import { AdminApprovalService } from '../../service/admin-approval/admin-approva
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SearchInputComponent } from '@src/app/shared/components/search-input/search-input.component';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { InitialsPipe } from '@src/app/core/pipes/initials/initials.pipe';
+import { EllipsisPipe } from '@src/app/core/pipes/truncate-with-ellipsis/ellipsis.pipe';
+import { CapitalizePipe } from "@core/pipes/capitalize/capitalize.pipe";
 
 interface Status {
   name: string;
   value: string;
 }
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -40,7 +44,10 @@ import { DatePipe } from '@angular/common';
     TagComponent,
     SearchInputComponent,
     DatePipe,
-  ],
+    EllipsisPipe,
+    InitialsPipe,
+    CapitalizePipe
+],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
 })
@@ -49,6 +56,7 @@ export class AdminDashboardComponent {
   selectedStatus!:Status;
   isLoading:boolean = false;
   @ViewChild('dt1') table!: Table;
+  filters: any = {};
 
   constructor(
     private adminApprovalService: AdminApprovalService,
@@ -93,16 +101,20 @@ export class AdminDashboardComponent {
 
   handleStatus() {
     return [
-      {name: 'Pending', value: 'Pending'},
-      {name: 'Accepted', value: 'Accepted'},
-      {name: 'Rejected', value: 'Rejected'},
-      {name: 'All status', value: 'All'},
+      {name: 'All', value: 'All'},
+      {name: 'Pending', value: 'PENDING'},
+      {name: 'Approved', value: 'APPROVED'},
+      {name: 'Rejected', value: 'REJECTED'},
     ]
   }
 
   chooseStatus(value:Status) {
-    if (!value) return;
-    const {value: status} = value
+    console.log(value);
+    if (value.name !== 'All') {
+      this.table.filter(value.name, 'approvalStatus', 'equals');
+    }else {
+      this.table.clear();
+    }
   }
 }
 
