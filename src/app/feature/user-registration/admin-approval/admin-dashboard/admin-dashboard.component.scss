@@ -3,6 +3,7 @@
 
 .main-container {
     @include mix.flex(column);
+    height: 100%;
 
     .search-filter-container {
         @include mix.flex(row);
@@ -11,6 +12,52 @@
         height: fit-content;
         padding-block: .5rem;
         
+    }
+    .table-container {
+        height: 100%;
+        overflow-y: hidden;
+
+        .card {
+            height: 100%;
+        }
+
+        // p-table
+        ::ng-deep {
+            p-table {
+                display: block;
+                height: 100%;
+            }
+            .p-datatable {
+                @include mix.flex(column, 0);
+                height: 100%;
+            }
+            .p-datatable-wrapper {
+                display: block;
+                height: 100%;
+                overflow: hidden;
+            }
+            .p-datatable-table {
+                @include mix.flex(column, 0);
+                height: 100%
+            }
+            .p-datatable-thead tr, 
+            .p-datatable-tbody tr {
+                @include mix.flex(row, 0);
+                width: 100%;
+
+                & > * {
+                    flex: 4;
+                }
+                .options-btn-header,
+                .options-btn-body {
+                    flex: 1;
+                }
+            }
+            .p-datatable-tbody {
+                overflow: auto;
+                scrollbar-width: none;
+            }
+        }
     }
 
     ::ng-deep .view-profile-btn {

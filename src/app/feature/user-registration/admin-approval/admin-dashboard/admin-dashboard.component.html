@@ -24,12 +24,13 @@
     <!-- application date filter -->
   </section>
 
-  <section>
+  <section class="table-container">
     <div class="card">
       <p-table
         [value]="applicants"
         styleClass="p-datatable-striped"
         [tableStyle]="{ 'min-width': '50rem' }"
+        
         
         #dt1
         dataKey="id"
@@ -46,12 +47,12 @@
             <th>Email</th>
             <th>Status</th>
             <th>Application date</th>
-            <th style="width: 5rem"></th>
+            <th class="options-btn-header"></th>
           </tr>
         </ng-template>
 
         <!-- table data -->
-        <ng-template pTemplate="body" let-applicant>
+        <ng-template pTemplate="body" let-applicant >
           <tr>
             <td>
               @if(!applicant.image) {
@@ -77,7 +78,7 @@
               />
             </td>
             <td>{{ applicant.createdAt | date:'dd MMM yyyy' }}</td>
-            <td>
+            <td  class="options-btn-body">
               <div class="card flex justify-content-center">
                 <p-button class="view-profile-btn"
                   (onClick)="op.toggle($event)"
