@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ViewChild } from '@angular/core';
+import { Component, DestroyRef, viewChild, } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -16,8 +16,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
 import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 import { TagComponent } from '@shared/components/tag/tag.component';
-import { SearchInputComponent } from '@src/app/shared/components/search-input/search-input.component';
-import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
+import { ToastService } from '@core/services/toast-service/toast.service';
+import { InitialsPipe } from '@core/pipes/initials/initials.pipe';
+import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
+import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
 
 interface Status {
   name: string;
@@ -40,6 +43,9 @@ import { DatePipe } from '@angular/common';
     TagComponent,
     SearchInputComponent,
     DatePipe,
+    InitialsPipe,
+    EllipsisPipe,
+    CapitalizePipe,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
@@ -48,7 +54,7 @@ export class AdminDashboardComponent {
   applicants!: ApplicantsData[];
   selectedStatus!:Status;
   isLoading:boolean = false;
-  @ViewChild('dt1') table!: Table;
+  table = viewChild<Table>('dt1');
 
   constructor(
     private adminApprovalService: AdminApprovalService,
@@ -88,7 +94,7 @@ export class AdminDashboardComponent {
   }
 
   onSearch(query:string) {
-    this.table.filterGlobal(query, 'contains');
+    this.table()?.filterGlobal(query, 'contains');
   }
 
   handleStatus() {
