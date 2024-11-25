@@ -64,7 +64,13 @@
     <div class="tablescontainer">
       <p-table
         #dt1
-        [value]="activeTabData === 0 ? mockProgrammes : mockdraft"
+        [value]="
+          activeTabData === 0
+            ? programmeService.allProgrammes
+            : activeTabData === 1
+            ? programmeService.draftProgram()
+            : programmeService.publishedProgram()
+        "
         [globalFilterFields]="['name']"
         [ngClass]="
           publishedProgrammes && changeHistoryTable ? 'shrink' : 'expand'
@@ -99,8 +105,8 @@
             <td class="action">
               <p-overlayPanel #op>
                 <div class="float">
-                  <p (click)="confirmModal('moveToDraft')" label="Show">Move</p>
-                  <p (click)="confirmModal('delete')" label="Show">Delete</p>
+                  <p (click)="confirmModal('moveToDraft', data.id)" label="Show">Move</p>
+                  <p (click)="confirmModal('delete', data.id)" label="Show">Delete</p>
                 </div>
               </p-overlayPanel>
               <svg

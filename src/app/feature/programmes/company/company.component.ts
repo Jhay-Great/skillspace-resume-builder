@@ -16,7 +16,8 @@ import { CareerCreationFormComponent } from '../career-creation-form/career-crea
 // import interface
 import { mockDetails, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
-
+// import programme service
+import { ProgrammeService } from '../program-service/programme.service';
 
 @Component({
   selector: 'app-company',
@@ -40,6 +41,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './company.component.scss',
 })
 export class CompanyComponent {
+  constructor(public programmeService: ProgrammeService) {}
 
   mockProgrammes: mockDetails[] = [
     {
@@ -121,6 +123,8 @@ export class CompanyComponent {
     ];
 
     this.activeItem = this.tabMenuList[0];
+    // fetch programmes
+    this.programmeService.getPrograms();
   }
 
   // TabMenu control function
@@ -170,11 +174,12 @@ export class CompanyComponent {
     this.visible = true;
   }
   // confirmation modal
-  confirmModal(type: string) {
+  confirmModal(type: string, id: number) {
     if (type === 'delete') {
       this.moveToDraftModal = false;
       this.deleteModal = true;
       this.showDialog();
+      this.programmeService.deleteProgramme(id);
     }
     if (type === 'moveToDraft') {
       this.deleteModal = false;
@@ -198,6 +203,11 @@ export class CompanyComponent {
   // open history table
   openChangeHistoryTable() {
     this.changeHistoryTable = true;
+  }
+
+  // move to draft
+  moveToDraft(id: number) {
+    this.programmeService.moveToDraft(id);
   }
 
   // date filter function
@@ -228,6 +238,4 @@ export class CompanyComponent {
         return 'th';
     }
   }
-
-  
 }
