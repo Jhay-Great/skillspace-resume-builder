@@ -6,7 +6,7 @@
       <h1>Add career programme</h1>
       <span
         ><svg
-         (click)="close()"
+          (click)="close()"
           width="12"
           height="13"
           viewBox="0 0 12 13"
@@ -103,10 +103,11 @@
     <div class="startDate">
       <label for="startDate" class="font-bold block mb-2"> Start date </label>
       <p-calendar
-        formGroupName="startDate"
+        formControlName="startDate"
         [iconDisplay]="'input'"
         [showIcon]="true"
         inputId="startDate"
+        dateFormat="dd MM yy"
       />
     </div>
 
@@ -114,10 +115,11 @@
     <div class="endDate">
       <label for="endDate" class="font-bold block mb-2"> End date </label>
       <p-calendar
-        formGroupName="endDate"
+        formControlName="endDate"
         [iconDisplay]="'input'"
         [showIcon]="true"
         inputId="endDate"
+        dateFormat="dd MM yy"
       />
     </div>
 
@@ -135,7 +137,9 @@
     <!--form control buttons -->
     <div class="formcontrol-btn">
       <button class="draft-btn">Save as draft</button>
-      <button class="publish-btn">Publish programme</button>
+      <button (click)="onSubmit()" class="publish-btn">
+        Publish programme
+      </button>
     </div>
   </form>
 </div>
