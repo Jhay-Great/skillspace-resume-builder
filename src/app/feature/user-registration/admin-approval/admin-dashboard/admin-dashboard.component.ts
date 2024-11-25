@@ -1,11 +1,11 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // primeng modules
-import { TableModule } from 'primeng/table';
+import { TableModule, Table } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
@@ -47,6 +47,8 @@ import { DatePipe } from '@angular/common';
 export class AdminDashboardComponent {
   applicants!: ApplicantsData[];
   selectedStatus!:Status;
+  isLoading:boolean = false;
+  @ViewChild('dt1') table!: Table;
 
   constructor(
     private adminApprovalService: AdminApprovalService,
@@ -85,7 +87,9 @@ export class AdminDashboardComponent {
     this.router.navigate([`/dashboard/approvals/${id}`])
   }
 
-  onSearch(query:string) {}
+  onSearch(query:string) {
+    this.table.filterGlobal(query, 'contains');
+  }
 
   handleStatus() {
     return [

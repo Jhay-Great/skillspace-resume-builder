@@ -45,7 +45,7 @@ export class SearchInputComponent {
   private setupSearchSubscription(): void {
     this.searchSubject
       .pipe(
-        debounceTime(300), // Adjust as needed
+        debounceTime(this.debounceTime), 
         distinctUntilChanged(),
         takeUntilDestroyed(this.destroyRef)
       )
