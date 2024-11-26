@@ -35,8 +35,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.applicant = this.adminApprovalService.selectedUser();
-    console.log(this.applicant);
-  }
+  }w
 
   navigateToHome() {
     this.router.navigate(['/dashboard/approvals']);
