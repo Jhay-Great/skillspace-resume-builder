@@ -94,10 +94,7 @@
             </td>
             <td>{{ applicant.email | ellipsis:15 }}</td>
             <td>
-              <app-tag 
-                [status]="applicant.approvalStatus"
-                [severity]="getSeverity(applicant.approvalStatus)"
-              />
+              <app-tag [status]="applicant.approvalStatus" />
             </td>
             <td>{{ applicant.createdAt | date:'dd MMM yyyy' }}</td>
             <td  class="options-btn-body">

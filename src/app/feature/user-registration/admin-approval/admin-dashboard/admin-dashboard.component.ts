@@ -88,12 +88,6 @@ export class AdminDashboardComponent {
 
   }
 
-  getSeverity(status: string) {
-    if (status === 'approved') return 'success';
-    if (status === 'rejected') return 'danger';
-    else return 'warning';
-  }
-
   selectedApplicant(id:number) {
     const applicant = this.applicants.find(user => user.id === id);
     if (!applicant) return;
