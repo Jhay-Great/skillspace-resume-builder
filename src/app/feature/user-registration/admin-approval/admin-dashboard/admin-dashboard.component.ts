@@ -125,9 +125,9 @@ export class AdminDashboardComponent {
 
   chooseStatus(value:PDropDown) {
     if (value.name !== 'All') {
-      this.table.filter(value.name, 'approvalStatus', 'equals');
+      this.table()?.filter(value.name, 'approvalStatus', 'equals');
     }else {
-      this.table.clear();
+      this.table()?.clear();
     }
   }
 
@@ -136,167 +136,42 @@ export class AdminDashboardComponent {
     console.log('logging initial today: ', today);
     switch (value.name) {
       case 'All':
-        this.table.clear();
+        this.table()?.clear();
         break;
       case 'Recent': 
         const day = today.getDate();
         const recent = day - 1;
         const setDay = today.setDate(recent);
         const calcDay = new Date(setDay);
-        // console.log(calcDay);
         const recentDate = `${calcDay.getFullYear()}-${calcDay.getMonth()+ 1}-${calcDay.getDate()}`;
 
-        this.table.filter(recentDate, 'createdAt', 'contains');
-        console.log('recent was clicked...');
-        console.log(recentDate);
+        this.table()?.filter(recentDate, 'createdAt', 'contains');
         break;
       case 'Last week':
         const endOfWeek = today;
         const startOfLastWeek = new Date();
         startOfLastWeek.setDate(today.getDate() - 7);
 
-        console.log(endOfWeek, startOfLastWeek);
-        
-        
-        // console.log('end of week: ', endOfWeek);
-        // const lastWeek = today.getDate() - 7;
-        // const setDate = today.setDate(lastWeek);
-        // const calcDate = new Date(setDate);
-
-        // const result = `${calcDate.getFullYear()}-${calcDate.getMonth()+ 1}-${calcDate.getDate()}`;
-
-        // console.log('today: ', today);
-        // console.log('last week: ', lastWeek);
-        // console.log('set date: ', setDate);
-
-        // this.table.filter(result, 'createdAt', 'contains');
-        console.log('last week was clicked...');
-        // console.log(this.table.filter(result, 'createdAt', 'contains'))
 
         break;
       case 'Last month':
-        // const now = new Date();
-
-        // // Calculate the first and last day of the previous month
-        // const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-        // const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-
-        // // console.log('Last Month Range:', firstDayOfLastMonth, lastDayOfLastMonth);
         
-        // this.table.filter(
-        //   { start: firstDayOfLastMonth, end: lastDayOfLastMonth },
-        //   'createdAt',
-        //   'between'
-        // );
-        
-        
-        
-        // const month = date.getMonth() + 1;
-        // const lastMonth = month - 1;
-        // const setMonth = date.setDate(lastMonth);
-        // // const calcMonth = new Date(setMonth);
-
-        // // const monthDate = `${calcMonth.getFullYear()}-${calcMonth.getMonth()+ 1}-${calcMonth.getDate()}`;
-
-        // // this.table.filter(monthDate, 'createdAt', 'contains');
-        // // console.log(this.table.filter(monthDate, 'createdAt', 'contains'))
-        // console.log('last month: ', month, lastMonth);
         break;
       case 'Custom':
-        console.log('custom was clicked...: ', value);
-        // this.selectedDate.name = '';
-        // this.showCalendar = true;
+        
         
         break;
       default:
-        // console.log('no value: ', value);
+        
         break;
     }
     
   }
-
-  @HostListener('document:click', ['$event'])
-  // toggleCalendar(event: Event):void {
-  //   const element = event.target as HTMLElement;
-  //   const calendarElement = element.closest('#application-date-dropdown');
-  //   const containerElement = element.closest('#mainContainer');
-
-  //   console.log(!calendarElement && this.selectedDate?.name !== 'Custom')
-
-
-  //   if (calendarElement && this.selectedDate?.name === 'Custom') {
-  //     // console.log('calendar was clicked')
-  //   }
-
-  //   // console.log('container was clicked')
-  //   if (!calendarElement && this.selectedDate?.name !== 'Custom') {
-  //     console.log('this block also run...')
-  //     this.showCalendar = false;
-  //     if (!this.selectedDate) {
-  //       return;
-  //     }
-  //     this.selectedDate.name = '';
-  //     this.selectedDate.value = '';
-
-  //   }
-    
-    
-  // }
-
+  
   hideCalendar(event:Event) {
     if (!this.showCalendar) return;
-
-    // this.table.clear();
     
-    // const target = event.target as HTMLElement;
-    // console.log(target.textContent);
-    // if (target.textContent !== 'Custom' && this.showCalendar) {
-    //   console.log('hide calendar is clicked...')
-    //   this.showCalendar = false;
-
-    // }
   }
-
-  // handleDropdownChange(event: any): void {
-  //   console.log('called...')
-  //   if (event.value === 'Custom') {
-  //     this.showCalendar = true;
-  //   } else {
-  //     this.showCalendar = false;
-  //   }
-  // }
-
-  // @HostListener('document:click', ['$event'])
-  // handleOutsideClick(event: Event): void {
-  //   const element = event.target as HTMLElement;
-  //   const target = element.closest('#application-date-dropdown');
-  //   const container = element.closest('#mainContainer');
-
-  //   // console.log({target, showCalendar: this.showCalendar, isOpen: this.isOpen})
-  //   // console.log(target);
-  //   if (target && !this.showCalendar && this.isOpen) {
-  //     console.log({target, showCalendar: this.showCalendar, isOpen: this.isOpen})
-  //     // console.log('clicked occurred in host listener when calendar is not shown')
-  //     this.showCalendar = true;
-  //     return;
-  //   }
-    
-  //   this.isOpen = !this.isOpen;
-    
-  //   if (container && this.showCalendar && !this.isOpen) {
-  //     // console.log('clicked occurred in host listener when calendar is shown')
-  //     console.log({target, showCalendar: this.showCalendar, isOpen: this.isOpen})
-  //     this.showCalendar = false;
-
-  //   }
-
-
-  // }
-
-
-  // // Prevent hiding calendar when clicking inside it
-  // preventClose(event: MouseEvent): void {
-  //   event.stopPropagation();
-  // }
+  
 }
 
