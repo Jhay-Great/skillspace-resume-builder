@@ -127,6 +127,12 @@ export const routes: Routes = [
           ).then((tp) => tp.ProfileManagementComponent),
         title: 'Your Profile',
       },
+      {
+        path: 'applicants',
+        loadComponent: () => 
+          import('./feature/applicant-review-feedback/pages/applicants/applicants.component').then(a => a.ApplicantsComponent),
+        title: 'All applicants'
+      }
     ],
   },
 ];
