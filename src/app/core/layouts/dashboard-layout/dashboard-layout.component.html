@@ -78,7 +78,7 @@
 
       <p>Settings</p>
     </button>
-    <button (click)="logout()" class="logout tab">
+    <button (click)="confirm()" class="logout tab">
       <!-- svg icon -->
       <svg
         width="24"
@@ -103,3 +103,35 @@
 <main>
   <router-outlet />
 </main>
+
+<!-- Logout confirmation dialog -->
+<p-confirmDialog [dismissableMask]="true" #cd>
+  <ng-template pTemplate="headless" let-message>
+      
+    <div class="dialog-container flex flex-column align-items-center p-5 surface-overlay border-round">
+        <span class="header font-bold text-2xl block mb-2 mt-4">
+            {{ message.header }}
+        </span>
+        <p class="description mb-0">{{ message.message }}</p>
+        <div class="dialog-btns flex align-items-center gap-2 mt-4">
+            <button 
+                pButton 
+                label="Cancel"
+                severity="secondary"
+                (click)="cd.reject()"
+                [text]="true" 
+                class="p-button-outlined w-8rem ">
+            </button>
+            <button 
+                pButton 
+                label="Logout" 
+                (click)="cd.accept()" 
+                class="w-8rem"
+                severity="danger">
+            </button>
+        </div>
+    </div>       
+  </ng-template>
+</p-confirmDialog>
+
+  
