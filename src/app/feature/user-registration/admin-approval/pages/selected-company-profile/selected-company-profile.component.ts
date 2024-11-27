@@ -11,10 +11,12 @@ import { ApplicantsData } from '@src/app/core/interfaces/user-registration.inter
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { Router } from '@angular/router';
 
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 @Component({
   selector: 'app-selected-company-profile',
   standalone: true,
-  imports: [ConfirmDialogModule, ButtonModule, TooltipModule, TagModule ],
+  imports: [ConfirmDialogModule, ButtonModule, TooltipModule, TagModule, PdfViewerModule ],
   templateUrl: './selected-company-profile.component.html',
   styleUrl: './selected-company-profile.component.scss',
 })
