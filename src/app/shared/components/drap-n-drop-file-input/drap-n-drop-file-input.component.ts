@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-drag-n-drop-file-input',
@@ -9,13 +10,16 @@ import { Component, Input } from '@angular/core';
 })
 export class DrapNDropFileInputComponent {
   description:string = 'This is what applicants will see on your profile.'
-  fileUploaded: FileList | null = null;
+  fileUploaded: File | null = null;
+  // fileUploaded: FileList | null = null;
   previewImage:string | null = null;
 
   @Input () label:string | null = null;
   @Input () accept:string | null = null;
 
-  constructor () {};
+  constructor (
+    private toastService: ToastService,
+  ) {};
 
   selectFile(event:Event) {
     const target = event.target as HTMLInputElement;
@@ -39,7 +43,7 @@ export class DrapNDropFileInputComponent {
 
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      this.fileUploaded = files;
+      // this.fileUploaded = files;
       console.log(this.fileUploaded);
       this.handleFile(files[0]);
     }
@@ -47,6 +51,7 @@ export class DrapNDropFileInputComponent {
 
   private handleFile(file: File): void {
     if (file.type.startsWith('image/')) {
+      this.fileUploaded = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.previewImage = e.target.result;
@@ -54,8 +59,13 @@ export class DrapNDropFileInputComponent {
       reader.readAsDataURL(file);
     } else {
       // handle error response or feedback here
+      this.toastService.showError('Failed to upload', 'Incompatible file uploaded');
       console.log('Please upload only image files.');
     }
+  }
+
+  remove() {
+    this.fileUploaded = null;
   }
 
   private resetDefaultBrowserSettings (event:Event) {
