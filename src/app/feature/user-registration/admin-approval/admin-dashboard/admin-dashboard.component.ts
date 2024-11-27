@@ -57,11 +57,10 @@ export class AdminDashboardComponent {
   applicants!: ApplicantsData[];
   selectedStatus!:PDropDown;
   selectedDate!:PDropDown;
-  date:any;
+  date:string | null = null;
   showCalendar:boolean = false;
   isLoading:boolean = false;
   table = viewChild<Table>('dt1');
-  filters: any = {};
   isOpen:boolean = false;
 
   constructor(
@@ -127,7 +126,6 @@ export class AdminDashboardComponent {
 
   chooseDate(value:PDropDown) {
     const today = new Date();
-    console.log('logging initial today: ', today);
     switch (value.name) {
       case 'All':
         this.table()?.clear();
