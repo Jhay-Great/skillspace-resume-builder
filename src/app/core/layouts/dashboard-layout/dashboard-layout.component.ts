@@ -23,7 +23,7 @@ export class DashboardLayoutComponent {
   adminTabs = [
     {
       name: 'Company Approvals',
-      path: 'dashboard/company-approvals',
+      path: '/dashboard/approvals',
       icon: 'pi pi-check-circle',
     },
   ];
