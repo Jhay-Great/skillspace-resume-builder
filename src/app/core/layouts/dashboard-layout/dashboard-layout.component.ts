@@ -4,6 +4,7 @@ import { AuthService } from '@src/app/feature/authentication/services/auth-servi
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ExtendedConfirmation } from '../../interfaces/confirmation.interface';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -84,13 +85,17 @@ export class DashboardLayoutComponent {
     this.confirmationService.confirm({
       header: 'Logout',
       message: 'Are you sure that you to logout?',
+      acceptSeverity: 'danger',
+      rejectSeverity: 'secondary',
+      acceptLabel: 'Logout',
+      rejectLabel: 'Cancel',
       accept: () => {
         this.logout();
       },
       reject: () => {
         return null;
       },
-    });
+    } as ExtendedConfirmation);
   }
 
   logout() {
