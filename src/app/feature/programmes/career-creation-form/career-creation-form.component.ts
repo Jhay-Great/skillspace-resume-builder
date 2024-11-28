@@ -56,11 +56,23 @@ export class CareerCreationFormComponent {
 
   ngOnInit(): void {
     this.addRequirement();
+    if (this.programmeService.currentUpdatingProgram) {
+      const programmeToUpdate = this.programmeService.currentUpdatingProgram;
+      this.careerForm.patchValue(programmeToUpdate);
+      this.careerForm.patchValue({
+        startDate: new Date(programmeToUpdate.startDate),
+        endDate: new Date(programmeToUpdate.endDate),
+      });
+    }
   }
 
   // Getter for the requirements FormArray
   get requirements() {
     return this.careerForm.get('requirements') as FormArray;
+  }
+  // parse to ngprime date
+  parseToPrimeNGCalendarFormat(dateString: string): Date {
+    return new Date(dateString);
   }
 
   // Method to add a new field
@@ -105,6 +117,7 @@ export class CareerCreationFormComponent {
     return `${year}-${month}-${day}`;
   }
   // start and end date
+  // this was sending the date in 25th november 2023
   startDateSelect(event: Date): void {
     const formattedDate = this.formatCustomDate(event);
     this.careerForm.patchValue({ startDate: formattedDate });
@@ -127,15 +140,16 @@ export class CareerCreationFormComponent {
       formData.userId = user.id;
 
       if (saveType === 'publish') {
-        formData.status = 'Published';
+        formData.status = 'PUBLISHED';
         this.programmeService.createProgram(formData);
       }
       if (saveType === 'draft') {
-        formData.status = 'Draft';
+        formData.status = 'DRAFT';
         this.programmeService.createProgram(formData);
       }
-      if (formData.status === 'update') {
+      if (saveType === 'update') {
         this.programmeService.updateProgram(formData.id, formData);
+        this.programmeService.currentUpdatingProgram = null;
       }
       this.closeForm.emit();
     }

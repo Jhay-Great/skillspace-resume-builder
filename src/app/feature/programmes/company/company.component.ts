@@ -14,11 +14,15 @@ import { CalendarModule } from 'primeng/calendar';
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 // import interface
-import { mockDetails, TabMenuList } from '../../../core/interfaces/interfaces';
+import {
+  mockDetails,
+  Programme,
+  TabMenuList,
+} from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import programme service
 import { ProgrammeService } from '../program-service/programme.service';
-
+import { DateSuffixPipe } from '@src/app/core/pipes/datesuffix/date-suffix.pipe';
 @Component({
   selector: 'app-company',
   standalone: true,
@@ -36,6 +40,7 @@ import { ProgrammeService } from '../program-service/programme.service';
     DialogModule,
     ButtonModule,
     CalendarModule,
+    DateSuffixPipe,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -43,36 +48,6 @@ import { ProgrammeService } from '../program-service/programme.service';
 export class CompanyComponent {
   constructor(public programmeService: ProgrammeService) {}
 
-  mockProgrammes: mockDetails[] = [
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th June 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th June 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th June 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th June 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-  ];
   tabMenuList: TabMenuList[] = [];
   activeItem!: TabMenuList;
   activeTabData = 0;
@@ -82,7 +57,7 @@ export class CompanyComponent {
   // delete modal
   deleteModal = false;
   // move to draft modal
-  moveToDraftModal = false;
+  publishModal = false;
 
   mockdraft: mockDetails[] = [
     {
@@ -134,6 +109,20 @@ export class CompanyComponent {
     this.activeTabData = 0;
   }
 
+  // TabMenu Total
+  totalProgrammes(label: string) {
+    switch (label) {
+      case 'Career programmes':
+        return this.programmeService.allProgrammes.length;
+      case 'Saved drafts':
+        return this.programmeService.draftProgram().length;
+      case 'Published programmes':
+        return this.programmeService.publishedProgram().length;
+      default:
+        return 0;
+    }
+  }
+
   private setSavedDraftTab() {
     this.resetTab();
     this.savedDraft = true;
@@ -174,17 +163,32 @@ export class CompanyComponent {
     this.visible = true;
   }
   // confirmation modal
-  confirmModal(type: string, id: number) {
+  confirmModal(type: string, programme: Programme) {
     if (type === 'delete') {
-      this.moveToDraftModal = false;
+      this.publishModal = false;
       this.deleteModal = true;
+      this.programmeService.programmeToMoveOrDelete = programme;
       this.showDialog();
-      this.programmeService.deleteProgramme(id);
     }
-    if (type === 'moveToDraft') {
+    if (type === 'publish') {
       this.deleteModal = false;
-      this.moveToDraftModal = true;
+      this.publishModal = true;
+      this.programmeService.programmeToMoveOrDelete = programme;
       this.showDialog();
+    }
+  }
+  // confirmation function
+  confirmation(type: string) {
+    const ProgrammeData = this.programmeService.programmeToMoveOrDelete;
+    if (type === 'delete') {
+      this.deleteProgramme(ProgrammeData.id, ProgrammeData);
+      this.deleteModal = false;
+      this.visible = false;
+    }
+    if (type === 'publish') {
+      this.visible = false;
+      this.publishModal = false;
+      this.publishProgramme(ProgrammeData.id, ProgrammeData);
     }
   }
   // open form
@@ -205,11 +209,20 @@ export class CompanyComponent {
     this.changeHistoryTable = true;
   }
 
-  // move to draft
-  moveToDraft(id: number) {
-    this.programmeService.moveToDraft(id);
+  // publish programme
+  publishProgramme(id: number, programme: Programme) {
+    this.programmeService.publishProgram(id, programme);
   }
-
+  // delete
+  deleteProgramme(id: number, programme: Programme) {
+    this.programmeService.deleteProgramme(id, programme);
+  }
+  // update programme
+  updateProgramme(programme: Programme) {
+    this.programmeService.updatingProgram = true;
+    this.programmeService.currentUpdatingProgram = programme;
+    this.openForm();
+  }
   // date filter function
   formatSelectedDate(event: Date) {
     const selectedDate = event;
@@ -220,8 +233,7 @@ export class CompanyComponent {
     // Get the day suffix (st, nd, rd, th)
     const suffix = this.getDaySuffix(day);
     // Format the date as "4th June 2023"
-    const formattedDate = `${day}${suffix} ${month} ${year}`;
-    return formattedDate;
+    return `${day}${suffix} ${month} ${year}`;
   }
 
   // Function to get the suffix for the day (st, nd, rd, th)

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Programme } from '@src/app/core/interfaces/interfaces';
 
 @Injectable({
@@ -11,10 +11,12 @@ import { Programme } from '@src/app/core/interfaces/interfaces';
 export class ProgrammeService {
   constructor(private http: HttpClient, private toastService: ToastService) {}
 
-  allProgrammes: any = [];
+  allProgrammes: Programme[] = [];
   updatingProgram = false;
-  currentUpdatingProgram: any = null;
-  
+  currentUpdatingProgram: Programme | null = null;
+
+  // programme to move or delete
+  programmeToMoveOrDelete!: Programme;
 
   // Toast notification
   private successToast() {
@@ -24,10 +26,15 @@ export class ProgrammeService {
       'top-right'
     );
   }
+  private showError() {
+    this.toastService.showError(
+      'Error',
+      'Something went wrong. Please try again',
+      'top-right'
+    );
+  }
   // create program
-  createProgram(data: any) {
-    // add to local save
-    this.allProgrammes.unshift(data);
+  createProgram(data: Programme) {
     // save to server
     this.http
       .post(
@@ -39,9 +46,11 @@ export class ProgrammeService {
         next: () => {
           this.getPrograms();
           this.successToast();
+          // add to local save
+          this.allProgrammes.unshift(data);
         },
-        error: (error) => {
-          console.log(error);
+        error: (_error) => {
+          this.showError();
         },
       });
   }
@@ -49,30 +58,48 @@ export class ProgrammeService {
   // get all programmes
   getPrograms() {
     this.http
-      .get<Observable<Programme>>(
+      .get<Programme[]>(
         environment.COMPANY_PROGRAMMES_BASE_API + environment.GET_ALL_PROGRAMMES
       )
-      .subscribe((data) => (this.allProgrammes = data));
+      .subscribe((data) => {
+        console.log(data);
+        this.allProgrammes = data;
+      });
   }
 
   // get draft programmes
   draftProgram() {
     return this.allProgrammes.filter(
-      (programme: any) => programme.status === 'DRAFT'
+      (programme: Programme) => programme.status === 'DRAFT'
     );
   }
 
   // get published programmes
   publishedProgram() {
     return this.allProgrammes.filter(
-      (programme: any) => programme.status === 'PUBLISHED'
+      (programme: Programme) => programme.status === 'PUBLISHED'
     );
   }
 
   // publish programmes
-  publishProgram(id: number) {
-    this.allProgrammes.map((programme: any) => {
-      if (programme.id === id) {
+  publishProgram(id: number, programme: Programme) {
+    const programmeData = programme;
+    // make api call
+    this.http
+      .put(
+        environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`,
+        programmeData
+      )
+      .subscribe({
+        next: (_data) => {
+          console.log('programme successfully added');
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    this.allProgrammes.map((programme: Programme) => {
+      if (programme.id === programmeData.id) {
         programme.status = 'PUBLISHED';
       }
     });
@@ -80,7 +107,7 @@ export class ProgrammeService {
 
   // move to draft
   moveToDraft(id: number) {
-    this.allProgrammes.map((programme: any) => {
+    this.allProgrammes.map((programme: Programme) => {
       if (programme.id === id) {
         programme.status = 'DRAFT';
       }
@@ -88,19 +115,31 @@ export class ProgrammeService {
   }
 
   // update programmes
-  updateProgram(id: number, data: any) {
-    const changesMade = '';
-    this.allProgrammes.map((programme: any) => {
+  updateProgram(id: number, data: Programme) {
+    this.allProgrammes.map((programme: Programme) => {
       if (programme.id === id) {
+        Object.assign(programme, data);
       }
     });
     // make api call to update program
   }
 
   // delete program
-  deleteProgramme(id: number) {
-    this.allProgrammes.filter((programme: any) => programme.id !== id);
-
+  deleteProgramme(id: number, programme: Programme) {
+    // make api call
+    this.http
+      .delete(environment.BASE_API + environment.DELETE_PROGRAMME + `${id}`)
+      .subscribe({
+        next: (_data) => {
+          console.log('programme successfully deleted');
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    this.allProgrammes = this.allProgrammes.filter(
+      (programme: Programme) => programme.id !== id
+    );
     // make api call to delete program
   }
 }

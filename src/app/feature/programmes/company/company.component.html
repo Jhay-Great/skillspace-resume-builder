@@ -32,10 +32,10 @@
       >
         <p-calendar
           [style]="{ width: '7rem' }"
-          (onSelect)="dt1.filter(formatSelectedDate($event), 'start', 'equals')"
+          (onSelect)="dt1.filter(formatSelectedDate($event), 'startDate', 'contains')"
           placeholder="Select Date"
           [showButtonBar]="true"
-          (onClearClick)="dt1.filter(null, 'start', 'equals')"
+          (onClearClick)="dt1.filter(null, 'startDate', 'equals')"
         ></p-calendar>
       </div>
       <button (click)="openForm()" class="addform">Add career programme</button>
@@ -54,7 +54,7 @@
           <span class="font-bold">
             {{ tabMenu.label }}
           </span>
-          <p-badge value="8" severity="info" />
+          <p-badge [value]="totalProgrammes(tabMenu.label)" severity="info" />
         </a>
       </ng-template>
     </p-tabMenu>
@@ -96,8 +96,8 @@
           <tr class="stylerowsbackground" *ngIf="careerProgrammes">
             <td>{{ data.name }}</td>
             <td>{{ data.description.slice(0, 16) + "..." }}</td>
-            <td>{{ data.start }}</td>
-            <td>{{ data.end }}</td>
+            <td>{{ data.startDate | dateSuffix }}</td>
+            <td>{{ data.endDate | dateSuffix }}</td>
             <!--  ACTION REMEMBERANCE!! this class below will be applied conditionally using ngClass -->
             <td class="draft">
               <span>{{ data.status }}</span>
@@ -105,8 +105,16 @@
             <td class="action">
               <p-overlayPanel #op>
                 <div class="float">
-                  <p (click)="confirmModal('moveToDraft', data.id)" label="Show">Move</p>
-                  <p (click)="confirmModal('delete', data.id)" label="Show">Delete</p>
+                  <p
+                    *ngIf="data.status === 'DRAFT'"
+                    (click)="confirmModal('publish', data)"
+                    label="Show"
+                  >
+                    Move
+                  </p>
+                  <p (click)="confirmModal('delete', data)" label="Show">
+                    Delete
+                  </p>
                 </div>
               </p-overlayPanel>
               <svg
@@ -165,7 +173,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p>Update</p>
+                  <p (click)="updateProgramme(data)" class="interactive-txt">Update</p>
                   <!-- duplicate icon -->
                   <svg
                     width="24"
@@ -204,7 +212,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p>Remove</p>
+                  <p class="interactive-txt">Remove</p>
                 </div>
               </div>
             </td>
@@ -233,7 +241,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p class="interactive-txt">Update</p>
+                  <p (click)="updateProgramme(data)" class="interactive-txt">Update</p>
                   <!-- history icon -->
                   <svg
                     width="24"
@@ -347,22 +355,26 @@
 
 <p-dialog
   [header]="
-    deleteModal ? 'Delete career programme' : 'Move career programme to draft'
+    deleteModal
+      ? 'Delete career programme'
+      : 'Move career programme to Published'
   "
   [(visible)]="visible"
   [modal]="true"
   [style]="{ width: '35rem' }"
 >
-  <!-- confirm move to draft content -->
-  <ng-container *ngIf="moveToDraftModal">
+  <!-- confirm move to publish content -->
+  <ng-container *ngIf="publishModal">
     <div class="confirmDraft-wrap">
       <p>
-        Are you sure that you want to move career programme to draft? This
+        Are you sure that you want to move career programme to Publish? This
         action cannot be reversed.
       </p>
       <div class="control-btn">
         <button (click)="visible = false" class="cancel-btn">Cancel</button>
-        <button (click)="visible = false" class="confirm-btn-move">Move</button>
+        <button (click)="confirmation('publish')" class="confirm-btn-move">
+          Move
+        </button>
       </div>
     </div>
   </ng-container>
@@ -376,7 +388,7 @@
       </p>
       <div class="control-btn">
         <button (click)="visible = false" class="cancel-btn">Cancel</button>
-        <button (click)="visible = false" class="confirm-btn-delete">
+        <button (click)="confirmation('delete')" class="confirm-btn-delete">
           Delete
         </button>
       </div>
