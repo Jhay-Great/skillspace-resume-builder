@@ -13,6 +13,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 // import career creation form component
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
+import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 // import interface
 import {
   mockDetails,
@@ -41,6 +42,7 @@ import { DateSuffixPipe } from '@src/app/core/pipes/datesuffix/date-suffix.pipe'
     ButtonModule,
     CalendarModule,
     DateSuffixPipe,
+    TagComponent
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',

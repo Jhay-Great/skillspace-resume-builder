@@ -100,7 +100,8 @@
             <td>{{ data.endDate | dateSuffix }}</td>
             <!--  ACTION REMEMBERANCE!! this class below will be applied conditionally using ngClass -->
             <td class="draft">
-              <span>{{ data.status }}</span>
+              <!-- <span>{{ data.status }}</span> -->
+              <app-tag [status]="data.status" />
             </td>
             <td class="action">
               <p-overlayPanel #op>

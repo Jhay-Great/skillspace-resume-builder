@@ -88,6 +88,7 @@ export class CareerCreationFormComponent {
   // closeform
   close() {
     this.closeForm.emit();
+    this.programmeService.currentUpdatingProgram = null;
   }
 
   // format date
@@ -136,8 +137,8 @@ export class CareerCreationFormComponent {
       formData.startDate = this.formatDateToISO(formData.startDate);
       formData.endDate = this.formatDateToISO(formData.endDate);
       // patch user id
-      const user = JSON.parse(this.localStorageService.getUserId('user'));
-      formData.userId = user.id;
+      const userId = JSON.parse(this.localStorageService.getUserId('userId'));
+      formData.userId = userId;
 
       if (saveType === 'publish') {
         formData.status = 'PUBLISHED';
@@ -148,7 +149,8 @@ export class CareerCreationFormComponent {
         this.programmeService.createProgram(formData);
       }
       if (saveType === 'update') {
-        this.programmeService.updateProgram(formData.id, formData);
+        const programmeId = this.programmeService.currentUpdatingProgram?.id;
+        this.programmeService.updateProgram(programmeId?programmeId: null, formData);
         this.programmeService.currentUpdatingProgram = null;
       }
       this.closeForm.emit();
