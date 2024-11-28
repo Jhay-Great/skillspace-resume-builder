@@ -58,6 +58,7 @@ export class AuthService {
     // Remove user role from local storage
     this.clearAccessToken();
     this.clearUserRole();
+    this.localStorageService.removeItem('userId');
     this.router.navigate(['auth/login'])
   }
 }

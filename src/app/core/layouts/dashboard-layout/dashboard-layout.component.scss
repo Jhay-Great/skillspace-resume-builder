@@ -114,5 +114,40 @@ main {
     grid-column: 2 / -1;
     background-color: var.$color-blue-gray-50;
     padding: 1rem;
+    overflow-y: hidden;
 }
+
+/* Logout confirmation dialog */
+.dialog-container {
+    @include mix.flex(column);
+    background: var.$color-white;
+    padding: 2rem;
+    width: 40rem;
+
+    .header .description {
+        color: var.$color-blue-gray-800;
+
+    }
+    
+    .header {
+        font-size: var.$xlarge;
+        font-weight: 600;
+        line-height: 2rem;
+    }
+    
+    .description {
+        font-size: var.$medium;
+        font-weight: 400;
+        line-height: 1.5rem;
+
+    }
+
+    .dialog-btns {
+        @include mix.flex(row);
+        @include mix.flex-position(flex-end, center);
+        width: 100%;
+    }
+}
+
+
 

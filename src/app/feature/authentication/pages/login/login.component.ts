@@ -18,6 +18,7 @@ import { ToastService } from '../../../../core/services/toast-service/toast.serv
 import { AuthService } from '../../services/auth-service/auth.service';
 import { CustomError, User } from '../../models/auth.model';
 import { environment } from '@src/environments/environment.development';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -40,11 +41,12 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginLoading = false;
 
-  constructor(
+    constructor(
     private fb: FormBuilder,
     private toastService: ToastService,
     private authService: AuthService,
-    private router: Router
+    private router: Router, 
+    private localStorageService: LocalStorageService
   ) {
     // Initialize login form
     this.loginForm = this.fb.group({
@@ -57,16 +59,13 @@ export class LoginComponent {
   navigateByRole(role: string) {
     switch (role) {
       case 'ADMIN':
-        this.router.navigate(['dashboard']);
-        // this.router.navigate(['dashboard/admin']);
+        this.router.navigate(['/dashboard/approvals']);
         break;
       case 'COMPANY':
         this.router.navigate(['dashboard']);
-        // this.router.navigate(['dashboard/company']);
         break;
       case 'TALENT':
         this.router.navigate(['dashboard']);
-        // this.router.navigate(['dashboard/talent']);
         break;
     }
   }
@@ -88,6 +87,9 @@ export class LoginComponent {
     // store user role and access token in local storage
     this.authService.setUserRole(user.role);
     this.authService.setAccessToken(user.accessToken);
+
+    // store user id in local storage 
+    this.localStorageService.setItem('userId', user.userId);
 
     // navigate to dashboard based on user's role
     this.navigateByRole(user.role);

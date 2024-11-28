@@ -1,23 +1,28 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { AuthService } from '@src/app/feature/authentication/services/auth-service/auth.service';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, ButtonModule],
+  imports: [RouterOutlet, RouterLink, ButtonModule, ConfirmDialogModule],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
 })
 export class DashboardLayoutComponent {
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private confirmationService: ConfirmationService
+  ) {}
 
   // ADMIN
   adminTabs = [
     {
       name: 'Company Approvals',
-      path: 'dashboard/company-approvals',
+      path: '/dashboard/approvals',
       icon: 'pi pi-check-circle',
     },
   ];
@@ -74,6 +79,19 @@ export class DashboardLayoutComponent {
       icon: 'pi pi-briefcase',
     },
   ];
+
+  confirm() {
+    this.confirmationService.confirm({
+      header: 'Logout',
+      message: 'Are you sure that you to logout?',
+      accept: () => {
+        this.logout();
+      },
+      reject: () => {
+        return null;
+      },
+    });
+  }
 
   logout() {
     this.authService.logout();
