@@ -1,22 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-// local imports
-import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
-
-// local imports
-import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
-import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
-// import { InputTextModule } from 'primeng/inputtext';
+import { NgxMaterialIntlTelInputComponent, CountryISO, } from 'ngx-material-intl-tel-input';
 
+// local imports
+import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
+import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
-import { DrapNDropFileInputComponent } from "../../../../shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component";
+import { DrapNDropFileInputComponent } from "@shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component";
 import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/shared/utils/password.validator';
 
 @Component({
@@ -29,6 +26,7 @@ import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/sh
     IconFieldModule,
     TabViewModule,
     ButtonModule,
+    NgxMaterialIntlTelInputComponent,
     PageHeaderDescriptionComponent,
     InputFieldComponent,
     DrapNDropFileInputComponent
@@ -40,9 +38,11 @@ export class ProfileManagementComponent implements OnInit {
   description:string = 'This is what applicants will see on your profile.'
   fileUploaded: FileList | null = null;
   previewImage:string | null = null;
+  activeTabIndex:number = 0;
+  selectedCountry: CountryISO = CountryISO.Ghana;
 
   // form groups
-  companyDetails!: FormGroup;
+  companyDetailsForm!: FormGroup;
   documentForm!: FormGroup;
   securityForm!: FormGroup;
 
@@ -53,7 +53,7 @@ export class ProfileManagementComponent implements OnInit {
 
   ngOnInit(): void {
     // company details form
-    this.companyDetails = this.fb.group({
+    this.companyDetailsForm = this.fb.group({
       name: ['', Validators.required],
       email: ['email@som.com'],
       website: ['', Validators.required],
@@ -72,8 +72,53 @@ export class ProfileManagementComponent implements OnInit {
     }, {validators: confirmPasswordValidator('newPassword', 'confirmPassword')});
   }
 
+  onSaveChanges ():void {
+    switch(this.activeTabIndex) {
+      case 0:
+        this.validateForm(this.companyDetailsForm);
+        // call submission functionality
+        break;
+        case 1:
+        this.validateForm(this.documentForm);
+        // call submission functionality
+        break;
+        case 2:
+        this.validateForm(this.securityForm);
+        // call submission functionality
+        break;
+      default:
+
+    }
+  }
+
+  validateForm(form:FormGroup) {
+    if (form.invalid) {
+      console.log('invalid form: ', form.value);
+      return;
+    };
+    return this.handleFormValue(form.value);
+  }
+
+  handleFormValue<D>(data:D) {
+    console.log(data);
+  }
+
   onSubmit() {
-    
+    // calls the http service method to make the http request
+    console.log('called and logging...')
+
+  }
+  
+  // specific for ngx-material-intl-tel-input component
+  get contactControl() {
+    return this.companyDetailsForm.get('contact') as FormControl<
+      string | null
+    >;
+  }
+
+  onTabChange(event: { index: number }): void {
+    this.activeTabIndex = event.index; // Update the active tab index
+    console.log(`Active Tab Index: ${this.activeTabIndex}`);
   }
 
   selectFile(event:Event) {

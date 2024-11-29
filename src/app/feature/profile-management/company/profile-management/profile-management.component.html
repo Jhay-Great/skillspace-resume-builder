@@ -4,18 +4,18 @@
 />
 
 <section class="container">
-  <p-tabView class="tab-view-container">
+  <p-tabView class="tab-view-container" [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- company details -->
     <p-tabPanel class="content-container" header="Company details">
       <!-- content goes here -->
-      <form [formGroup]="companyDetails">
+      <form [formGroup]="companyDetailsForm">
         <!-- company name -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Company Name</label>
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-user" />
-            <input type="text" pInputText placeholder="Enter company name " />
+            <input type="text" pInputText placeholder="Enter company name " formControlName="name" />
           </p-iconField>
         </div>
 
@@ -35,13 +35,24 @@
           </p-iconField>
         </div>
 
+        <!-- phone number -->
+        <ngx-material-intl-tel-input
+        [fieldControl]="contactControl"
+        [iconMakeCall]="false"
+        [enablePlaceholder]="true"
+        [autoSelectedCountry]="selectedCountry"
+        placeholder="Enter your telephone number"
+        [required]="true"
+        [autoIpLookup]="false"
+      ></ngx-material-intl-tel-input>
+
         <!-- website -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Website Links</label>
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-link" />
-            <input type="text" pInputText placeholder="www.Seanlifer.com" />
+            <input type="text" pInputText placeholder="www.Seanlifer.com" formControlName="website" />
           </p-iconField>
         </div>
 
@@ -108,6 +119,6 @@
       </form>
     </p-tabPanel>
   </p-tabView>
-  <button class="save-changes-btn">Save changes</button>
+  <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
 
 </section>
