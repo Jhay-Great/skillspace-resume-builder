@@ -36,15 +36,19 @@
         </div>
 
         <!-- phone number -->
-        <ngx-material-intl-tel-input
-        [fieldControl]="contactControl"
-        [iconMakeCall]="false"
-        [enablePlaceholder]="true"
-        [autoSelectedCountry]="selectedCountry"
-        placeholder="Enter your telephone number"
-        [required]="true"
-        [autoIpLookup]="false"
-      ></ngx-material-intl-tel-input>
+        <div class="card flex flex-wrap justify-content-center gap-3">
+          <label for="username">Phone number</label>
+          <p class="description">{{ description }}</p>
+          <ngx-material-intl-tel-input
+          [fieldControl]="contactControl"
+          [iconMakeCall]="false"
+          [enablePlaceholder]="true"
+          [autoSelectedCountry]="selectedCountry"
+          placeholder="Enter your telephone number"
+          [required]="true"
+          [autoIpLookup]="false"
+        ></ngx-material-intl-tel-input>
+        </div>
 
         <!-- website -->
         <div class="card flex flex-wrap justify-content-center gap-3">
@@ -60,6 +64,7 @@
         <app-drag-n-drop-file-input 
         [label]="'Upload Logo'" 
         [accept]="'image/png'"
+        (uploadedFile)="onUpload($event)"
       />
       
       </form>

@@ -14,7 +14,8 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { DrapNDropFileInputComponent } from "@shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component";
-import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/shared/utils/password.validator';
+import { confirmPasswordValidator, passwordStrengthValidator } from '@shared/utils/password.validator';
+import { onFileUpload } from '@shared/utils/file-upload'
 
 @Component({
   selector: 'app-profile-management',
@@ -89,6 +90,10 @@ export class ProfileManagementComponent implements OnInit {
       default:
 
     }
+  }
+
+  onUpload(file:File | null) {
+    onFileUpload(this.companyDetailsForm, file, 'logo');
   }
 
   validateForm(form:FormGroup) {

@@ -252,3 +252,65 @@ header, form {
         scrollbar-width: none;
     }
 }
+
+// Remove or modify the phone icon
+::ng-deep {
+    svg.icon.icon-tabler.icon-tabler-phone,
+    label#mat-mdc-form-field-label-2 {
+        display: none;
+    }
+    
+    div.mat-mdc-form-field-infix,
+    section .tel-form mat-form-field.prefix-form-field .mat-mdc-form-field-infix,
+    .mat-mdc-form-field-infix {
+        padding-block: 0 !important;
+    }
+
+    .mat-mdc-form-field-infix, mat-select#mat-select-0 {
+        display: flex;
+    }
+
+    mat-hint#mat-mdc-hint-0 {
+        display: none;
+    }
+
+    input {
+        caret-color: blue;
+    }
+    input:hover {
+        background-color: transparent;
+    }
+    // disabling label
+    mat-label.main-label {
+        display: none;
+    }
+
+    div.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
+        background-color: red !important;
+    }
+    section.tel-formmat-form-field.mat-mdc-text-field-wrapper:hover {
+        background-color: red !important;
+
+    }
+    .mdc-floating-label.mat-mdc-floating-label {
+        display: none;
+    }
+    
+    .tel-form {
+        height: 3.125rem;
+    }
+    .mat-mdc-select-trigger {
+        height: 3.125rem;
+    }
+
+    .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
+        height: 3.125rem;
+        background: transparent !important;
+    }
+    .mat-mdc-form-field-flex {
+        height: 3.125rem;
+    }
+    input#mat-input-0 {
+        height: 3.125rem;
+    }
+}
