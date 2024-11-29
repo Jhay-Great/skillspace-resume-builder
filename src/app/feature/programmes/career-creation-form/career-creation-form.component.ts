@@ -150,7 +150,10 @@ export class CareerCreationFormComponent {
       }
       if (saveType === 'update') {
         const programmeId = this.programmeService.currentUpdatingProgram?.id;
-        this.programmeService.updateProgram(programmeId?programmeId: null, formData);
+        this.programmeService.updateProgram(
+          programmeId ? programmeId : null,
+          formData
+        );
         this.programmeService.currentUpdatingProgram = null;
       }
       this.closeForm.emit();
