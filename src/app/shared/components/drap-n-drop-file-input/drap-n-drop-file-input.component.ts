@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class DrapNDropFileInputComponent {
 
   @Input () label:string | null = null;
   @Input () accept:string | null = null;
+  @Output () uploadedFile = new EventEmitter<File | null>()
 
   constructor (
     private toastService: ToastService,
@@ -55,11 +56,13 @@ export class DrapNDropFileInputComponent {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.previewImage = e.target.result;
+        this.uploadedFile.emit(file);
       };
       reader.readAsDataURL(file);
     } else {
       // handle error response or feedback here
       this.toastService.showError('Failed to upload', 'Incompatible file uploaded');
+      this.uploadedFile.emit(null);
       console.log('Please upload only image files.');
     }
   }
