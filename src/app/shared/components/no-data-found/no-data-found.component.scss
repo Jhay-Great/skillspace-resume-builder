@@ -1,0 +1,29 @@
+@use 'mixins' as mix;
+@use 'variables' as var;
+
+.container {
+    @include mix.flex(column);
+    @include mix.flex-position(flex-start, center);
+    width: 100%;
+    height: fit-content;
+    margin-top: 2rem;
+}
+
+p {
+    text-align: center;
+}
+
+.title {
+    font-size: var.$small;
+    font-weight: 600;
+    line-height: var.$large;
+    color: var.$color-blue-gray-800;
+}
+
+.description {
+    font-size: var.$xsmall;
+    font-weight: 400;
+    line-height: var.$medium;
+    color: var.$color-blue-gray-500;
+
+}
