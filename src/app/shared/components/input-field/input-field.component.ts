@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -22,6 +22,7 @@ export class InputFieldComponent implements ControlValueAccessor {
   @Input ({required: true}) type:string | null = null;
   @Input ({required: true}) placeholder:string | null = null;
   @Input () hasError:boolean = false;
+  @Input () isDisabled:boolean = false;
 
   @ViewChild ('Input') inputElement!:ElementRef;
 
@@ -37,6 +38,10 @@ export class InputFieldComponent implements ControlValueAccessor {
 
   // for writing values to this component
   writeValue(value: any): void {
+    if (this.isDisabled && this.type === 'password') {
+      this.value = '.......,,#'
+      return;
+    }
     this.value = value || ''
     if (this.inputElement) {
       this.inputElement.nativeElement.value = this.value;

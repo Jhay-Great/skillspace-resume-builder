@@ -87,7 +87,10 @@ header, form {
             width: 100%;
         }
         input.email.p-inputtext {
-            background-color: #F1F5F9;
+            background-color: var.$color-blue-gray-100;
+        }
+        input {
+            height: 3rem;
         }
 
         // file upload
