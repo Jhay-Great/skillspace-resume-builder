@@ -136,10 +136,26 @@
 
     <!--form control buttons -->
     <div class="formcontrol-btn">
-      <button class="draft-btn">Save as draft</button>
-      <button (click)="onSubmit()" class="publish-btn">
+      <!-- adding new programme buttons -->
+      @if(!programmeService.updatingProgram){
+
+      <button class="draft-btn" (click)="onSubmit('draft')">
+        Save as draft
+      </button>
+      <button (click)="onSubmit('publish')" class="publish-btn">
         Publish programme
       </button>
+
+      }
+      <!-- updating programme buttons -->
+      @if(programmeService.updatingProgram){
+      <ng-container>
+        <button (click)="close()" class="draft-btn">Discard</button>
+        <button (click)="onSubmit('update')" class="publish-btn">
+          Save changes
+        </button>
+      </ng-container>
+      }
     </div>
   </form>
 </div>

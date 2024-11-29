@@ -20,21 +20,21 @@ export class ForgotPasswordService {
 
   makeOtpRequest(email: string) {
     return this.http.post<{ email: string }>(
-      `${environment.BASE_API}v1/users/otp/request`,
+      `${environment.BASE_API}/v1/users/otp/request`,
       { email }
     );
   }
 
   verifyOtp(payload: VerifyPasswordOtp) {
     return this.http.post<VerifyPasswordOtp>(
-      `${environment.BASE_API}v1/users/otp/verify`,
+      `${environment.BASE_API}/v1/users/otp/verify`,
       payload
     );
   }
 
   createNewPassword(newUserCredentials: createUserCredentials) {
     return this.http.post<createUserCredentials>(
-      `${environment.BASE_API}v1/users/password/save`,
+      `${environment.BASE_API}/v1/users/password/save`,
       newUserCredentials
     );
   }

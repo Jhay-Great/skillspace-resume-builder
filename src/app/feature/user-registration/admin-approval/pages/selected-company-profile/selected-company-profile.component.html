@@ -7,7 +7,7 @@
         <!-- details -->
         <div class="details">
             <div class="logo">
-                <img src="assets/images/Avatar.png" alt="company logo">
+                <img [src]="applicant?.logo" alt="company logo">
             </div>
             <div class="information">
                 <div class="personal-info data">
@@ -68,7 +68,12 @@
     
             <!-- certificate -->
             <div class="uploaded-certificate">
-                <img src="" alt="">
+                <pdf-viewer
+                    [src]="applicant?.certificate"
+                    [original-size]="false"
+                    style="height: 100%; width: 100%;"
+                ></pdf-viewer>
+                
             </div>
 
         </div>
