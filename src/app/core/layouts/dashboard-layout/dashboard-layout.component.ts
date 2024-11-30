@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { AuthService } from '@src/app/feature/authentication/services/auth-service/auth.service';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -15,7 +15,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class DashboardLayoutComponent {
   constructor(
     public authService: AuthService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router,
   ) {}
 
   // ADMIN
@@ -79,6 +80,17 @@ export class DashboardLayoutComponent {
       icon: 'pi pi-briefcase',
     },
   ];
+
+  settings() {
+    console.log('called by user: ', this.authService.userRole);
+    if (this.authService.userRole === 'COMPANY') {
+      this.router.navigate(['/dashboard/company-profile'])
+    };
+    if (this.authService.userRole === 'TALENT') {
+      this.router.navigate(['/dashboard/talent-profile'])
+    };
+
+  }
 
   confirm() {
     this.confirmationService.confirm({

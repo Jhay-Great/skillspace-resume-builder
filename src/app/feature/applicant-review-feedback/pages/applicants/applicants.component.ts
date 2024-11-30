@@ -68,7 +68,7 @@ export class ApplicantsComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
-          this.applicants = response.data;
+          this.applicants = response.data.content;
 
         },
         error: error => {

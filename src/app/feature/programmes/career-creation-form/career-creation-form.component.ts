@@ -130,6 +130,7 @@ export class CareerCreationFormComponent {
 
   // onSubmit
   onSubmit(saveType: string) {
+    console.log('called...')
     if (this.careerForm.valid) {
       // extract form value
       const formData = this.careerForm.value;

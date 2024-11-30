@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { ApplicantResponse, ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
+import { ApplicantResponse, ApplicantsData, DataContent } from '@src/app/core/interfaces/user-registration.interface';
 import { environment } from '@src/environments/environment.development';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminApprovalService {
-  api:string = environment.BASE_API;
+  api:string = `${environment.NEW_ADDRESS}:${environment.SERVICE_PORT}`;
   companies:string = environment.ALL_COMPANIES;
   approval:string = environment.APPROVAL_ENDPOINT;
   // rejected:string = environment.REJECTED;

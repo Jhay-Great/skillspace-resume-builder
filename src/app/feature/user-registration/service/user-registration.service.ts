@@ -14,7 +14,7 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserRegistrationService {
-  private api: string = environment.BASE_API;
+  private api: string = `${environment.NEW_ADDRESS}:${environment.SERVICE_PORT}`;
   private companyEndpoint: string = environment.COMPANY_ENDPOINT;
   private talentEndpoint: string = environment.TALENT_ENDPOINT;
   private otpEndpoint: string = environment.OTP_ENDPOINT;
