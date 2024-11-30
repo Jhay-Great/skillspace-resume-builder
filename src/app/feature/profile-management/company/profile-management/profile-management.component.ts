@@ -125,54 +125,5 @@ export class ProfileManagementComponent implements OnInit {
     this.activeTabIndex = event.index; // Update the active tab index
     console.log(`Active Tab Index: ${this.activeTabIndex}`);
   }
-
-  selectFile(event:Event) {
-    const target = event.target as HTMLInputElement;
-    const file = target.files
-    if (!file) return;
-    this.fileUploaded = file;
-    this.handleFile(file[0]);
-  }
-
-  onDragOver(event:DragEvent) {
-    this.resetDefaultBrowserSettings(event);
-    const container = event.currentTarget as HTMLElement;
-    container.classList.add('on-drag');
-  };
-  onDragLeave(event:DragEvent) {
-    this.resetDefaultBrowserSettings(event);
-    const container = event.currentTarget as HTMLElement;
-    container.classList.remove('on-drag');
-  };
-  onDrop(event:DragEvent) {
-    this.resetDefaultBrowserSettings(event);
-
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      this.fileUploaded = files;
-      this.handleFile(files[0]);
-    }
-  };
-
-  private handleFile(file: File): void {
-    if (file.type?.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // handle error response or feedback here
-      this.toastService.showError('Failed to upload', 'Please upload only image files');
-    }
-  }
-
-  remove() {
-    this.fileUploaded = null;
-  }
-
-  private resetDefaultBrowserSettings (event:Event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  
 }

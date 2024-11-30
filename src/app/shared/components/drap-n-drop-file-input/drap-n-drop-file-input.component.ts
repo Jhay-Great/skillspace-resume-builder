@@ -51,8 +51,8 @@ export class DrapNDropFileInputComponent {
     if (file.type.startsWith('image/')) {
       this.fileUploaded = file;
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewImage = e.target?.result as string;
         this.uploadedFile.emit(file);
       };
       reader.readAsDataURL(file);
