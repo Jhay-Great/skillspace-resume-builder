@@ -113,10 +113,20 @@ export const routes: Routes = [
       },
       {
         path: 'applicants',
-        loadComponent: () => 
-          import('./feature/applicant-review-feedback/pages/applicants/applicants.component').then(a => a.ApplicantsComponent),
-        title: 'All applicants'
-      }
+        loadComponent: () =>
+          import(
+            './feature/applicant-review-feedback/pages/applicants/applicants.component'
+          ).then((a) => a.ApplicantsComponent),
+        title: 'All applicants',
+      },
+      {
+        path: 'applicants/:id',
+        loadComponent: () =>
+          import(
+            './feature/applicant-review-feedback/pages/applicant-profile/applicant-profile.component'
+          ).then((ap) => ap.ApplicantProfileComponent),
+        title: 'Applicant',
+      },
     ],
   },
 ];
