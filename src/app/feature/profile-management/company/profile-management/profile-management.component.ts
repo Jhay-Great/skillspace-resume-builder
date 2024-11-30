@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DrapNDropFileInputComponent } from "@shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component";
 import { confirmPasswordValidator, passwordStrengthValidator } from '@shared/utils/password.validator';
 import { onFileUpload } from '@shared/utils/file-upload'
+import { ProfileManagementService } from '../../services/profile-management.service';
 
 @Component({
   selector: 'app-profile-management',
@@ -48,8 +49,9 @@ export class ProfileManagementComponent implements OnInit {
   securityForm!: FormGroup;
 
   constructor (
-    private toastService: ToastService,
     private fb: FormBuilder,
+    private profileService: ProfileManagementService,
+    private toastService: ToastService,
   ) {};
 
   ngOnInit(): void {
@@ -98,20 +100,18 @@ export class ProfileManagementComponent implements OnInit {
 
   validateForm(form:FormGroup) {
     if (form.invalid) {
-      console.log('invalid form: ', form.value);
+      this.toastService.showError('Invalid data', 'Ensure all fields are filled');
       return;
     };
     return this.handleFormValue(form.value);
   }
 
-  handleFormValue<D>(data:D) {
-    console.log(data);
+  handleFormValue<T>(data:T) {
+    this.onSubmit(data);
   }
 
-  onSubmit() {
-    // calls the http service method to make the http request
-    console.log('called and logging...')
-
+  onSubmit<T>(data:T) {
+    this.profileService.updateCompanyProfile(data);
   }
   
   // specific for ngx-material-intl-tel-input component

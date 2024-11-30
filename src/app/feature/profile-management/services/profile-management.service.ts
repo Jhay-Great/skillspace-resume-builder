@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProfileManagementService {
-  BASE_API:string = environment.BASE_API;
-  COMPANY_PROFILE_ENDPOINT:string = environment.COMPANY_PROFILE_ENDPOINT
+  private BASE_API:string = environment.BASE_API;
+  private COMPANY_PROFILE_ENDPOINT:string = environment.COMPANY_PROFILE_ENDPOINT
 
   constructor(
     private http: HttpClient
@@ -20,7 +20,7 @@ export class ProfileManagementService {
   }
 
   // UPDATE company profile
-  // updateCompanyProfile(data:any) {
-  //   this.update(`${this.BASE_API}/${this.COMPANY_PROFILE_ENDPOINT}/`)
-  // }
+  updateCompanyProfile(data:any) {
+    return this.update(`${this.BASE_API}/${this.COMPANY_PROFILE_ENDPOINT}/`, data);
+  }
 }
