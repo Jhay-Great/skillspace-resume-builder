@@ -46,7 +46,7 @@ export class DashboardLayoutComponent {
     },
     {
       name: 'Applicants',
-      path: 'dashboard/applicants',
+      path: '/dashboard/applicants',
       icon: 'pi pi-users',
     },
     {
