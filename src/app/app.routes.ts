@@ -127,6 +127,14 @@ export const routes: Routes = [
           ).then((tp) => tp.ProfileManagementComponent),
         title: 'Your Profile',
       },
+      {
+        path: 'programme-application',
+        loadComponent: () =>
+          import(
+            './feature/programme-application/programme-application/programme-application.component'
+          ).then((pa) => pa.ProgrammeApplicationComponent),
+        title: 'Programme Application',
+      },
     ],
   },
 ];
