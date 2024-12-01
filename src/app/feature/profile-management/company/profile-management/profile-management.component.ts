@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
@@ -17,6 +18,7 @@ import { DrapNDropFileInputComponent } from "@shared/components/drap-n-drop-file
 import { confirmPasswordValidator, passwordStrengthValidator } from '@shared/utils/password.validator';
 import { onFileUpload } from '@shared/utils/file-upload'
 import { ProfileManagementService } from '../../services/profile-management.service';
+import { createFromData } from '@shared/utils/file-upload';
 
 @Component({
   selector: 'app-profile-management',
@@ -52,6 +54,7 @@ export class ProfileManagementComponent implements OnInit {
     private fb: FormBuilder,
     private profileService: ProfileManagementService,
     private toastService: ToastService,
+    private destroyRef: DestroyRef,
   ) {};
 
   ngOnInit(): void {
@@ -77,37 +80,40 @@ export class ProfileManagementComponent implements OnInit {
 
   onSaveChanges ():void {
     switch(this.activeTabIndex) {
+      
+      // company details form
       case 0:
-        this.validateForm(this.companyDetailsForm);
-        // call submission functionality
+        const companyDetailsData = this.validateForm(this.companyDetailsForm);
+        const companyFormData = createFromData(companyDetailsData);
+        this.onSubmit(companyFormData);
         break;
+
+        // document form data
         case 1:
-        this.validateForm(this.documentForm);
-        // call submission functionality
+        const documentData = this.validateForm(this.documentForm);
+        const documentFormData = createFromData(documentData);
+        this.onSubmit(documentFormData);
         break;
+        
+        // security form data
         case 2:
-        this.validateForm(this.securityForm);
-        // call submission functionality
+        const securityData = this.validateForm(this.securityForm);
+        this.onSubmit(securityData);
         break;
       default:
-
     }
   }
 
-  onUpload(file:File | null) {
+  onUpload(file:File | null):void {
     onFileUpload(this.companyDetailsForm, file, 'logo');
   }
 
   validateForm(form:FormGroup) {
     if (form.invalid) {
       this.toastService.showError('Invalid data', 'Ensure all fields are filled');
-      return;
+      return null;
     };
-    return this.handleFormValue(form.value);
-  }
-
-  handleFormValue<T>(data:T) {
-    this.onSubmit(data);
+    return form.value;
   }
 
   onSubmit<T>(data:T) {
@@ -122,8 +128,7 @@ export class ProfileManagementComponent implements OnInit {
   }
 
   onTabChange(event: { index: number }): void {
-    this.activeTabIndex = event.index; // Update the active tab index
-    console.log(`Active Tab Index: ${this.activeTabIndex}`);
+    this.activeTabIndex = event.index;
   }
   
 }

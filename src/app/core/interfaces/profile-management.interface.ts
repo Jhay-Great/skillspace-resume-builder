@@ -4,6 +4,7 @@ export interface ProfileData {
     website: string;
     logo: string;
     certificate: string;
+    email:string;
 }
 export interface CompanyProfileRequestData {
     logo: string;
@@ -20,5 +21,5 @@ export interface ResponseObject {
 export interface CompanyProfileResponseData {
     statusCode: number;
     message: string;
-    data: ResponseObject;
+    data: ProfileData;
 }
