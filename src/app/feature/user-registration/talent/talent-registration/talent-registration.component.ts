@@ -47,7 +47,7 @@ export class TalentRegistrationComponent implements OnInit {
     private userRegistrationService: UserRegistrationService,
     private router: Router,
     private toastService: ToastService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +76,7 @@ export class TalentRegistrationComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          const { email, role } = response.data;
+          const { email, role } = response.data; 
           this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
