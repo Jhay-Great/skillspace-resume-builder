@@ -1,0 +1,31 @@
+@use 'variables' as var;
+@use 'mixins' as mix;
+
+.container {
+    padding: 0.2rem 1rem;
+    border-radius: 30rem;
+    font-weight: 400;
+    text-align: center;
+    font-size: var.$xsmall;
+    width: fit-content;
+  
+    &.danger-class {
+      background-color: #f8eeee;
+      color: #B42318;
+      border: 1px solid #f8eeee;
+    }
+  
+    &.success-class {
+      background-color: #e6f8ef;
+      color: #027A48;
+      border: 1px solid #e6f8ef;
+    }
+  
+    &.warning-class {
+      background-color: #E8F3FB;
+      color: #1d4ed8;
+      border: 1px solid #E8F3FB;
+
+    }
+  }
+  

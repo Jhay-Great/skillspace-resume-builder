@@ -12,7 +12,7 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<Country[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
+    return this.http.get<Country[]>(this.apiUrl).pipe(
       map(
         (countries: any[]) =>
           countries

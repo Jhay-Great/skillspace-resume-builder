@@ -11,13 +11,33 @@ export interface mockDetails {
   status: string;
 }
 
-
-export interface Country{
+// carrier Programme
+export interface Programme {
+  id: number;
+  userId: number;
   name: string;
-  flag: string
+  description: string;
+  requirements: string[];
+  requiredBadges: string[];
+  optionalBadges: string[];
+  startDate: Date;
+  endDate: Date;
+  status: string;
+  changeHistory?: ChangeHistory[];
 }
 
-// for talent  profile management education form
-export interface Status{
+export interface ChangeHistory {
+  id: number;
+  programs: string;
+  changeTimestamp: Date;
+  changeDescription: string;
+}
+
+export interface Country {
+  name: string;
+  flag: string;
+}
+
+export interface Status {
   label: string;
 }

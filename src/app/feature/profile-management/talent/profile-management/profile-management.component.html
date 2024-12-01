@@ -22,7 +22,7 @@
     <!-- company details -->
     <p-tabPanel class="content-container" header="Personal details">
       <!-- content goes here -->
-      <form>
+      <form class="formContainers">
         <!-- talent name -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Display Name</label>
@@ -116,8 +116,9 @@
     <p-tabPanel header="Education">
       <!-- content goes here -->
       <div class="educationFromWrap">
+
         <!-- education form -->
-        <form [formGroup]="educationForm">
+        <form class="formContainers" [formGroup]="educationForm">
           <!-- name and adress wrap -->
           <div class="nameAddress-wrap">
             <!-- name wrap -->
@@ -246,7 +247,7 @@
           <div class="wrap">
             <label for="status">Status</label>
             <p class="description-txt">
-              This is what employers will see on yourprofile
+              This is what employers will see on yourprofile 
             </p>
             <div [style]="{ width: '100%' }" class="p-input-icon-left">
               <i class="pi pi-list-check" style="margin-right: 8px"></i>

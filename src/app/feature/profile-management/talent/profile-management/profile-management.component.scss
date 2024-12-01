@@ -2,6 +2,13 @@
 
 .container {
   // pro reminder wrapp
+  padding-block-end: 1rem;
+
+  .formContainers{
+    width: 50%;
+    overflow-y: auto;
+    border: 1px solid red;
+  }  
   .pro-reminder {
     display: flex;
     justify-content: center;
@@ -27,7 +34,7 @@
     min-height: 20rem;
 
     form {
-      width: fit-content;
+      // width: fit-content;
       margin: auto;
       padding: 0.5rem;
       display: flex;
