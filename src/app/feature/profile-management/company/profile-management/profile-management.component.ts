@@ -39,7 +39,7 @@ import { createFromData } from '@shared/utils/file-upload';
   styleUrl: './profile-management.component.scss',
 })
 export class ProfileManagementComponent implements OnInit {
-  description:string = 'This is what applicants will see on your profile.'
+  description = 'This is what applicants will see on your profile.'
   fileUploaded: FileList | null = null;
   previewImage:string | null = null;
   activeTabIndex:number = 0;
@@ -78,6 +78,22 @@ export class ProfileManagementComponent implements OnInit {
     }, {validators: confirmPasswordValidator('newPassword', 'confirmPassword')});
   }
 
+  onUpload(file:File | null):void {
+    onFileUpload(this.companyDetailsForm, file, 'logo');
+  }
+
+  validateForm(form:FormGroup) {
+    if (form.invalid) {
+      this.toastService.showError('Invalid data', 'Ensure all fields are filled');
+      return null;
+    };
+    return form.value;
+  }
+
+  onSubmit<T>(data:T) {
+    this.profileService.updateCompanyProfile(data);
+  }
+  
   onSaveChanges ():void {
     switch(this.activeTabIndex) {
       
@@ -102,22 +118,6 @@ export class ProfileManagementComponent implements OnInit {
         break;
       default:
     }
-  }
-
-  onUpload(file:File | null):void {
-    onFileUpload(this.companyDetailsForm, file, 'logo');
-  }
-
-  validateForm(form:FormGroup) {
-    if (form.invalid) {
-      this.toastService.showError('Invalid data', 'Ensure all fields are filled');
-      return null;
-    };
-    return form.value;
-  }
-
-  onSubmit<T>(data:T) {
-    this.profileService.updateCompanyProfile(data);
   }
   
   // specific for ngx-material-intl-tel-input component
