@@ -24,19 +24,22 @@
           />
         </p-iconField>
       </div>
+      <!-- status -->
+      <div class="card flex justify-content-center status">
+        <p-splitButton label="Status" [model]="status" severity="secondary" />
+      </div>
 
       <!-- date filter -->
       <div [style]="{ marginLeft: '1rem' }" class="flex align-items-center">
         <p-calendar
           [style]="{ width: '7rem' }"
-          placeholder="Select Date"
+          placeholder="Date"
           [(ngModel)]="dateFilter"
           [showButtonBar]="true"
           (onSelect)="onSearchOrDateFilter()"
           (onClearClick)="onSearchOrDateFilter()"
         ></p-calendar>
       </div>
-      <button (click)="openForm()" class="addform">Add career programme</button>
     </div>
     <!--  -->
 
@@ -52,7 +55,7 @@
           <span class="font-bold">
             {{ tabMenu.label }}
           </span>
-          <p-badge value="5" />
+          <p-badge [value]="totalProgrammes(tabMenu.label)" severity="info" />
         </a>
       </ng-template>
     </p-tabMenu>

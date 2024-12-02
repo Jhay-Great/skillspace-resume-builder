@@ -51,6 +51,10 @@
 
     .right {
       justify-content: flex-end;
+
+      .moreIcon {
+        cursor: pointer;
+      }
     }
   }
 

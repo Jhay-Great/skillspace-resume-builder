@@ -3,11 +3,22 @@
   <div class="head">
     <div class="left">
       <span class="logo"></span>
-      <p class="font-head">Google {{programme}}</p>
+      <p class="font-head">Google</p>
     </div>
     <div class="right">
       <span class="status font-xs">Opened</span>
-      <img src="../../../../assets/svgs/more.svg" alt="more" />
+      <img
+        class="moreIcon"
+        (click)="op.toggle($event)"
+        src="../../../../assets/svgs/more.svg"
+        alt="more"
+      />
+      <p-overlayPanel #op>
+        <div class="float">
+          <p class="floattext">View program</p>
+          <p class="floattext">Save for later</p>
+        </div>
+      </p-overlayPanel>
     </div>
   </div>
 
@@ -15,7 +26,7 @@
   <p>Posted: <span class="font-xs">2 days ago</span></p>
   <div class="details">
     <div class="wrap">
-      <p class="font-head programme-title">Software Engineering Internship</p>
+      <p class="font-head programme-title">{{ programme }}</p>
       <div class="date-wrap">
         <img src="../../../../assets/svgs/date.svg" alt="date" />
         <p class="font-sm">Sep 16 - Sep 24,2024</p>

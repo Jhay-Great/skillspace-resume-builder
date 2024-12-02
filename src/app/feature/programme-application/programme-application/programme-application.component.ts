@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // import primeng modules needed
-import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { RippleModule } from 'primeng/ripple';
 import { BadgeModule } from 'primeng/badge';
@@ -12,6 +11,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
+import { MenuItem } from 'primeng/api';
+import { SplitButtonModule } from 'primeng/splitbutton';
 // import career creation form component
 import { FormsModule } from '@angular/forms';
 // import rxjs services
@@ -19,8 +20,10 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
 // import interface
 import {
+  mockData,
   mockDetails,
   Programme,
+  Status,
   TabMenuList,
 } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
@@ -31,7 +34,6 @@ import { ProgrammeCardComponent } from '@src/app/shared/components/programme-car
   selector: 'app-programme-application',
   standalone: true,
   imports: [
-    TableModule,
     CommonModule,
     TabMenuModule,
     RippleModule,
@@ -46,12 +48,25 @@ import { ProgrammeCardComponent } from '@src/app/shared/components/programme-car
     DataViewModule,
     ProgrammeCardComponent,
     FormsModule,
+    SplitButtonModule,
   ],
   templateUrl: './programme-application.component.html',
   styleUrl: './programme-application.component.scss',
 })
 export class ProgrammeApplicationComponent {
-  constructor() {}
+  constructor() {
+    this.status = [
+      {
+        label: 'Available',
+        command: () => {},
+      },
+      {
+        label: 'Coming Soon',
+        command: () => {},
+      },
+      { label: 'Closed', url: 'http://angular.io' },
+    ];
+  }
 
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
@@ -71,11 +86,13 @@ export class ProgrammeApplicationComponent {
   filteringProgrammes = false;
   searchString: string = '';
   dateFilter: string = '';
+  statusFilter: string = '';
+  status: MenuItem[] = [];
   filteredDateSearchData: any = [];
 
   // programmes
-  all: any = [];
-  saved: any = [];
+  all: mockData[] = [];
+  saved: mockData[] = [];
 
   ngOnInit() {
     this.tabMenuList = [
@@ -87,31 +104,35 @@ export class ProgrammeApplicationComponent {
     // fetch programmes
     this.all = [
       {
-        name: 'all',
+        name: 'Software Engineering Internship',
+        date: new Date(),
       },
       {
-        name: 'all',
+        name: 'Cloud Engineering Internship',
+        date: new Date(),
       },
       {
-        name: 'all',
+        name: 'Cyber Security Bootcamp',
+        date: new Date(),
       },
       {
-        name: 'hello',
+        name: 'Graduate Trainee Programme',
+        date: new Date(),
       },
     ];
 
     this.saved = [
       {
-        name: 'Sav',
+        name: 'Graduate Trainee Programme',
+        date: new Date(),
       },
       {
-        name: 'Sav',
+        name: 'Cyber Security Bootcamp',
+        date: new Date(),
       },
       {
-        name: 'Sav',
-      },
-      {
-        name: 'Sav',
+        name: 'Cloud Engineering Internship',
+        date: new Date(),
       },
     ];
   }
@@ -132,6 +153,18 @@ export class ProgrammeApplicationComponent {
     this.resetTab();
     this.allProgrammes = true;
     this.activeTabData = 'all';
+  }
+
+  // tab programme total
+  totalProgrammes(label: string) {
+    switch (label) {
+      case 'Career programmes':
+        return this.all.length;
+      case 'Saved programmes':
+        return this.saved.length;
+      default:
+        return 0;
+    }
   }
 
   private setSavedProgrammesTab() {
@@ -172,14 +205,13 @@ export class ProgrammeApplicationComponent {
         : this.setSavedProgrammesTab();
       return;
     }
-    console.log(this.dateFilter);
     const activeDataToFilter =
       this.activeTabData === 'all' ? this.all : this.saved;
     // performs search only
     if (this.searchString && !this.dateFilter) {
       this.displayFilteredProgrammes();
       this.filteredDateSearchData = activeDataToFilter.filter(
-        (programme: any) => {
+        (programme: mockData) => {
           return programme.name
             .toLowerCase()
             .includes(this.searchString.toLowerCase());
@@ -190,7 +222,7 @@ export class ProgrammeApplicationComponent {
     if (!this.searchString && this.dateFilter) {
       this.displayFilteredProgrammes();
       this.filteredDateSearchData = activeDataToFilter.filter(
-        (programme: any) => {
+        (programme: mockData) => {
           return this.formatSelectedDate(programme.date) === this.dateFilter;
         }
       );

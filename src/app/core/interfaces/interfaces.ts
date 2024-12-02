@@ -38,7 +38,13 @@ export interface Country {
   flag: string;
 }
 
+
 export interface Status {
   label: string;
+}
+
+export interface mockData  {
+  name: string
+  date: Date
 }
 
