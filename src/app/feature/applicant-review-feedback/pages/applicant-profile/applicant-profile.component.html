@@ -160,27 +160,68 @@
                             <p-badge value="2" />
                         </div>
                     </ng-template>
-                    <ng-template pTemplate="body">
+                    <ng-template pTemplate="body" class="project-main-container">
                         <section class="document-container">
-                            <div class="name_user-details">
-                                <div class="file-type-name">Academic transcript</div>
-                                <div class="file-name">
-                                    <i class="pi pi-trophy" ></i>
+                            <div class="badges-container">
+                                <h2 class="badge-title header-title">Badges earned</h2>
+                                <div class="badge-list-container">
+                                    <i class="pi pi-trophy" style="font-size: 1.5rem"></i>
                                     <span class="badges">
-                                        Amalitech/Python
+                                        Amalitech / Python
                                     </span>
                                     <span class="badges">
-                                        Amalitech/ Java
+                                        Amalitech / Java
                                     </span>
                                     <span class="badges">
-                                        Google/ JavaScript
+                                        Google / JavaScript
                                     </span>
                                     <span class="badges">
-                                        Google/ Django
+                                        Google / Django
                                     </span>
                                 </div>
                             </div>
                         </section>
+                        <p-table [value]="projects" [tableStyle]="{'min-width': '60rem'}">
+                            <ng-template pTemplate="caption">
+                                <div class="flex align-items-center justify-content-between">
+                                    All projects
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Progress</th>
+                                    <th>Passing scores</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product>
+                                <tr>
+                                    <td>{{ product.title }}</td>
+                                    <td>
+                                        <div class="circular-progress">
+                                            <div class="circle" 
+                                            [ngStyle]="{
+                                                background: 'conic-gradient(#3B82F6 ' + product.progress + '%, #F1F5F9 ' + product.progress + '%)'
+                                              }"
+                                                >
+                                              <div class="inner-circle">
+                                                <span class="percentage"> {{ product.progress }} </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        <!-- {{ product.progress }} -->
+                                    </td>
+                                    <td>
+                                        {{ product.score }}% marks
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        
+                        <!-- <section class="project-container">
+                            <h2 class="project-title header-title">All projects</h2>
+
+                        </section> -->
                         
                     </ng-template>
                 </p-tabPanel>
