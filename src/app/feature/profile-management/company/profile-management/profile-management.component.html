@@ -4,18 +4,18 @@
 />
 
 <section class="container">
-  <p-tabView>
+  <p-tabView class="tab-view-container" [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- company details -->
     <p-tabPanel class="content-container" header="Company details">
       <!-- content goes here -->
-      <form>
+      <form [formGroup]="companyDetailsForm">
         <!-- company name -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Company Name</label>
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-user" />
-            <input type="text" pInputText placeholder="Enter company name " />
+            <input type="text" pInputText placeholder="Enter company name " formControlName="name" />
           </p-iconField>
         </div>
 
@@ -35,100 +35,52 @@
           </p-iconField>
         </div>
 
+        <!-- phone number -->
+        <div class="card flex flex-wrap justify-content-center gap-3">
+          <label for="username">Phone number</label>
+          <p class="description">{{ description }}</p>
+          <ngx-material-intl-tel-input
+          [fieldControl]="contactControl"
+          [iconMakeCall]="false"
+          [enablePlaceholder]="true"
+          [autoSelectedCountry]="selectedCountry"
+          placeholder="Enter your telephone number"
+          [required]="true"
+          [autoIpLookup]="false"
+        ></ngx-material-intl-tel-input>
+        </div>
+
         <!-- website -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Website Links</label>
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-link" />
-            <input type="text" pInputText placeholder="www.Seanlifer.com" />
+            <input type="text" pInputText placeholder="www.Seanlifer.com" formControlName="website" />
           </p-iconField>
         </div>
 
         <!-- upload -->
-        <!-- <app-drag-n-drop-file-input /> -->
-        
-        <div class="card upload">
-          <label for="username">Upload Logo</label>
-          <p class="description">{{ description }}</p>
-          <!-- would change false to property value when integration functionality -->
-          @if (fileUploaded) {
-              <div class="uploaded-file">
-                <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
-                <button>
-                    <img src="assets/svgs/cross.svg" alt="close button svg icon">
-                </button>
-              </div>
-          }
-          <div class="upload-section"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-          >
-              <input type="file" accept="image/png" (change)="selectFile($event)" name="" id="">
-              @if (!fileUploaded) {
-                <div class="instructions">
-                  <img src="assets/svgs/drop-here-image.svg" alt="">
-                  <p class="drop-here">Drop image here</p>
-                  <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
-                </div>
-              }@else {
-                <div class="preview">
-                  <!-- <img [src]="fileUploaded[0].name" alt=""> -->
-                  <img [src]="previewImage" alt="">
-                </div>
-
-              }
-          </div>
-        </div>
+        <app-drag-n-drop-file-input 
+        [label]="'Upload Logo'" 
+        [accept]="'image/png'"
+        (uploadedFile)="onUpload($event)"
+      />
+      
       </form>
     </p-tabPanel>
 
     <!-- documents -->
     <p-tabPanel header="Documents">
       <!-- file upload content goes here -->
-             <!-- upload -->
-      <!-- <div class="card upload">
-        <section class="upload-file">
-          <header>
-            <label class="username">Certificate</label>
-            <p class="description">{{ description }}</p>
-          </header>
-          @if (fileUploaded) {
-              <div class="uploaded-file">
-                <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
-                <button>
-                    <img src="assets/svgs/cross.svg" alt="close button svg icon">
-                </button>
-              </div>
-          }
-          <div class="upload-section"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-          >
-              <input type="file" accept=".pdf" (change)="selectFile($event)" name="" id="">
-              @if (!fileUploaded) {
-                <div class="instructions">
-                  <img src="assets/svgs/drop-here-image.svg" alt="">
-                  <p class="drop-here">Drop image here</p>
-                  <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
-                </div>
-              }@else {
-                <div class="preview">
-                  <img [src]="previewImage" alt="">
-                </div>
-  
-              }
-          </div>
+      <form [formGroup]="documentForm">
+        <app-drag-n-drop-file-input 
+          [label]="'Certificate'" 
+          [accept]="'.pdf'"
+        />
 
-        </section>
-      </div> -->
+      </form>
        
-      <app-drag-n-drop-file-input 
-        [label]="'Certificate'" 
-        [accept]="'.pdf'"
-      />
       
     </p-tabPanel>
 
@@ -137,32 +89,41 @@
       <!-- content goes here -->
       <header>
         <p class="title">Change Password</p>
-        <p class="description">Update password details for security reasons</p>
+        <p class="password-description">Update password details for security reasons</p>
       </header>
 
-      <!-- old password -->
-      <app-input-field 
-        [label]="'Old Password'"
-        [type]="'password'"
-        [svgIcon]="'lock'"
-        [placeholder]="'Old password'"
-      />
-      
-      <!-- new password -->
-      <app-input-field 
-        [label]="'New Password'"
-        [type]="'password'"
-        [svgIcon]="'lock'"
-        [placeholder]="'New password'"
-      />
-      
-      <!-- confirm password -->
-      <app-input-field 
-        [label]="'Confirm Password'"
-        [type]="'password'"
-        [svgIcon]="'lock'"
-        [placeholder]="'Confirm password'"
-      />
+      <form [formGroup]="securityForm">
+        <!-- old password -->
+        <app-input-field 
+          [label]="'Old Password'"
+          [type]="'password'"
+          [svgIcon]="'lock'"
+          [placeholder]="'Old password'"
+          [isDisabled]="true"
+          formControlName="oldPassword"
+        />
+        
+        <!-- new password -->
+        <app-input-field 
+          [label]="'New Password'"
+          [type]="'password'"
+          [svgIcon]="'lock'"
+          [placeholder]="'New password'"
+          formControlName="newPassword"
+        />
+        
+        <!-- confirm password -->
+        <app-input-field 
+          [label]="'Confirm Password'"
+          [type]="'password'"
+          [svgIcon]="'lock'"
+          [placeholder]="'Confirm password'"
+          formControlName="confirmPassword"
+        />
+
+      </form>
     </p-tabPanel>
   </p-tabView>
+  <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
+
 </section>
