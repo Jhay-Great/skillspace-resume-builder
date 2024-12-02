@@ -112,6 +112,22 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'company-profile',
+        loadComponent: () =>
+          import(
+            './feature/profile-management/company/profile-management/profile-management.component'
+          ).then((cp) => cp.ProfileManagementComponent),
+        title: 'Your Profile',
+      },
+      {
+        path: 'talent-profile',
+        loadComponent: () =>
+          import(
+            './feature/profile-management/talent/profile-management/profile-management.component'
+          ).then((tp) => tp.ProfileManagementComponent),
+        title: 'Your Profile',
+      },
+      {
         path: 'applicants',
         loadComponent: () =>
           import(

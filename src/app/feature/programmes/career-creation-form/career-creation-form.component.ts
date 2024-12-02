@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { environment } from '@src/environments/environment.development';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
 import {
   FormGroup,
@@ -13,7 +15,8 @@ import { ChipsModule } from 'primeng/chips';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ToastService } from '../../../core/services/toast-service/toast.service';
+// import programmes servvice
+import { ProgrammeService } from '../program-service/programme.service';
 
 @Component({
   selector: 'app-career-creation-form',
@@ -35,12 +38,16 @@ export class CareerCreationFormComponent {
 
   @Output() closeForm: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder, private toastService: ToastService) {
+  constructor(
+    private fb: FormBuilder,
+    private localStorageService: LocalStorageService,
+    public programmeService: ProgrammeService
+  ) {
     this.careerForm = this.fb.group({
       name: ['', Validators.required],
       requirements: this.fb.array([]),
       requiredBadges: ['', Validators.required],
-      optionalBadges: ['', Validators.required],
+      optionalBadges: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       description: ['', Validators.required],
@@ -49,11 +56,23 @@ export class CareerCreationFormComponent {
 
   ngOnInit(): void {
     this.addRequirement();
+    if (this.programmeService.currentUpdatingProgram) {
+      const programmeToUpdate = this.programmeService.currentUpdatingProgram;
+      this.careerForm.patchValue(programmeToUpdate);
+      this.careerForm.patchValue({
+        startDate: new Date(programmeToUpdate.startDate),
+        endDate: new Date(programmeToUpdate.endDate),
+      });
+    }
   }
 
   // Getter for the requirements FormArray
   get requirements() {
     return this.careerForm.get('requirements') as FormArray;
+  }
+  // parse to ngprime date
+  parseToPrimeNGCalendarFormat(dateString: string): Date {
+    return new Date(dateString);
   }
 
   // Method to add a new field
@@ -69,19 +88,11 @@ export class CareerCreationFormComponent {
   // closeform
   close() {
     this.closeForm.emit();
-  }
-
-  // Toast notification
-  successToast() {
-    this.toastService.showSuccess(
-      'Congratulations',
-      'Career programme has been successfully added',
-      'top-right'
-    );
+    this.programmeService.currentUpdatingProgram = null;
   }
 
   // format date
-  formatCustomDate(date: Date): string {
+  private formatCustomDate(date: Date): string {
     if (!date) return '';
     const day = date.getDate();
     const month = date.toLocaleString('default', { month: 'long' });
@@ -98,7 +109,16 @@ export class CareerCreationFormComponent {
 
     return `${day}${suffix} ${month} ${year}`;
   }
+  // format Date to iso
+  private formatDateToISO(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
   // start and end date
+  // this was sending the date in 25th november 2023
   startDateSelect(event: Date): void {
     const formattedDate = this.formatCustomDate(event);
     this.careerForm.patchValue({ startDate: formattedDate });
@@ -109,13 +129,31 @@ export class CareerCreationFormComponent {
   }
 
   // onSubmit
-  onSubmit() {
+  onSubmit(saveType: string) {
     if (this.careerForm.valid) {
+      // extract form value
       const formData = this.careerForm.value;
-      formData.startDate = this.formatCustomDate(formData.startDate);
-      formData.endDate = this.formatCustomDate(formData.endDate);
+      // patch dates
+      formData.startDate = this.formatDateToISO(formData.startDate);
+      formData.endDate = this.formatDateToISO(formData.endDate);
+      // patch user id
+      const userId = JSON.parse(this.localStorageService.getUserId('userId'));
+      formData.userId = userId;
+
+      if (saveType === 'publish') {
+        formData.status = 'PUBLISHED';
+        this.programmeService.createProgram(formData);
+      }
+      if (saveType === 'draft') {
+        formData.status = 'DRAFT';
+        this.programmeService.createProgram(formData);
+      }
+      if (saveType === 'update') {
+        const programmeId = this.programmeService.currentUpdatingProgram?.id;
+        this.programmeService.updateProgram(programmeId?programmeId: null, formData);
+        this.programmeService.currentUpdatingProgram = null;
+      }
       this.closeForm.emit();
-      this.successToast();
     }
   }
 }
