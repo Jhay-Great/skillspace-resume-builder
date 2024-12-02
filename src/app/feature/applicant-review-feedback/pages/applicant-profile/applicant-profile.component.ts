@@ -1,6 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 // primeng modules
 import { ConfirmationService } from 'primeng/api';
@@ -9,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
+import { TableModule } from 'primeng/table';
 
 // local imports
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
@@ -18,7 +20,7 @@ import { ApplicantsData } from '@src/app/core/interfaces/user-registration.inter
 @Component({
   selector: 'app-applicant-profile',
   standalone: true,
-  imports: [TagModule, ButtonModule, TabViewModule, BadgeModule],
+  imports: [TagModule, TableModule, ButtonModule, TabViewModule, BadgeModule, CommonModule],
   templateUrl: './applicant-profile.component.html',
   styleUrl: './applicant-profile.component.scss'
 })
@@ -26,6 +28,11 @@ export class ApplicantProfileComponent {
   isApproved:boolean = false;
   isRejected:boolean = false;
   applicant: ApplicantsData | null = null;
+  projects = [
+    {title: 'UI/UX Quiz 1', progress: 75, score: 20},
+    {title: 'UI/UX Quiz 2', progress: 80, score: 30},
+    {title: 'Frontend Quiz 1', progress: 15, score: 20},
+  ]
   
   constructor(
     private confirmationService: ConfirmationService,
