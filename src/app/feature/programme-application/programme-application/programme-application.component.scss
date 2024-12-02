@@ -114,15 +114,19 @@
       background-color: #f9fafb;
     }
 
-    // programme status styling
-
-    // draft and published programmes styling (classes named as special as they have special table apperance)
+    // career programmes and saved programmes wrapper
     .programmes-wrap {
-      border: 1px solid red;
       height: 100%;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
       gap: 0.5rem;
+      overflow-y: auto;
+    }
+
+    // view programme wrapper
+    .viewPrograme {
+      height: 100%;
+      overflow-y: auto;
     }
   }
 }
@@ -148,6 +152,9 @@
       display: none;
     }
     scrollbar-width: none;
+    &.applyprograme {
+      border-radius: 0.5rem;
+    }
   }
 }
 

@@ -19,16 +19,12 @@ import { FormsModule } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
 // import interface
-import {
-  mockData,
-  mockDetails,
-  Programme,
-  Status,
-  TabMenuList,
-} from '../../../core/interfaces/interfaces';
+import { mockData, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
-
+// import components
 import { ProgrammeCardComponent } from '@src/app/shared/components/programme-card/programme-card.component';
+import { ViewedProgrammeComponent } from '../viewed-programme/viewed-programme.component';
+import { ProgrammeApplyFormComponent } from '../programme-apply-form/programme-apply-form.component';
 
 @Component({
   selector: 'app-programme-application',
@@ -49,6 +45,8 @@ import { ProgrammeCardComponent } from '@src/app/shared/components/programme-car
     ProgrammeCardComponent,
     FormsModule,
     SplitButtonModule,
+    ViewedProgrammeComponent,
+    ProgrammeApplicationComponent
   ],
   templateUrl: './programme-application.component.html',
   styleUrl: './programme-application.component.scss',
@@ -90,11 +88,15 @@ export class ProgrammeApplicationComponent {
   status: MenuItem[] = [];
   filteredDateSearchData: any = [];
 
+  // viewing programme details
+  viewProgrammeDetails = false;
+  
   // programmes
   all: mockData[] = [];
   saved: mockData[] = [];
 
   ngOnInit() {
+    this.openForm();
     this.tabMenuList = [
       { label: 'Career programmes' },
       { label: 'Saved programmes' },
@@ -182,6 +184,7 @@ export class ProgrammeApplicationComponent {
     this.allProgrammes = false;
     this.savedProgrammes = false;
     this.filteringProgrammes = false;
+    this.viewProgrammeDetails = false;
   }
 
   setActiveTab(title: string) {
@@ -196,6 +199,12 @@ export class ProgrammeApplicationComponent {
         break;
     }
   }
+  // view programm function
+  viewProgram(){
+    this.resetTab()
+    this.viewProgrammeDetails = true
+  }
+
   // Date filter and search function
   onSearchOrDateFilter() {
     // clears search and date filter if both are empty
@@ -250,7 +259,7 @@ export class ProgrammeApplicationComponent {
   }
 
   // open form
-  openForm() {
+  openForm() {    
     this.formModal = true;
   }
   // close form
