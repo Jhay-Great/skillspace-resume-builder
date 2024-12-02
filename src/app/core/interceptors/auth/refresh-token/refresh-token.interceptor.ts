@@ -24,7 +24,7 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
 function refreshToken(
   authService: AuthService,
-  req: HttpRequest<any>,
+  req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) {
   const localStorageService = inject(LocalStorageService);
