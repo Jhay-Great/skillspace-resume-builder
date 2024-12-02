@@ -18,6 +18,11 @@ export class LocalStorageService {
     }
   }
 
+  getUserId(key: string): string{
+    const userId = localStorage.getItem(key);
+    return userId ? userId : '';
+  }
+
   removeItem(key: string): void {
     localStorage.removeItem(key);
   }

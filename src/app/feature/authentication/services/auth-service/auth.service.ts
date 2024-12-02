@@ -65,7 +65,8 @@ export class AuthService {
 
   login(credentials: LoginCredentials): Observable<User> {
     return this.http.post<User>(
-      `${environment.BASE_API}/v1/auth/login`,
+      `${environment.AUTH_ADDRESS}/v1/auth/login`,
+      // `${environment.BASE_API}/v1/auth/login`,
       credentials
     );
   }
