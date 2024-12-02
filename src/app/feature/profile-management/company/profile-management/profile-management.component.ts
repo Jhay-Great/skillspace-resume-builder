@@ -77,6 +77,13 @@ export class ProfileManagementComponent implements OnInit {
       confirmPassword: ['', [Validators.required]],
     }, {validators: confirmPasswordValidator('newPassword', 'confirmPassword')});
   }
+  
+  // specific for ngx-material-intl-tel-input component
+  get contactControl() {
+    return this.companyDetailsForm.get('contact') as FormControl<
+      string | null
+    >;
+  }
 
   onUpload(file:File | null):void {
     onFileUpload(this.companyDetailsForm, file, 'logo');
@@ -118,13 +125,6 @@ export class ProfileManagementComponent implements OnInit {
         break;
       default:
     }
-  }
-  
-  // specific for ngx-material-intl-tel-input component
-  get contactControl() {
-    return this.companyDetailsForm.get('contact') as FormControl<
-      string | null
-    >;
   }
 
   onTabChange(event: { index: number }): void {
