@@ -5,8 +5,6 @@ import { LoginCredentials, User, UserRole } from '../../models/auth.model';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from '../../../../core/services/localStorageService/local-storage.service';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
-import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
 
 @Injectable({
   providedIn: 'root',
