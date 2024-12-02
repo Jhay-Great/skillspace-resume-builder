@@ -59,3 +59,13 @@
     }
     @include mix.flex(column, 0.5rem);
 }
+
+.input-disabled {
+    background-color: var.$color-blue-gray-100;
+    color: var.$color-blue-gray-500;
+    cursor: not-allowed;
+
+    &:hover {
+        border-color: var.$color-blue-gray-300 !important;
+    }
+}
