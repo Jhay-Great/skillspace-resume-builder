@@ -6,11 +6,11 @@
       <p class="font-head">Google</p>
     </div>
     <div class="right">
-      <span class="status font-xs">Opened</span>
+      <app-tag [status]="'open'"></app-tag>
       <img
         class="moreIcon"
         (click)="op.toggle($event)"
-        src="../../../../assets/svgs/more.svg"
+        src="assets/svgs/more.svg"
         alt="more"
       />
       <p-overlayPanel #op>
