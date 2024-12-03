@@ -46,8 +46,8 @@ import { ProgrammeApplyFormComponent } from '../programme-apply-form/programme-a
     FormsModule,
     SplitButtonModule,
     ViewedProgrammeComponent,
-    ProgrammeApplicationComponent
-  ],
+    ProgrammeApplyFormComponent
+],
   templateUrl: './programme-application.component.html',
   styleUrl: './programme-application.component.scss',
 })
