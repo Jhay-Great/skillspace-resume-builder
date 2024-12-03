@@ -58,6 +58,8 @@ export class ProfileManagementComponent implements OnInit {
   ) {};
 
   ngOnInit(): void {
+    // get data and populates form
+    this.populateDetails();
     // company details form
     this.companyDetailsForm = this.fb.group({
       name: ['', Validators.required],
@@ -83,6 +85,19 @@ export class ProfileManagementComponent implements OnInit {
     return this.companyDetailsForm.get('contact') as FormControl<
       string | null
     >;
+  }
+
+  populateDetails () {
+    this.profileService.getCompanyData()
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
+      next: (response) => {
+        
+      },
+      error: () => {
+        this.toastService.showError('Error', 'Failed to get data', 'top-right')
+      }
+    })
   }
 
   onUpload(file:File | null):void {
