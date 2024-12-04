@@ -72,7 +72,7 @@ export class ApplicantsComponent {
 
         },
         error: error => {
-          this.toastService.showError('Error', 'Failed to load data')
+          this.toastService.showError('Error', 'Failed to load data', 'top-right')
         },
         complete: () => {},
       });
