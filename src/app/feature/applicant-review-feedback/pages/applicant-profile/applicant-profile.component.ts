@@ -16,17 +16,20 @@ import { TableModule } from 'primeng/table';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { AdminApprovalService } from '@src/app/feature/user-registration/service/admin-approval/admin-approval.service';
 import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
+import { TagComponent } from "@shared/components/tag/tag.component";
 
 @Component({
   selector: 'app-applicant-profile',
   standalone: true,
-  imports: [TagModule, TableModule, ButtonModule, TabViewModule, BadgeModule, CommonModule],
+  imports: [TagModule, TableModule, ButtonModule, TabViewModule, BadgeModule, CommonModule, TagComponent],
   templateUrl: './applicant-profile.component.html',
   styleUrl: './applicant-profile.component.scss'
 })
 export class ApplicantProfileComponent {
   isApproved:boolean = false;
   isRejected:boolean = false;
+  isLoading:boolean = false;
+  activeIndex: number = 0;
   applicant: ApplicantsData | null = null;
   projects = [
     {title: 'UI/UX Quiz 1', progress: 75, score: 20},
@@ -45,6 +48,14 @@ export class ApplicantProfileComponent {
   ngOnInit(): void {
     this.applicant = this.adminApprovalService.selectedUser();
   }
+
+  onTabChange(event: any) {
+    console.log('called...')
+    console.log('Tab changed:', event);
+    console.log('Index of active tab:', event.index);
+    console.log('Tab data:', event.originalEvent);
+  }
+
 
   navigateToHome() {
     this.router.navigate(['/dashboard/approvals']);
