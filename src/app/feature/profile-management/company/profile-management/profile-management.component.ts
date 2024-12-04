@@ -42,7 +42,7 @@ export class ProfileManagementComponent implements OnInit {
   description = 'This is what applicants will see on your profile.';
   fileUploaded: FileList | null = null;
   previewImage: string | null = null;
-  activeTabIndex: number = 0;
+  activeTabIndex = 0;
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   // form groups
@@ -70,7 +70,9 @@ export class ProfileManagementComponent implements OnInit {
     });
 
     // document form
-    this.documentForm = this.fb.group({});
+    this.documentForm = this.fb.group({
+      certificate: ['', Validators.required],
+    });
 
     // security form
     this.securityForm = this.fb.group(
