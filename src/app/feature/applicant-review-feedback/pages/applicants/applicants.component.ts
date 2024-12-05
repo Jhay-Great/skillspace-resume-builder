@@ -22,6 +22,7 @@ import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
 import { AdminApprovalService } from '@src/app/feature/user-registration/service/admin-approval/admin-approval.service';
 import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
+import { DateSuffixPipe } from '@src/app/core/pipes/datesuffix/date-suffix.pipe';
 
 interface Status {
   name: string;
@@ -46,6 +47,7 @@ interface Status {
     EllipsisPipe,
     CapitalizePipe,
     PageHeaderDescriptionComponent,
+    DateSuffixPipe,
   ],
   templateUrl: './applicants.component.html',
   styleUrl: './applicants.component.scss',
@@ -72,6 +74,22 @@ export class ApplicantsComponent implements OnInit {
           this.applicants = response.data;
         },
         error: () => {
+          // for testing purposes
+          this.applicants = [
+            {
+              id: 1,
+              name: 'Mabel Slyvia Gun',
+              role: 'TALENT',
+              isOtpVerified: true,
+              approvalStatus: 'pending',
+              logo: '',
+              certificate: '',
+              email: 'so@gmail.com',
+              website: 'sd.io',
+              contact: '+233 283 2389',
+              createdAt: '11/02/23',
+            },
+          ];
           this.toastService.showError('Error', 'Failed to load data', 'top-right');
         },
       });
@@ -87,7 +105,7 @@ export class ApplicantsComponent implements OnInit {
     const applicant = this.applicants.find((user) => user.id === id);
     if (!applicant) return;
     this.adminApprovalService.selectedUser.set(applicant);
-    this.router.navigate([`/dashboard/approvals/${id}`]);
+    this.router.navigate([`/dashboard/applicants/${id}`]);
   }
 
   onSearch(query: string) {
@@ -104,6 +122,10 @@ export class ApplicantsComponent implements OnInit {
   }
 
   chooseStatus(value: Status) {
-    if (!value) return;
+    if (value.value !== 'All') {
+      this.table()?.filter(value.name, 'approvalStatus', 'equals');
+    } else {
+      this.table()?.clear();
+    }
   }
 }
