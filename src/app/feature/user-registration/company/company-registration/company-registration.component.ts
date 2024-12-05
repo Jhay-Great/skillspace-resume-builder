@@ -220,14 +220,4 @@ export class CompanyRegistrationComponent implements OnInit {
       this.companyForm.get(`information.${control}`)?.setValue(file);
     }
   }
-
-  onUpload(event: any) {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    if (file) {
-      this.placeholder = file.name;
-      this.companyForm.get('information.certificate')?.setValue(file.name);
-    }
-  }
 }
