@@ -62,43 +62,44 @@
     <!--  -->
 
     <!-- career programs display-->
-    @if(allProgrammes){
-    <div class="programmes-wrap">
-      @for(programee of all; track $index){
-      <app-programme-card [programme]="programee.name"></app-programme-card>
-      }
-    </div>
+    @if (allProgrammes) {
+      <div class="programmes-wrap">
+        @for (programee of all; track $index) {
+          <app-programme-card [programme]="programee.name"></app-programme-card>
+        }
+      </div>
     }
     <!-- saved programs display -->
-    @if(savedProgrammes){
-    <div class="programmes-wrap">
-      @for(programee of saved; track $index){
-      <app-programme-card [programme]="programee.name"></app-programme-card>
-      }
-    </div>
+    @if (savedProgrammes) {
+      <div class="programmes-wrap">
+        @for (programee of saved; track $index) {
+          <app-programme-card [programme]="programee.name"></app-programme-card>
+        }
+      </div>
     }
 
     <!-- date filter and search programs display -->
-    @if(filteringProgrammes){
-    <div class="programmes-wrap">
-      @for(programee of filteredDateSearchData; track $index){
-      <app-programme-card [programme]="programee.name"></app-programme-card>
-      }
-    </div>
+    @if (filteringProgrammes) {
+      <div class="programmes-wrap">
+        @for (programee of filteredDateSearchData; track $index) {
+          <app-programme-card [programme]="programee.name"></app-programme-card>
+        }
+      </div>
     }
     <!-- viewing a programme -->
-    @if(viewProgrammeDetails){
-    <div class="viewPrograme">
-      <app-viewed-programme (onApplyNow)="openForm()"></app-viewed-programme>
-    </div>
+    @if (viewProgrammeDetails) {
+      <div class="viewPrograme">
+        <app-viewed-programme (onApplyNow)="openForm()"></app-viewed-programme>
+      </div>
     }
   </div>
 </div>
 
 <!-- application dialogue -->
-
-<div *ngIf="formModal" class="modal">
-  <div class="form applyprograme">
-    <app-programme-apply-form></app-programme-apply-form>
+@if (formModal) {
+  <div class="modal">
+    <div class="form applyprograme">
+      <app-programme-apply-form></app-programme-apply-form>
+    </div>
   </div>
-</div>
+}

@@ -46,8 +46,8 @@ import { ProgrammeApplyFormComponent } from '../programme-apply-form/programme-a
     FormsModule,
     SplitButtonModule,
     ViewedProgrammeComponent,
-    ProgrammeApplyFormComponent
-],
+    ProgrammeApplyFormComponent,
+  ],
   templateUrl: './programme-application.component.html',
   styleUrl: './programme-application.component.scss',
 })
@@ -86,21 +86,18 @@ export class ProgrammeApplicationComponent {
   dateFilter: string = '';
   statusFilter: string = '';
   status: MenuItem[] = [];
-  filteredDateSearchData: any = [];
+  filteredDateSearchData: { name: string; date: Date }[] = [];
 
   // viewing programme details
   viewProgrammeDetails = false;
-  
+
   // programmes
   all: mockData[] = [];
   saved: mockData[] = [];
 
   ngOnInit() {
     this.openForm();
-    this.tabMenuList = [
-      { label: 'Career programmes' },
-      { label: 'Saved programmes' },
-    ];
+    this.tabMenuList = [{ label: 'Career programmes' }, { label: 'Saved programmes' }];
 
     this.activeItem = this.tabMenuList[0];
     // fetch programmes
@@ -200,55 +197,42 @@ export class ProgrammeApplicationComponent {
     }
   }
   // view programm function
-  viewProgram(){
-    this.resetTab()
-    this.viewProgrammeDetails = true
+  viewProgram() {
+    this.resetTab();
+    this.viewProgrammeDetails = true;
   }
 
   // Date filter and search function
   onSearchOrDateFilter() {
     // clears search and date filter if both are empty
     if (!this.searchString && !this.dateFilter) {
-      this.activeTabData === 'all'
-        ? this.setAllProgrammesTab()
-        : this.setSavedProgrammesTab();
+      this.activeTabData === 'all' ? this.setAllProgrammesTab() : this.setSavedProgrammesTab();
       return;
     }
-    const activeDataToFilter =
-      this.activeTabData === 'all' ? this.all : this.saved;
+    const activeDataToFilter = this.activeTabData === 'all' ? this.all : this.saved;
     // performs search only
     if (this.searchString && !this.dateFilter) {
       this.displayFilteredProgrammes();
-      this.filteredDateSearchData = activeDataToFilter.filter(
-        (programme: mockData) => {
-          return programme.name
-            .toLowerCase()
-            .includes(this.searchString.toLowerCase());
-        }
-      );
+      this.filteredDateSearchData = activeDataToFilter.filter((programme: mockData) => {
+        return programme.name.toLowerCase().includes(this.searchString.toLowerCase());
+      });
     }
     // performs date filter only
     if (!this.searchString && this.dateFilter) {
       this.displayFilteredProgrammes();
-      this.filteredDateSearchData = activeDataToFilter.filter(
-        (programme: mockData) => {
-          return this.formatSelectedDate(programme.date) === this.dateFilter;
-        }
-      );
+      this.filteredDateSearchData = activeDataToFilter.filter((programme: mockData) => {
+        return this.formatSelectedDate(programme.date) === this.dateFilter;
+      });
     }
     // performs search and date filter
     if (this.searchString && this.dateFilter) {
       this.displayFilteredProgrammes();
-      this.filteredDateSearchData = activeDataToFilter.filter(
-        (programme: any) => {
-          return (
-            programme.name
-              .toLowerCase()
-              .includes(this.searchString.toLowerCase()) &&
-            this.formatSelectedDate(programme.date) === this.dateFilter
-          );
-        }
-      );
+      this.filteredDateSearchData = activeDataToFilter.filter((programme: { name: string; date: Date }) => {
+        return (
+          programme.name.toLowerCase().includes(this.searchString.toLowerCase()) &&
+          this.formatSelectedDate(programme.date) === this.dateFilter
+        );
+      });
     }
   }
 
@@ -259,7 +243,7 @@ export class ProgrammeApplicationComponent {
   }
 
   // open form
-  openForm() {    
+  openForm() {
     this.formModal = true;
   }
   // close form
