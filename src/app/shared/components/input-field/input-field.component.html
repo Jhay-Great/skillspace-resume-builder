@@ -5,13 +5,14 @@
         <input [type]="type" [placeholder]="placeholder"
         (input)="onInput($event)"
         (blur)="onTouched()"
-        [ngClass]="{'has-error': hasError}"
+        [ngClass]="{'has-error': hasError, 'input-disabled': isDisabled}"
         #Input
         [value]="value"
+        [disabled]="isDisabled"
         >
         
-        @if (type === 'password') {
-            <img [src]="isVisible ?'assets/svgs/hide-password.svg' : 'assets/svgs/view-password.svg' " 
+        @if (type === 'password' && !isDisabled) {
+            <img [src]="isVisible ?'assets/svgs/view-password.svg' : 'assets/svgs/hide-password.svg' " 
             alt="hidden password svg icon" 
             class="password-icon"
             (click)="togglePasswordVisibility()"

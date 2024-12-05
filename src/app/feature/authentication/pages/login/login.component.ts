@@ -41,11 +41,11 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginLoading = false;
 
-    constructor(
+  constructor(
     private fb: FormBuilder,
     private toastService: ToastService,
     private authService: AuthService,
-    private router: Router, 
+    private router: Router,
     private localStorageService: LocalStorageService
   ) {
     // Initialize login form
@@ -86,9 +86,16 @@ export class LoginComponent {
     this.loginLoading = false;
     // store user role and access token in local storage
     this.authService.setUserRole(user.role);
-    this.authService.setAccessToken(user.accessToken);
+    const stayLoggedIn = this.loginForm.value.stayLoggedIn;
 
-    // store user id in local storage 
+    // if stay logged in is true, set the refresh token as the access token
+    if (stayLoggedIn) {
+      this.authService.setToken(user.accessToken, user.refreshToken);
+    } else {
+      this.authService.setToken(user.accessToken, user.refreshToken);
+    }
+
+    // store user id in local storage
     this.localStorageService.setItem('userId', user.userId);
 
     // navigate to dashboard based on user's role
@@ -102,7 +109,6 @@ export class LoginComponent {
   }
 
   handleAuthError(error: CustomError) {
-    console.log('login error : ', error);
     this.loginLoading = false;
     this.toastService.showError('Error', error?.error);
   }
