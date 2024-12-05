@@ -26,8 +26,6 @@ import { TagComponent } from '@shared/components/tag/tag.component';
   styleUrl: './applicant-profile.component.scss',
 })
 export class ApplicantProfileComponent implements OnInit {
-  isApproved = false;
-  isRejected = false;
   isLoading = false;
   activeIndex = 0;
   applicant: ApplicantsData | null = null;
@@ -53,12 +51,11 @@ export class ApplicantProfileComponent implements OnInit {
     if (!event) return;
   }
 
-  navigateToHome() {
-    this.router.navigate(['/dashboard/approvals']);
+  navigateToApplicantsPage() {
+    this.router.navigate(['/dashboard/applicants']);
   }
 
   confirm(id: number) {
-    this.isApproved = true;
     this.confirmationService.confirm({
       header: 'Accept company',
       message: 'Are you sure that you want to accept company? This action cannot be reversed.',
@@ -69,29 +66,23 @@ export class ApplicantProfileComponent implements OnInit {
           .subscribe({
             next: () => {
               this.toastService.showSuccess('Successful', 'Applicant approved successfully');
-              this.isApproved = false;
             },
             error: () => {
               this.toastService.showError('Failed', 'Failed to approve Application');
-              this.isApproved = false;
-              this.isApproved = false;
-              this.navigateToHome();
+              this.navigateToApplicantsPage();
             },
             complete: () => {
-              this.isApproved = false;
-              this.navigateToHome();
+              this.navigateToApplicantsPage();
             },
           });
-        this.isApproved = false;
       },
       reject: () => {
-        this.isApproved = false;
+        return;
       },
     });
   }
 
   reject(id: number) {
-    this.isRejected = true;
     this.confirmationService.confirm({
       header: 'Accept company',
       message: 'Are you sure that you want to accept company? This action cannot be reversed.',
@@ -102,23 +93,18 @@ export class ApplicantProfileComponent implements OnInit {
           .subscribe({
             next: () => {
               this.toastService.showSuccess('Successful', 'Applicant rejected successfully');
-              this.isRejected = false;
             },
             error: () => {
               this.toastService.showError('Failed', 'Failed to rejected Application');
-              this.isRejected = false;
-              this.isRejected = false;
-              this.navigateToHome();
+              this.navigateToApplicantsPage();
             },
             complete: () => {
-              this.isRejected = false;
-              this.navigateToHome();
+              this.navigateToApplicantsPage();
             },
           });
-        this.isRejected = false;
       },
       reject: () => {
-        this.isRejected = false;
+        return;
       },
     });
   }
