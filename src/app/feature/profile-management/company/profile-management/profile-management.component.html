@@ -55,7 +55,12 @@
         </div>
 
         <!-- upload -->
-        <app-drag-n-drop-file-input [label]="'Upload Logo'" [accept]="'image/png'" (uploadedFile)="onUpload($event)" />
+        <app-drag-n-drop-file-input
+          [label]="'Upload Logo'"
+          [accept]="'image/png'"
+          [previewUpload]="logo"
+          (uploadedFile)="onUpload($event)"
+        />
       </form>
     </p-tabPanel>
 

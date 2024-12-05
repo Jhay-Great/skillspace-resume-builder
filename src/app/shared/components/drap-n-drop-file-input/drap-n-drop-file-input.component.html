@@ -3,31 +3,25 @@
   <label for="username">{{ label }}</label>
   <p class="description">{{ description }}</p>
   @if (fileUploaded) {
-  <div class="uploaded-file">
-    <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon" />
-    <button type="button" (click)="remove()">
-      <img src="assets/svgs/cross.svg" alt="close button svg icon" />
-    </button>
-  </div>
+    <div class="uploaded-file">
+      @if (accept === '.pdf') {
+        <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon" />
+      } @else {
+        <div class="preview">
+          <img [src]="previewImage" alt="uploaded logo" />
+        </div>
+      }
+      <button type="button" (click)="remove()">
+        <img src="assets/svgs/cross.svg" alt="close button svg icon" />
+      </button>
+    </div>
   }
-  <div
-    class="upload-section"
-    (dragover)="onDragOver($event)"
-    (dragleave)="onDragLeave($event)"
-    (drop)="onDrop($event)"
-  >
+  <div class="upload-section" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
     <input type="file" [accept]="accept" (change)="selectFile($event)" #DragNDropZone />
-    @if (!fileUploaded) {
     <div class="instructions">
       <img src="assets/svgs/drop-here-image.svg" alt="" />
-      <p class="drop-here">{{ accept === '.pdf' ? 'Drop pdf here' : 'Drop image here'}}</p>
-      <p class="support-files">{{ accept === '.pdf' ? 'Supports PDF' : 'Supports: PNG, JPG, JPEG, PDF (10mb max)'}}</p>
+      <p class="drop-here">{{ accept === '.pdf' ? 'Drop pdf here' : 'Drop image here' }}</p>
+      <p class="support-files">{{ accept === '.pdf' ? 'Supports PDF' : 'Supports: PNG, JPG, JPEG, PDF (10mb max)' }}</p>
     </div>
-    }@else {
-    <div class="preview">
-      <img [src]="previewImage" alt="" />
-    </div>
-
-    }
   </div>
 </div>

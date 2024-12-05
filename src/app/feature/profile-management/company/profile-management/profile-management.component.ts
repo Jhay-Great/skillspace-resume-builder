@@ -45,6 +45,7 @@ export class ProfileManagementComponent implements OnInit {
   fileUploaded: FileList | null = null;
   previewImage: string | null = null;
   activeTabIndex = 0;
+  logo: string | null = null;
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   // form groups
@@ -100,6 +101,7 @@ export class ProfileManagementComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
+          this.logo = response.data.logo;
           this.companyDetailsForm.patchValue({
             name: response.data.companyName,
             email: response.data.email,
