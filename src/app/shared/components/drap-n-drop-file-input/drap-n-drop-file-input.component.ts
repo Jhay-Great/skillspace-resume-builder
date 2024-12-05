@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, viewChild } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class DrapNDropFileInputComponent {
   description:string = 'This is what applicants will see on your profile.'
   fileUploaded: File | null = null;
   previewImage:string | null = null;
+  dropZone = viewChild<ElementRef>('DragNDropZone');
 
   @Input () label:string | null = null;
   @Input () accept:string | null = null;
@@ -65,6 +66,8 @@ export class DrapNDropFileInputComponent {
 
   remove() {
     this.fileUploaded = null;
+    const element = this.dropZone()?.nativeElement;
+    element.value = null;
   }
 
   private resetDefaultBrowserSettings (event:Event) {

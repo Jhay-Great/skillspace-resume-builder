@@ -7,6 +7,7 @@ export const onFileUpload = function(form:FormGroup, file: File | null, control:
 }
 
 export const createFromData = function <T>(data: Record<string, T>) {
+  if (!data) return;
   const formData = new FormData();
 
   Object.entries(data).forEach(([key, value]) => {

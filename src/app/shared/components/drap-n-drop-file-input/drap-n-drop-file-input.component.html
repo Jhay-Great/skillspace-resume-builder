@@ -16,7 +16,7 @@
     (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)"
   >
-    <input type="file" [accept]="accept" (change)="selectFile($event)" />
+    <input type="file" [accept]="accept" (change)="selectFile($event)" #DragNDropZone />
     @if (!fileUploaded) {
     <div class="instructions">
       <img src="assets/svgs/drop-here-image.svg" alt="" />
