@@ -1,4 +1,4 @@
-import { Component, DestroyRef, HostListener, viewChild, } from '@angular/core';
+import { Component, DestroyRef, viewChild, } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,6 @@ import { DatePipe } from '@angular/common';
 
 // primeng modules
 import { TableModule, Table } from 'primeng/table';
-import { FilterMatchMode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
@@ -16,7 +15,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 
 // local modules or imports
-import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
+import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
 import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
@@ -76,13 +75,12 @@ export class AdminDashboardComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
-          this.applicants = response.data;
+          this.applicants = response.data.content;
 
         },
-        error: error => {
+        error: () => {
           this.toastService.showError('Error', 'Failed to load data')
         },
-        complete: () => {},
       });
 
   }
@@ -127,10 +125,11 @@ export class AdminDashboardComponent {
   chooseDate(value:PDropDown) {
     const today = new Date();
     switch (value.name) {
-      case 'All':
+      case 'All': {
         this.table()?.clear();
         break;
-      case 'Recent': 
+      }
+      case 'Recent': {
         const day = today.getDate();
         const recent = day - 1;
         const setDay = today.setDate(recent);
@@ -139,29 +138,25 @@ export class AdminDashboardComponent {
 
         this.table()?.filter(recentDate, 'createdAt', 'contains');
         break;
-      case 'Last week':
+      }
+      case 'Last week': {
         const endOfWeek = today;
         const startOfLastWeek = new Date();
-        startOfLastWeek.setDate(today.getDate() - 7);
-
-
+        startOfLastWeek.setDate(endOfWeek.getDate() - 7);
         break;
-      case 'Last month':
-        
+      }
+      case 'Last month': {
         break;
-      case 'Custom':
-        
-        
+      }
+      case 'Custom': {
         break;
-      default:
-        
-        break;
+      }
     }
     
   }
   
   hideCalendar(event:Event) {
-    if (!this.showCalendar) return;
+    if (!this.showCalendar && !event) return;
     
   }
   

@@ -54,11 +54,16 @@ export interface ApplicantData {
     date: string;
     image?:string;
 }
-
+export interface DataContent {
+    content: ApplicantsData[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
 export interface ApplicantResponse {
     statusCode: number;
     message: string;
-    data: ApplicantsData[]
+    data: DataContent
 }
 export interface ApplicantsData {
     id: number;
