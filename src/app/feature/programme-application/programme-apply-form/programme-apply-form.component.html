@@ -74,7 +74,10 @@
         </div>
       </div>
       <!-- apply now -->
-      <button class="apply-btn">Send application</button>
+      <div class="btn-wrap">
+        <button (click)="close()" class="apply-btn cancel">Cancel</button>
+        <button class="apply-btn">Send application</button>
+      </div>
     </form>
   </div>
 </div>

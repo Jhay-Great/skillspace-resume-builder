@@ -10,9 +10,9 @@ import { TagComponent } from '@src/app/shared/components/tag/tag.component';
   styleUrl: './viewed-programme.component.scss',
 })
 export class ViewedProgrammeComponent {
-  @Output() onApplyNow: EventEmitter<string> = new EventEmitter();
+  @Output() openApplyNowForm: EventEmitter<string> = new EventEmitter();
 
   applyNow() {
-    this.onApplyNow.emit();
+    this.openApplyNowForm.emit();
   }
 }

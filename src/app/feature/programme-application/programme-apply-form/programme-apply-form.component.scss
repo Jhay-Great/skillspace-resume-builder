@@ -149,13 +149,23 @@
       }
     }
 
-    .apply-btn {
-      background-color: var.$color-blue-500;
-      color: white;
-      border: none;
-      margin-inline-start: auto;
-      padding: 10px 15px;
-      border-radius: 0.3rem;
+    .btn-wrap {
+      display: flex;
+      justify-content: end;
+      gap: 0.5rem;
+
+      .apply-btn {
+        background-color: var.$color-blue-500;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 0.3rem;
+        &.cancel {
+          background-color: transparent;
+          border: 1px solid var.$color-blue-gray-400;
+          color: black;
+        }
+      }
     }
   }
 }

@@ -66,37 +66,7 @@ export class ProgrammeApplicationComponent {
     ];
   }
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-
-  // TabMenu list
-  tabMenuList: TabMenuList[] = [];
-  activeItem!: TabMenuList;
-  activeTabData = 'all';
-
-  // form modal
-  formModal = false;
-
-  // tabMenu
-  allProgrammes = true;
-  savedProgrammes = false;
-
-  // filtering programm by date or search
-  filteringProgrammes = false;
-  searchString: string = '';
-  dateFilter: string = '';
-  statusFilter: string = '';
-  status: MenuItem[] = [];
-  filteredDateSearchData: { name: string; date: Date }[] = [];
-
-  // viewing programme details
-  viewProgrammeDetails = false;
-
-  // programmes
-  all: mockData[] = [];
-  saved: mockData[] = [];
-
   ngOnInit() {
-    this.openForm();
     this.tabMenuList = [{ label: 'Career programmes' }, { label: 'Saved programmes' }];
 
     this.activeItem = this.tabMenuList[0];
@@ -146,6 +116,35 @@ export class ProgrammeApplicationComponent {
         this.onSearchOrDateFilter();
       });
   }
+
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+
+  // TabMenu list
+  tabMenuList: TabMenuList[] = [];
+  activeItem!: TabMenuList;
+  activeTabData = 'all';
+
+  // form modal
+  formModal = false;
+
+  // tabMenu
+  allProgrammes = true;
+  savedProgrammes = false;
+
+  // filtering programm by date or search
+  filteringProgrammes = false;
+  searchString: string = '';
+  dateFilter: string = '';
+  statusFilter: string = '';
+  status: MenuItem[] = [];
+  filteredDateSearchData: { name: string; date: Date }[] = [];
+
+  // viewing programme details
+  viewProgrammeDetails = false;
+
+  // programmes
+  all: mockData[] = [];
+  saved: mockData[] = [];
 
   // TabMenu control function
   private setAllProgrammesTab() {

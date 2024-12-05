@@ -7,12 +7,7 @@
     </div>
     <div class="right">
       <app-tag [status]="'open'"></app-tag>
-      <img
-        class="moreIcon"
-        (click)="op.toggle($event)"
-        src="assets/svgs/more.svg"
-        alt="more"
-      />
+      <img class="moreIcon" (click)="op.toggle($event)" src="assets/svgs/more.svg" alt="more" />
       <p-overlayPanel #op>
         <div class="float">
           <p class="floattext">View program</p>
@@ -40,6 +35,6 @@
 
   <!-- Apply button -->
   <div class="apply">
-    <button class="apply-btn">Apply now</button>
+    <button (click)="applyNow()" class="apply-btn">Apply now</button>
   </div>
 </div>

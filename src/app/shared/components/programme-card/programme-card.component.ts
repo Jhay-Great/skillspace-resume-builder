@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TagComponent } from '../tag/tag.component';
 
@@ -11,4 +11,10 @@ import { TagComponent } from '../tag/tag.component';
 })
 export class ProgrammeCardComponent {
   @Input() programme!: string;
+  @Output() openApplyNowForm: EventEmitter<void> = new EventEmitter();
+
+  // open form to apply
+  applyNow() {
+    this.openApplyNowForm.emit();
+  }
 }
