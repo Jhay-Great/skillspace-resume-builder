@@ -18,26 +18,11 @@
         <div class="social-media-info data">
           <p class="title">Social media links:</p>
           <div class="links">
-            <i
-              class="pi pi-linkedin"
-              pTooltip="Confirm to proceed"
-              tooltipPosition="bottom"
-              tooltipEvent="hover"
-            ></i>
+            <i class="pi pi-linkedin" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
 
-            <i
-              class="pi pi-twitter"
-              pTooltip="Confirm to proceed"
-              tooltipPosition="bottom"
-              tooltipEvent="hover"
-            ></i>
+            <i class="pi pi-twitter" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
 
-            <i
-              class="pi pi-globe"
-              pTooltip="Confirm to proceed"
-              tooltipPosition="bottom"
-              tooltipEvent="hover"
-            ></i>
+            <i class="pi pi-globe" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
           </div>
         </div>
       </div>
@@ -52,24 +37,17 @@
     <!-- buttons -->
     <div class="btns">
       @if (applicant) {
-        <p-button
-          (onClick)="reject(applicant.id)"
-          label="Reject applicant"
-          [outlined]="true"
-        />
+        <p-button (onClick)="reject(applicant.id)" label="Reject applicant" [outlined]="true" />
         <p-button (onClick)="confirm(applicant.id)" label="Accept applicant" />
       }
     </div>
 
-    <div class="card" >
-      <p-tabView styleClass="tabview-custom" 
-        [(activeIndex)]="activeIndex" 
-        (onChange)="onTabChange($event)"
-      >
+    <div class="card">
+      <p-tabView styleClass="tabview-custom" [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
         <p-tabPanel header="Documents">
           <ng-template pTemplate="header">
             <div class="flex align-items-center gap-2">
-              <span class="font-bold white-space-nowrap m-0"> Documents </span>
+              <span class="font-bold white-space-nowrap m-0"> Document(s) </span>
               <p-badge value="1" />
             </div>
           </ng-template>
@@ -105,7 +83,7 @@
         <p-tabPanel header="Portfolio">
           <ng-template pTemplate="header">
             <div class="flex align-items-center gap-2">
-              <span class="font-bold white-space-nowrap m-0"> Portfolio </span>
+              <span class="font-bold white-space-nowrap m-0"> Portfolio(s) & projects(s) </span>
               <p-badge value="1" />
             </div>
           </ng-template>
@@ -141,7 +119,7 @@
         <p-tabPanel header="Projects" class="project-section">
           <ng-template pTemplate="header">
             <div class="flex align-items-center gap-2">
-              <span class="font-bold white-space-nowrap m-0"> Projects </span>
+              <span class="font-bold white-space-nowrap m-0"> Badge(s) </span>
               <p-badge value="2" />
             </div>
           </ng-template>
@@ -165,9 +143,7 @@
               [tableStyle]="{ 'min-width': '60rem' }"
             >
               <ng-template pTemplate="caption">
-                <h3 class="flex align-items-center justify-content-between">
-                  All projects
-                </h3>
+                <h3 class="flex align-items-center justify-content-between">All projects</h3>
               </ng-template>
               <ng-template pTemplate="header">
                 <tr>
@@ -185,65 +161,19 @@
                         class="circle"
                         [ngStyle]="{
                           background:
-                            'conic-gradient(#3B82F6 ' +
-                            product.progress +
-                            '%, #F1F5F9 ' +
-                            product.progress +
-                            '%)',
+                            'conic-gradient(#3B82F6 ' + product.progress + '%, #F1F5F9 ' + product.progress + '%)',
                         }"
                       >
                         <div class="inner-circle">
-                          <span class="percentage">
-                            {{ product.progress }}%
-                          </span>
+                          <span class="percentage"> {{ product.progress }}% </span>
                         </div>
                       </div>
                     </div>
-                    <!-- {{ product.progress }} -->
                   </td>
                   <td>{{ product.score }} marks</td>
                 </tr>
               </ng-template>
             </p-table>
-
-            <!-- <section class="project-container">
-                            <h2 class="project-title header-title">All projects</h2>
-
-                        </section> -->
-          </ng-template>
-        </p-tabPanel>
-
-        <p-tabPanel header="Feedbacks">
-          <ng-template pTemplate="header">
-            <div class="flex align-items-center gap-2">
-              <span class="font-bold white-space-nowrap m-0"> Feedbacks </span>
-              <p-badge value="2" />
-            </div>
-          </ng-template>
-
-          <ng-template pTemplate="body">
-            <section class="feedback-container">
-              <div class="feedback">
-                <div class="reviewer">
-                  <!-- profile picture -->
-                  <img src="assets/images/Avatar.png" alt="user avatar">
-                  <p class="reviewer-name">Lilly Koomson</p>
-                </div>
-                <div class="message">This is good.</div>
-                <div class="date">Yesterday</div>
-              </div>
-              <div class="leave-a-feedback-container">
-                <form>
-                  <label for="">Leave a feedback</label>
-                  <textarea
-                    name=""
-                    id=""
-                    placeholder="Write a feedback for this applicant"
-                  ></textarea>
-                  <button>Send feedback</button>
-                </form>
-              </div>
-            </section>
           </ng-template>
         </p-tabPanel>
       </p-tabView>

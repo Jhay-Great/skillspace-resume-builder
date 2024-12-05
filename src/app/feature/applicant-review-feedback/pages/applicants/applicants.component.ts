@@ -1,4 +1,4 @@
-import { Component, DestroyRef, viewChild, } from '@angular/core';
+import { Component, DestroyRef, viewChild, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DropdownModule } from 'primeng/dropdown';
 
 // local modules or imports
-import { ApplicantResponse, ApplicantsData, ApplicantData } from '@src/app/core/interfaces/user-registration.interface';
+import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { ToastService } from '@core/services/toast-service/toast.service';
@@ -21,7 +21,7 @@ import { InitialsPipe } from '@core/pipes/initials/initials.pipe';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
 import { AdminApprovalService } from '@src/app/feature/user-registration/service/admin-approval/admin-approval.service';
-
+import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
 
 interface Status {
   name: string;
@@ -45,21 +45,22 @@ interface Status {
     InitialsPipe,
     EllipsisPipe,
     CapitalizePipe,
+    PageHeaderDescriptionComponent,
   ],
   templateUrl: './applicants.component.html',
-  styleUrl: './applicants.component.scss'
+  styleUrl: './applicants.component.scss',
 })
-export class ApplicantsComponent {
+export class ApplicantsComponent implements OnInit {
   applicants!: ApplicantsData[];
-  selectedStatus!:Status;
-  isLoading:boolean = false;
+  selectedStatus!: Status;
+  isLoading = false;
   table = viewChild<Table>('dt1');
 
   constructor(
     private adminApprovalService: AdminApprovalService,
     private destroyRef: DestroyRef,
     private toastService: ToastService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -67,16 +68,13 @@ export class ApplicantsComponent {
       .getCompanies()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: response => {
+        next: (response) => {
           this.applicants = response.data;
-
         },
-        error: error => {
-          this.toastService.showError('Error', 'Failed to load data', 'top-right')
+        error: () => {
+          this.toastService.showError('Error', 'Failed to load data', 'top-right');
         },
-        complete: () => {},
       });
-
   }
 
   getSeverity(status: string) {
@@ -85,28 +83,27 @@ export class ApplicantsComponent {
     else return 'warning';
   }
 
-  selectedApplicant(id:number) {
-    const applicant = this.applicants.find(user => user.id === id);
+  selectedApplicant(id: number) {
+    const applicant = this.applicants.find((user) => user.id === id);
     if (!applicant) return;
     this.adminApprovalService.selectedUser.set(applicant);
-    this.router.navigate([`/dashboard/approvals/${id}`])
+    this.router.navigate([`/dashboard/approvals/${id}`]);
   }
 
-  onSearch(query:string) {
+  onSearch(query: string) {
     this.table()?.filterGlobal(query, 'contains');
   }
 
   handleStatus() {
     return [
-      {name: 'All status', value: 'All'},
-      {name: 'Pending', value: 'Pending'},
-      {name: 'Rejected', value: 'Rejected'},
-      {name: 'Shortlisted', value: 'Shortlisted'},
-    ]
+      { name: 'All status', value: 'All' },
+      { name: 'Pending', value: 'Pending' },
+      { name: 'Rejected', value: 'Rejected' },
+      { name: 'Shortlisted', value: 'Shortlisted' },
+    ];
   }
 
-  chooseStatus(value:Status) {
+  chooseStatus(value: Status) {
     if (!value) return;
-    const {value: status} = value
   }
 }
