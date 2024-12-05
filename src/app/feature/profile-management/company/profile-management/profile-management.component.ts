@@ -19,6 +19,8 @@ import { confirmPasswordValidator, passwordStrengthValidator } from '@shared/uti
 import { onFileUpload } from '@shared/utils/file-upload';
 import { ProfileManagementService } from '../../services/profile-management.service';
 import { createFromData } from '@shared/utils/file-upload';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-profile-management',
@@ -49,11 +51,13 @@ export class ProfileManagementComponent implements OnInit {
   companyDetailsForm!: FormGroup;
   documentForm!: FormGroup;
   securityForm!: FormGroup;
+  userId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileManagementService,
     private toastService: ToastService,
+    private localStorageService: LocalStorageService,
     private destroyRef: DestroyRef
   ) {}
 
@@ -104,7 +108,7 @@ export class ProfileManagementComponent implements OnInit {
             logo: response.data.logo,
           });
           this.securityForm.patchValue({
-            certificate: '',
+            certificate: response.data.logo,
           });
         },
         error: () => {
@@ -126,7 +130,19 @@ export class ProfileManagementComponent implements OnInit {
   }
 
   onSubmit<T>(data: T) {
-    this.profileService.updateCompanyProfile(data);
+    const id: number | null = this.localStorageService.getItem('userId');
+    if (!id) return;
+    this.profileService
+      .updateCompanyProfile(data, id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.toastService.showSuccess('Successful', 'Successfully updated', 'top-right');
+        },
+        error: () => {
+          this.toastService.showError('Error', 'Failed to updated', 'top-right');
+        },
+      });
   }
 
   onSaveChanges(): void {
