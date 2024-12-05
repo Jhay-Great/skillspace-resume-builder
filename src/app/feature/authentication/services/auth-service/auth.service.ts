@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private _userRole = signal<UserRole | null>(null);
-  BASE_ADDRESS:string = environment.NEW_ADDRESS;
+  BASE_ADDRESS:string = environment.BASE_API;
   PORT:string = environment.AUTH_PORT;
 
   constructor(
@@ -50,7 +50,7 @@ export class AuthService {
 
   login(credentials: LoginCredentials): Observable<User> {
   return this.http.post<User>(
-    `${this.BASE_ADDRESS}:${this.PORT}/v1/auth/login`,
+    `${this.BASE_ADDRESS}/v1/auth/login`,
     credentials
   );
   // return this.http.post<User>(

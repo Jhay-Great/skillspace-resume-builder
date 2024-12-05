@@ -8,7 +8,7 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdminApprovalService {
-  api:string = `${environment.NEW_ADDRESS}:${environment.SERVICE_PORT}`;
+  api:string = environment.BASE_API;
   companies:string = environment.ALL_COMPANIES;
   approval:string = environment.APPROVAL_ENDPOINT;
   // rejected:string = environment.REJECTED;
