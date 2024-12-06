@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnDestroy, viewChild, OnInit } from '@angular/core';
+import { Component, DestroyRef, viewChild, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -53,7 +53,7 @@ interface PDropDown {
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
 })
-export class AdminDashboardComponent implements OnDestroy, OnInit {
+export class AdminDashboardComponent implements OnInit {
   applicants!: ApplicantsData[];
   selectedStatus!: PDropDown;
   selectedDate!: PDropDown;
@@ -88,11 +88,6 @@ export class AdminDashboardComponent implements OnDestroy, OnInit {
           this.toastService.showError('Error', 'Failed to load data', 'top-right');
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    // clears data stored in local storage
-    this.localStorageService.removeItem('allApplicants');
   }
 
   selectedApplicant(id: number) {
