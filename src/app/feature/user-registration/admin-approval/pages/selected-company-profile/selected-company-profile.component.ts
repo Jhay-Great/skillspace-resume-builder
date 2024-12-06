@@ -1,6 +1,6 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // external package imports
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -15,24 +15,18 @@ import { AdminApprovalService } from '../../../service/admin-approval/admin-appr
 import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
+import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
 
 @Component({
   selector: 'app-selected-company-profile',
   standalone: true,
-  imports: [
-    ConfirmDialogModule,
-    ButtonModule,
-    TooltipModule,
-    TagModule,
-    PdfViewerModule,
-    TagComponent,
-  ],
+  imports: [ConfirmDialogModule, ButtonModule, TooltipModule, TagModule, PdfViewerModule, TagComponent],
   templateUrl: './selected-company-profile.component.html',
   styleUrl: './selected-company-profile.component.scss',
 })
 export class SelectedCompanyProfileComponent implements OnInit {
-  isApproved: boolean = false;
-  isRejected: boolean = false;
+  isApproved = false;
+  isRejected = false;
   applicant: ApplicantsData | null = null;
 
   constructor(
@@ -40,11 +34,22 @@ export class SelectedCompanyProfileComponent implements OnInit {
     private adminApprovalService: AdminApprovalService,
     private destroyRef: DestroyRef,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.applicant = this.adminApprovalService.selectedUser();
+
+    // when page refreshes or reloads
+    if (!this.applicant) {
+      this.activatedRoute.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+        const id = value.get('company');
+        if (!id) return;
+        this.adminApprovalService.selectedApplicant(+id);
+        this.applicant = this.adminApprovalService.selectedUser();
+      });
+    }
   }
 
   navigateToHome() {
@@ -56,10 +61,9 @@ export class SelectedCompanyProfileComponent implements OnInit {
     const applicantName = this.applicant?.name;
     this.confirmationService.confirm({
       header: 'Accept company',
-      message:
-        `Are you sure that you want to accept ${applicantName}? This action cannot be reversed.`,
-              //   acceptSeverity: 'danger',
-      // rejectSeverity: 'secondary',
+      message: `Are you sure that you want to accept ${applicantName}? This action cannot be reversed.`,
+      acceptSeverity: 'primary',
+      rejectSeverity: 'secondary',
       acceptLabel: 'Confirm',
       rejectLabel: 'Cancel',
       accept: () => {
@@ -67,18 +71,12 @@ export class SelectedCompanyProfileComponent implements OnInit {
           .acceptApplicant(id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (response) => {
-              this.toastService.showSuccess(
-                'Successful',
-                'Applicant approved successfully'
-              );
+            next: () => {
+              this.toastService.showSuccess('Successful', 'Applicant approved successfully');
               this.isApproved = false;
             },
-            error: (error) => {
-              this.toastService.showError(
-                'Failed',
-                'Failed to approve Application'
-              );
+            error: () => {
+              this.toastService.showError('Failed', 'Failed to approve Application');
               this.isApproved = false;
               this.isApproved = false;
               this.navigateToHome();
@@ -93,8 +91,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
       reject: () => {
         this.isApproved = false;
       },
-    } //TODO: as ExtendedConfirmation
-    );
+    } as ExtendedConfirmation);
   }
 
   reject(id: number) {
@@ -102,10 +99,9 @@ export class SelectedCompanyProfileComponent implements OnInit {
     const applicantName = this.applicant?.name;
     this.confirmationService.confirm({
       header: 'Reject company',
-      message:
-        `Are you sure that you want to reject ${applicantName}? This action cannot be reversed.`,
-      //   acceptSeverity: 'danger',
-      // rejectSeverity: 'secondary',
+      message: `Are you sure that you want to reject ${applicantName}? This action cannot be reversed.`,
+      acceptSeverity: 'danger',
+      rejectSeverity: 'secondary',
       acceptLabel: 'Reject',
       rejectLabel: 'Cancel',
       accept: () => {
@@ -113,18 +109,12 @@ export class SelectedCompanyProfileComponent implements OnInit {
           .rejectApplicant(id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (response) => {
-              this.toastService.showSuccess(
-                'Successful',
-                'Applicant rejected successfully'
-              );
+            next: () => {
+              this.toastService.showSuccess('Successful', 'Applicant rejected successfully');
               this.isRejected = false;
             },
-            error: (error) => {
-              this.toastService.showError(
-                'Failed',
-                'Failed to rejected Application'
-              );
+            error: () => {
+              this.toastService.showError('Failed', 'Failed to rejected Application');
               this.isRejected = false;
               this.isRejected = false;
               this.navigateToHome();
@@ -139,7 +129,6 @@ export class SelectedCompanyProfileComponent implements OnInit {
       reject: () => {
         this.isRejected = false;
       },
-    } //TODO: as ExtendedConfirmation
-  );
+    } as ExtendedConfirmation);
   }
 }

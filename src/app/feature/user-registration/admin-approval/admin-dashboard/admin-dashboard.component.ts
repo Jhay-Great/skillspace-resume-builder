@@ -1,4 +1,4 @@
-import { Component, DestroyRef, viewChild, } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, viewChild, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -23,6 +23,7 @@ import { ToastService } from '@core/services/toast-service/toast.service';
 import { InitialsPipe } from '@core/pipes/initials/initials.pipe';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
 interface PDropDown {
   name: string;
@@ -52,21 +53,22 @@ interface PDropDown {
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnDestroy, OnInit {
   applicants!: ApplicantsData[];
-  selectedStatus!:PDropDown;
-  selectedDate!:PDropDown;
-  date:string | null = null;
-  showCalendar:boolean = false;
-  isLoading:boolean = false;
+  selectedStatus!: PDropDown;
+  selectedDate!: PDropDown;
+  date: string | null = null;
+  showCalendar = false;
+  isLoading = false;
   table = viewChild<Table>('dt1');
-  isOpen:boolean = false;
+  isOpen = false;
 
   constructor(
     private adminApprovalService: AdminApprovalService,
     private destroyRef: DestroyRef,
     private toastService: ToastService,
     private router: Router,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -74,55 +76,61 @@ export class AdminDashboardComponent {
       .getCompanies()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: response => {
-          this.applicants = response.data.content;
-
+        next: (response) => {
+          const { message } = response;
+          const applicants = this.adminApprovalService.allApplicants();
+          if (applicants) {
+            this.applicants = applicants;
+            this.toastService.showSuccess('Successful', message, 'top-right');
+          }
         },
         error: () => {
-          this.toastService.showError('Error', 'Failed to load data')
+          this.toastService.showError('Error', 'Failed to load data', 'top-right');
         },
       });
-
   }
 
-  selectedApplicant(id:number) {
-    const applicant = this.applicants.find(user => user.id === id);
-    if (!applicant) return;
-    this.adminApprovalService.selectedUser.set(applicant);
-    this.router.navigate([`/dashboard/approvals/${id}`])
+  ngOnDestroy(): void {
+    // clears data stored in local storage
+    this.localStorageService.removeItem('allApplicants');
   }
 
-  onSearch(query:string) {
+  selectedApplicant(id: number) {
+    this.adminApprovalService.selectedApplicant(id);
+    this.router.navigate([`/dashboard/approvals/${id}`]);
+  }
+
+  onSearch(query: string) {
     this.table()?.filterGlobal(query, 'contains');
   }
 
   displayStatus() {
     return [
-      {name: 'All', value: 'All'},
-      {name: 'Pending', value: 'PENDING'},
-      {name: 'Approved', value: 'APPROVED'},
-      {name: 'Rejected', value: 'REJECTED'},
-    ]
+      { name: 'All', value: 'All' },
+      { name: 'Pending', value: 'PENDING' },
+      { name: 'Approved', value: 'APPROVED' },
+      { name: 'Rejected', value: 'REJECTED' },
+    ];
   }
   displayDateFilter() {
     return [
-      {name: 'All', value: 'Application date'},
-      {name: 'Recent', value: 'recent'},
-      {name: 'Last week', value: 'last week'},
-      {name: 'Last month', value: 'last month'},
-      {name: 'Custom', value: 'custom'},
-    ]
+      { name: 'All', value: 'Application date' },
+      { name: 'Recent', value: 'recent' },
+      { name: 'Last week', value: 'last week' },
+      { name: 'Last month', value: 'last month' },
+      { name: 'Custom', value: 'custom' },
+    ];
   }
 
-  chooseStatus(value:PDropDown) {
+  chooseStatus(value: PDropDown) {
     if (value.name !== 'All') {
       this.table()?.filter(value.name, 'approvalStatus', 'equals');
-    }else {
+    } else {
       this.table()?.clear();
     }
   }
 
-  chooseDate(value:PDropDown) {
+  chooseDate(value: PDropDown) {
     const today = new Date();
     switch (value.name) {
       case 'All': {
@@ -134,7 +142,7 @@ export class AdminDashboardComponent {
         const recent = day - 1;
         const setDay = today.setDate(recent);
         const calcDay = new Date(setDay);
-        const recentDate = `${calcDay.getFullYear()}-${calcDay.getMonth()+ 1}-${calcDay.getDate()}`;
+        const recentDate = `${calcDay.getFullYear()}-${calcDay.getMonth() + 1}-${calcDay.getDate()}`;
 
         this.table()?.filter(recentDate, 'createdAt', 'contains');
         break;
@@ -152,13 +160,9 @@ export class AdminDashboardComponent {
         break;
       }
     }
-    
   }
-  
-  hideCalendar(event:Event) {
-    if (!this.showCalendar && !event) return;
-    
-  }
-  
-}
 
+  hideCalendar(event: Event) {
+    if (!this.showCalendar && !event) return;
+  }
+}

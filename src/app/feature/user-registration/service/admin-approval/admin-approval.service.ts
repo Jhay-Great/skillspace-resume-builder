@@ -1,37 +1,61 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ApplicantResponse, ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 import { environment } from '@src/environments/environment.development';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, retry } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminApprovalService {
-  api:string = environment.BASE_API;
-  companies:string = environment.ALL_COMPANIES;
-  approval:string = environment.APPROVAL_ENDPOINT;
+  api: string = environment.BASE_API;
+  companies: string = environment.ALL_COMPANIES;
+  approval: string = environment.APPROVAL_ENDPOINT;
   // rejected:string = environment.REJECTED;
 
+  allApplicants = signal<ApplicantsData[] | null>(null);
   selectedUser = signal<ApplicantsData | null>(null);
 
   constructor(
     private http: HttpClient,
-  ) { }
+    private localStorageService: LocalStorageService
+  ) {}
 
-  getCompanies():Observable<ApplicantResponse> {
-    return this.http.get<ApplicantResponse>(`${this.api}/${this.companies}`);
+  getCompanies(): Observable<ApplicantResponse> {
+    return this.http.get<ApplicantResponse>(`${this.api}/${this.companies}`).pipe(
+      map((response) => {
+        const applicantsData = response.data.content;
+        this.localStorageService.setItem('allApplicants', applicantsData);
+        this.allApplicants.set(applicantsData);
+        return response;
+      }),
+      retry(3),
+      catchError((error) => {
+        return of(error);
+      })
+    );
   }
 
-  post<D, T>(api:string, data: D) {
+  post<D, T>(api: string, data: D) {
     return this.http.post<T>(api, data);
   }
 
-  acceptApplicant(id:number) {
+  acceptApplicant(id: number) {
     return this.post(`${this.api}/${this.approval}/${id}/approve`, id);
   }
 
-  rejectApplicant(id:number) {
+  rejectApplicant(id: number) {
     return this.post(`${this.api}/${this.approval}/${id}/reject`, id);
+  }
+
+  selectedApplicant(id: number) {
+    if (!this.allApplicants()) {
+      const data = this.localStorageService.getItem('allApplicants');
+      this.allApplicants.set(data as ApplicantsData[]);
+    }
+    const applicant = this.allApplicants()?.find((user) => user.id === id);
+    if (!applicant) return;
+    this.selectedUser.set(applicant);
   }
 }
