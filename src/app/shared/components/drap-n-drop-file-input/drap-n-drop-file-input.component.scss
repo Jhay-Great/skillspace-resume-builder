@@ -63,10 +63,12 @@ input.p-inputtext {
     }
   }
 }
+.uploaded-file-container {
+  margin-bottom: 1rem;
+}
 .uploaded-file {
   @include mix.flex(row, 0.1rem);
   @include mix.flex-position(flex-start, flex-start);
-  margin-bottom: 1rem;
 
   button {
     border: none;

@@ -1,10 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, Output, viewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 
 @Component({
   selector: 'app-drag-n-drop-file-input',
   standalone: true,
-  imports: [],
+  imports: [EllipsisPipe],
   templateUrl: './drap-n-drop-file-input.component.html',
   styleUrl: './drap-n-drop-file-input.component.scss',
 })
@@ -12,6 +13,7 @@ export class DrapNDropFileInputComponent implements OnChanges {
   description = 'This is what applicants will see on your profile.';
   fileUploaded = false;
   previewImage: string | null = null;
+  filename: string | null = null;
   dropZone = viewChild<ElementRef>('DragNDropZone');
 
   @Input() label: string | null = null;
@@ -54,15 +56,24 @@ export class DrapNDropFileInputComponent implements OnChanges {
     }
   }
 
+  displayFilename(file: File) {
+    this.filename = file.name;
+  }
+
   private handleFile(file: File): void {
     if (file.type.startsWith('image/')) {
       this.fileUploaded = true;
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.previewImage = e.target?.result as string;
+        this.displayFilename(file);
         this.uploadedFile.emit(file);
       };
       reader.readAsDataURL(file);
+    } else if (file.type.startsWith('application/pdf')) {
+      this.fileUploaded = true;
+      this.displayFilename(file);
+      this.uploadedFile.emit(file);
     } else {
       // handle error response or feedback here
       this.toastService.showError('Failed to upload', 'Incompatible file uploaded');
