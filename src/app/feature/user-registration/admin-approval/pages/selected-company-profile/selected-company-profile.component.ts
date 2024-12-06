@@ -74,6 +74,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
             next: () => {
               this.toastService.showSuccess('Successful', 'Applicant approved successfully');
               this.isApproved = false;
+              this.navigateToHome();
             },
             error: () => {
               this.toastService.showError('Failed', 'Failed to approve Application');
@@ -112,9 +113,10 @@ export class SelectedCompanyProfileComponent implements OnInit {
             next: () => {
               this.toastService.showSuccess('Successful', 'Applicant rejected successfully');
               this.isRejected = false;
+              this.navigateToHome();
             },
             error: () => {
-              this.toastService.showError('Failed', 'Failed to rejected Application');
+              this.toastService.showError('Failed', 'Failed to rejected application');
               this.isRejected = false;
               this.isRejected = false;
               this.navigateToHome();
