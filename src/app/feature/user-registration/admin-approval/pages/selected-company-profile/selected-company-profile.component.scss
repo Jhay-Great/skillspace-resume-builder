@@ -2,129 +2,126 @@
 @use 'mixins' as mix;
 
 .main-container {
-    @include mix.flex(column, 2rem);
-    height: 100%;
-    width: 100%;
+  @include mix.flex(column, 2rem);
+  height: 100%;
+  width: 100%;
 }
 h1 {
-    font-size: var.$xlarge;
-    font-weight: 600;
-    color: var.$color-blue-gray-800;
+  font-size: var.$xlarge;
+  font-weight: 600;
+  color: var.$color-blue-gray-800;
 }
 .company-details {
-    @include mix.flex(row);
-    @include mix.flex-position(space-between, center);
-    width: 100%;
-    height: fit-content;
+  @include mix.flex(row);
+  @include mix.flex-position(space-between, center);
+  width: 100%;
+  height: fit-content;
 }
 .details {
-    @include mix.flex(row);
-    @include mix.flex-position(flex-start, center);
-    width: 80%;
+  @include mix.flex(row);
+  @include mix.flex-position(flex-start, center);
+  width: 80%;
 }
 .logo {
-    width: 108px;
-    height: 108px;
-    aspect-ratio: 1;
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+  width: 108px;
+  height: 108px;
+  aspect-ratio: 1;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 .information {
-    @include mix.flex(column);
-    @include mix.flex-position(center);
+  @include mix.flex(column);
+  @include mix.flex-position(center);
 
-    .data {
-        @include mix.flex(row);
-        @include mix.flex-position(flex-start);
+  .data {
+    @include mix.flex(row);
+    @include mix.flex-position(flex-start);
 
-        p {
-            font-size: var.$medium;
-            color: var.$color-blue-gray-800;
-        }
-        .title {
-            color: var.$color-blue-gray-500;
-        }
-        .links {
-            @include mix.flex(row);
-            @include mix.flex-position(center, center);
-        }
+    p {
+      font-size: var.$medium;
+      color: var.$color-blue-gray-800;
     }
-    
+    .title {
+      color: var.$color-blue-gray-500;
+    }
+    .links {
+      @include mix.flex(row);
+      @include mix.flex-position(center, center);
+    }
+  }
 }
 .display-certificate {
-    @include mix.flex(column, _);
-    background-color: var.$color-white;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    flex: 1;
+  @include mix.flex(column, _);
+  background-color: var.$color-white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  flex: 1;
 }
 .btns {
-    @include mix.flex(row);
-    @include mix.flex-position(flex-end, center);
-    width: 100%;
-    height: fit-content;
+  @include mix.flex(row);
+  @include mix.flex-position(flex-end, center);
+  width: 100%;
+  height: fit-content;
 }
 .company-registered-certificate {
-    @include mix.flex(column);
-    @include mix.flex-position(flex-start, center);
-    flex: 1;
+  @include mix.flex(column);
+  @include mix.flex-position(flex-start, center);
+  flex: 1;
 
-    & > * {
-        width: min(800px, 80%);
-    }
-    .uploaded-certificate {
-        flex: 1;
-    }
+  & > * {
+    width: min(800px, 80%);
+  }
+  .uploaded-certificate {
+    flex: 1;
+  }
 }
 h2 {
-    font-size: var.$large;
-    color: var.$color-blue-gray-800;
+  font-size: var.$large;
+  color: var.$color-blue-gray-800;
 }
 
 ::ng-deep {
-    .p-tag {
-        background-color: #E8F3FB;
-    }
-    
-    .company-details .p-tag-value {
-        color: #1d4ed8;
-        font-weight: 400;
-    }
+  .p-tag {
+    background-color: #e8f3fb;
+  }
+
+  .company-details .p-tag-value {
+    color: #1d4ed8;
+    font-weight: 400;
+  }
 }
 
 .dialog-container {
-    @include mix.flex(column);
-    background: var.$color-white;
-    padding: 2rem;
-    width: 40rem;
+  @include mix.flex(column);
+  background: var.$color-white;
+  padding: 2rem;
+  width: 40rem;
 
-    .header .description {
-        color: var.$color-blue-gray-800;
+  .header .description {
+    color: var.$color-blue-gray-800;
+  }
 
-    }
-    
-    .header {
-        font-size: var.$xlarge;
-        font-weight: 600;
-        line-height: 2rem;
-    }
-    
-    .description {
-        font-size: var.$medium;
-        font-weight: 400;
-        line-height: 1.5rem;
+  .header {
+    font-size: var.$xlarge;
+    font-weight: 600;
+    line-height: 2rem;
+  }
 
-    }
+  .description {
+    font-size: var.$medium;
+    font-weight: 400;
+    line-height: 1.5rem;
+  }
 
-    .dialog-btns {
-        @include mix.flex(row);
-        @include mix.flex-position(flex-end, center);
-        width: 100%;
-    }
+  .dialog-btns {
+    @include mix.flex(row);
+    @include mix.flex-position(flex-end, center);
+    width: 100%;
+  }
 }
-
-
-
+::ng-deep canvas.hiddenCanvasElement {
+  display: none;
+}
