@@ -46,6 +46,7 @@ export class ProfileManagementComponent implements OnInit {
   previewImage: string | null = null;
   activeTabIndex = 0;
   logo: string | null = null;
+  certificate: string | null = null;
   selectedCountry: CountryISO = CountryISO.Ghana;
 
   // form groups
@@ -68,7 +69,7 @@ export class ProfileManagementComponent implements OnInit {
     // company details form
     this.companyDetailsForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['email@som.com'],
+      email: [''],
       website: ['', Validators.required],
       contact: ['', Validators.required],
       logo: [''],
@@ -105,18 +106,25 @@ export class ProfileManagementComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          this.logo = response.data.logo;
+          const { logo, companyName, email, website, contact, certificate } = response.data;
+
+          this.logo = logo;
+          this.certificate = certificate;
           const emailControl = this.getFormsControl(this.companyDetailsForm, 'email');
-          emailControl.setValue(response.data.email);
+
           this.companyDetailsForm.patchValue({
-            name: response.data.companyName,
-            email: response.data.email,
-            website: response.data.website,
-            contact: response.data.contact,
-            logo: response.data.logo,
+            name: companyName,
+            email: email,
+            website: website,
+            contact: contact,
+            logo: logo, // look into this further
           });
+
+          // disables email input field
+          emailControl?.disable();
+
           this.securityForm.patchValue({
-            certificate: response.data.logo,
+            certificate: certificate,
           });
         },
         error: () => {

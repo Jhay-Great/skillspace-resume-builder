@@ -25,7 +25,13 @@
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-envelope" />
-            <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
+            <input
+              class="email"
+              type="text"
+              pInputText
+              placeholder="amalitech.ghana@gmail.com"
+              formControlName="email"
+            />
           </p-iconField>
         </div>
 
