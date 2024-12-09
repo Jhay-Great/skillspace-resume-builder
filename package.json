@@ -14,9 +14,9 @@
     "format:check": "prettier --check \"src/**/*.{ts,html,scss}\""
   },
   "lint-staged": {
-    "**/*.{ts,html,scss,}": [
-      "eslint --fix",
-      "prettier --write"
+    "**/*.{ts,html,scss}": [
+      "prettier --write",
+      "eslint --fix"
     ]
   },
   "private": true,
