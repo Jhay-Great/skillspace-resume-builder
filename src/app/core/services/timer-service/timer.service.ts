@@ -1,13 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TimerService {
-  expirationTime = 10  // 10 minute in seconds
-  private timerSignal = signal(this.expirationTime)
-  private expiredSignal = signal(false); 
-  
+  expirationTime = 600; // 10 minute in seconds
+  private timerSignal = signal(this.expirationTime);
+  private expiredSignal = signal(false);
+
   get remainingTime() {
     return this.timerSignal();
   }
@@ -15,7 +15,6 @@ export class TimerService {
   get isTimerExpired() {
     return this.expiredSignal();
   }
-
 
   startTimer() {
     this.timerSignal.set(this.expirationTime); // Reset timer to expiration time before starting the timer
@@ -32,12 +31,11 @@ export class TimerService {
   }
   resetTimer() {
     this.timerSignal.set(this.expirationTime);
-    this.expiredSignal.set(false); 
+    this.expiredSignal.set(false);
   }
 
-  restartTimer() { 
-    this.resetTimer() 
-    this.startTimer()
+  restartTimer() {
+    this.resetTimer();
+    this.startTimer();
   }
-
 }

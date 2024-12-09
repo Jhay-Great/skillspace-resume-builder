@@ -61,6 +61,7 @@ header {
             @include mix.flex-position(center, center);
             width: 100%;
             height: fit-content;
+            margin-bottom: .8rem;
         }
         span {
             font-size: var.$large;
@@ -70,17 +71,22 @@ header {
 
     }
 
-    .operations {
+    .operations, .sidebar-tabs {
         @include mix.flex(column);
-        
+        button { 
+            box-shadow: none;
+            border : none;
+        }
         .tab {
             @include mix.flex();
             @include mix.flex-position(flex-start, center);
             padding-inline: 1rem;
-            padding-block: 0.5rem;
+            padding-block: 0.7rem;
             cursor: pointer;
+            background-color: transparent;
+            color: white;
         }
-        
+       
         .tab:hover {
             background-color: var.$color-white;
             color: var.$color-blue-gray-800;
@@ -92,6 +98,14 @@ header {
 
             }
         }
+        .active { 
+            background-color: var.$color-white;
+            color: var.$color-blue-gray-800;
+            svg path {
+                fill: var.$color-blue-gray-800;
+            }
+        }
+        
     }
 }
 
@@ -100,5 +114,40 @@ main {
     grid-column: 2 / -1;
     background-color: var.$color-blue-gray-50;
     padding: 1rem;
+    overflow-y: hidden;
 }
+
+/* Logout confirmation dialog */
+.dialog-container {
+    @include mix.flex(column);
+    background: var.$color-white;
+    padding: 2rem;
+    width: 40rem;
+
+    .header .description {
+        color: var.$color-blue-gray-800;
+
+    }
+    
+    .header {
+        font-size: var.$xlarge;
+        font-weight: 600;
+        line-height: 2rem;
+    }
+    
+    .description {
+        font-size: var.$medium;
+        font-weight: 400;
+        line-height: 1.5rem;
+
+    }
+
+    .dialog-btns {
+        @include mix.flex(row);
+        @include mix.flex-position(flex-end, center);
+        width: 100%;
+    }
+}
+
+
 

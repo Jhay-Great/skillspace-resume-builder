@@ -1,6 +1,25 @@
 @use "mixins" as mix;
 @use "variables" as var;
 
+// label and description
+label {
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+label, input.p-inputtext  {
+  color: var.$color-blue-gray-800;
+}
+.description {
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
 // file upload
 .upload {
   .upload-section {

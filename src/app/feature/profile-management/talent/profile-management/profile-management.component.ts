@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormArray,
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormsModule,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormArray, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
 
 // local imports
 import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
@@ -20,7 +13,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
-import { CountryCode } from 'ngx-material-intl-tel-input/lib/data/country-code';
 // profile service
 import { ProfileService } from '../../profile service/profile.service';
 import { Country } from '@src/app/core/interfaces/interfaces';
@@ -58,7 +50,10 @@ export class ProfileManagementComponent {
   // education form status
   status: Status[] = [];
 
-  constructor(private fb: FormBuilder, private profileService: ProfileService) {
+  constructor(
+    private fb: FormBuilder,
+    private profileService: ProfileService
+  ) {
     // education form
     this.educationForm = this.fb.group({
       name: ['', Validators.required],
@@ -82,8 +77,8 @@ export class ProfileManagementComponent {
         next: (countries) => {
           this.countries = countries;
         },
-        error: (error) => {
-          console.log(error);
+        error: (_error) => {
+          console.log('Error getting countries');
         },
       });
   }
@@ -93,8 +88,7 @@ export class ProfileManagementComponent {
     this.status = [{ label: 'Graduated' }, { label: 'Still in school' }];
   }
 
-  description =
-    'This is what employers will see on your profile and what will appear on all your earned certificates.';
+  description = 'This is what employers will see on your profile and what will appear on all your earned certificates.';
 
   educationDescription = 'This is what employers will see on your profile';
 

@@ -1,6 +1,10 @@
-import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+// interface
+type RegisterOnChange = (value: string) => void;
+type RegisterOnTouch = () => void;
 
 @Component({
   selector: 'app-input-field',
@@ -22,6 +26,7 @@ export class InputFieldComponent implements ControlValueAccessor {
   @Input ({required: true}) type:string | null = null;
   @Input ({required: true}) placeholder:string | null = null;
   @Input () hasError:boolean = false;
+  @Input () isDisabled:boolean = false;
 
   @ViewChild ('Input') inputElement!:ElementRef;
 
@@ -36,7 +41,11 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   // for writing values to this component
-  writeValue(value: any): void {
+  writeValue(value: string | null): void {
+    if (this.isDisabled && this.type === 'password') {
+      this.value = '.......,,#'
+      return;
+    }
     this.value = value || ''
     if (this.inputElement) {
       this.inputElement.nativeElement.value = this.value;
@@ -44,12 +53,12 @@ export class InputFieldComponent implements ControlValueAccessor {
   }
 
   // used to register changes that occurs in the component
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: RegisterOnChange): void {
     this.onChange = fn;
   }
 
   // register changes when the field is touched
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: RegisterOnTouch): void {
     this.onTouched = fn
   }
 

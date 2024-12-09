@@ -11,6 +11,27 @@ export interface mockDetails {
   status: string;
 }
 
+// carrier Programme
+export interface Programme {
+  id:             number;
+  userId:         number;
+  name:           string;
+  description:    string;
+  requirements:   string[];
+  requiredBadges: string[];
+  optionalBadges: string[];
+  startDate:      Date;
+  endDate:        Date;
+  status:         string;
+  changeHistory?:  ChangeHistory[];
+}
+
+export interface ChangeHistory {
+  id:                number;
+  programs:          string;
+  changeTimestamp:   Date;
+  changeDescription: string;
+}
 
 export interface Country{
   name: string;

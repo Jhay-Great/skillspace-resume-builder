@@ -1,6 +1,8 @@
-@use "variables" as var;
+@use 'variables' as var;
 
 .container {
+  padding-block-end: 2rem;
+  overflow: auto;
   // pro reminder wrapp
   .pro-reminder {
     display: flex;
@@ -66,10 +68,24 @@
         }
       }
     }
+
+    .drop-select {
+      border: 1px solid var.$color-blue-gray-300;
+      border-radius: 0.4rem;
+      display: flex;
+      align-items: center;
+      padding-inline-start: 0.8rem;
+    }
   }
 }
 
 // prime ng styling
-::ng-deep .p-dropdown-trigger-icon {
-  display: none;
+::ng-deep {
+  p-dropdown {
+    width: 100%;
+    border: none;
+  }
+  .p-dropdown {
+    border: none;
+  }
 }

@@ -39,13 +39,7 @@
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-envelope" />
-            <input
-              class="email"
-              type="text"
-              [disabled]="true"
-              pInputText
-              placeholder="amalitech.ghana@gmail.com"
-            />
+            <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
           </p-iconField>
         </div>
 
@@ -90,13 +84,7 @@
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-envelope" />
-            <input
-              class="email"
-              type="text"
-              [disabled]="true"
-              pInputText
-              placeholder="amalitech.ghana@gmail.com"
-            />
+            <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
           </p-iconField>
         </div>
 
@@ -123,27 +111,17 @@
             <!-- name wrap -->
             <div class="name-wrap">
               <label for="name">Name</label>
-              <p class="description-txt">
-                This is what employers will see on your <br />profile
-              </p>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="p-input-icon-left">
                 <i class="pi pi-building"></i>
-                <input
-                  id="name"
-                  type="text"
-                  pInputText
-                  formControlName="name"
-                  placeholder="Enter school's name"
-                />
+                <input id="name" type="text" pInputText formControlName="name" placeholder="Enter school's name" />
               </div>
             </div>
 
             <!-- address wrap -->
             <div class="address-wrap">
               <label for="address">Address</label>
-              <p class="description-txt">
-                This is what employers will see on your <br />profile
-              </p>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="p-input-icon-left">
                 <i class="pi pi-map-marker"></i>
                 <input
@@ -181,23 +159,16 @@
                   />
 
                   <div>
-                    <img
-                      src="../../../../../assets/svgs/arrow-drop-down.svg"
-                      alt="arrow"
-                    />
+                    <img src="../../../../../assets/svgs/arrow-drop-down.svg" alt="arrow" />
                   </div>
 
-                  <span>{{ educationForm.get("country")?.value.name }}</span>
+                  <span>{{ educationForm.get('country')?.value.name }}</span>
                 </div>
               </ng-template>
 
               <ng-template let-country pTemplate="item">
                 <div class="country-item">
-                  <img
-                    [src]="country.flag"
-                    alt="{{ country.name }}"
-                    width="20"
-                  />
+                  <img [src]="country.flag" alt="{{ country.name }}" width="20" />
                   <span>{{ country.name }}</span>
                 </div>
               </ng-template>
@@ -207,9 +178,7 @@
           <!-- Qualification -->
           <div class="wrap">
             <label for="qualificationLevel">Qualification level</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile
-            </p>
+            <p class="description-txt">This is what employers will see on yourprofile</p>
             <div [style]="{ width: '100%' }" class="p-input-icon-left">
               <i class="pi pi-graduation-cap"></i>
               <input
@@ -226,9 +195,7 @@
           <!-- Programme -->
           <div class="wrap">
             <label for="programme">Programme</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile
-            </p>
+            <p class="description-txt">This is what employers will see on yourprofile</p>
             <div [style]="{ width: '100%' }" class="p-input-icon-left">
               <i class="pi pi-receipt"></i>
               <input
@@ -245,12 +212,11 @@
           <!-- Status -->
           <div class="wrap">
             <label for="status">Status</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile
-            </p>
-            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+            <p class="description-txt">This is what employers will see on yourprofile</p>
+            <div class="drop-select">
               <i class="pi pi-list-check" style="margin-right: 8px"></i>
               <p-dropdown
+                class="show-dropdown"
                 id="status"
                 [style]="{ width: '100%' }"
                 [options]="status"
@@ -259,6 +225,34 @@
                 [editable]="true"
                 optionLabel="label"
               />
+            </div>
+          </div>
+          <!-- name and adress wrap -->
+          <div class="nameAddress-wrap">
+            <!-- name wrap -->
+            <div class="name-wrap">
+              <label for="name">Start date</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-building"></i>
+                <pcalendar id="name" type="text" pInputText formControlName="name" placeholder="Enter school's name" />
+              </div>
+            </div>
+
+            <!-- address wrap -->
+            <div class="address-wrap">
+              <label for="address">End date</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-map-marker"></i>
+                <input
+                  id="address"
+                  type="text"
+                  pInputText
+                  formControlName="address"
+                  placeholder="Enter address of school"
+                />
+              </div>
             </div>
           </div>
         </form>
