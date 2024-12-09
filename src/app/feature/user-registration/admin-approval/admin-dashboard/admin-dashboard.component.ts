@@ -127,22 +127,6 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  getRecentDate(): Date {
-    return new Date(); // Today's date
-  }
-
-  getLastWeekDate(): Date {
-    const date = new Date();
-    date.setDate(date.getDate() - 7); // Subtract 7 days
-    return date;
-  }
-
-  getLastMonthDate(): Date {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1); // Subtract 1 month
-    return date;
-  }
-
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -151,7 +135,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   chooseDate(value: PDropDown) {
-    let filterDate: Date;
     switch (value.name) {
       case 'All': {
         this.table()?.clear();
@@ -164,45 +147,27 @@ export class AdminDashboardComponent implements OnInit {
         const recentDate = new Date(today);
         recentDate.setDate(today.getDate() - 3);
 
-        // Format the date to match your database format (YYYY-MM-DD)
         const formattedRecentDate = this.formatDate(recentDate);
 
-        // console.log('Filtering from:', formattedRecentDate, 'to', this.formatDate(today));
-
-        // Filter from the recent date to today
         this.table()?.filter(formattedRecentDate, 'createdAt', 'gte');
-
-        // filterDate = this.getRecentDate();
-        // const year = filterDate.getFullYear();
-        // const month = filterDate.getMonth() + 1;
-        // const day = filterDate.getDate() - 3;
-        // const date = `${year}-${month}-${day}`;
-
-        // console.log(date);
-        // this.table()?.filter(date, 'createdAt', 'gte');
-
         break;
       }
       case 'Last week': {
-        filterDate = this.getLastWeekDate();
+        const lastWeekDate = new Date();
+        lastWeekDate.setDate(lastWeekDate.getDate() - 7);
 
-        const year = filterDate.getFullYear();
-        const month = filterDate.getMonth();
-        const day = filterDate.getDate();
-        const date = `${year}-${month}-${day}`;
+        const formattedLastWeekDate = this.formatDate(lastWeekDate);
 
-        this.table()?.filter(date, 'createdAt', 'gte');
+        this.table()?.filter(formattedLastWeekDate, 'createdAt', 'gte');
         break;
       }
       case 'Last month': {
-        filterDate = this.getLastWeekDate();
+        const lastMonthDate = new Date();
+        lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 
-        const year = filterDate.getFullYear();
-        const month = filterDate.getMonth();
-        const day = filterDate.getDate();
-        const date = `${year}-${month}-${day}`;
+        const formattedLastMonthDate = this.formatDate(lastMonthDate);
 
-        this.table()?.filter(date, 'createdAt', 'gte');
+        this.table()?.filter(formattedLastMonthDate, 'createdAt', 'gte');
         break;
       }
       case 'Custom': {
