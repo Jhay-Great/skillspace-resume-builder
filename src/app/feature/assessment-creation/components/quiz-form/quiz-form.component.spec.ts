@@ -77,7 +77,7 @@ describe('QuizFormComponent', () => {
   });
 
   it('should emit form data on form submission', () => {
-    spyOn(component.onSubmit, 'emit');
+    spyOn(component.submitQuiz, 'emit');
     component.quizForm.patchValue({
       name: 'Test Quiz',
       duration: '30',
@@ -86,7 +86,7 @@ describe('QuizFormComponent', () => {
       isGlobal: true,
     });
     component.onQuizSubmit();
-    expect(component.onSubmit.emit).toHaveBeenCalled();
+    expect(component.submitQuiz.emit).toHaveBeenCalled();
   });
 
   it('should discard changes and call the assessment creation service', () => {
