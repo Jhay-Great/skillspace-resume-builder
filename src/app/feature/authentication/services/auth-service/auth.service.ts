@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../../../environments/environment.development';
-import { LoginCredentials, User, UserRole } from '../../models/auth.model';
+import { LoginCredentials, refreshTokenResponse, User, UserRole } from '../../models/auth.model';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from '../../../../core/services/localStorageService/local-storage.service';
 import { Router } from '@angular/router';
@@ -11,20 +11,18 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private _userRole = signal<UserRole | null>(null);
-  
+
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
-    private router: Router,
+    private router: Router
   ) {
     this._userRole.set(this.localStorageService.getItem<UserRole>('USER_ROLE'));
   }
 
-
   get userRole(): UserRole | null {
     return this._userRole();
   }
-
 
   setUserRole(role: UserRole): void {
     this._userRole.set(role);
@@ -39,7 +37,6 @@ export class AuthService {
   setToken(accessToken: string, refreshToken: string): void {
     this.localStorageService.setItem<string>('TOKEN', accessToken);
     this.localStorageService.setItem<string>('REFRESH-TOKEN', refreshToken);
-
   }
 
   clearToken(): void {
@@ -53,20 +50,12 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<User> {
-    return this.http.post<User>(
-      `${environment.AUTH_ADDRESS}/v1/auth/login`,
-      // `${environment.BASE_API}/v1/auth/login`,
-      credentials
-    );
+    return this.http.post<User>(`${environment.BASE_API}/v1/auth/login`, credentials);
   }
 
-  refreshAccessToken(refreshToken: string): Observable<any> {
-    return this.http.post<any>(
-      `${environment.BASE_API}/v1/auth/refresh-token`,
-      { refreshToken }
-    );
+  refreshAccessToken(refreshToken: string): Observable<refreshTokenResponse> {
+    return this.http.post<refreshTokenResponse>(`${environment.BASE_API}/v1/auth/refresh-token`, { refreshToken });
   }
-
 
   logout() {
     // Remove access token from local storage
