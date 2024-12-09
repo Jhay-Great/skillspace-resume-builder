@@ -74,7 +74,7 @@
     <p-tabPanel header="Documents">
       <!-- file upload content goes here -->
       <form [formGroup]="documentForm">
-        <app-drag-n-drop-file-input [label]="'Certificate'" [accept]="'.pdf'" />
+        <app-drag-n-drop-file-input [label]="'Certificate'" [accept]="'.pdf'" [previewUpload]="certificate" />
       </form>
     </p-tabPanel>
 

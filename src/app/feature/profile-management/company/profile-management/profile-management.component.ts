@@ -1,26 +1,26 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { take } from 'rxjs';
 
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputTextModule } from 'primeng/inputtext';
 
 // local imports
 import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-import { InputIconModule } from 'primeng/inputicon';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputTextModule } from 'primeng/inputtext';
 import { DrapNDropFileInputComponent } from '@shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component';
 import { confirmPasswordValidator, passwordStrengthValidator } from '@shared/utils/password.validator';
 import { onFileUpload } from '@shared/utils/file-upload';
 import { ProfileManagementService } from '../../services/profile-management.service';
 import { createFromData } from '@shared/utils/file-upload';
-import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
-import { take } from 'rxjs';
+import { LocalStorageService } from '@core/services/localStorageService/local-storage.service';
 
 @Component({
   selector: 'app-profile-management',
