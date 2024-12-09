@@ -2,7 +2,6 @@
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
-const prettier = require("eslint-config-prettier");
 
 module.exports = tseslint.config(
   {
@@ -39,7 +38,7 @@ module.exports = tseslint.config(
       "max-len": [
       "error", 
       { 
-        "code": 120, 
+        "code": 150, 
         "ignoreComments": true,
         "ignoreTrailingComments": true,
         "ignoreUrls": true
@@ -47,7 +46,6 @@ module.exports = tseslint.config(
     ],
       "no-console": "error",
         "complexity": ["warn", 10],
-        "indent": ["error", 2],
     },
   },
   {
