@@ -143,6 +143,13 @@ export class AdminDashboardComponent implements OnInit {
     return date;
   }
 
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   chooseDate(value: PDropDown) {
     let filterDate: Date;
     switch (value.name) {
@@ -151,20 +158,28 @@ export class AdminDashboardComponent implements OnInit {
         break;
       }
       case 'Recent': {
-        // const day = today.getDate();
-        // const recent = day - 1;
-        // const setDay = today.setDate(recent);
-        // const calcDay = new Date(setDay);
-        // const recentDate = `${calcDay.getFullYear()}-${calcDay.getMonth() + 1}-${calcDay.getDate()}`;
-        // this.table()?.filter(recentDate, 'createdAt', 'contains');
+        const today = new Date();
 
-        filterDate = this.getRecentDate();
-        const year = filterDate.getFullYear();
-        const month = filterDate.getMonth();
-        const day = filterDate.getDate();
-        const date = `${year}-${month}-${day}`;
+        // Create a date object for 3 days ago
+        const recentDate = new Date(today);
+        recentDate.setDate(today.getDate() - 3);
 
-        this.table()?.filter(date, 'createdAt', 'gte');
+        // Format the date to match your database format (YYYY-MM-DD)
+        const formattedRecentDate = this.formatDate(recentDate);
+
+        // console.log('Filtering from:', formattedRecentDate, 'to', this.formatDate(today));
+
+        // Filter from the recent date to today
+        this.table()?.filter(formattedRecentDate, 'createdAt', 'gte');
+
+        // filterDate = this.getRecentDate();
+        // const year = filterDate.getFullYear();
+        // const month = filterDate.getMonth() + 1;
+        // const day = filterDate.getDate() - 3;
+        // const date = `${year}-${month}-${day}`;
+
+        // console.log(date);
+        // this.table()?.filter(date, 'createdAt', 'gte');
 
         break;
       }
@@ -177,12 +192,6 @@ export class AdminDashboardComponent implements OnInit {
         const date = `${year}-${month}-${day}`;
 
         this.table()?.filter(date, 'createdAt', 'gte');
-
-        // this.table()?.filter(filterDate, 'createdAt', 'gte');
-
-        // const endOfWeek = today;
-        // const startOfLastWeek = new Date();
-        // startOfLastWeek.setDate(endOfWeek.getDate() - 7);
         break;
       }
       case 'Last month': {
