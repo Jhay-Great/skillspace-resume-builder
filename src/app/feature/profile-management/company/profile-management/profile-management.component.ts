@@ -95,6 +95,10 @@ export class ProfileManagementComponent implements OnInit {
     return this.companyDetailsForm.get('contact') as FormControl<string | null>;
   }
 
+  getFormsControl(form: FormGroup, controlName: string) {
+    return form.get(controlName) as FormControl;
+  }
+
   populateDetails() {
     this.profileService
       .getCompanyData()
@@ -102,6 +106,8 @@ export class ProfileManagementComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.logo = response.data.logo;
+          const emailControl = this.getFormsControl(this.companyDetailsForm, 'email');
+          emailControl.setValue(response.data.email);
           this.companyDetailsForm.patchValue({
             name: response.data.companyName,
             email: response.data.email,
