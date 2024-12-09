@@ -1,80 +1,66 @@
 <div class="main-container">
-    <h1 class="header-title">Company's profile</h1>
+  <h1 class="header-title">Company's profile</h1>
 
-    <!-- company details or information -->
-    <section class="company-details">
-
-        <!-- details -->
-        <div class="details">
-            <div class="logo">
-                <img [src]="applicant?.logo" alt="company logo">
-            </div>
-            <div class="information">
-                <div class="personal-info data">
-                    <p class="title">Personal Information:</p>
-                    <p>{{ applicant?.name }}</p>
-                    <p>{{ applicant?.contact }}</p>
-                    <p>{{ applicant?.email }}</p>
-                </div>
-                <div class="social-media-info data">
-                    <p class="title">Social media links:</p>
-                    <div class="links">
-                        <i class="pi pi-linkedin"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i> 
-
-                        <i class="pi pi-twitter"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i>
-
-                        <i class="pi pi-globe"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i>
-                    </div>
-                </div>
-
-            </div>
+  <!-- company details or information -->
+  <section class="company-details">
+    <!-- details -->
+    <div class="details">
+      <div class="logo">
+        <img [src]="applicant?.logo" alt="company logo" />
+      </div>
+      <div class="information">
+        <div class="personal-info data">
+          <p class="title">Personal Information:</p>
+          <p>{{ applicant?.name }}</p>
+          <p>{{ applicant?.contact }}</p>
+          <p>{{ applicant?.email }}</p>
         </div>
+        <div class="social-media-info data">
+          <p class="title">Social media links:</p>
+          <div class="links">
+            <i class="pi pi-linkedin" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
 
-        <!-- status -->
-        @if (applicant) {
-            <app-tag [status]="applicant.approvalStatus" />
-        }
-    </section>
+            <i class="pi pi-twitter" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
 
-    <!-- certificate -->
-    <section class="display-certificate">
-        <!-- buttons -->
-        <div class="btns">
-            @if (applicant) {
-                <p-button (onClick)="reject(applicant.id)" label="Reject company" [outlined]="true" />
-                <p-button (onClick)="confirm(applicant.id)" label="Accept company" />
-            }
+            <i class="pi pi-globe" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="company-registered-certificate">
-            <!-- header -->
-            <h2>Registered certificate</h2>
-    
-            <!-- certificate -->
-            <div class="uploaded-certificate">
-                <pdf-viewer
-                    [src]="applicant?.certificate"
-                    [original-size]="false"
-                    style="height: 100%; width: 100%;"
-                ></pdf-viewer>
-                
-            </div>
+    <!-- status -->
+    @if (applicant) {
+      <app-tag [status]="applicant.approvalStatus" />
+    }
+  </section>
 
-        </div>
-    </section>
+  <!-- certificate -->
+  <section class="display-certificate">
+    <!-- buttons -->
+    <div class="btns">
+      @if (applicant) {
+        <p-button
+          (onClick)="reject(applicant.id)"
+          label="Reject company"
+          [outlined]="true"
+          [disabled]="isRejectOrApproved"
+        />
+        <p-button (onClick)="confirm(applicant.id)" label="Accept company" [disabled]="isRejectOrApproved" />
+      }
+    </div>
 
+    <div class="company-registered-certificate">
+      <!-- header -->
+      <h2>Registered certificate</h2>
+
+      <!-- certificate -->
+      <div class="uploaded-certificate">
+        <pdf-viewer
+          [src]="applicant?.certificate"
+          [original-size]="false"
+          style="height: 100%; width: 100%"
+        ></pdf-viewer>
+      </div>
+    </div>
+  </section>
 </div>
-
-

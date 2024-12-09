@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 
 // primeng modules
 import { TableModule, Table } from 'primeng/table';
@@ -23,7 +22,9 @@ import { ToastService } from '@core/services/toast-service/toast.service';
 import { InitialsPipe } from '@core/pipes/initials/initials.pipe';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
-import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
+import { LocalStorageService } from '@core/services/localStorageService/local-storage.service';
+import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
+import { DateSuffixPipe } from '@core/pipes/datesuffix/date-suffix.pipe';
 
 interface PDropDown {
   name: string;
@@ -45,10 +46,11 @@ interface PDropDown {
     CalendarModule,
     TagComponent,
     SearchInputComponent,
-    DatePipe,
+    PageHeaderDescriptionComponent,
     InitialsPipe,
     EllipsisPipe,
     CapitalizePipe,
+    DateSuffixPipe,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',

@@ -28,6 +28,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
   isApproved = false;
   isRejected = false;
   applicant: ApplicantsData | null = null;
+  isRejectOrApproved = false;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -49,6 +50,11 @@ export class SelectedCompanyProfileComponent implements OnInit {
         this.adminApprovalService.selectedApplicant(+id);
         this.applicant = this.adminApprovalService.selectedUser();
       });
+    }
+
+    // disabling button if rejected or approved
+    if (this.applicant?.approvalStatus !== 'PENDING') {
+      this.isRejectOrApproved = true;
     }
   }
 
