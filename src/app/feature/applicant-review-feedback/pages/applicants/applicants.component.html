@@ -1,0 +1,100 @@
+<div class="main-container">
+  <app-page-header-description
+    [title]="'Manage career programmes'"
+    [description]="'Easily manage companies and engage with them.'"
+  />
+
+  <!-- search N filter -->
+  <section class="search-filter-container">
+    <app-search-input (search)="onSearch($event)" />
+
+    <!-- status filter -->
+    <p-dropdown
+      class="status-filter-dropdown"
+      [options]="handleStatus()"
+      [(ngModel)]="selectedStatus"
+      (ngModelChange)="chooseStatus($event)"
+      optionLabel="name"
+      placeholder="Status"
+      #InputValue
+    />
+
+    <!-- application date filter -->
+  </section>
+
+  <section class="table-container">
+    <div class="card">
+      <header>
+        <p class="header">All applicants</p>
+      </header>
+      <p-table
+        [value]="applicants"
+        styleClass="p-datatable-striped"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        #dt1
+        dataKey="id"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="isLoading"
+        [paginator]="true"
+        [globalFilterFields]="['name', 'approvalStatus']"
+      >
+        <!-- table header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Average badge score</th>
+            <th>Programme</th>
+            <th>Status</th>
+            <th>Application date</th>
+            <th class="options-btn-header"></th>
+          </tr>
+        </ng-template>
+
+        <!-- table data -->
+        <ng-template pTemplate="body" let-applicant>
+          <tr>
+            <td>
+              @if (!applicant.image) {
+                <p-avatar [label]="applicant.name | initials" shape="circle" />
+              } @else {
+                <img [alt]="applicant.name" [src]="applicant.image" width="32" style="vertical-align: middle" />
+              }
+              <span class="ml-1 vertical-align-middle">
+                {{ applicant.name | capitalize }}
+              </span>
+            </td>
+            <td>{{ applicant.email | ellipsis: 15 }}</td>
+            <td>{{ applicant.email | ellipsis: 15 }}</td>
+            <td>
+              <app-tag [status]="applicant.approvalStatus" />
+            </td>
+            <td>{{ applicant.createdAt | dateSuffix }}</td>
+            <td class="options-btn-body">
+              <div class="card flex justify-content-center">
+                <p-button class="view-profile-btn" (onClick)="op.toggle($event)" icon="pi pi-ellipsis-v" />
+                <p-overlayPanel #op>
+                  <div class="view-profile-popup flex flex-column gap-3 w-25rem">
+                    <div class="company-name">
+                      <!-- initials -->
+                      <p-avatar [label]="applicant.name | initials" shape="circle" />
+                      <!-- name & email -->
+                      <div class="name_email">
+                        <p class="name">{{ applicant.name | capitalize }}</p>
+                        <p class="email">{{ applicant.email | ellipsis: 15 }}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <button (click)="selectedApplicant(applicant.id)">View profile</button>
+                    <button (click)="selectedApplicant(applicant.id)">Shortlist</button>
+                    <button (click)="selectedApplicant(applicant.id)">Reject</button>
+                  </div>
+                </p-overlayPanel>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </section>
+</div>
