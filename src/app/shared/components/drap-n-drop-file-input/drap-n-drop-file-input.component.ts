@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, viewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
+import { extractFilename } from '../../utils/file-upload';
 
 @Component({
   selector: 'app-drag-n-drop-file-input',
@@ -27,6 +28,9 @@ export class DrapNDropFileInputComponent implements OnChanges {
     if (changes['previewUpload']) {
       this.previewImage = changes['previewUpload'].currentValue;
       this.fileUploaded = true;
+      if (this.previewUpload) {
+        this.filename = extractFilename(this.previewUpload);
+      }
     }
   }
 
