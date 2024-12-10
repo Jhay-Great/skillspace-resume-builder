@@ -1,8 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { QuizFormComponent } from '../quiz-form/quiz-form.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-import { Subscription } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-create-quiz',
@@ -11,8 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-quiz.component.html',
   styleUrl: './create-quiz.component.scss',
 })
-export class CreateQuizComponent implements OnDestroy {
-  private subscriptions!: Subscription;
+export class CreateQuizComponent {
   constructor(
     private assessmentCreationService: AssessmentCreationService,
     private toastService: ToastService
@@ -21,17 +20,16 @@ export class CreateQuizComponent implements OnDestroy {
   onSubmit(formData: FormData) {
     if (!formData) return;
 
-    this.subscriptions = this.assessmentCreationService.createQuiz(formData).subscribe({
-      next: () => {
-        this.toastService.showSuccess('Quiz created successfully', 'Success');
-      },
-      error: (err) => {
-        this.toastService.showError(err.error.message, 'Error');
-      },
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.assessmentCreationService
+      .createQuiz(formData)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.toastService.showSuccess('Quiz created successfully', 'Success');
+        },
+        error: (err) => {
+          this.toastService.showError(err.error.message, 'Error');
+        },
+      });
   }
 }
