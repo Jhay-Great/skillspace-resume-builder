@@ -1,0 +1,173 @@
+<div class="container">
+  <div class="header">
+    <p class="header-title">Manage assessments</p>
+    <p class="header-subtitle">Easily create quizzes to engage with talents.</p>
+  </div>
+
+  <!-- table here -->
+
+  <div class="table">
+    <!-- search -->
+    <div class="search-wrap">
+      <div class="search-container">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            [style]="{ width: '30rem' }"
+            type="text"
+            (input)="dt1.filterGlobal($any($event).target.value, 'contains')"
+            placeholder="Search assessment by title"
+          />
+        </p-iconField>
+      </div>
+
+      <!-- date filter -->
+      <div *ngIf="skillsQuiz" [style]="{ marginLeft: '1rem' }" class="flex align-items-center">
+        <p-calendar
+          [style]="{ width: '7rem' }"
+          placeholder="Start date"
+          [showButtonBar]="true"
+          (onClearClick)="dt1.filter(null, 'start', 'equals')"
+        ></p-calendar>
+      </div>
+
+      <button (click)="showCreateQuizModal()" class="addform">Create new skills quiz</button>
+    </div>
+    <!--  -->
+
+    <!-- tabMenu -->
+    <p-tabMenu [model]="tabMenuList" [activeItem]="activeItem">
+      <ng-template pTemplate="item" let-tabMenu>
+        <button
+          style="gap: 1rem"
+          (click)="setActiveTab(tabMenu.label)"
+          (keypress)="setActiveTab(tabMenu.label)"
+          pRipple
+          class="flex align-items-center gap-2 p-menuitem-link"
+        >
+          <span class="font-bold">
+            {{ tabMenu.label }}
+          </span>
+          <p-badge value="8" severity="info" />
+        </button>
+      </ng-template>
+    </p-tabMenu>
+    <!--  -->
+
+    <!-- Skills Quiz Table Content-->
+
+    <div class="tablescontainer">
+      <div class="create-quiz-modal">
+        @if (assessmentCreationService.createQuizVisible()) {
+          <app-create-quiz />
+        }
+
+        @if (assessmentCreationService.updateQuizVisible()) {
+          <!--I'll be passing in the quiz i want to update later -->
+          @if (selectedQuiz) {
+            <app-update-quiz [quizId]="selectedQuiz.id" />
+          }
+        }
+      </div>
+
+      <p-table #dt1 [value]="getActiveTabData()" [globalFilterFields]="['name']">
+        <!-- table header -->
+
+        <ng-template pTemplate="header">
+          <!-- Skills Quiz -->
+          <tr *ngIf="skillsQuiz">
+            <th style="width: 20%">Name</th>
+            <th style="width: 20%">Location</th>
+            <th style="width: 20%">Duration</th>
+            <th style="width: 20%">Pass mark</th>
+            <th style="width: 20%">Date Created</th>
+            <th></th>
+          </tr>
+        </ng-template>
+
+        <!-- table body -->
+        <ng-template pTemplate="body" let-data>
+          <!-- Skills Quiz -->
+          <tr class="stylerowsbackground" *ngIf="skillsQuiz">
+            <td>{{ data.name }}</td>
+            <td>{{ data.location }}</td>
+            <td>{{ data.duration }}</td>
+            <td>{{ data.passMark }}</td>
+            <td>{{ data.dateCreated }}</td>
+
+            <td class="action">
+              <p-button
+                (click)="openTieredMenu($event, data)"
+                icon="pi pi-ellipsis-v"
+                [text]="true"
+                severity="secondary"
+              />
+            </td>
+          </tr>
+
+          <!-- Local Repository -->
+          <tr *ngIf="localRepository">
+            <td style="height: 10rem" class="special">
+              <div class="wrapper">
+                <div class="info">
+                  <p class="infohead">{{ data.name }}</p>
+                  <p class="infodate">Last updated: October 3, 2024</p>
+                </div>
+                <div class="tools">
+                  <!-- update svg -->
+                  <p-button
+                    severity="secondary"
+                    icon="pi pi-pencil"
+                    label="Update"
+                    [style]="{ color: '#64748B' }"
+                    [link]="true"
+                  />
+
+                  <!-- remove svg -->
+                  <p-button
+                    severity="secondary"
+                    icon="pi pi-times-circle"
+                    label="Remove"
+                    [style]="{ color: '#64748B' }"
+                    [link]="true"
+                  />
+                  <!--  -->
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Global Repository -->
+          <tr *ngIf="globalRepository">
+            <td style="height: 10rem" class="special">
+              <div class="wrapper">
+                <div class="info">
+                  <p class="infohead">{{ data.name }}</p>
+                  <p class="infodate">Last updated: October 3, 2024</p>
+                </div>
+                <div class="tools">
+                  <!-- add to local button  -->
+                  <p-button label="Add to local repository" severity="primary" outlined="true" />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <!--  -->
+        <ng-template pTemplate="empty">
+          <tr>
+            <td colspan="2" class="text-center">No match found</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <!--  -->
+    </div>
+  </div>
+</div>
+
+<!-- tiered Menu -->
+<p-tieredMenu #tieredMenu [model]="tieredMenuItems" [popup]="true" />

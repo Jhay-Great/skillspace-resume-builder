@@ -38,11 +38,11 @@ export class DashboardLayoutComponent {
     {
       name: 'My Programmes',
       path: 'company-programmes',
-      icon: 'pi pi-courses',
+      icon: 'pi pi-graduation-cap',
     },
     {
       name: 'Assessments',
-      path: 'dashboard/assessments',
+      path: 'assessment-creation',
       icon: 'pi pi-book',
     },
     {
