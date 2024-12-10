@@ -118,7 +118,7 @@ export class QuizFormComponent implements OnInit {
 
   onQuizSubmit() {
     const formData = createFromData(this.quizForm.value);
-    this.onSubmit.emit(formData);
+    this.submitQuiz.emit(formData);
   }
 
   discard() {
