@@ -23,7 +23,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CountryCode } from 'ngx-material-intl-tel-input/lib/data/country-code';
 // profile service
 import { ProfileService } from '../../profile service/profile.service';
-import { Country } from '@src/app/core/interfaces/interfaces';
+import { CountriesData, Country } from '@src/app/core/interfaces/interfaces';
 import { DropdownModule } from 'primeng/dropdown';
 import { Subject, takeUntil } from 'rxjs';
 import { Status } from '@src/app/core/interfaces/interfaces';
@@ -48,8 +48,8 @@ import { Status } from '@src/app/core/interfaces/interfaces';
 })
 export class ProfileManagementComponent {
   educationForm!: FormGroup;
-  countries: Country[] = [];
-  selectedCountry: Country = {
+  countries: CountriesData[] = [];
+  selectedCountry: CountriesData = {
     name: 'Ghana',
     flag: 'https://flagcdn.com/gh.svg',
   };

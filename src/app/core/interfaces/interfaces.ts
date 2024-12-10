@@ -34,10 +34,15 @@ export interface ChangeHistory {
 }
 
 export interface Country {
-  name: string;
-  flag: string;
+  // name: string;
+  // flags: string;
+  name: {common:string};
+  flags: {svg:string};
 }
-
+export interface CountriesData{
+  name: string
+  flag: string 
+}
 
 export interface Status {
   label: string;

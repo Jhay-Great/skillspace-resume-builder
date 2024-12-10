@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Country } from '@src/app/core/interfaces/interfaces';
+import { CountriesData, Country } from '@src/app/core/interfaces/interfaces';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,10 +11,10 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getCountries(): Observable<Country[]> {
+  getCountries(): Observable<CountriesData[]> {
     return this.http.get<Country[]>(this.apiUrl).pipe(
       map(
-        (countries: any[]) =>
+        (countries) =>
           countries
             .map((country) => ({
               name: country.name?.common || 'Unknown',
