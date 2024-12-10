@@ -21,6 +21,8 @@ import { onFileUpload } from '@shared/utils/file-upload';
 import { ProfileManagementService } from '../../services/profile-management.service';
 import { createFromData } from '@shared/utils/file-upload';
 import { LocalStorageService } from '@core/services/localStorageService/local-storage.service';
+import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
+import { hasFormError, hasError } from '@shared/utils/form-utils';
 
 @Component({
   selector: 'app-profile-management',
@@ -36,6 +38,7 @@ import { LocalStorageService } from '@core/services/localStorageService/local-st
     PageHeaderDescriptionComponent,
     InputFieldComponent,
     DrapNDropFileInputComponent,
+    FormErrorMessageComponent,
   ],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss',
@@ -48,6 +51,8 @@ export class ProfileManagementComponent implements OnInit {
   logo: string | null = null;
   certificate: string | null = null;
   selectedCountry: CountryISO = CountryISO.Ghana;
+  hasFormError = hasFormError;
+  hasError = hasError;
 
   // form groups
   companyDetailsForm!: FormGroup;
@@ -83,8 +88,8 @@ export class ProfileManagementComponent implements OnInit {
     // security form
     this.securityForm = this.fb.group(
       {
-        oldPassword: [''],
-        newPassword: ['', [Validators.required, Validators.minLength, passwordStrengthValidator()]],
+        // oldPassword: [''], remove this since it's sent to the backend
+        newPassword: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
         confirmPassword: ['', [Validators.required]],
       },
       { validators: confirmPasswordValidator('newPassword', 'confirmPassword') }
