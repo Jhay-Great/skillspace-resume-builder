@@ -8,6 +8,13 @@
   overflow: hidden;
   position: relative;
   // pro reminder wrapp
+  padding-block-end: 1rem;
+
+  .form-containers{
+    width: 50%;
+    overflow-y: auto;
+    border: 1px solid red;
+  }  
   .pro-reminder {
     display: flex;
     justify-content: center;
