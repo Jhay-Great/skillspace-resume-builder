@@ -88,7 +88,6 @@ export class ProfileManagementComponent implements OnInit {
     // security form
     this.securityForm = this.fb.group(
       {
-        // oldPassword: [''], remove this since it's sent to the backend
         newPassword: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
         confirmPassword: ['', [Validators.required]],
       },
@@ -143,10 +142,23 @@ export class ProfileManagementComponent implements OnInit {
   }
 
   validateForm(form: FormGroup) {
+    const formControls = form.controls;
+
+    for (const controlName in formControls) {
+      const control = formControls[controlName];
+
+      // If any control is invalid, return null and stop processing
+      if (control.invalid) {
+        this.toastService.showError('Invalid data', 'Ensure all fields are filled properly', 'top-right');
+        return null;
+      }
+    }
+
     if (form.invalid) {
-      this.toastService.showError('Invalid data', 'Ensure all fields are filled');
+      this.toastService.showError('Invalid data', 'Ensure all fields are filled', 'top-right');
       return null;
     }
+    // returns the form values when form is valid
     return form.value;
   }
 
@@ -171,6 +183,7 @@ export class ProfileManagementComponent implements OnInit {
       // company details form
       case 0: {
         const companyDetailsData = this.validateForm(this.companyDetailsForm);
+        if (!companyDetailsData) return;
         const companyFormData = createFromData(companyDetailsData);
         this.onSubmit(companyFormData);
         break;
@@ -178,6 +191,7 @@ export class ProfileManagementComponent implements OnInit {
       // document form data
       case 1: {
         const documentData = this.validateForm(this.documentForm);
+        if (!documentData) return;
         const documentFormData = createFromData(documentData);
         this.onSubmit(documentFormData);
         break;
@@ -185,7 +199,9 @@ export class ProfileManagementComponent implements OnInit {
       // security form data
       case 2: {
         const securityData = this.validateForm(this.securityForm);
+        if (!securityData) return;
         this.onSubmit(securityData);
+        // this.securityForm.reset();
         break;
       }
     }

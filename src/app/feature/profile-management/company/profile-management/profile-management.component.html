@@ -121,7 +121,7 @@
           formControlName="confirmPassword"
           [hasError]="
             securityForm.get('confirmPassword')?.touched &&
-            (securityForm.get('confirmPassword')?.errors?.['required'] || securityForm.get('confirmPassword')?.errors)
+            (securityForm.get('confirmPassword')?.errors?.['required'] || securityForm.errors?.['passwordMismatch'])
           "
         />
         @if (hasFormError(securityForm, 'confirmPassword', 'passwordMismatch')) {
