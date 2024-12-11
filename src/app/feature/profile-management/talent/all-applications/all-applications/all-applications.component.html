@@ -25,7 +25,7 @@
       </div>
       <!-- company -->
       <div class="card flex justify-content-center status">
-        <p-splitButton label="Company" [model]="status" severity="secondary" />
+        <p-splitButton label="Company" [model]="company" severity="secondary" />
       </div>
       <!-- status -->
       <div class="card flex justify-content-center status">
@@ -43,9 +43,14 @@
       </ng-template>
       <ng-template pTemplate="body" let-application>
         <tr>
-          <td><app-application-card [application]="application" /></td>
+          <td><app-application-card (openDialog)="showDialog()" [application]="application" /></td>
         </tr>
       </ng-template>
     </p-table>
   </div>
 </div>
+
+<!-- dialogue -->
+<p-dialog header="Withdraw application" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+  <h1>hello</h1>
+</p-dialog>

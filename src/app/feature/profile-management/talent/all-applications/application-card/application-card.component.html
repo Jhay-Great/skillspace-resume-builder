@@ -21,10 +21,10 @@
   <div class="right">
     <app-tag [status]="'Interview scheduled'"></app-tag>
     @if (randomNum > 0.5) {
-      <button class="btn-withdraw">Withdraw</button>
+      <button (click)="openConfirmDialog()" class="btn-withdraw">Withdraw</button>
     }
     @if (randomNum < 0.5) {
-      <button class="btn-reapply">Reapply</button>
+      <button (click)="openConfirmDialog()" class="btn-reapply">Reapply</button>
     }
   </div>
 </div>

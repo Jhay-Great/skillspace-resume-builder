@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 // import components
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 
@@ -11,8 +11,13 @@ import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 })
 export class ApplicationCardComponent {
   @Input() application!: { title: string; company: string };
-
+  @Output() openDialog: EventEmitter<void> = new EventEmitter();
 
   // random number
-randomNum = Math.random() ;
+  randomNum = Math.random();
+
+  // open dialog
+  openConfirmDialog() {
+    this.openDialog.emit();
+  }
 }
