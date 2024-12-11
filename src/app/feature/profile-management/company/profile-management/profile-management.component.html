@@ -1,4 +1,4 @@
-<app-page-header-description 
+<app-page-header-description
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
@@ -25,13 +25,7 @@
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-envelope" />
-            <input
-              class="email"
-              type="text"
-              [disabled]="true"
-              pInputText
-              placeholder="amalitech.ghana@gmail.com"
-            />
+            <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
           </p-iconField>
         </div>
 
@@ -40,14 +34,14 @@
           <label for="username">Phone number</label>
           <p class="description">{{ description }}</p>
           <ngx-material-intl-tel-input
-          [fieldControl]="contactControl"
-          [iconMakeCall]="false"
-          [enablePlaceholder]="true"
-          [autoSelectedCountry]="selectedCountry"
-          placeholder="Enter your telephone number"
-          [required]="true"
-          [autoIpLookup]="false"
-        ></ngx-material-intl-tel-input>
+            [fieldControl]="contactControl"
+            [iconMakeCall]="false"
+            [enablePlaceholder]="true"
+            [autoSelectedCountry]="selectedCountry"
+            placeholder="Enter your telephone number"
+            [required]="true"
+            [autoIpLookup]="false"
+          ></ngx-material-intl-tel-input>
         </div>
 
         <!-- website -->
@@ -61,12 +55,7 @@
         </div>
 
         <!-- upload -->
-        <app-drag-n-drop-file-input 
-        [label]="'Upload Logo'" 
-        [accept]="'image/png'"
-        (uploadedFile)="onUpload($event)"
-      />
-      
+        <app-drag-n-drop-file-input [label]="'Upload Logo'" [accept]="'image/png'" (uploadedFile)="onUpload($event)" />
       </form>
     </p-tabPanel>
 
@@ -74,14 +63,8 @@
     <p-tabPanel header="Documents">
       <!-- file upload content goes here -->
       <form [formGroup]="documentForm">
-        <app-drag-n-drop-file-input 
-          [label]="'Certificate'" 
-          [accept]="'.pdf'"
-        />
-
+        <app-drag-n-drop-file-input [label]="'Certificate'" [accept]="'.pdf'" />
       </form>
-       
-      
     </p-tabPanel>
 
     <!-- security -->
@@ -94,7 +77,7 @@
 
       <form [formGroup]="securityForm">
         <!-- old password -->
-        <app-input-field 
+        <app-input-field
           [label]="'Old Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
@@ -102,28 +85,26 @@
           [isDisabled]="true"
           formControlName="oldPassword"
         />
-        
+
         <!-- new password -->
-        <app-input-field 
+        <app-input-field
           [label]="'New Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
           [placeholder]="'New password'"
           formControlName="newPassword"
         />
-        
+
         <!-- confirm password -->
-        <app-input-field 
+        <app-input-field
           [label]="'Confirm Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
           [placeholder]="'Confirm password'"
           formControlName="confirmPassword"
         />
-
       </form>
     </p-tabPanel>
   </p-tabView>
   <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
-
 </section>
