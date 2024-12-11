@@ -53,6 +53,7 @@ export class ProfileManagementComponent implements OnInit {
   selectedCountry: CountryISO = CountryISO.Ghana;
   hasFormError = hasFormError;
   hasError = hasError;
+  userEmail!: string;
 
   // form groups
   companyDetailsForm!: FormGroup;
@@ -73,7 +74,7 @@ export class ProfileManagementComponent implements OnInit {
     this.populateDetails();
     // company details form
     this.companyDetailsForm = this.fb.group({
-      name: ['', Validators.required],
+      companyName: ['', Validators.required],
       email: [''],
       website: ['', Validators.required],
       contact: ['', Validators.required],
@@ -114,20 +115,21 @@ export class ProfileManagementComponent implements OnInit {
 
           this.logo = logo;
           this.certificate = certificate;
+          this.userEmail = email;
           const emailControl = this.getFormsControl(this.companyDetailsForm, 'email');
 
           this.companyDetailsForm.patchValue({
-            name: companyName,
+            companyName: companyName,
             email: email,
             website: website,
             contact: contact,
-            logo: logo, // look into this further
+            logo: logo,
           });
 
           // disables email input field
           emailControl?.disable();
 
-          this.securityForm.patchValue({
+          this.documentForm.patchValue({
             certificate: certificate,
           });
         },
@@ -137,8 +139,16 @@ export class ProfileManagementComponent implements OnInit {
       });
   }
 
-  onUpload(file: File | null): void {
-    onFileUpload(this.companyDetailsForm, file, 'logo');
+  onUpload(file: File | null, controlName: string): void {
+    if (file?.type === 'application/pdf') {
+      onFileUpload(this.documentForm, file, controlName);
+      return;
+    }
+
+    if (file?.type === 'image/png') {
+      onFileUpload(this.companyDetailsForm, file, controlName);
+      return;
+    }
   }
 
   validateForm(form: FormGroup) {
@@ -172,8 +182,8 @@ export class ProfileManagementComponent implements OnInit {
         next: () => {
           this.toastService.showSuccess('Successful', 'Successfully updated', 'top-right');
         },
-        error: () => {
-          this.toastService.showError('Error', 'Failed to updated', 'top-right');
+        error: (errorMessage) => {
+          this.toastService.showError('Error', errorMessage, 'top-right');
         },
       });
   }
@@ -184,7 +194,8 @@ export class ProfileManagementComponent implements OnInit {
       case 0: {
         const companyDetailsData = this.validateForm(this.companyDetailsForm);
         if (!companyDetailsData) return;
-        const companyFormData = createFromData(companyDetailsData);
+        const userData = { email: this.userEmail, ...companyDetailsData };
+        const companyFormData = createFromData(userData);
         this.onSubmit(companyFormData);
         break;
       }
@@ -201,7 +212,7 @@ export class ProfileManagementComponent implements OnInit {
         const securityData = this.validateForm(this.securityForm);
         if (!securityData) return;
         this.onSubmit(securityData);
-        // this.securityForm.reset();
+        this.securityForm.reset();
         break;
       }
     }

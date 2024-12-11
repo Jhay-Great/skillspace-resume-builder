@@ -15,7 +15,7 @@
           <p class="description">{{ description }}</p>
           <p-iconField iconPosition="left">
             <p-inputIcon styleClass="pi pi-user" />
-            <input type="text" pInputText placeholder="Enter company name " formControlName="name" />
+            <input type="text" pInputText placeholder="Enter company name " formControlName="companyName" />
           </p-iconField>
         </div>
 
@@ -65,7 +65,7 @@
           [label]="'Upload Logo'"
           [accept]="'image/png'"
           [previewUpload]="logo"
-          (uploadedFile)="onUpload($event)"
+          (uploadedFile)="onUpload($event, 'logo')"
         />
       </form>
     </p-tabPanel>
@@ -74,7 +74,12 @@
     <p-tabPanel header="Documents">
       <!-- file upload content goes here -->
       <form [formGroup]="documentForm">
-        <app-drag-n-drop-file-input [label]="'Certificate'" [accept]="'.pdf'" [previewUpload]="certificate" />
+        <app-drag-n-drop-file-input
+          [label]="'Certificate'"
+          [accept]="'.pdf'"
+          [previewUpload]="certificate"
+          (uploadedFile)="onUpload($event, 'certificate')"
+        />
       </form>
     </p-tabPanel>
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, retry, throwError } from 'rxjs';
 import { CompanyProfileResponseData } from '@src/app/core/interfaces/profile-management.interface';
 import { environment } from '@src/environments/environment.development';
 
@@ -30,6 +30,12 @@ export class ProfileManagementService {
 
   // UPDATE company profile
   updateCompanyProfile<T>(data: T, id: number) {
-    return this.update(`${this.BASE_API}/${this.COMPANY_PROFILE_ENDPOINT}/${id}/update`, data);
+    return this.update(`${this.BASE_API}/${this.COMPANY_PROFILE_ENDPOINT}/${id}/update`, data).pipe(
+      retry(3),
+      catchError((error) => {
+        const { message } = error.error;
+        return throwError(() => message);
+      })
+    );
   }
 }
