@@ -144,6 +144,14 @@ export const routes: Routes = [
           ),
         title: 'Assessment Creation',
       },
+      {
+        path: 'assessments',
+        loadComponent: () =>
+          import('./feature/assessment-taking/pages/assessment-taking/assessment-taking.component').then(
+            (at) => at.AssessmentTakingComponent
+          ),
+        title: 'Assessments',
+      },
     ],
   },
 ];
