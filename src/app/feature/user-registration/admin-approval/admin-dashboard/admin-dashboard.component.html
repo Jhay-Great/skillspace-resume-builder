@@ -40,16 +40,17 @@
   </section>
 
   <section class="table-container">
+    <p>{{ loading() }}</p>
     <div class="card">
       <p-table
-        [value]="applicants"
+        [value]="applicants()"
+        [loading]="loading()"
         styleClass="p-datatable-striped"
         [tableStyle]="{ 'min-width': '50rem' }"
         #dt1
         dataKey="id"
         [rows]="10"
         [rowsPerPageOptions]="[10, 25, 50]"
-        [loading]="isLoading"
         [paginator]="true"
         [globalFilterFields]="['name', 'approvalStatus']"
       >

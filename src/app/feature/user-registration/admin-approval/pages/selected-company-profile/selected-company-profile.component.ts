@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -16,6 +16,10 @@ import { ApplicantsData } from '@src/app/core/interfaces/user-registration.inter
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
+import { Store } from '@ngrx/store';
+import { AppState } from '@src/app/core/state/appState';
+import { applicantDetails } from '../../../state/approval.selectors';
+import { onLoadApplicants } from '../../../state/approval.actions';
 
 @Component({
   selector: 'app-selected-company-profile',
@@ -27,8 +31,9 @@ import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.inte
 export class SelectedCompanyProfileComponent implements OnInit {
   isApproved = false;
   isRejected = false;
-  applicant: ApplicantsData | null = null;
+  userId!: number;
   isRejectOrApproved = false;
+  applicant!: Signal<ApplicantsData | null>;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -36,24 +41,23 @@ export class SelectedCompanyProfileComponent implements OnInit {
     private destroyRef: DestroyRef,
     private toastService: ToastService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.applicant = this.adminApprovalService.selectedUser();
+    this.activatedRoute.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      const id = value.get('company');
+      if (!id) return;
+      this.userId = +id;
+      this.applicant = this.store.selectSignal(applicantDetails(this.userId));
 
-    // when page refreshes or reloads
-    if (!this.applicant) {
-      this.activatedRoute.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
-        const id = value.get('company');
-        if (!id) return;
-        this.adminApprovalService.selectedApplicant(+id);
-        this.applicant = this.adminApprovalService.selectedUser();
-      });
-    }
-
+      if (this.applicant() === null) {
+        this.store.dispatch(onLoadApplicants());
+      }
+    });
     // disabling button if rejected or approved
-    if (this.applicant?.approvalStatus !== 'PENDING') {
+    if (this.applicant()?.approvalStatus !== 'PENDING') {
       this.isRejectOrApproved = true;
     }
   }
@@ -64,7 +68,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   confirm(id: number) {
     this.isApproved = true;
-    const applicantName = this.applicant?.name;
+    const applicantName = this.applicant()?.name;
     this.confirmationService.confirm({
       header: 'Accept company',
       message: `Are you sure that you want to accept ${applicantName}? This action cannot be reversed.`,
@@ -103,7 +107,7 @@ export class SelectedCompanyProfileComponent implements OnInit {
 
   reject(id: number) {
     this.isRejected = true;
-    const applicantName = this.applicant?.name;
+    const applicantName = this.applicant()?.name;
     this.confirmationService.confirm({
       header: 'Reject company',
       message: `Are you sure that you want to reject ${applicantName}? This action cannot be reversed.`,

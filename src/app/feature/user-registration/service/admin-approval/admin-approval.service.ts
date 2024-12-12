@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { ApplicantResponse, ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 import { environment } from '@src/environments/environment.development';
-import { catchError, map, Observable, of, retry } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +12,10 @@ export class AdminApprovalService {
   api: string = environment.BASE_API;
   companies: string = environment.ALL_COMPANIES;
   approval: string = environment.APPROVAL_ENDPOINT;
-  // rejected:string = environment.REJECTED;
 
   allApplicants = signal<ApplicantsData[] | null>(null);
   selectedUser = signal<ApplicantsData | null>(null);
+  successMessage = signal<string>('');
 
   constructor(
     private http: HttpClient,
@@ -23,18 +23,7 @@ export class AdminApprovalService {
   ) {}
 
   getCompanies(): Observable<ApplicantResponse> {
-    return this.http.get<ApplicantResponse>(`${this.api}/${this.companies}`).pipe(
-      map((response) => {
-        const applicantsData = response.data.content;
-        this.localStorageService.setItem('allApplicants', applicantsData);
-        this.allApplicants.set(applicantsData);
-        return response;
-      }),
-      retry(3),
-      catchError((error) => {
-        return of(error);
-      })
-    );
+    return this.http.get<ApplicantResponse>(`${this.api}/${this.companies}`);
   }
 
   post<D, T>(api: string, data: D) {

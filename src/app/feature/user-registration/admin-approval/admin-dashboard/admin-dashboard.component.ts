@@ -1,8 +1,8 @@
-import { Component, DestroyRef, viewChild, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, viewChild, OnInit, Signal, computed, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
 // primeng modules
 import { TableModule, Table } from 'primeng/table';
@@ -15,16 +15,17 @@ import { CalendarModule } from 'primeng/calendar';
 
 // local modules or imports
 import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
-import { AdminApprovalService } from '../../service/admin-approval/admin-approval.service';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { ToastService } from '@core/services/toast-service/toast.service';
 import { InitialsPipe } from '@core/pipes/initials/initials.pipe';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { CapitalizePipe } from '@core/pipes/capitalize/capitalize.pipe';
-import { LocalStorageService } from '@core/services/localStorageService/local-storage.service';
 import { PageHeaderDescriptionComponent } from '@shared/components/page-header-description/page-header-description.component';
 import { DateSuffixPipe } from '@core/pipes/datesuffix/date-suffix.pipe';
+import { AppState } from '@src/app/core/state/appState';
+import { onLoadApplicants } from '../../state/approval.actions';
+import { allApplicants, isLoading, successMessage } from '../../state/approval.selectors';
 
 interface PDropDown {
   name: string;
@@ -56,44 +57,40 @@ interface PDropDown {
   styleUrl: './admin-dashboard.component.scss',
 })
 export class AdminDashboardComponent implements OnInit {
-  applicants!: ApplicantsData[];
   selectedStatus!: PDropDown;
   selectedDate!: PDropDown;
   date: string | null = null;
   showCalendar = false;
-  isLoading = false;
   table = viewChild<Table>('dt1');
   isOpen = false;
+  applicants: Signal<ApplicantsData[]> = computed(() => this.store.selectSignal(allApplicants)());
+  loading: Signal<boolean> = computed(() => this.store.selectSignal(isLoading)());
+  successMessage: Signal<string | null> = computed(() => this.store.selectSignal(successMessage)());
+  applicantEffect = effect(
+    () => {
+      const applicant = this.applicants();
+      if (applicant.length !== 0) {
+        const message = this.successMessage();
+        if (!message) return;
+        this.toastService.showSuccess('Successful', message, 'top-right');
+      } else {
+        this.toastService.showError('Error', 'Failed to load data', 'top-right');
+      }
+    },
+    { allowSignalWrites: true }
+  );
 
   constructor(
-    private adminApprovalService: AdminApprovalService,
-    private destroyRef: DestroyRef,
     private toastService: ToastService,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.adminApprovalService
-      .getCompanies()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          const { message } = response;
-          const applicants = this.adminApprovalService.allApplicants();
-          if (applicants) {
-            this.applicants = applicants;
-            this.toastService.showSuccess('Successful', message, 'top-right');
-          }
-        },
-        error: () => {
-          this.toastService.showError('Error', 'Failed to load data', 'top-right');
-        },
-      });
+    this.store.dispatch(onLoadApplicants());
   }
 
   selectedApplicant(id: number) {
-    this.adminApprovalService.selectedApplicant(id);
     this.router.navigate([`/dashboard/approvals/${id}`]);
   }
 

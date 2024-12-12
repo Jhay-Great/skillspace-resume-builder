@@ -6,14 +6,14 @@
     <!-- details -->
     <div class="details">
       <div class="logo">
-        <img [src]="applicant?.logo" alt="company logo" />
+        <img [src]="applicant()?.logo" alt="company logo" />
       </div>
       <div class="information">
         <div class="personal-info data">
           <p class="title">Personal Information:</p>
-          <p>{{ applicant?.name }}</p>
-          <p>{{ applicant?.contact }}</p>
-          <p>{{ applicant?.email }}</p>
+          <p>{{ applicant()?.name }}</p>
+          <p>{{ applicant()?.contact }}</p>
+          <p>{{ applicant()?.email }}</p>
         </div>
         <div class="social-media-info data">
           <p class="title">Social media links:</p>
@@ -29,8 +29,8 @@
     </div>
 
     <!-- status -->
-    @if (applicant) {
-      <app-tag [status]="applicant.approvalStatus" />
+    @if (applicant()) {
+      <app-tag [status]="applicant()!.approvalStatus" />
     }
   </section>
 
@@ -38,14 +38,9 @@
   <section class="display-certificate">
     <!-- buttons -->
     <div class="btns">
-      @if (applicant) {
-        <p-button
-          (onClick)="reject(applicant.id)"
-          label="Reject company"
-          [outlined]="true"
-          [disabled]="isRejectOrApproved"
-        />
-        <p-button (onClick)="confirm(applicant.id)" label="Accept company" [disabled]="isRejectOrApproved" />
+      @if (applicant()) {
+        <p-button (onClick)="reject(userId)" label="Reject company" [outlined]="true" [disabled]="isRejectOrApproved" />
+        <p-button (onClick)="confirm(userId)" label="Accept company" [disabled]="isRejectOrApproved" />
       }
     </div>
 
@@ -56,7 +51,7 @@
       <!-- certificate -->
       <div class="uploaded-certificate">
         <pdf-viewer
-          [src]="applicant?.certificate"
+          [src]="applicant()?.certificate"
           [original-size]="false"
           style="height: 100%; width: 100%"
         ></pdf-viewer>
