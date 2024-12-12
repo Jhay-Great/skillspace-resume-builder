@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, viewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, viewChild, input, output, effect } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
 import { extractFilename } from '../../utils/file-upload';
@@ -10,28 +10,25 @@ import { extractFilename } from '../../utils/file-upload';
   templateUrl: './drap-n-drop-file-input.component.html',
   styleUrl: './drap-n-drop-file-input.component.scss',
 })
-export class DrapNDropFileInputComponent implements OnChanges {
+export class DrapNDropFileInputComponent {
   description = 'This is what applicants will see on your profile.';
   fileUploaded = false;
-  previewImage: string | null = null;
+  previewImage: string | null | undefined = null;
   filename: string | null = null;
   dropZone = viewChild<ElementRef>('DragNDropZone');
+  label = input.required<string | null>();
+  accept = input.required<string | null>();
+  previewUpload = input<string | null>();
+  uploadedFile = output<File | null>();
 
-  @Input() label: string | null = null;
-  @Input() accept: string | null = null;
-  @Input() previewUpload: string | null = null;
-  @Output() uploadedFile = new EventEmitter<File | null>();
-
-  constructor(private toastService: ToastService) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['previewUpload']) {
-      this.previewImage = changes['previewUpload'].currentValue;
+  constructor(private toastService: ToastService) {
+    effect(() => {
+      this.previewImage = this.previewUpload();
       this.fileUploaded = true;
-      if (this.previewUpload) {
-        this.filename = extractFilename(this.previewUpload);
+      if (this.previewImage) {
+        this.filename = extractFilename(this.previewImage);
       }
-    }
+    });
   }
 
   selectFile(event: Event) {
