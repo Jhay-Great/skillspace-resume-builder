@@ -7,6 +7,14 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { createFromData } from '@src/app/shared/utils/file-upload';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 
+interface Question {
+  description: string;
+  points: number;
+  image: File | null;
+  imageUrl: string | ArrayBuffer | null;
+  options: { text: string; isCorrect: boolean }[];
+}
+
 @Component({
   selector: 'app-quiz-form',
   standalone: true,
@@ -117,7 +125,20 @@ export class QuizFormComponent implements OnInit {
   }
 
   onQuizSubmit() {
-    const formData = createFromData(this.quizForm.value);
+    const formValue = { ...this.quizForm.value };
+
+    // Convert string values to numbers
+    formValue.passMark = Number(formValue.passMark);
+    formValue.retakeOption = Number(formValue.retakeOption);
+    formValue.duration = Number(formValue.duration);
+
+    // Convert points to numbers for each question
+    formValue.questions = formValue.questions.map((question: Question) => ({
+      ...question,
+      points: Number(question.points),
+    }));
+
+    const formData = createFromData(formValue);
     this.submitQuiz.emit(formData);
   }
 
