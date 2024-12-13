@@ -33,30 +33,11 @@
     <!-- Requirements -->
     <div formArrayName="requirements" class="requirement">
       <label>Requirements</label>
-      <div
-        class="requirementInput"
-        *ngFor="let require of requirements.controls; let i = index"
-      >
-        <input
-          [formControlName]="i"
-          placeholder="Enter programme requirement"
-          pInputText
-          class="requirementInput"
-        />
-        <button
-          class="removeRequirement"
-          *ngIf="i > 0"
-          type="button"
-          (click)="removeField(i)"
-        >
+      <div class="requirementInput" *ngFor="let require of requirements.controls; let i = index">
+        <input [formControlName]="i" placeholder="Enter programme requirement" pInputText class="requirementInput" />
+        <button class="removeRequirement" *ngIf="i > 0" type="button" (click)="removeField(i)">
           <span
-            ><svg
-              width="12"
-              height="13"
-              viewBox="0 0 12 13"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            ><svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 1.5L1 11.5M1 1.5L11 11.5"
                 stroke="#3F4555"
@@ -68,35 +49,75 @@
           </span>
         </button>
       </div>
-      <button
-        class="addRequirement-Btn"
-        type="button"
-        (click)="addRequirement()"
-      >
-        Add More
-      </button>
+      <button class="addRequirement-Btn" type="button" (click)="addRequirement()">Add More</button>
     </div>
 
     <!-- Required badges -->
     <div class="requiredBadges">
-      <label for="requiredBadges">Required badges</label>
-      <p-chips
+      <label for="requiredBadges">Required badge</label>
+      <!-- <p-chips
         class="requiredBadge"
         [style]="{ width: '100%' }"
         formControlName="requiredBadges"
         placeholder="Enter required badges"
-      />
+      /> -->
+      <div class="card flex justify-content-center">
+        <p-dropdown
+          [style]="{ width: '100%' }"
+          [options]="badges"
+          formControlName="requiredBadges"
+          [filter]="true"
+          filterBy="name"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="required badge"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-badge pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ badge.name }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
     </div>
 
     <!-- Optional badges -->
     <div class="optionalBadges">
-      <label>Optional badges</label>
-      <p-chips
+      <label>Optional badge</label>
+      <!-- <p-chips
         class="optionalBadge"
         [style]="{ width: '100%' }"
         formControlName="optionalBadges"
         placeholder="These badges are optional"
-      />
+      /> -->
+      <div class="card flex justify-content-center">
+        <p-dropdown
+          [style]="{ width: '100%' }"
+          [options]="badges"
+          formControlName="optionalBadges"
+          [filter]="true"
+          filterBy="name"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="optional badge"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-badge pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ badge.name }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
     </div>
 
     <!-- starts date-->
@@ -126,35 +147,22 @@
     <!-- description -->
     <div class="description">
       <label for="description">Description</label>
-      <textarea
-        rows="5"
-        cols="30"
-        pInputTextarea
-        formControlName="description"
-      ></textarea>
+      <textarea rows="5" cols="30" pInputTextarea formControlName="description"></textarea>
     </div>
 
     <!--form control buttons -->
     <div class="formcontrol-btn">
       <!-- adding new programme buttons -->
-      @if(!programmeService.updatingProgram){
-
-      <button class="draft-btn" (click)="onSubmit('draft')">
-        Save as draft
-      </button>
-      <button (click)="onSubmit('publish')" class="publish-btn">
-        Publish programme
-      </button>
-
+      @if (!programmeService.updatingProgram) {
+        <button class="draft-btn" (click)="onSubmit('draft')">Save as draft</button>
+        <button (click)="onSubmit('publish')" class="publish-btn">Publish programme</button>
       }
       <!-- updating programme buttons -->
-      @if(programmeService.updatingProgram){
-      <ng-container>
-        <button (click)="close()" class="draft-btn">Discard</button>
-        <button (click)="onSubmit('update')" class="publish-btn">
-          Save changes
-        </button>
-      </ng-container>
+      @if (programmeService.updatingProgram) {
+        <ng-container>
+          <button (click)="close()" class="draft-btn">Discard</button>
+          <button (click)="onSubmit('update')" class="publish-btn">Save changes</button>
+        </ng-container>
       }
     </div>
   </form>

@@ -3,20 +3,16 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { environment } from '@src/environments/environment.development';
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  ReactiveFormsModule,
-  FormArray,
-} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 // import primeng modules
 import { ChipsModule } from 'primeng/chips';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
 // import programmes servvice
 import { ProgrammeService } from '../program-service/programme.service';
+import { Quiz } from '@src/app/core/interfaces/interfaces';
 
 @Component({
   selector: 'app-career-creation-form',
@@ -28,6 +24,7 @@ import { ProgrammeService } from '../program-service/programme.service';
     InputTextModule,
     CalendarModule,
     InputTextareaModule,
+    DropdownModule,
   ],
   templateUrl: './career-creation-form.component.html',
   styleUrl: './career-creation-form.component.scss',
@@ -35,6 +32,7 @@ import { ProgrammeService } from '../program-service/programme.service';
 export class CareerCreationFormComponent {
   careerForm!: FormGroup;
   selectedDate!: Date;
+  badges: Quiz[] = [];
 
   @Output() closeForm: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -64,6 +62,8 @@ export class CareerCreationFormComponent {
         endDate: new Date(programmeToUpdate.endDate),
       });
     }
+    // get all quizes (badges)
+    this.badges = this.programmeService.allQuizzes;
   }
 
   // Getter for the requirements FormArray
@@ -102,10 +102,10 @@ export class CareerCreationFormComponent {
       day % 10 === 1 && day !== 11
         ? 'st'
         : day % 10 === 2 && day !== 12
-        ? 'nd'
-        : day % 10 === 3 && day !== 13
-        ? 'rd'
-        : 'th';
+          ? 'nd'
+          : day % 10 === 3 && day !== 13
+            ? 'rd'
+            : 'th';
 
     return `${day}${suffix} ${month} ${year}`;
   }
@@ -133,9 +133,16 @@ export class CareerCreationFormComponent {
     if (this.careerForm.valid) {
       // extract form value
       const formData = this.careerForm.value;
+      console.log(formData);
+
       // patch dates
       formData.startDate = this.formatDateToISO(formData.startDate);
       formData.endDate = this.formatDateToISO(formData.endDate);
+      // apply selected quiz id (badge)
+      formData.requiredBadges = [formData.requiredBadges.id];
+      formData.optionalBadges = [formData.optionalBadges.id];
+      console.log(formData.requiredBadges, formData.optionalBadges);
+
       // patch user id
       const userId = JSON.parse(this.localStorageService.getUserId('userId'));
       formData.userId = userId;
@@ -150,10 +157,7 @@ export class CareerCreationFormComponent {
       }
       if (saveType === 'update') {
         const programmeId = this.programmeService.currentUpdatingProgram?.id;
-        this.programmeService.updateProgram(
-          programmeId ? programmeId : null,
-          formData
-        );
+        this.programmeService.updateProgram(programmeId ? programmeId : null, formData);
         this.programmeService.currentUpdatingProgram = null;
       }
       this.closeForm.emit();
