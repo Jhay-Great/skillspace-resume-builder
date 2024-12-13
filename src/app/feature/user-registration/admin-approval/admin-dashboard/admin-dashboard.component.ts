@@ -74,7 +74,7 @@ export class AdminDashboardComponent implements OnInit {
         if (!message) return;
         this.toastService.showSuccess('Successful', message, 'top-right');
       } else {
-        this.toastService.showError('Error', 'Failed to load data', 'top-right');
+        // this.toastService.showError('Error', 'Failed to load data', 'top-right');
       }
     },
     { allowSignalWrites: true }

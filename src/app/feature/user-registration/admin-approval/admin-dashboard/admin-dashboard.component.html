@@ -1,6 +1,6 @@
 <div class="main-container" id="mainContainer">
   <app-page-header-description
-    [title]="'Manage career programmes'"
+    [title]="'Manage companies'"
     [description]="'Easily manage companies and engage with them.'"
   />
 
@@ -40,7 +40,6 @@
   </section>
 
   <section class="table-container">
-    <p>{{ loading() }}</p>
     <div class="card">
       <p-table
         [value]="applicants()"
@@ -68,11 +67,11 @@
         <!-- table data -->
         <ng-template pTemplate="body" let-applicant>
           <tr>
-            <td>
-              @if (!applicant.image) {
+            <td class="username">
+              @if (!applicant.logo) {
                 <p-avatar [label]="applicant.name | initials" shape="circle" />
               } @else {
-                <img [alt]="applicant.name" [src]="applicant.image" width="32" style="vertical-align: middle" />
+                <img [alt]="applicant.name" [src]="applicant.logo" width="32" style="vertical-align: middle" />
               }
               <span class="ml-1 vertical-align-middle">
                 {{ applicant.name | capitalize }}

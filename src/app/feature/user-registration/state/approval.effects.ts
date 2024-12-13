@@ -17,12 +17,9 @@ export class ApplicantsApprovalEffect {
       switchMap(() => {
         return this.adminApprovalService.getCompanies().pipe(
           map((response) => {
-            const {
-              message,
-              data: { content },
-            } = response;
+            const { message, data } = response;
 
-            const applicantsData = content;
+            const applicantsData = data;
             return onLoadApplicantsSuccess({ applicants: applicantsData, successMessage: message });
           }),
           retry(3),
