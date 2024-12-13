@@ -126,6 +126,8 @@ export class CompanyComponent {
     this.activeItem = this.tabMenuList[0];
     // fetch programmes
     this.programmeService.getPrograms();
+    // get all quizes(badges)
+    this.programmeService.getQuizes();
   }
 
   // TabMenu control function
