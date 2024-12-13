@@ -6,6 +6,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { createFromData } from '@src/app/shared/utils/file-upload';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
+import { CreateQuizData } from '../../models/assessments.model';
 
 interface Question {
   description: string;
@@ -26,7 +27,7 @@ export class QuizFormComponent implements OnInit {
   quizForm: FormGroup;
   questionImages: Record<number, File | null> = {};
   questionImagePreviews: Record<number, string | ArrayBuffer | null> = {};
-  @Output() submitQuiz = new EventEmitter<FormData>();
+  @Output() submitQuiz = new EventEmitter<CreateQuizData>();
   @Input() isUpdate = false;
 
   constructor(
@@ -47,8 +48,8 @@ export class QuizFormComponent implements OnInit {
     return this.fb.group({
       description: ['', Validators.required],
       points: ['', Validators.required],
-      image: [null],
-      imageUrl: [null],
+      // image: [null],
+      // imageUrl: [null],
       options: this.fb.array([this.createOptionsFormGroup()]),
     });
   }
@@ -138,8 +139,9 @@ export class QuizFormComponent implements OnInit {
       points: Number(question.points),
     }));
 
-    const formData = createFromData(formValue);
-    this.submitQuiz.emit(formData);
+    // const formData = createFromData(formValue);
+    console.log("create quiz data: ", formValue)
+    this.submitQuiz.emit(formValue);
   }
 
   discard() {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { TabMenuList } from '@src/app/core/interfaces/interfaces';
 import { BadgeModule } from 'primeng/badge';
@@ -10,7 +10,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RippleModule } from 'primeng/ripple';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { Quiz } from '../../models/assessments.model';
 import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
@@ -20,6 +20,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { CreateQuizComponent } from '../../components/create-quiz/create-quiz.component';
 import { UpdateQuizComponent } from '../../components/update-quiz/update-quiz.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
+import { Observable, of } from 'rxjs';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-assessment-creation',
@@ -41,6 +43,8 @@ import { AssessmentCreationService } from '../../services/assessment-creation/as
     TabViewModule,
     CreateQuizComponent,
     UpdateQuizComponent,
+    AsyncPipe,
+    DatePipe,
   ],
   templateUrl: './assessment-creation.component.html',
   styleUrl: './assessment-creation.component.scss',
@@ -58,86 +62,39 @@ export class AssessmentCreationComponent implements OnInit {
 
   @ViewChild('tieredMenu') tieredMenu!: TieredMenu;
 
-  skillsQuizData: Quiz[] = [
-    {
-      id: 1,
-      name: 'UI/UX Design Quiz 1',
-      location: 'Local repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-    {
-      id: 2,
-      name: 'UI/UX Design Quiz 2',
-      location: 'Global repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-    {
-      id: 3,
-      name: 'Frontend Quiz 1',
-      location: 'Local repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-  ];
+  @ViewChild('dt1') dt1!: Table;
 
-  localRepositoryData: Quiz[] = [
-    {
-      id: 1,
-      name: 'UI/UX Design Quiz 1',
-      location: 'Local repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-    {
-      id: 2,
-      name: 'UI/UX Design Quiz 2',
-      location: 'Global repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-    {
-      id: 3,
-      name: 'Frontend Quiz 1',
-      location: 'Local repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-  ];
-  globalRepositoryData: Quiz[] = [
-    {
-      id: 1,
-      name: 'UI/UX Design Quiz 1',
-      location: 'Local repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-    {
-      id: 2,
-      name: 'UI/UX Design Quiz 2',
-      location: 'Global repository',
-      duration: '10 minutes',
-      passMark: '50%',
-      dateCreated: '4th June 2023',
-    },
-  ];
+  skillsQuizData$!: Observable<any[]>;
+  localRepositoryData$!: Observable<any[]>;
+  globalRepositoryData$!: Observable<any[]>;
+
+
 
   constructor(
     private confirmationService: ConfirmationService,
-    public assessmentCreationService: AssessmentCreationService
-  ) {}
+    public assessmentCreationService: AssessmentCreationService,
+    private toastService: ToastService
+  ) {
+    this.skillsQuizData$ = this.assessmentCreationService.getAllQuizzes();
+    this.localRepositoryData$ = this.assessmentCreationService.getQuizzesByLocation({
+      location: 'local',
+      page: 0,
+      size: 10,
+    });
+    this.globalRepositoryData$ = this.assessmentCreationService.getQuizzesByLocation({
+      location: 'global',
+      page: 0,
+      size: 10,
+    });
+  }
 
   ngOnInit() {
     this.tabMenuList = [{ label: 'Skills quiz' }, { label: 'Local repository' }, { label: 'Global repository' }];
     this.activeItem = this.tabMenuList[0];
+
+    // this.skillsQuizData$.subscribe((data) => console.log('Quiz data: ', data));
+    // this.globalRepositoryData$.subscribe((data) => console.log('Global repository data: ', data));
+    // this.localRepositoryData$.subscribe((data) => console.log('Local repository data: ', data));
 
     this.tieredMenuItems = [
       {
@@ -222,13 +179,13 @@ export class AssessmentCreationComponent implements OnInit {
   getActiveTabData() {
     switch (this.activeTabData) {
       case 0:
-        return this.skillsQuizData;
+        return this.skillsQuizData$; 
       case 1:
-        return this.localRepositoryData;
+        return this.localRepositoryData$; 
       case 2:
-        return this.globalRepositoryData;
+        return this.globalRepositoryData$; 
       default:
-        return this.skillsQuizData;
+        return this.skillsQuizData$;
     }
   }
 
@@ -258,10 +215,30 @@ export class AssessmentCreationComponent implements OnInit {
         // if the type is global repository, move to global repository
         if (type === 'Global Repository') {
           // make a request to move to global repository
-          alert(`Moving ${this.selectedQuiz?.name} to Global Repository`);
+
+          this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'global').subscribe({
+            next: (res) => {
+              console.log('response from move to global: ', res);
+              this.toastService.showSuccess('Success', `${this.selectedQuiz?.name} moved to Global Repository`);
+            },
+            error: (err) => {
+              console.log('error from move to global: ', err);
+              this.toastService.showError('Error', err.error.message);
+            },
+          });
         } else {
           // make a request to move to local repository
-          alert(`Moving ${this.selectedQuiz?.name} to Local Repository`);
+
+          this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'local').subscribe({
+            next: (res) => {
+              console.log('response from move to global: ', res);
+              this.toastService.showSuccess('Success', `${this.selectedQuiz?.name} moved to Local Repository`);
+            },
+            error: (err) => {
+              console.log('error from move to global: ', err);
+              this.toastService.showError('Error', err.error.message);
+            },
+          });
         }
       },
       reject: () => {
@@ -280,7 +257,16 @@ export class AssessmentCreationComponent implements OnInit {
       rejectLabel: 'Cancel',
       accept: () => {
         // make a request to delete the item
-        return null;
+        this.assessmentCreationService.deleteQuiz(item.id as number).subscribe({
+          next: (res) => {
+            console.log('response from delete: ', res);
+            this.toastService.showSuccess('Success', `${item.name} deleted successfully`);
+          },
+          error: (err) => {
+            console.log('error from delete: ', err);
+            this.toastService.showError('Error', err.error.message);
+          },
+        });
       },
       reject: () => {
         return null;

@@ -73,97 +73,101 @@
         }
       </div>
 
-      <p-table #dt1 [value]="getActiveTabData()" [globalFilterFields]="['name']">
-        <!-- table header -->
+      @if (getActiveTabData() | async; as data) {
+        <p-table #dt1 [value]="data" [globalFilterFields]="['name']">
+          <!-- table header -->
 
-        <ng-template pTemplate="header">
-          <!-- Skills Quiz -->
-          <tr *ngIf="skillsQuiz">
-            <th style="width: 20%">Name</th>
-            <th style="width: 20%">Location</th>
-            <th style="width: 20%">Duration</th>
-            <th style="width: 20%">Pass mark</th>
-            <th style="width: 20%">Date Created</th>
-            <th></th>
-          </tr>
-        </ng-template>
+          <ng-template pTemplate="header">
+            <!-- Skills Quiz -->
+            <tr *ngIf="skillsQuiz">
+              <th style="width: 20%">Name</th>
+              <th style="width: 20%">Location</th>
+              <th style="width: 20%">Duration</th>
+              <th style="width: 20%">Pass mark</th>
+              <th style="width: 20%">Date Created</th>
+              <th></th>
+            </tr>
+          </ng-template>
 
-        <!-- table body -->
-        <ng-template pTemplate="body" let-data>
-          <!-- Skills Quiz -->
-          <tr class="stylerowsbackground" *ngIf="skillsQuiz">
-            <td>{{ data.name }}</td>
-            <td>{{ data.location }}</td>
-            <td>{{ data.duration }}</td>
-            <td>{{ data.passMark }}</td>
-            <td>{{ data.dateCreated }}</td>
+          <!-- table body -->
+          <ng-template pTemplate="body" let-data>
+            <!-- Skills Quiz -->
+            <tr class="stylerowsbackground" *ngIf="skillsQuiz">
+              <td>{{ data.name }}</td>
+              <td>{{ data.isGlobal? "Global Repository" : "Local Repository" }}</td>
+              <!-- <td>{{ data.location }}</td> -->
+              <td>{{ data.duration }}</td>
+              <td>{{ data.passMark  }}%</td>
+              <td>{{ data.createdAt | date:"MMMM dd, yyyy" }}</td>
 
-            <td class="action">
-              <p-button
-                (click)="openTieredMenu($event, data)"
-                icon="pi pi-ellipsis-v"
-                [text]="true"
-                severity="secondary"
-              />
-            </td>
-          </tr>
+              <td class="action">
+                <p-button
+                  (click)="openTieredMenu($event, data)"
+                  icon="pi pi-ellipsis-v"
+                  [text]="true"
+                  severity="secondary"
+                />
+              </td>
+            </tr>
 
-          <!-- Local Repository -->
-          <tr *ngIf="localRepository">
-            <td style="height: 10rem" class="special">
-              <div class="wrapper">
-                <div class="info">
-                  <p class="infohead">{{ data.name }}</p>
-                  <p class="infodate">Last updated: October 3, 2024</p>
+            <!-- Local Repository -->
+            <tr *ngIf="localRepository">
+              <td style="height: 10rem" class="special">
+                <div class="wrapper">
+                  <div class="info">
+                    <p class="infohead">{{ data.name }}</p>
+                    <p class="infodate">Last updated: October 3, 2024</p>
+                  </div>
+                  <div class="tools">
+                    <!-- update svg -->
+                    <p-button
+                      severity="secondary"
+                      icon="pi pi-pencil"
+                      label="Update"
+                      [style]="{ color: '#64748B' }"
+                      [link]="true"
+                    />
+
+                    <!-- remove svg -->
+                    <p-button
+                      severity="secondary"
+                      icon="pi pi-times-circle"
+                      label="Remove"
+                      [style]="{ color: '#64748B' }"
+                      [link]="true"
+                    />
+                    <!--  -->
+                  </div>
                 </div>
-                <div class="tools">
-                  <!-- update svg -->
-                  <p-button
-                    severity="secondary"
-                    icon="pi pi-pencil"
-                    label="Update"
-                    [style]="{ color: '#64748B' }"
-                    [link]="true"
-                  />
+              </td>
+            </tr>
 
-                  <!-- remove svg -->
-                  <p-button
-                    severity="secondary"
-                    icon="pi pi-times-circle"
-                    label="Remove"
-                    [style]="{ color: '#64748B' }"
-                    [link]="true"
-                  />
-                  <!--  -->
+            <!-- Global Repository -->
+            <tr *ngIf="globalRepository">
+              <td style="height: 10rem" class="special">
+                <div class="wrapper">
+                  <div class="info">
+                    <p class="infohead">{{ data.name }}</p>
+                    <p class="infodate">Last updated: October 3, 2024</p>
+                  </div>
+                  <div class="tools">
+                    <!-- add to local button  -->
+                    <p-button label="Add to local repository" severity="primary" outlined="true" />
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          </ng-template>
 
-          <!-- Global Repository -->
-          <tr *ngIf="globalRepository">
-            <td style="height: 10rem" class="special">
-              <div class="wrapper">
-                <div class="info">
-                  <p class="infohead">{{ data.name }}</p>
-                  <p class="infodate">Last updated: October 3, 2024</p>
-                </div>
-                <div class="tools">
-                  <!-- add to local button  -->
-                  <p-button label="Add to local repository" severity="primary" outlined="true" />
-                </div>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
+          <!--  -->
+          <ng-template pTemplate="empty">
+            <tr>
+              <td colspan="2" class="text-center">No match found</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
 
-        <!--  -->
-        <ng-template pTemplate="empty">
-          <tr>
-            <td colspan="2" class="text-center">No match found</td>
-          </tr>
-        </ng-template>
-      </p-table>
       <!--  -->
     </div>
   </div>

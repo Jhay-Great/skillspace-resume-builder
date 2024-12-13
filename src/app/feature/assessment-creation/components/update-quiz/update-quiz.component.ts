@@ -11,9 +11,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './update-quiz.component.html',
   styleUrl: './update-quiz.component.scss',
 })
-export class UpdateQuizComponent implements OnInit, OnDestroy {
+export class UpdateQuizComponent implements OnInit {
   @Input() quizId: number | null = null;
-  subscriptions!: Subscription;
 
   constructor(
     private assessmentCreationService: AssessmentCreationService,
@@ -21,16 +20,16 @@ export class UpdateQuizComponent implements OnInit, OnDestroy {
   ) {}
 
   onSubmit(formData: FormData) {
-    if (this.quizId) {
-      this.subscriptions = this.assessmentCreationService.updateQuiz(formData, this.quizId).subscribe({
-        next: () => {
-          this.toastService.showSuccess('Quiz updated successfully', 'Success');
-        },
-        error: (err) => {
-          this.toastService.showError(err.error.message, 'Error');
-        },
-      });
-    }
+    // if (this.quizId) {
+    //   this.assessmentCreationService.updateQuiz(formData, this.quizId).subscribe({
+    //     next: () => {
+    //       this.toastService.showSuccess('Quiz updated successfully', 'Success');
+    //     },
+    //     error: (err) => {
+    //       this.toastService.showError(err.error.message, 'Error');
+    //     },
+    //   });
+    // }
   }
 
   ngOnInit() {
@@ -39,9 +38,5 @@ export class UpdateQuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
-    }
-  }
+
 }

@@ -33,3 +33,22 @@ export interface DropdownItem {
   name: string;
   code: string;
 }
+
+export interface Options {
+  id: number;
+  text: string;
+}
+
+export interface Question {
+  id: number;
+  description: string;
+  imageUrl?: string | ArrayBuffer | null;
+  options: Options[];
+}
+
+export interface QuizToTake {
+  id: number;
+  name: string;
+  duration: number;
+  questions: Question[];
+}
