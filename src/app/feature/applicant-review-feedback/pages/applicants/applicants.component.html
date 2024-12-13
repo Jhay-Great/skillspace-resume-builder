@@ -39,6 +39,10 @@
         [paginator]="true"
         [globalFilterFields]="['name', 'approvalStatus']"
       >
+        @if (applicants.length === 0) {
+          <p>No data</p>
+        }
+        <p>{{ applicants.length }}</p>
         <!-- table header -->
         <ng-template pTemplate="header">
           <tr>

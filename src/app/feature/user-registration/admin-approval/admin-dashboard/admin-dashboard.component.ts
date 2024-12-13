@@ -25,7 +25,7 @@ import { PageHeaderDescriptionComponent } from '@shared/components/page-header-d
 import { DateSuffixPipe } from '@core/pipes/datesuffix/date-suffix.pipe';
 import { AppState } from '@src/app/core/state/appState';
 import { onLoadApplicants } from '../../state/approval.actions';
-import { allApplicants, isLoading, successMessage } from '../../state/approval.selectors';
+import { allApplicants, errorMessage, isLoading, successMessage } from '../../state/approval.selectors';
 
 interface PDropDown {
   name: string;
@@ -66,6 +66,7 @@ export class AdminDashboardComponent implements OnInit {
   applicants: Signal<ApplicantsData[]> = computed(() => this.store.selectSignal(allApplicants)());
   loading: Signal<boolean> = computed(() => this.store.selectSignal(isLoading)());
   successMessage: Signal<string | null> = computed(() => this.store.selectSignal(successMessage)());
+  error: Signal<string | null> = computed(() => this.store.selectSignal(errorMessage)());
   applicantEffect = effect(
     () => {
       const applicant = this.applicants();
@@ -73,7 +74,8 @@ export class AdminDashboardComponent implements OnInit {
         const message = this.successMessage();
         if (!message) return;
         this.toastService.showSuccess('Successful', message, 'top-right');
-      } else {
+      }
+      if (this.error()) {
         this.toastService.showError('Error', 'Failed to load data', 'top-right');
       }
     },

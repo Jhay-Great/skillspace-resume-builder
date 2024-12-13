@@ -101,6 +101,7 @@
         </span>
         <p class="description mb-0">{{ message.message }}</p>
         <div class="dialog-btns flex align-items-center gap-2 mt-4">
+          <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
           <button
             pButton
             [label]="message.rejectLabel || 'Cancel'"
@@ -109,6 +110,7 @@
             [text]="true"
             class="p-button-outlined w-8rem"
           ></button>
+          <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
           <button
             pButton
             [label]="message.acceptLabel || 'Confirm'"

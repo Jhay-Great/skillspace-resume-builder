@@ -25,7 +25,7 @@ export class ProfileManagementService {
 
   // private method to make the PUT request
   private update<D, T>(api: string, data: D): Observable<T> {
-    return this.http.put<T>(api, data);
+    return this.http.patch<T>(api, data);
   }
 
   // UPDATE company profile
