@@ -22,7 +22,7 @@ import { ProfileManagementService } from '../../services/profile-management.serv
 import { createFromData } from '@shared/utils/file-upload';
 import { LocalStorageService } from '@core/services/localStorageService/local-storage.service';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
-import { hasFormError, hasError } from '@shared/utils/form-utils';
+import { hasFormError, hasError, extractUpdatedFields } from '@shared/utils/form-utils';
 
 @Component({
   selector: 'app-profile-management',
@@ -54,6 +54,7 @@ export class ProfileManagementComponent implements OnInit {
   hasFormError = hasFormError;
   hasError = hasError;
   userEmail!: string;
+  companyDetailData!: { logo: string; companyName: string; website: string; contact: string };
 
   // form groups
   companyDetailsForm!: FormGroup;
@@ -112,6 +113,7 @@ export class ProfileManagementComponent implements OnInit {
       .subscribe({
         next: (response) => {
           const { logo, companyName, email, website, contact, certificate } = response.data;
+          this.companyDetailData = { logo, companyName, website, contact };
 
           this.logo = logo;
           this.certificate = certificate;
@@ -194,8 +196,8 @@ export class ProfileManagementComponent implements OnInit {
       case 0: {
         const companyDetailsData = this.validateForm(this.companyDetailsForm);
         if (!companyDetailsData) return;
-        const userData = { email: this.userEmail, ...companyDetailsData };
-        const companyFormData = createFromData(userData);
+        const updatedFormData = extractUpdatedFields(companyDetailsData, this.companyDetailData);
+        const companyFormData = createFromData(updatedFormData);
         this.onSubmit(companyFormData);
         break;
       }
