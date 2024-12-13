@@ -1,10 +1,10 @@
-import { FormGroup, } from "@angular/forms";
+import { FormGroup } from '@angular/forms';
 
-export const onFileUpload = function(form:FormGroup, file: File | null, control: string) {
-    if (file) {
-      form.get(control)?.setValue(file);
-    }
-}
+export const onFileUpload = function (form: FormGroup, file: File | null, control: string) {
+  if (file) {
+    form.get(control)?.setValue(file);
+  }
+};
 
 export const createFromData = function <T>(data: Record<string, T>) {
   if (!data) return;
@@ -21,4 +21,9 @@ export const createFromData = function <T>(data: Record<string, T>) {
   });
 
   return formData;
-}
+};
+
+export const extractFilename = function (url: string): string {
+  const filename = new URL(url).pathname.split('com_').pop() || '';
+  return filename;
+};

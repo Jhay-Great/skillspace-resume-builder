@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { AuthService } from '@src/app/feature/authentication/services/auth-service/auth.service';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ExtendedConfirmation } from '../../interfaces/confirmation.interface';
+import { UserRole } from '@src/app/feature/authentication/models/auth.model';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -16,7 +17,8 @@ import { ExtendedConfirmation } from '../../interfaces/confirmation.interface';
 export class DashboardLayoutComponent {
   constructor(
     public authService: AuthService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {}
 
   // ADMIN
@@ -38,11 +40,11 @@ export class DashboardLayoutComponent {
     {
       name: 'My Programmes',
       path: 'company-programmes',
-      icon: 'pi pi-courses',
+      icon: 'pi pi-graduation-cap',
     },
     {
       name: 'Assessments',
-      path: 'dashboard/assessments',
+      path: 'assessment-creation',
       icon: 'pi pi-book',
     },
     {
@@ -96,6 +98,18 @@ export class DashboardLayoutComponent {
         return null;
       },
     } as ExtendedConfirmation);
+  }
+
+  settings(typeOfUser: UserRole | null) {
+    if (typeOfUser === 'COMPANY') {
+      this.router.navigate(['/dashboard/company-profile']);
+      return;
+    } else if (typeOfUser === 'TALENT') {
+      this.router.navigate(['/dashboard/talent-profile']);
+      return;
+    } else {
+      return;
+    }
   }
 
   logout() {

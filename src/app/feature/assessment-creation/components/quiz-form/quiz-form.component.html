@@ -1,0 +1,180 @@
+<!-- create skill quiz form -->
+<form class="create-quiz-form" [formGroup]="quizForm" (ngSubmit)="onQuizSubmit()">
+  <div class="bg-white">
+    <div class="header">
+      <h3 class="header-title">{{ isUpdate ? 'Update' : 'Create' }} quiz</h3>
+      <div class="save-to-global">
+        <p-inputSwitch formControlName="isGlobal" id="save-to-global"></p-inputSwitch>
+        <label for="save-to-global">Save to global repository</label>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <div class="input-group-container grid-2">
+        <div class="input-group">
+          <label for="quiz-name">Quiz name</label>
+          <input type="text" id="quiz-name" pInputText formControlName="name" placeholder="Enter quiz name" />
+        </div>
+
+        <div class="input-group">
+          <label for="quiz-duration">Duration (minutes)</label>
+          <input
+            type="text"
+            id="quiz-duration"
+            pInputText
+            formControlName="duration"
+            placeholder="Enter quiz duration"
+          />
+        </div>
+      </div>
+
+      <div class="input-group-container grid-3">
+        <div class="input-group">
+          <label for="pass-mark">Pass mark (%)</label>
+          <input
+            type="text"
+            id="pass-mark"
+            pInputText
+            formControlName="passMark"
+            placeholder="Enter the pass mark for this quiz"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="retake-option">Retake option</label>
+          <p-calendar
+            id="retake-option"
+            formControlName="retakeOption"
+            placeholder="Select a retake option"
+          ></p-calendar>
+        </div>
+
+        <div class="input-group">
+          <label for="badge-name" class="badge-name">Badge name</label>
+          <input type="text" id="badge-name" pInputText formControlName="badge" placeholder="Enter badge name" />
+        </div>
+      </div>
+
+      <div class="questions-container">
+        <div formArrayName="questions" class="questions">
+          @for (question of questions.controls; track question; let questionIndex = $index) {
+            <div [formGroupName]="questionIndex" class="question-item">
+              <div class="header">
+                <h4 class="header-title">Question {{ questionIndex + 1 }}</h4>
+
+                <div class="actions">
+                  <p-button icon="pi pi-clone" text="true" severity="secondary"></p-button>
+                  <input
+                    #questionImageInput
+                    accept="image/*"
+                    type="file"
+                    id="question-image"
+                    (change)="handleFileInput($event, questionIndex)"
+                  />
+                  <p-button
+                    icon="pi pi-image"
+                    text="true"
+                    severity="secondary"
+                    (onClick)="questionImageInput.click()"
+                  ></p-button>
+                  <p-button
+                    (click)="removeQuestion(questionIndex)"
+                    icon="pi pi-trash"
+                    text="true"
+                    severity="danger"
+                    id="delete-question"
+                  ></p-button>
+                </div>
+              </div>
+
+              <div class="input-group question">
+                <label [for]="'question-description-' + questionIndex">Description</label>
+                <textarea
+                  id="question-description-{{ questionIndex }}"
+                  pInputTextarea
+                  formControlName="description"
+                  placeholder="Enter question description"
+                ></textarea>
+
+                <!-- Image preview -->
+                @if (getImagePreview(questionIndex)) {
+                  <div class="question-image">
+                    <img [src]="getImagePreview(questionIndex)" alt="Question image preview" class="preview-image" />
+                  </div>
+                }
+              </div>
+
+              <div formArrayName="options" class="options">
+                @for (option of getOptions(questionIndex).controls; track option; let optionIndex = $index) {
+                  <div [formGroupName]="optionIndex" class="option-item">
+                    <div class="header">
+                      <p>Option description</p>
+
+                      <div class="input-group">
+                        <p-inputSwitch formControlName="isCorrect" id="option-correct"></p-inputSwitch>
+                        <label for="option-correct">Correct answer</label>
+                        <p-button
+                          icon="pi pi-trash"
+                          text="true"
+                          severity="danger"
+                          id="delete-question"
+                          (click)="removeOption(questionIndex, optionIndex)"
+                        ></p-button>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        id="option-description"
+                        pInputText
+                        formControlName="text"
+                        placeholder="Enter option description"
+                      />
+                    </div>
+                  </div>
+                }
+
+                <p-button
+                  label="Add Option"
+                  severity="secondary"
+                  outlined
+                  link="true"
+                  (click)="addOption(questionIndex)"
+                ></p-button>
+              </div>
+
+              <div class="input-group">
+                <label for="question-points">Add Points</label>
+                <input
+                  type="text"
+                  id="question-points"
+                  pInputText
+                  formControlName="points"
+                  placeholder="Enter question points"
+                />
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    icon="pi pi-plus"
+    id="add-question"
+    type="button"
+    pButton
+    text="true"
+    severity="primary"
+    (click)="addQuestion()"
+  >
+    <span class="full-width-button-label">Add Question</span>
+  </button>
+
+  <div class="form-actions">
+    <p-button (onClick)="discard()" label="Discard" severity="primary" outlined></p-button>
+    <p-button type="submit" label="Save Quiz" severity="primary" [disabled]="quizForm.invalid" />
+  </div>
+</form>

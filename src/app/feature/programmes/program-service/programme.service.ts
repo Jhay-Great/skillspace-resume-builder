@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-import {  take } from 'rxjs';
+import { take } from 'rxjs';
 import { Programme } from '@src/app/core/interfaces/interfaces';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ProgrammeService {
   programmeToMoveOrDelete!: Programme;
 
   // Toast notification
-  private successToast(message: string = 'Programme created successfullt') {
+  private successToast(message: string = 'Programme created successfully') {
     this.toastService.showSuccess('Congratulations', message, 'top-right');
   }
   private showError(message: string) {
@@ -33,7 +33,8 @@ export class ProgrammeService {
         environment.COMPANY_PROGRAMMES_BASE_API +
           environment.CREATE_PROGRAM_ENDPOINT,
         data
-      ).pipe(take(1))
+      )
+      .pipe(take(1))
       .subscribe({
         next: () => {
           this.getPrograms();
@@ -52,7 +53,8 @@ export class ProgrammeService {
     this.http
       .get<Programme[]>(
         environment.COMPANY_PROGRAMMES_BASE_API + environment.GET_ALL_PROGRAMMES
-      ).pipe(take(1))
+      )
+      .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
       });
@@ -138,7 +140,8 @@ export class ProgrammeService {
       .put(
         environment.BASE_API + environment.UPDATE_PROGRAMME + `${id}`,
         dataToSend
-      ).pipe(take(1))
+      )
+      .pipe(take(1))
       .subscribe({
         next: (_data) => {
           this.successToast('Programme updated successfully');
@@ -153,9 +156,8 @@ export class ProgrammeService {
   deleteProgramme(id: number, _programme: Programme) {
     // make api call
     this.http
-      .delete(environment.BASE_API + environment.DELETE_PROGRAMME + `${id}`).pipe(
-        take(1)
-      )
+      .delete(environment.BASE_API + environment.DELETE_PROGRAMME + `${id}`)
+      .pipe(take(1))
       .subscribe({
         next: (_data) => {
           this.successToast('Programme deleted successfully');
