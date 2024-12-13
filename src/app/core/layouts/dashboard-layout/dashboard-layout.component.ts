@@ -115,4 +115,15 @@ export class DashboardLayoutComponent {
   logout() {
     this.authService.logout();
   }
+
+  settings(userRole: UserRole | null) {
+    if (userRole === 'COMPANY') {
+      this.router.navigate(['/dashboard/company-profile']);
+      return;
+    }
+    if (userRole === 'TALENT') {
+      this.router.navigate(['/dashboard/talent-profile']);
+      return;
+    }
+  }
 }
