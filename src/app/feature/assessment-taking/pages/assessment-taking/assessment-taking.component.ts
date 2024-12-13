@@ -22,6 +22,7 @@ import { AllQuizzes, AvailableQuiz, DropdownItem } from '../../models/quiz-takin
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
+import { TakeQuizComponent } from '../../components/take-quiz/take-quiz.component';
 
 @Component({
   selector: 'app-assessment-taking',
@@ -45,6 +46,7 @@ import { TagComponent } from '../../../../shared/components/tag/tag.component';
     DropdownModule,
     FormsModule,
     TagComponent,
+    TakeQuizComponent,
   ],
   templateUrl: './assessment-taking.component.html',
   styleUrl: './assessment-taking.component.scss',
@@ -66,6 +68,14 @@ export class AssessmentTakingComponent implements OnInit {
   // badges
   badges!: DropdownItem[];
   selectedBadge: string | undefined;
+
+  takeQuizVisible = false;
+  selectedQuizId: number | null = null;
+
+  showTakeQuiz(quizId: number) {
+    this.takeQuizVisible = true;
+    this.selectedQuizId = quizId;
+  }
 
   @ViewChild('tieredMenu') tieredMenu!: TieredMenu;
 

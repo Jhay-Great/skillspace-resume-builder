@@ -79,6 +79,14 @@
     <!-- Skills Quiz Table Content-->
 
     <div class="tablescontainer">
+      <!-- take quiz  -->
+      <div class="create-quiz-modal">
+        @if (takeQuizVisible && selectedQuizId) {
+          <app-take-quiz [quizId]="selectedQuizId" />
+        }
+      </div>
+      <!-- take quiz ends -->
+
       <!-- <div class="create-quiz-modal">
           @if (assessmentCreationService.createQuizVisible()) {
             <app-create-quiz />
@@ -154,7 +162,7 @@
                   </div>
                   <div class="tools">
                     <!-- start quiz button  -->
-                    <p-button label="Start quiz" severity="primary" />
+                    <p-button (click)="showTakeQuiz(data.quizId)" label="Start quiz" severity="primary" />
                   </div>
                 </div>
               </td>
