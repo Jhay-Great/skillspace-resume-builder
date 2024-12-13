@@ -55,6 +55,13 @@
       .p-datatable-tbody {
         overflow: auto;
         scrollbar-width: none;
+
+        tr {
+          td {
+            @include mix.flex();
+            @include mix.flex-position(flex-start, center);
+          }
+        }
       }
     }
   }
@@ -129,6 +136,13 @@
     }
   }
 }
-.username_avatar {
+.username {
   @include mix.flex();
+
+  img {
+    vertical-align: middle;
+    /* width: 50px; */
+    aspect-ratio: 1;
+    border-radius: 100%;
+  }
 }
