@@ -19,7 +19,8 @@ export class ApplicantsApprovalEffect {
           map((response) => {
             const { message, data } = response;
 
-            const applicantsData = data;
+            // const applicantsData = data;
+            const applicantsData = data.reverse();
             return onLoadApplicantsSuccess({ applicants: applicantsData, successMessage: message });
           }),
           retry(3),

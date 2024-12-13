@@ -35,6 +35,8 @@ header {
     .steppers {
       @include mix.flex(row, 0.5rem);
       @include mix.flex-position();
+      background-color: transparent;
+      border: none;
       cursor: pointer;
 
       &.active {
