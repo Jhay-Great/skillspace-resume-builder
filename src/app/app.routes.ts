@@ -52,7 +52,6 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () =>
           import('./feature/authentication/pages/login/login.component').then((d) => d.LoginComponent),
-        title: 'Login'
       },
       {
         path: 'forgot-password',
@@ -60,7 +59,6 @@ export const routes: Routes = [
           import('./feature/authentication/pages/forgot-password/forgot-password.component').then(
             (d) => d.ForgotPasswordComponent
           ),
-        title: 'Forgotten Password'
       },
       {
         path: 'forgot-password/otp',
@@ -68,7 +66,6 @@ export const routes: Routes = [
           import('./feature/authentication/pages/forgot-password-otp/forgot-password-otp.component').then(
             (d) => d.ForgotPasswordOtpComponent
           ),
-        title: 'Verify OTP'
       },
       {
         path: 'create-password',
@@ -76,7 +73,6 @@ export const routes: Routes = [
           import('./feature/authentication/pages/create-password/create-password.component').then(
             (d) => d.CreatePasswordComponent
           ),
-        title: 'Create New Password'
       },
     ],
   },
@@ -107,7 +103,6 @@ export const routes: Routes = [
         // data: {role: 'ADMIN'},
         // canActivate: [roleGuard],
         loadComponent: () => import('./feature/programmes/company/company.component').then((d) => d.CompanyComponent),
-        title: 'Programs'
       },
       {
         path: 'company-profile',
@@ -125,21 +120,45 @@ export const routes: Routes = [
           ),
         title: 'Your Profile',
       },
-        {
+      {
         path: 'applicants',
         loadComponent: () =>
-          import(
-            './feature/applicant-review-feedback/pages/applicants/applicants.component'
-          ).then((a) => a.ApplicantsComponent),
+          import('./feature/applicant-review-feedback/pages/applicants/applicants.component').then(
+            (a) => a.ApplicantsComponent
+          ),
         title: 'All applicants',
       },
       {
         path: 'applicants/:id',
         loadComponent: () =>
-          import(
-            './feature/applicant-review-feedback/pages/applicant-profile/applicant-profile.component'
-          ).then((ap) => ap.ApplicantProfileComponent),
+          import('./feature/applicant-review-feedback/pages/applicant-profile/applicant-profile.component').then(
+            (ap) => ap.ApplicantProfileComponent
+          ),
         title: 'Applicant',
+      },
+      {
+        path: 'assessment-creation',
+        loadComponent: () =>
+          import('./feature/assessment-creation/pages/assessment-creation/assessment-creation.component').then(
+            (ac) => ac.AssessmentCreationComponent
+          ),
+        title: 'Assessment Creation',
+      },
+      {
+        path: 'programme-application',
+        loadComponent: () =>
+          import('./feature/programme-application/programme-application/programme-application.component').then(
+            (pa) => pa.ProgrammeApplicationComponent
+          ),
+        title: 'Programme Application',
+      },
+      {
+        path: 'applications',
+        loadComponent: () =>
+          import(
+            './feature/profile-management/talent/all-applications/all-applications/all-applications.component'
+          ).then((a) => a.AllApplicationsComponent),
+        title: 'Manage Applications',
       },
     ],
   },

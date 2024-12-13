@@ -19,10 +19,10 @@ export class ApplicantsApprovalEffect {
           map((response) => {
             const {
               message,
-              data: { content },
+              data,
             } = response;
 
-            const applicantsData = content;
+            const applicantsData = data;
             return onLoadApplicantsSuccess({ applicants: applicantsData, successMessage: message });
           }),
           retry(3),

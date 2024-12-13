@@ -57,50 +57,38 @@
             <td>
               @if (!applicant.image) {
                 <p-avatar [label]="applicant.name | initials" shape="circle" />
-                }@else {
-                <img
-                  [alt]="applicant.name"
-                  [src]="applicant.image"
-                  width="32"
-                  style="vertical-align: middle"
-                />
-  
-                }
-                <span class="ml-1 vertical-align-middle">
-                  {{ applicant.name | capitalize }}
-                </span>
-              </td>
-              <td>{{ applicant.email | ellipsis:15 }}</td>
-              <td>{{ applicant.email | ellipsis:15 }}</td>
-              <td>
-                <app-tag 
-                  [status]="applicant.approvalStatus"
-                />
-              </td>
-              <td>{{ applicant.createdAt | date:'dd MMM yyyy' }}</td>
-              <td  class="options-btn-body">
-                <div class="card flex justify-content-center">
-                  <p-button class="view-profile-btn"
-                    (onClick)="op.toggle($event)"
-                    icon="pi pi-ellipsis-v"
-                  />
-                  <p-overlayPanel #op>
-                    <div class="view-profile-popup flex flex-column gap-3 w-25rem">
-                      <div class="company-name">
-                        <!-- initials -->
-                        <p-avatar [label]="applicant.name | initials" shape="circle" />
-                        <!-- name & email -->
-                        <div class="name_email">
-                          <p class="name">{{ applicant.name | capitalize }}</p>
-                          <p class="email">{{ applicant.email | ellipsis:15 }}</p>
-                        </div>
+              } @else {
+                <img [alt]="applicant.name" [src]="applicant.image" width="32" style="vertical-align: middle" />
+              }
+              <span class="ml-1 vertical-align-middle">
+                {{ applicant.name | capitalize }}
+              </span>
+            </td>
+            <td>{{ applicant.email | ellipsis: 15 }}</td>
+            <td>{{ applicant.email | ellipsis: 15 }}</td>
+            <td>
+              <app-tag [status]="applicant.approvalStatus" />
+            </td>
+            <td>{{ applicant.createdAt | dateSuffix }}</td>
+            <td class="options-btn-body">
+              <div class="card flex justify-content-center">
+                <p-button class="view-profile-btn" (onClick)="op.toggle($event)" icon="pi pi-ellipsis-v" />
+                <p-overlayPanel #op>
+                  <div class="view-profile-popup flex flex-column gap-3 w-25rem">
+                    <div class="company-name">
+                      <!-- initials -->
+                      <p-avatar [label]="applicant.name | initials" shape="circle" />
+                      <!-- name & email -->
+                      <div class="name_email">
+                        <p class="name">{{ applicant.name | capitalize }}</p>
+                        <p class="email">{{ applicant.email | ellipsis: 15 }}</p>
                       </div>
                     </div>
-                    <hr />
-                    <button (click)="selectedApplicant(applicant.id)">View profile</button>
-                    <button (click)="selectedApplicant(applicant.id)">Shortlist</button>
-                    <button (click)="selectedApplicant(applicant.id)">Reject</button>
                   </div>
+                  <hr />
+                  <button (click)="selectedApplicant(applicant.id)">View profile</button>
+                  <button (click)="selectedApplicant(applicant.id)">Shortlist</button>
+                  <button (click)="selectedApplicant(applicant.id)">Reject</button>
                 </p-overlayPanel>
               </div>
             </td>

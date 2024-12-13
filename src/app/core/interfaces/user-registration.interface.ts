@@ -63,7 +63,7 @@ export interface DataContent {
 export interface ApplicantResponse {
     statusCode: number;
     message: string;
-    data: DataContent
+    data: ApplicantsData[]
 }
 export interface DataContent {
     content: ApplicantsData[];

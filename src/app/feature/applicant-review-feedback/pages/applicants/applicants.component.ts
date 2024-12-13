@@ -71,7 +71,7 @@ export class ApplicantsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
-          this.applicants = response.data.content;
+          this.applicants = response.data;
 
         },
         error: () => {

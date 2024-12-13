@@ -82,18 +82,7 @@ export class DashboardLayoutComponent {
       icon: 'pi pi-briefcase',
     },
   ];
-
-  settings() {
-    console.log('called by user: ', this.authService.userRole);
-    if (this.authService.userRole === 'COMPANY') {
-      this.router.navigate(['/dashboard/company-profile'])
-    };
-    if (this.authService.userRole === 'TALENT') {
-      this.router.navigate(['/dashboard/talent-profile'])
-    };
-
-  }
-
+  
   confirm() {
     this.confirmationService.confirm({
       header: 'Logout',
