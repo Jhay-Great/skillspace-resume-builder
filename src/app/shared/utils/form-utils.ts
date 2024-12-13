@@ -50,3 +50,15 @@ export const hasError = function (form: FormGroup, controlName: string) {
   }
   return null;
 };
+
+export const extractUpdatedFields = function <T extends object>(formData: T, initialData: T): Partial<T> {
+  const differences: Partial<T> = {};
+
+  for (const key in formData) {
+    if (formData[key] !== initialData[key]) {
+      differences[key] = formData[key];
+    }
+  }
+
+  return differences;
+};
