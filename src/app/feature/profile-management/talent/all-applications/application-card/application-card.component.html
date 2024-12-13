@@ -1,0 +1,30 @@
+<div class="container">
+  <!-- left -->
+  <div class="left">
+    <!-- logo -->
+    <div class="logo"></div>
+    <!-- details -->
+    <div class="details">
+      <p class="font-large">{{ application.title }}</p>
+      <div class="wrap">
+        <i class="pi pi-building"></i>
+        <p class="font-xs">{{ application.company }}</p>
+      </div>
+      <div class="wrap">
+        <i class="pi pi-calendar"></i>
+        <p class="font-xs">Applied on 10th June, 2023</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- right -->
+  <div class="right">
+    <app-tag [status]="'Interview scheduled'"></app-tag>
+    @if (randomNum > 0.5) {
+      <button (click)="openConfirmDialog()" class="btn-withdraw">Withdraw</button>
+    }
+    @if (randomNum < 0.5) {
+      <button (click)="openConfirmDialog()" class="btn-reapply">Reapply</button>
+    }
+  </div>
+</div>

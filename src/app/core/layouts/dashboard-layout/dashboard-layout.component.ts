@@ -4,6 +4,8 @@ import { AuthService } from '@src/app/feature/authentication/services/auth-servi
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ExtendedConfirmation } from '../../interfaces/confirmation.interface';
+import { UserRole } from '@src/app/feature/authentication/models/auth.model';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -16,7 +18,7 @@ export class DashboardLayoutComponent {
   constructor(
     public authService: AuthService,
     private confirmationService: ConfirmationService,
-    private router: Router,
+    private router: Router
   ) {}
 
   // ADMIN
@@ -38,11 +40,11 @@ export class DashboardLayoutComponent {
     {
       name: 'My Programmes',
       path: 'company-programmes',
-      icon: 'pi pi-courses',
+      icon: 'pi pi-graduation-cap',
     },
     {
       name: 'Assessments',
-      path: 'dashboard/assessments',
+      path: 'assessment-creation',
       icon: 'pi pi-book',
     },
     {
@@ -96,13 +98,29 @@ export class DashboardLayoutComponent {
     this.confirmationService.confirm({
       header: 'Logout',
       message: 'Are you sure that you to logout?',
+      acceptSeverity: 'danger',
+      rejectSeverity: 'secondary',
+      acceptLabel: 'Logout',
+      rejectLabel: 'Cancel',
       accept: () => {
         this.logout();
       },
       reject: () => {
         return null;
       },
-    });
+    } as ExtendedConfirmation);
+  }
+
+  settings(typeOfUser: UserRole | null) {
+    if (typeOfUser === 'COMPANY') {
+      this.router.navigate(['/dashboard/company-profile']);
+      return;
+    } else if (typeOfUser === 'TALENT') {
+      this.router.navigate(['/dashboard/talent-profile']);
+      return;
+    } else {
+      return;
+    }
   }
 
   logout() {

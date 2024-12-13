@@ -1,209 +1,182 @@
 <div class="main-container">
-    <h1 class="header-title">Applicant's profile</h1>
+  <h1 class="page-title">Applicant's profile</h1>
 
-    <!-- company details or information -->
-    <section class="company-details">
+  <!-- company details or information -->
+  <section class="company-details">
+    <!-- details -->
+    <div class="details">
+      <div class="logo">
+        <img src="assets/images/Avatar.png" alt="company logo" />
+      </div>
+      <div class="information">
+        <div class="personal-info data">
+          <p class="title">Personal Information:</p>
+          <p>{{ applicant?.name }}</p>
+          <p>{{ applicant?.contact }}</p>
+          <p>{{ applicant?.email }}</p>
+        </div>
+        <div class="social-media-info data">
+          <p class="title">Social media links:</p>
+          <div class="links">
+            <i class="pi pi-linkedin" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
 
-        <!-- details -->
-        <div class="details">
-            <div class="logo">
-                <img src="assets/images/Avatar.png" alt="company logo">
+            <i class="pi pi-twitter" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
+
+            <i class="pi pi-globe" pTooltip="Confirm to proceed" tooltipPosition="bottom" tooltipEvent="hover"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- status -->
+    <app-tag />
+  </section>
+
+  <!-- certificate -->
+  <section class="display-certificate">
+    <!-- buttons -->
+    <div class="btns">
+      @if (applicant) {
+        <p-button (onClick)="reject(applicant.id)" label="Reject applicant" [outlined]="true" />
+        <p-button (onClick)="confirm(applicant.id)" label="Accept applicant" />
+      }
+    </div>
+
+    <div class="card">
+      <p-tabView styleClass="tabview-custom" [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
+        <p-tabPanel header="Documents">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <span class="font-bold white-space-nowrap m-0"> Document(s) </span>
+              <p-badge value="1" />
             </div>
-            <div class="information">
-                <div class="personal-info data">
-                    <p class="title">Personal Information:</p>
-                    <p>{{ applicant?.name }}</p>
-                    <p>{{ applicant?.contact }}</p>
-                    <p>{{ applicant?.email }}</p>
+          </ng-template>
+          <ng-template pTemplate="body">
+            <section class="body-container">
+              <!-- curriculum vitae -->
+              <section class="document-container">
+                <div class="name_user-details">
+                  <p class="header-title">Curriculum vitae</p>
+                  <div class="file-name">
+                    <i class="pi pi-file-pdf" style="color: red"></i>
+                    <p class="name">Kelvin_Asamoah CV_2023 PDF</p>
+                  </div>
                 </div>
-                <div class="social-media-info data">
-                    <p class="title">Social media links:</p>
-                    <div class="links">
-                        <i class="pi pi-linkedin"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i> 
+                <button class="download-btns">Download CV</button>
+              </section>
+              <!-- academic transcript -->
+              <section class="document-container">
+                <div class="name_user-details">
+                  <div class="header-title">Academic transcript</div>
+                  <div class="file-name">
+                    <i class="pi pi-file-pdf" style="color: red"></i>
+                    <p class="name">Kelvin_Asamoah transcript_2023 PDF</p>
+                  </div>
+                </div>
+                <button class="download-btns">Download transcript</button>
+              </section>
+            </section>
+          </ng-template>
+        </p-tabPanel>
 
-                        <i class="pi pi-twitter"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i>
+        <!-- PORTFOLIO -->
+        <p-tabPanel header="Portfolio">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <span class="font-bold white-space-nowrap m-0"> Portfolio(s) & projects(s) </span>
+              <p-badge value="1" />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="body">
+            <section class="body-container">
+              <!-- curriculum vitae -->
+              <section class="document-container">
+                <div class="name_user-details">
+                  <p class="header-title">Curriculum vitae</p>
+                  <div class="file-name">
+                    <i class="pi pi-link"></i>
+                    <p class="name">https://pinterest.com/mylink</p>
+                  </div>
+                </div>
+                <button class="download-btns">See portfolio</button>
+              </section>
+              <!-- academic transcript -->
+              <section class="document-container">
+                <div class="name_user-details">
+                  <div class="header-title">Academic transcript</div>
+                  <div class="file-name">
+                    <i class="pi pi-link"></i>
+                    <p class="name">https://pinterest.com/mylink</p>
+                  </div>
+                </div>
+                <button class="download-btns">See portfolio</button>
+              </section>
+            </section>
+          </ng-template>
+        </p-tabPanel>
 
-                        <i class="pi pi-globe"
-                            pTooltip="Confirm to proceed" 
-                            tooltipPosition="bottom"
-                            tooltipEvent="hover"
-                        ></i>
+        <!-- PROJECTS -->
+        <p-tabPanel header="Projects" class="project-section">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+              <span class="font-bold white-space-nowrap m-0"> Badge(s) </span>
+              <p-badge value="2" />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="body" class="project-main-container">
+            <section class="document-container">
+              <div class="badges-container">
+                <h2 class="badge-title header-title">Badges earned</h2>
+                <div class="badge-list-container">
+                  <i class="pi pi-trophy" style="font-size: 1.5rem"></i>
+                  <span class="badges"> Amalitech / Python </span>
+                  <span class="badges"> Amalitech / Java </span>
+                  <span class="badges"> Google / JavaScript </span>
+                  <span class="badges"> Google / Django </span>
+                </div>
+              </div>
+            </section>
+            <p-table
+              [value]="projects"
+              styleClass="p-datatable-striped"
+              [loading]="isLoading"
+              [tableStyle]="{ 'min-width': '60rem' }"
+            >
+              <ng-template pTemplate="caption">
+                <h3 class="flex align-items-center justify-content-between">All projects</h3>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Title</th>
+                  <th>Progress</th>
+                  <th>Passing scores</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-product>
+                <tr>
+                  <td>{{ product.title }}</td>
+                  <td>
+                    <div class="circular-progress">
+                      <div
+                        class="circle"
+                        [ngStyle]="{
+                          background:
+                            'conic-gradient(#3B82F6 ' + product.progress + '%, #F1F5F9 ' + product.progress + '%)',
+                        }"
+                      >
+                        <div class="inner-circle">
+                          <span class="percentage"> {{ product.progress }}% </span>
+                        </div>
+                      </div>
                     </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- status -->
-        <p-tag [value]="'pending'" 
-        [rounded]="true" 
-        />
-        <!-- <p>
-            pending
-        </p> -->
-
-    </section>
-
-    <!-- certificate -->
-    <section class="display-certificate">
-        <!-- buttons -->
-        <!-- <div class="btns">
-            @if (applicant) {
-                <p-button (onClick)="reject(applicant.id)" label="Reject applicant" [outlined]="true" />
-                <p-button (onClick)="confirm(applicant.id)" label="Accept applicant" />
-            }
-        </div> -->
-
-        <div class="card">
-            <p-tabView styleClass="tabview-custom">
-                <p-tabPanel header="Documents">
-                    <ng-template pTemplate="header">
-                        <div class="flex align-items-center gap-2">
-                            <span class="font-bold white-space-nowrap m-0">
-                                Documents
-                            </span>
-                            <p-badge value="1" />
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="body" >
-                        <section class="body-container">
-                            <!-- curriculum vitae -->
-                            <section class="document-container">
-                                <div class="name_user-details">
-                                    <p class="file-type-name">Curriculum vitae</p>
-                                    <div class="file-name">
-                                        <i class="pi pi-file-pdf" style="color: red"></i>
-                                        <p class="name">Kelvin_Asamoah CV_2023 PDF</p>
-                                    </div>
-                                </div>
-                                <button class="download-btns">
-                                    Download CV
-                                </button>
-                            </section>
-                            <!-- academic transcript -->
-                            <section class="document-container">
-                                <div class="name_user-details">
-                                    <div class="file-type-name">Academic transcript</div>
-                                    <div class="file-name">
-                                        <i class="pi pi-file-pdf" style="color: red"></i>
-                                        <p class="name">Kelvin_Asamoah transcript_2023 PDF</p>
-                                    </div>
-                                </div>
-                                <button class="download-btns">
-                                    Download transcript
-                                </button>
-                            </section>
-
-                        </section>
-                        
-                    </ng-template>
-                </p-tabPanel>
-
-                <!-- PORTFOLIO -->
-                <p-tabPanel header="Portfolio">
-                    <ng-template pTemplate="header">
-                        <div class="flex align-items-center gap-2">
-                            <span class="font-bold white-space-nowrap m-0">
-                                Portfolio
-                            </span>
-                            <p-badge value="1" />
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="body">
-                        <section class="body-container">
-                            <!-- curriculum vitae -->
-                            <section class="document-container">
-                                <div class="name_user-details">
-                                    <p class="file-type-name">Curriculum vitae</p>
-                                    <div class="file-name">
-                                        <i class="pi pi-link" ></i>
-                                        <p class="name">https://pinterest.com/mylink</p>
-                                    </div>
-                                </div>
-                                <button class="download-btns">
-                                    See portfolio
-                                </button>
-                            </section>
-                            <!-- academic transcript -->
-                            <section class="document-container">
-                                <div class="name_user-details">
-                                    <div class="file-type-name">Academic transcript</div>
-                                    <div class="file-name">
-                                        <i class="pi pi-link" ></i>
-                                        <p class="name">https://pinterest.com/mylink</p>
-                                    </div>
-                                </div>
-                                <button class="download-btns">
-                                    See portfolio
-                                </button>
-                            </section>
-
-                        </section>
-                    </ng-template>
-                </p-tabPanel>
-
-                <!-- PROJECTS -->
-                <p-tabPanel header="Projects">
-                    <ng-template pTemplate="header">
-                        <div class="flex align-items-center gap-2">
-                            <span class="font-bold white-space-nowrap m-0">
-                                Projects
-                            </span>
-                            <p-badge value="2" />
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="body">
-                        <section class="document-container">
-                            <div class="name_user-details">
-                                <div class="file-type-name">Academic transcript</div>
-                                <div class="file-name">
-                                    <i class="pi pi-trophy" ></i>
-                                    <span class="badges">
-                                        Amalitech/Python
-                                    </span>
-                                    <span class="badges">
-                                        Amalitech/ Java
-                                    </span>
-                                    <span class="badges">
-                                        Google/ JavaScript
-                                    </span>
-                                    <span class="badges">
-                                        Google/ Django
-                                    </span>
-                                </div>
-                            </div>
-                        </section>
-                        
-                    </ng-template>
-                </p-tabPanel>
-
-                <p-tabPanel header="Feedbacks">
-                    <ng-template pTemplate="header">
-                        <div class="flex align-items-center gap-2">
-                            <span class="font-bold white-space-nowrap m-0">
-                                Feedbacks
-                            </span>
-                            <p-badge value="2" />
-                        </div>
-                    </ng-template>
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos...
-                    </p>
-                </p-tabPanel>
-            </p-tabView>
-        </div>
-
-    </section>
-
+                  </td>
+                  <td>{{ product.score }} marks</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-template>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </section>
 </div>
-
-
-    

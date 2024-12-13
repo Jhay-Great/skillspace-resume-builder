@@ -1,117 +1,111 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 // primeng modules
 import { ConfirmationService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { TabViewModule } from 'primeng/tabview';
+import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
+import { TableModule } from 'primeng/table';
 
 // local imports
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { AdminApprovalService } from '@src/app/feature/user-registration/service/admin-approval/admin-approval.service';
 import { ApplicantsData } from '@src/app/core/interfaces/user-registration.interface';
+import { TagComponent } from '@shared/components/tag/tag.component';
 
 @Component({
   selector: 'app-applicant-profile',
   standalone: true,
-  imports: [TagModule, ButtonModule, TabViewModule, BadgeModule],
+  imports: [TagModule, TableModule, ButtonModule, TabViewModule, BadgeModule, CommonModule, TagComponent, AvatarModule],
   templateUrl: './applicant-profile.component.html',
-  styleUrl: './applicant-profile.component.scss'
+  styleUrl: './applicant-profile.component.scss',
 })
-export class ApplicantProfileComponent {
-  isApproved:boolean = false;
-  isRejected:boolean = false;
+export class ApplicantProfileComponent implements OnInit {
+  isLoading = false;
+  activeIndex = 0;
   applicant: ApplicantsData | null = null;
-  
+  projects = [
+    { title: 'UI/UX Quiz 1', progress: 75, score: 20 },
+    { title: 'UI/UX Quiz 2', progress: 80, score: 30 },
+    { title: 'Frontend Quiz 1', progress: 15, score: 20 },
+  ];
+
   constructor(
     private confirmationService: ConfirmationService,
     private adminApprovalService: AdminApprovalService,
     private destroyRef: DestroyRef,
     private toastService: ToastService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.applicant = this.adminApprovalService.selectedUser();
   }
 
-  navigateToHome() {
-    this.router.navigate(['/dashboard/approvals']);
+  onTabChange(event: TabViewChangeEvent) {
+    if (!event) return;
   }
 
-  confirm(id:number) {
-    this.isApproved = true;
+  navigateToApplicantsPage() {
+    this.router.navigate(['/dashboard/applicants']);
+  }
+
+  confirm(id: number) {
     this.confirmationService.confirm({
       header: 'Accept company',
-      message:
-        'Are you sure that you want to accept company? This action cannot be reversed.',
+      message: 'Are you sure that you want to accept company? This action cannot be reversed.',
       accept: () => {
-        this.adminApprovalService.acceptApplicant(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-          {
-            next: response => {
-              this.toastService.showSuccess('Successful', 'Applicant approved successfully')
-              this.isApproved = false;
+        this.adminApprovalService
+          .acceptApplicant(id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Successful', 'Applicant approved successfully');
             },
-            error: error => {
-              this.toastService.showError('Failed', 'Failed to approve Application')
-              this.isApproved = false;
-              this.isApproved = false;
-              this.navigateToHome();
+            error: () => {
+              this.toastService.showError('Failed', 'Failed to approve Application');
+              this.navigateToApplicantsPage();
             },
             complete: () => {
-              this.isApproved = false;
-              this.navigateToHome();
-
-            }
-          }
-        );
-        this.isApproved = false;
-        
+              this.navigateToApplicantsPage();
+            },
+          });
       },
       reject: () => {
-      this.isApproved = false;
-        
+        return;
       },
     });
   }
 
-  reject(id:number) {
-    this.isRejected = true;
+  reject(id: number) {
     this.confirmationService.confirm({
       header: 'Accept company',
-      message:
-        'Are you sure that you want to accept company? This action cannot be reversed.',
+      message: 'Are you sure that you want to accept company? This action cannot be reversed.',
       accept: () => {
-        this.adminApprovalService.rejectApplicant(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-          {
-            next: response => {
-              this.toastService.showSuccess('Successful', 'Applicant rejected successfully')
-              this.isRejected = false;
+        this.adminApprovalService
+          .rejectApplicant(id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Successful', 'Applicant rejected successfully');
             },
-            error: error => {
-              this.toastService.showError('Failed', 'Failed to rejected Application')
-              this.isRejected = false;
-              this.isRejected = false;
-              this.navigateToHome();
+            error: () => {
+              this.toastService.showError('Failed', 'Failed to rejected Application');
+              this.navigateToApplicantsPage();
             },
             complete: () => {
-              this.isRejected = false;
-              this.navigateToHome();
-
-            }
-          }
-        );
-        this.isRejected = false;
+              this.navigateToApplicantsPage();
+            },
+          });
       },
       reject: () => {
-        this.isRejected = false;
-
+        return;
       },
     });
   }
-
 }

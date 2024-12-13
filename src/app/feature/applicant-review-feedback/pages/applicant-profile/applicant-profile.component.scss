@@ -1,52 +1,199 @@
 @use 'mixins' as mix;
 @use 'variables' as var;
+@use 'progress-bar' as pb;
+
+.main-container {
+  @include mix.flex(column, 2rem);
+
+  .page-title {
+    font-size: var.$xlarge;
+  }
+}
 
 .body-container {
-    @include mix.flex(column);
+  width: 100%;
+  height: 100%;
+}
+h1 {
+  font-size: var.$xlarge;
+  font-weight: 600;
+  color: var.$color-blue-gray-800;
+}
+.company-details {
+  @include mix.flex(row);
+  @include mix.flex-position(space-between, center);
+  width: 100%;
+  height: fit-content;
+}
+.details {
+  @include mix.flex(row);
+  @include mix.flex-position(flex-start, center);
+  width: 80%;
+}
+.logo {
+  width: 108px;
+  height: 108px;
+  aspect-ratio: 1;
+  img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+  }
 }
-.name_user-details {
-    color: var.$color-blue-gray-800;
-    .file-type-name {
-        font-size: var.$medium;
-        font-weight: 600;
-    }
-    .name {
-        font-size: var.$small;
-    }
-}
-.document-container {
-    @include mix.flex(row);
-    @include mix.flex-position(space-between, center);
-    width: 100%;
-    height: 8.5625rem;
-    padding: 0.5rem 1rem;
-    background-color: var.$color-blue-50;
-    border-radius: 0.25rem;
+.information {
+  @include mix.flex(column);
+  @include mix.flex-position(center);
 
-    .file-name {
-        @include mix.flex();
-        @include mix.flex-position(center, center);
+  .data {
+    @include mix.flex(row);
+    @include mix.flex-position(flex-start);
+
+    p {
+      font-size: var.$medium;
+      color: var.$color-blue-gray-800;
     }
+    .title {
+      color: var.$color-blue-gray-500;
+    }
+    .links {
+      @include mix.flex(row);
+      @include mix.flex-position(center, center);
+    }
+  }
+}
+
+// body section
+.badges-container,
+.name_user-details {
+  color: var.$color-blue-gray-800;
+  margin-bottom: 2rem;
+  .badge-list-container,
+  .name {
+    font-size: var.$small;
+  }
+}
+.project-container {
+  margin-top: 1rem;
+}
+.badge-title,
+.header-title {
+  font-size: var.$medium;
+  font-weight: 600;
+}
+.document-container,
+.feedback {
+  @include mix.flex(row);
+  @include mix.flex-position(space-between, center);
+  width: 100%;
+  height: 8.5625rem;
+  padding: 0.5rem 1rem;
+  background-color: var.$color-blue-50;
+  border-radius: 0.25rem;
+  margin-bottom: 2rem;
+
+  .badge-list-container,
+  .file-name {
+    @include mix.flex();
+    @include mix.flex-position(center, center);
+  }
 }
 .download-btns {
-    display: flex;
-    padding: 0.5rem 0.75rem;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid var.$color-blue-500;
-    background-color: transparent;
-    color: var.$color-blue-500;
+  display: flex;
+  padding: 0.5rem 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var.$color-blue-500;
+  background-color: transparent;
+  color: var.$color-blue-500;
 }
 .badges {
-    @include mix.flex(row);
+  @include mix.flex(row);
+  @include mix.flex-position(center, center);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var.$color-green-300;
+  background: var.$color-green-600;
+  color: var.$color-white;
+}
+
+.circular-progress {
+  @include pb.progress-bar();
+}
+
+// reject and shortlist btns container
+section.display-certificate {
+  position: relative;
+}
+.btns {
+  @include mix.flex(row, 2rem);
+  @include mix.flex-position(flex-end, center);
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  top: 0.625rem;
+}
+
+// project section
+.project-section {
+  ::ng-deep {
+    .p-datatable-header {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid #eaecf0;
+    }
+    .p-datatable .p-datatable-thead > tr > th {
+      background-color: transparent;
+    }
+  }
+  .badge-title {
+    margin-bottom: 1rem;
+  }
+  th {
+    font-size: var.$small;
+    color: var.$color-blue-gray-500;
+  }
+}
+.feedback {
+  .reviewer {
+    @include mix.flex();
     @include mix.flex-position(center, center);
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid var.$color-green-300;
-    background: var.$color-green-600;
-    color: var.$color-white;
+  }
+  .message {
+    flex: 1;
+    color: var.$color-blue-gray-800;
+  }
+  .date {
+    font-size: var.$xsmall;
+  }
+}
+.leave-a-feedback-container {
+  form {
+    @include mix.flex(column, 0.5rem);
+    button {
+      @include mix.primary-button(fit-content);
+      align-self: flex-end;
+      padding: 0.6rem 0.8rem;
+    }
+  }
+}
+
+// bodges
+::ng-deep {
+  .p-badge {
+    min-width: 1.5rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    border-radius: 16px;
+    background-color: var.$color-blue-gray-200;
+    color: var.$color-blue-gray-500;
+
+    &.active {
+      background-color: var.$color-blue-100;
+      color: var.$color-blue-500;
+    }
+  }
 }

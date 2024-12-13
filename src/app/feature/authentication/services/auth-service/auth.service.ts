@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../../../environments/environment.development';
-import { LoginCredentials, User, UserRole } from '../../models/auth.model';
+import { LoginCredentials, refreshTokenResponse, User, UserRole } from '../../models/auth.model';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from '../../../../core/services/localStorageService/local-storage.service';
 import { Router } from '@angular/router';
@@ -36,12 +36,15 @@ export class AuthService {
     this.localStorageService.removeItem('USER_ROLE');
   }
 
-  setAccessToken(token: string): void {
-    this.localStorageService.setItem<string>('TOKEN', token);
+  setToken(accessToken: string, refreshToken: string): void {
+    this.localStorageService.setItem<string>('TOKEN', accessToken);
+    this.localStorageService.setItem<string>('REFRESH-TOKEN', refreshToken);
   }
 
-  clearAccessToken(): void {
+  clearToken(): void {
     this.localStorageService.removeItem('TOKEN');
+    this.localStorageService.removeItem('REFRESH-TOKEN');
+    this.localStorageService.removeItem('TOKEN_EXPIRATION');
   }
 
   isAuthenticated(): boolean {
@@ -49,29 +52,19 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<User> {
-  return this.http.post<User>(
-    `${this.BASE_ADDRESS}/v1/auth/login`,
-    credentials
-  );
-  // return this.http.post<User>(
-  //   `${environment.BASE_API}/v1/auth/login`,
-  //   credentials
-  // );
-}
-  
-  // login(credentials: LoginCredentials): Observable<User> {
-  //   return this.http.post<User>(
-  //     `${environment.BASE_API}/v1/auth/login`,
-  //     credentials
-  //   );
-  // }
+    return this.http.post<User>(`${environment.BASE_API}/v1/auth/login`, credentials);
+  }
+
+  refreshAccessToken(refreshToken: string): Observable<refreshTokenResponse> {
+    return this.http.post<refreshTokenResponse>(`${environment.BASE_API}/v1/auth/refresh-token`, { refreshToken });
+  }
 
   logout() {
     // Remove access token from local storage
     // Remove user role from local storage
-    this.clearAccessToken();
+    this.clearToken();
     this.clearUserRole();
     this.localStorageService.removeItem('userId');
-    this.router.navigate(['auth/login'])
+    this.router.navigate(['auth/login']);
   }
 }
