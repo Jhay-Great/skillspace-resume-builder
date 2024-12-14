@@ -19,7 +19,7 @@ export class ProgrammeService {
   updatingProgram = false;
   duplicatingProgram = false;
   currentUpdatingProgram: Programme | null = null;
-  changesHistory!: ProgrammeChangeHistory[] 
+  changesHistory!: ProgrammeChangeHistory[];
 
   // programme to move or delete
   programmeToMoveOrDelete!: Programme;
@@ -57,7 +57,7 @@ export class ProgrammeService {
       .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
-        console.log(this.allProgrammes);
+        this.successToast('Programmes Updated Successfully');
       });
   }
   // get all quizes(assesment for badges)
@@ -83,16 +83,23 @@ export class ProgrammeService {
   // publish programmes
   publishProgram(id: number, programme: Programme) {
     const programmeData = programme;
-    // make api call
-    this.http.put(environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`, programmeData);
     // update the status in the ui
     this.allProgrammes.map((programme: Programme) => {
       if (programme.id === programmeData.id) {
         programme.status = 'PUBLISHED';
       }
     });
+    // make api call
+    this.http
+      .put(environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`, programmeData)
+      .subscribe((response) => {
+        console.log('published', response);
+      });
 
     this.successToast('Programme published successfully');
+    setTimeout(() => {
+      this.getPrograms();
+    }, 1000);
   }
 
   // move to draft
@@ -102,6 +109,8 @@ export class ProgrammeService {
         programme.status = 'DRAFT';
       }
     });
+    // update programmes
+    this.getPrograms();
   }
 
   // update programmes
@@ -128,21 +137,18 @@ export class ProgrammeService {
       this.allProgrammes.forEach((programme: Programme) => {
         if (programme.id === id) {
           // Compare fields and track changes
-          Object.keys(data).forEach((key) => {
+          for (const key in data) {
             if (
               key in previous && // Ensure key exists in previous
-              data[key as keyof Programme] !== previous[key as keyof Programme] && // Strict comparison
-              !(data[key as keyof Programme] == null && previous[key as keyof Programme] == null) // Handle null/undefined
+              data[key as keyof Programme] !== previous[key as keyof Programme] // Compare values
             ) {
               changedFields.push(key);
             }
-          });
-
+          }
           // Update the programme with new data
           Object.assign(programme, data); // Only update the matching program
         }
       });
-      console.log(changedFields);
     }
 
     // check if status is published then add changes made
@@ -159,11 +165,14 @@ export class ProgrammeService {
       .subscribe({
         next: (_data) => {
           this.successToast('Programme updated successfully');
+          // update programmes
+          this.getPrograms();
         },
         error: (error) => {
           this.showError(error.error.message);
         },
       });
+
     // set updating to false
     this.updatingProgram = false;
   }
@@ -178,6 +187,8 @@ export class ProgrammeService {
         next: (_data) => {
           this.successToast('Programme deleted successfully');
           this.allProgrammes = this.allProgrammes.filter((programme: Programme) => programme.id !== id);
+          // update programmes
+          this.getPrograms();
         },
         error: (error) => {
           this.showError(error.error.message);

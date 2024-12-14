@@ -234,7 +234,6 @@ export class CompanyComponent {
   openChangeHistoryTable(data: ChangeHistory[]) {
     // assings an array of currently clicked programme history
     this.programmeService.changesHistory = data;
-    console.log(this.programmeService.changesHistory);
     if (!this.changeHistoryTable) this.changeHistoryTable = true;
   }
 
@@ -253,42 +252,48 @@ export class CompanyComponent {
     if (duplicate) {
       this.programmeService.duplicatingProgram = true;
     }
+
     this.programmeService.currentUpdatingProgram = programme;
     this.openForm();
+
+    // hide changeHistory table if opened
+    this.hideChangeHistoryTable();
   }
 
-  // date filter function
-  formatSelectedDate(event: Date) {
-    const selectedDate = event;
-    // Get the day, month, and year
-    const day = selectedDate.getDate();
-    const month = selectedDate.toLocaleString('default', { month: 'long' }); // "June"
-    const year = selectedDate.getFullYear();
-    // Get the day suffix (st, nd, rd, th)
-    const suffix = this.getDaySuffix(day);
-    // Format the date as "4th June 2023"
-    return `${day}${suffix} ${month} ${year}`;
+  formatToDateString(input: string | Date): string {
+    const date = new Date(input);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
+  // formats time and date for changeHistory Display
   formatDateWithTime(input: string): string {
     const date = new Date(input);
-  
+
     // Format the day with suffix (e.g., 13th, 1st)
     const day = date.getDate();
     const daySuffix =
-      day % 10 === 1 && day !== 11 ? 'st' :
-      day % 10 === 2 && day !== 12 ? 'nd' :
-      day % 10 === 3 && day !== 13 ? 'rd' : 'th';
-  
+      day % 10 === 1 && day !== 11
+        ? 'st'
+        : day % 10 === 2 && day !== 12
+          ? 'nd'
+          : day % 10 === 3 && day !== 13
+            ? 'rd'
+            : 'th';
+
     // Format the month
     const month = date.toLocaleString('default', { month: 'long' });
-  
+
     // Get the year
     const year = date.getFullYear();
-  
+
     // Format the time (HH:mm)
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-  
+
     // Combine everything
     return `${day}${daySuffix} ${month} ${year}: ${hours}:${minutes}`;
   }
