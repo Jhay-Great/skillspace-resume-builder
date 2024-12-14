@@ -1,15 +1,22 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
-import { CreateQuizData, getAllQuizzesResponse, getQuizBylocationParams } from '../../models/assessments.model';
-import { AllQuizzes } from '@src/app/feature/assessment-taking/models/quiz-taking.model';
-import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
+import { CreateQuizData, getQuizBylocationParams } from '../../models/assessments.model';
+import { catchError, map, Observable, retry, take } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AssessmentCreationService {
   createQuizVisible = signal(false);
   updateQuizVisible = signal(false);
+
+  skillsQuizData = signal<any[]>([]);
+  localRepositoryData = signal<any[]>([]);
+  globalRepositoryData = signal<any[]>([]);
+
+  isSkillsQiuzLoading = signal<boolean>(true);
+  isLocalRepositoryLoading = signal<boolean>(true);
+  isGlobalRepositoryLoading = signal<boolean>(true);
 
   showCreateQuizModal() {
     this.createQuizVisible.set(true);
@@ -35,8 +42,15 @@ export class AssessmentCreationService {
   getAllQuizzes(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.BASE_API}/v1/quizzes/getAllQuizzes`).pipe(
       take(1),
+      retry(3),
       map((res: any) => {
+        this.skillsQuizData.set(res.data.content);
+        this.isSkillsQiuzLoading.set(false);
         return res.data.content;
+      }),
+      catchError((error) => {
+        this.isSkillsQiuzLoading.set(false);
+        throw error;
       })
     );
   }
@@ -53,8 +67,27 @@ export class AssessmentCreationService {
       })
       .pipe(
         take(1),
+        retry(3),
         map((res: any) => {
+          if (params.location === 'local') {
+            this.localRepositoryData.set(res.data.content);
+            this.isLocalRepositoryLoading.set(false);
+          }
+          if (params.location === 'global') {
+            this.globalRepositoryData.set(res.data.content);
+            this.isGlobalRepositoryLoading.set(false);
+          }
+
           return res.data.content;
+        }),
+        catchError((error) => {
+          if (params.location === 'local') {
+            this.isLocalRepositoryLoading.set(false);
+            return error;
+          } else {
+            this.isGlobalRepositoryLoading.set(false);
+            return error;
+          }
         })
       );
   }
@@ -67,13 +100,42 @@ export class AssessmentCreationService {
       .pipe(
         take(1),
         map((res: any) => {
+          const updatedQuiz = res.data;
+          // find the quiz id in all the various data and update it with the current Response.data.content
+
+          // Find the quiz in the skillsQuizData signal and update it
+          this.skillsQuizData.set(
+            this.skillsQuizData().map((quiz) => (quiz.id === quizId ? { ...quiz, ...updatedQuiz } : quiz))
+          );
+
+          if (updatedQuiz.isGlobal === true) {
+            // Check if that quiz is in local data and remove it from local data
+            this.localRepositoryData.set(this.localRepositoryData().filter((quiz) => quiz.id !== quizId));
+
+            // Check if the quiz is not already in global data, then add it
+            const existingGlobalQuiz = this.globalRepositoryData().find((quiz) => quiz.id === quizId);
+            if (!existingGlobalQuiz) {
+              this.globalRepositoryData.set([...this.globalRepositoryData(), updatedQuiz]);
+            }
+          }
           return res.data.content;
         })
       );
   }
 
   deleteQuiz(quizId: number) {
-    return this.http.delete<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/delete`);
+    return this.http.delete<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/delete`).pipe(
+      take(1),
+      map((res: any) => {
+        // Update the signals after deleting a quiz
+        this.skillsQuizData.set(this.skillsQuizData().filter((quiz) => quiz.id !== quizId));
+        // update the local/global signals 
+        this.localRepositoryData.set(this.localRepositoryData().filter((quiz) => quiz.id !== quizId));
+        this.globalRepositoryData.set(this.globalRepositoryData().filter((quiz) => quiz.id !== quizId));
+
+        return res; 
+      })
+    );
   }
 
   updateQuiz(formData: Partial<CreateQuizData>, quizId: number) {
