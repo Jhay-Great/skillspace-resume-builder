@@ -51,14 +51,35 @@ export const hasError = function (form: FormGroup, controlName: string) {
   return null;
 };
 
+// export const extractUpdatedFields = function <T extends object>(formData: T, initialData: T): Partial<T> {
+//   const differences: Partial<T> = {};
+
+//   for (const key in formData) {
+//     if (formData[key] !== initialData[key]) {
+//       differences[key] = formData[key];
+//     }
+//   }
+
+//   return differences;
+// };
+
 export const extractUpdatedFields = function <T extends object>(formData: T, initialData: T): Partial<T> {
   const differences: Partial<T> = {};
 
   for (const key in formData) {
-    if (formData[key] !== initialData[key]) {
-      differences[key] = formData[key];
+    const formValue = formData[key];
+    const initialValue = initialData[key];
+
+    if (Array.isArray(formValue) && Array.isArray(initialValue)) {
+      // Compare arrays by stringifying or deep comparison
+      if (JSON.stringify(formValue) !== JSON.stringify(initialValue)) {
+        differences[key] = formValue;
+      }
+    } else if (formValue !== initialValue) {
+      differences[key] = formValue;
     }
   }
 
   return differences;
 };
+
