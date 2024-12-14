@@ -7,6 +7,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { createFromData } from '@src/app/shared/utils/file-upload';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 import { CreateQuizData } from '../../models/assessments.model';
+import { Observable } from 'rxjs';
 
 interface Question {
   description: string;
@@ -28,13 +29,15 @@ export class QuizFormComponent implements OnInit {
   questionImages: Record<number, File | null> = {};
   questionImagePreviews: Record<number, string | ArrayBuffer | null> = {};
   @Output() submitQuiz = new EventEmitter<CreateQuizData>();
-  @Input() isUpdate = false;
+  @Input() quizId!: number | null;
+
 
   constructor(
     private fb: FormBuilder,
     private assessmentCreationService: AssessmentCreationService
   ) {
     this.quizForm = this.fb.group({});
+    // this.quiz$ = this.assessmentCreationService.getQuizById(this.quizId as number);
   }
 
   createOptionsFormGroup(): FormGroup {
@@ -55,6 +58,18 @@ export class QuizFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.quizId) {
+      this.assessmentCreationService.getQuizById(this.quizId as number).subscribe({
+        next: (quiz) => {
+          console.log('Quiz by id from component: ', quiz);
+          this.patchFormWithQuizData(quiz);
+        },
+        error: (err) => {
+          console.log('error from get quiz by Id: ', err);
+        },
+      });
+    }
+
     this.quizForm = this.fb.group({
       name: ['', Validators.required],
       duration: ['', Validators.required],
@@ -62,7 +77,36 @@ export class QuizFormComponent implements OnInit {
       badge: ['', Validators.required],
       isGlobal: [false],
       retakeOption: ['', Validators.required],
-      questions: this.fb.array([this.createQuestionFormGroup()]),
+      questions: this.fb.array(this.quizId ? [] : [this.createQuestionFormGroup()]), // if it is create quiz then initialize questions with one empty question else initialize questions with empty array
+    });
+  }
+
+  patchFormWithQuizData(quiz: any): void {
+    this.quizForm.patchValue({
+      name: quiz.name,
+      duration: quiz.duration,
+      passMark: quiz.passMark,
+      badge: quiz.badge,
+      isGlobal: quiz.isGlobal,
+      retakeOption: quiz.retakeOption,
+    });
+
+    // Populate questions
+    const questionsArray = this.questions;
+    quiz.questions.forEach((question: any) => {
+      const questionGroup = this.fb.group({
+        description: [question.description, Validators.required],
+        points: [question.points, Validators.required],
+        options: this.fb.array(
+          question.options.map((option: any) =>
+            this.fb.group({
+              text: [option.text, Validators.required],
+              isCorrect: [option.isCorrect],
+            })
+          )
+        ),
+      });
+      questionsArray.push(questionGroup);
     });
   }
 
@@ -140,7 +184,7 @@ export class QuizFormComponent implements OnInit {
     }));
 
     // const formData = createFromData(formValue);
-    console.log("create quiz data: ", formValue)
+    // console.log('create quiz data: ', formValue);
     this.submitQuiz.emit(formValue);
   }
 
