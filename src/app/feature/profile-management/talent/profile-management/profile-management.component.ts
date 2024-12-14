@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormArray, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormArray, FormGroup, FormBuilder, Validators, FormsModule, FormControl } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // local imports
 import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
@@ -22,6 +23,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { Status } from '@src/app/core/interfaces/interfaces';
 import { CalendarModule } from 'primeng/calendar';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
+import { ProfileManagementService } from '../../services/profile-management.service';
+import { onFileUpload } from '@shared/utils/file-upload';
+import { getFormControl } from '@shared/utils/form-utils';
+import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/shared/utils/password.validator';
 
 @Component({
   selector: 'app-profile-management',
@@ -61,18 +66,23 @@ export class ProfileManagementComponent {
   // education form status
   status: Status[] = [];
   defaultNumberCountry: CountryISO = CountryISO.Ghana;
+  logo: string | null = null;
+  cv: string | null = null;
+  transcript: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private profileManagementService: ProfileManagementService,
+    private destroyRef: DestroyRef,
   ) {
     // perfonal details form
     this.personalDetailsForm = this.fb.group({
-      displayName: [''],
+      fullName: ['', Validators.required],
       email: [''],
-      phoneNumber: [''],
+      contact: ['', Validators.required],
       introduction: [''],
-      CV: [''],
+      CV: ['', Validators.required],
       projectLinks: this.fb.array([]),
     });
     // education form
@@ -89,10 +99,10 @@ export class ProfileManagementComponent {
     });
     // security form
     this.securityForm = this.fb.group({
-      oldPassword: [''],
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      // oldPassword: [''],
+      newPassword: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
       confirmPassword: ['', [Validators.required]],
-    });
+    }, {validators: confirmPasswordValidator('newPassword', 'confirmPassword')});
   }
 
   // getter for portfolio form array
@@ -100,9 +110,10 @@ export class ProfileManagementComponent {
     return this.personalDetailsForm.get('projectLinks') as FormArray;
   }
   // getter for phone number
-  // get contactControl() {
-  //   return this.companyDetailsForm.get('contact') as FormControl<string | null>;
-  // }
+  get contactControl() {
+    return this.personalDetailsForm.get('contact') as FormControl<string | null>;
+    // return getFormControl(this.personalDetailsForm, 'contact') as FormControl<string | null>;
+  }
 
   // get Countries for form
   getCountries() {
@@ -131,6 +142,8 @@ export class ProfileManagementComponent {
   }
 
   ngOnInit() {
+    // update profile
+    this.populateField();
     // fetches countries for edycation form
     this.getCountries();
     // assings status for education select dropdown
@@ -148,4 +161,33 @@ export class ProfileManagementComponent {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+    onUpload(file: File | null, controlName: string): void {
+      if (file?.type === 'application/pdf') {
+        onFileUpload(this.personalDetailsForm, file, controlName);
+        return;
+      }
+  
+      if (file?.type === 'image/png') {
+        onFileUpload(this.educationForm, file, controlName);
+        return;
+      }
+    }
+
+    populateField() {
+      // getting talent data
+      this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: response => {
+          console.log(response);
+          this.personalDetailsForm.patchValue(response);
+          this.educationForm.patchValue(response);
+          const emailControl = getFormControl(this.personalDetailsForm, 'email');
+          emailControl?.disable();
+
+        },
+        error: error => {
+          console.log(error);
+        }
+      })
+    }
 }

@@ -24,7 +24,13 @@
       <div class="form-wrap">
         <form [formGroup]="personalDetailsForm">
           <!-- drag and drop -->
-          <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/*'" />
+          <app-drag-n-drop-file-input
+            [label]="'Profile Picture'"
+            [accept]="'image/png'"
+            [previewUpload]="logo"
+            (uploadedFile)="onUpload($event, 'logo')"
+          />
+          <!-- <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/png'" /> -->
           <!-- talent name -->
           <div class="card flex flex-wrap justify-content-center gap-3">
             <label for="username">Display Name</label>
@@ -34,7 +40,11 @@
             </p>
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-user" />
-              <input type="text" pInputText placeholder="Enter company name " />
+              <input type="text" 
+                pInputText 
+                placeholder="Enter display name " 
+                formControlName="fullName"
+              />
             </p-iconField>
           </div>
 
@@ -44,7 +54,12 @@
             <p class="description-txt">{{ educationDescription }}</p>
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-envelope" />
-              <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
+              <input class="email" 
+                type="text"
+                pInputText 
+                placeholder="amalitech.ghana@gmail.com" 
+                formControlName="email"
+              />
             </p-iconField>
           </div>
 
@@ -53,6 +68,7 @@
             <label for="username">Phone number</label>
             <p class="description-txt">{{ educationDescription }}</p>
             <ngx-material-intl-tel-input
+              [fieldControl]="contactControl"
               [iconMakeCall]="false"
               [enablePlaceholder]="true"
               [autoSelectedCountry]="defaultNumberCountry"
@@ -73,7 +89,7 @@
           </div>
 
           <!-- upload cv -->
-          <app-drag-n-drop-file-input [label]="'Upload CV'" [accept]="'application/pdf'" />
+          <app-drag-n-drop-file-input [label]="'Upload CV'" [accept]="'.pdf'" />
 
           <!-- port folio and project links -->
           <div formArrayName="projectLinks">
