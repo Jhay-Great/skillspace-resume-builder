@@ -156,6 +156,16 @@
       padding-inline-start: 0.8rem;
     }
   }
+
+  // save changes button
+  .save-changes-btn {
+    @include mix.primary-button(fit-content);
+    height: fit-content;
+    position: absolute;
+    top: 0.65rem;
+    right: 1rem;
+    padding: 0.5rem 0.75rem;
+}
 }
 
 // prime ng styling

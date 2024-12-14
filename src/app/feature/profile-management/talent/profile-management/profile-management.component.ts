@@ -19,14 +19,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProfileService } from '../../profile service/profile.service';
 import { CountriesData, Country } from '@src/app/core/interfaces/interfaces';
 import { DropdownModule } from 'primeng/dropdown';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Status } from '@src/app/core/interfaces/interfaces';
 import { CalendarModule } from 'primeng/calendar';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { ProfileManagementService } from '../../services/profile-management.service';
-import { onFileUpload } from '@shared/utils/file-upload';
-import { getFormControl } from '@shared/utils/form-utils';
+import { createFromData, onFileUpload } from '@shared/utils/file-upload';
+import { extractUpdatedFields, getFormControl } from '@shared/utils/form-utils';
 import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/shared/utils/password.validator';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
+import { TalentProfile } from '@src/app/core/interfaces/profile-management.interface';
 
 @Component({
   selector: 'app-profile-management',
@@ -69,12 +72,16 @@ export class ProfileManagementComponent {
   logo: string | null = null;
   cv: string | null = null;
   transcript: string | null = null;
+  activeTabIndex = 0;
+  formData!: TalentProfile;
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
     private profileManagementService: ProfileManagementService,
     private destroyRef: DestroyRef,
+    private toastService: ToastService,
+    private localStorageService: LocalStorageService,
   ) {
     // perfonal details form
     this.personalDetailsForm = this.fb.group({
@@ -82,8 +89,10 @@ export class ProfileManagementComponent {
       email: [''],
       contact: ['', Validators.required],
       introduction: [''],
-      CV: ['', Validators.required],
-      projectLinks: this.fb.array([]),
+      cv: ['', Validators.required],
+      linkedIn: [''],
+      instagram: [''],
+      portfolioLinks: this.fb.array([]),
     });
     // education form
     this.educationForm = this.fb.group({
@@ -107,7 +116,7 @@ export class ProfileManagementComponent {
 
   // getter for portfolio form array
   get portfolios() {
-    return this.personalDetailsForm.get('projectLinks') as FormArray;
+    return this.personalDetailsForm.get('portfolioLinks') as FormArray;
   }
   // getter for phone number
   get contactControl() {
@@ -132,23 +141,23 @@ export class ProfileManagementComponent {
 
   // add project links
   addProjectLink() {
-    const projectLinks = this.personalDetailsForm.get('projectLinks') as FormArray;
-    projectLinks.push(this.fb.control(''));
+    const portfolioLinks = this.personalDetailsForm.get('portfolioLinks') as FormArray;
+    portfolioLinks.push(this.fb.control(''));
   }
   // remove project link
   removeProjectLink(index: number) {
-    const projectLinks = this.personalDetailsForm.get('projectLinks') as FormArray;
-    projectLinks.removeAt(index);
+    const portfolioLinks = this.personalDetailsForm.get('portfolioLinks') as FormArray;
+    portfolioLinks.removeAt(index);
   }
 
   ngOnInit() {
     // update profile
     this.populateField();
-    // fetches countries for edycation form
+    // fetches countries for education form
     this.getCountries();
-    // assings status for education select dropdown
+    // assigns status for education select dropdown
     this.status = [{ label: 'Graduated' }, { label: 'Still in school' }];
-    // add inputfield for project link in perfonal details form
+    // add inputfield for project link in personal details form
     this.addProjectLink();
   }
 
@@ -162,14 +171,14 @@ export class ProfileManagementComponent {
     this.destroy$.complete();
   }
 
-    onUpload(file: File | null, controlName: string): void {
+    onUpload(file: File | null, form:FormGroup, controlName: string): void {
       if (file?.type === 'application/pdf') {
-        onFileUpload(this.personalDetailsForm, file, controlName);
+        onFileUpload(form, file, controlName);
         return;
       }
   
       if (file?.type === 'image/png') {
-        onFileUpload(this.educationForm, file, controlName);
+        onFileUpload(form, file, controlName);
         return;
       }
     }
@@ -179,6 +188,7 @@ export class ProfileManagementComponent {
       this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: response => {
           console.log(response);
+          this.formData = response;
           this.personalDetailsForm.patchValue(response);
           this.educationForm.patchValue(response);
           const emailControl = getFormControl(this.personalDetailsForm, 'email');
@@ -190,4 +200,83 @@ export class ProfileManagementComponent {
         }
       })
     }
+
+    validateForm(form: FormGroup) {
+      const formControls = form.controls;
+
+      for (const controlName in formControls) {
+        const control = formControls[controlName];
+  
+        // If any control is invalid, return null and stop processing
+        if (control.invalid) {
+          this.toastService.showError('Invalid data', 'Ensure all fields are filled properly', 'top-right');
+          return null;
+        }
+      }
+  
+      if (form.invalid) {
+        this.toastService.showError('Invalid data', 'Ensure all fields are filled', 'top-right');
+        return null;
+      }
+      // returns the form values when form is valid
+      return form.value;
+    }
+
+      onSubmit<T>(data: T) {
+        const id: number | null = this.localStorageService.getItem('userId');
+        if (!id) return;
+        this.profileManagementService
+          .updateTalentProfile(data, id)
+          .pipe(take(1))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Successful', 'Successfully updated', 'top-right');
+            },
+            error: (errorMessage) => {
+              this.toastService.showError('Error', errorMessage, 'top-right');
+            },
+          });
+      }
+
+      onSaveChanges(): void {
+        switch (this.activeTabIndex) {
+        //   // company details form
+          case 0: {
+            const companyDetailsData = this.validateForm(this.personalDetailsForm);
+            console.log(companyDetailsData);
+            if (!companyDetailsData) return;
+            const { instagram, linkedIn, contact, fullName, introduction, cv, portfolioLinks } = companyDetailsData;
+            const data = { socialMediaLinks: [instagram, linkedIn], contact, introduction,  cv, portfolioLinks, fullName }
+            const updatedFormData = extractUpdatedFields(data, this.formData);
+            console.log(data, updatedFormData);
+            // const companyFormData = createFromData(data);
+            const formData = createFromData(updatedFormData);
+            this.onSubmit(formData);
+            break;
+          }
+          // document form data
+          case 1: {
+            const educationData = this.validateForm(this.educationForm);
+            if (!educationData) return;
+
+            const updatedFormData = extractUpdatedFields(educationData, this.formData);            // const documentFormData = createFromData(documentData);
+            const formData = createFromData(updatedFormData);
+            this.onSubmit(formData);
+            break;
+          }
+          // security form data
+          case 2: {
+            // const securityData = this.validateForm(this.securityForm);
+            // if (!securityData) return;
+            // this.onSubmit(securityData);
+            // this.securityForm.reset();
+            break;
+          }
+        }
+      }
+
+      onTabChange(event: { index: number }): void {
+        this.activeTabIndex = event.index;
+        console.log(this.activeTabIndex);
+      }
 }

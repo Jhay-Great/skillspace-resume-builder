@@ -10,6 +10,7 @@ import { environment } from '@src/environments/environment.development';
 export class ProfileManagementService {
   private BASE_API: string = environment.BASE_API;
   private COMPANY_PROFILE_ENDPOINT: string = environment.COMPANY_PROFILE_ENDPOINT;
+  private TALENT_PROFILE_ENDPOINT: string = environment.TALENT_PROFILE_ENDPOINT;
   private GET_COMPANY_DATA: string = environment.GET_COMPANY_PROFILE_ENDPOINT;
   private GET_TALENT_DATA: string = environment.GET_TALENT_PROFILE_ENDPOINT;
 
@@ -51,7 +52,7 @@ export class ProfileManagementService {
 
   // UPDATE talent profile
   updateTalentProfile<T>(data: T, id: number) {
-    return this.update(`${this.BASE_API}/${this.COMPANY_PROFILE_ENDPOINT}/${id}/update`, data).pipe(
+    return this.update(`${this.BASE_API}/${this.TALENT_PROFILE_ENDPOINT}/${id}/update`, data).pipe(
       retry(3),
       catchError((error) => {
         const { message } = error.error;

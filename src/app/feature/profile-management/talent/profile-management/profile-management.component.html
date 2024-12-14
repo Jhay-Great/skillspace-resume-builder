@@ -4,7 +4,7 @@
 />
 
 <section class="container">
-  <p-tabView>
+  <p-tabView  [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- closable text -->
     <!-- <section class="pro-reminder">
       <div class="reminder-tes">
@@ -28,7 +28,7 @@
             [label]="'Profile Picture'"
             [accept]="'image/png'"
             [previewUpload]="logo"
-            (uploadedFile)="onUpload($event, 'logo')"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'logo')"
           />
           <!-- <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/png'" /> -->
           <!-- talent name -->
@@ -85,14 +85,23 @@
               This is your opening introduction to employers. Keep it concise and impactful, showcasing your strengths,
               skills, and experience (in not more than 250 words).
             </p>
-            <textarea rows="5" cols="30" pInputTextarea placeholder="Enter your introduction here"> </textarea>
+            <textarea rows="5" cols="30" 
+              pInputTextarea 
+              placeholder="Enter your introduction here"
+              formControlName="introduction"
+            ></textarea>
           </div>
 
           <!-- upload cv -->
-          <app-drag-n-drop-file-input [label]="'Upload CV'" [accept]="'.pdf'" />
+          <app-drag-n-drop-file-input 
+            [label]="'Upload CV'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="cv"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'cv')"
+          />
 
           <!-- port folio and project links -->
-          <div formArrayName="projectLinks">
+          <div formArrayName="portfolioLinks">
             <label>Portfolio & project links</label>
             <p class="description-txt">{{ educationDescription }}</p>
             @for (link of portfolios.controls; track $index) {
@@ -126,12 +135,16 @@
             <div class="links-wrap">
               <div class="link-name-icon">
                 <img src="../../../../../assets/svgs/linkedIn.svg" alt="img" />
-                <p class="description-txt">linkedIn</p>
+                <p class="description-txt">LinkedIn</p>
               </div>
               <div>
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a social media link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="linkedIn"
+                  />
                 </p-iconField>
               </div>
             </div>
@@ -144,7 +157,11 @@
               <div>
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a social media link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="instagram"
+                  />
                 </p-iconField>
               </div>
             </div>
@@ -168,7 +185,11 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="p-input-icon-left">
                 <i class="pi pi-building"></i>
-                <input id="name" type="text" pInputText formControlName="name" placeholder="Enter school's name" />
+                <input id="name" 
+                  type="text" 
+                  pInputText 
+                  formControlName="name" 
+                  placeholder="Enter school's name" />
               </div>
             </div>
 
@@ -213,7 +234,7 @@
                   />
 
                   <div>
-                    <img src="../../../../../assets/svgs/arrow-drop-down.svg" alt="arrow" />
+                    <img src="assets/svgs/arrow-drop-down.svg" alt="arrow" />
                   </div>
 
                   <span>{{ educationForm.get('country')?.value.name }}</span>
@@ -303,7 +324,12 @@
               </div>
             </div>
           </div>
-          <app-drag-n-drop-file-input [label]="'Academic transcript'" [accept]="'application/pdf'" />
+          <app-drag-n-drop-file-input 
+            [label]="'Academic transcript'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="transcript"
+            (uploadedFile)="onUpload($event, educationForm, 'transcript')"
+          />
         </form>
       </div>
     </p-tabPanel>
@@ -339,4 +365,5 @@
       </div>
     </p-tabPanel>
   </p-tabView>
+  <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
 </section>
