@@ -51,7 +51,7 @@
           <span class="font-bold">
             {{ tabMenu.label }}
           </span>
-          <p-badge value="8" severity="info" />
+          <p-badge [value]="tabMenu.data().length" severity="info" />
         </button>
       </ng-template>
     </p-tabMenu>
@@ -97,7 +97,7 @@
               <td>{{ data.name }}</td>
               <td>{{ data.isGlobal ? 'Global Repository' : 'Local Repository' }}</td>
               <!-- <td>{{ data.location }}</td> -->
-              <td>{{ data.duration }}</td>
+              <td>{{ data.duration }} minutes</td>
               <td>{{ data.passMark }}%</td>
               <td>{{ data.createdAt | date: 'MMMM dd, yyyy' }}</td>
 
@@ -131,6 +131,7 @@
 
                     <!-- remove svg -->
                     <p-button
+                      (click)="confirmDeleteModal(data)"
                       severity="secondary"
                       icon="pi pi-times-circle"
                       label="Remove"

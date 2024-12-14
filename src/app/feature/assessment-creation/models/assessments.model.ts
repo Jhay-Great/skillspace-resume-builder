@@ -61,3 +61,9 @@ export interface getAllQuizzesResponse {
   statusCode: number;
   success: boolean;
 }
+
+
+export interface AssessmentsTab { 
+  label: string; 
+  data: any
+}

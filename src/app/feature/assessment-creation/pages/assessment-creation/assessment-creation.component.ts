@@ -1,6 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { TabMenuList } from '@src/app/core/interfaces/interfaces';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -12,7 +11,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RippleModule } from 'primeng/ripple';
 import { Table, TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { Quiz } from '../../models/assessments.model';
+import { AssessmentsTab, Quiz } from '../../models/assessments.model';
 import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
@@ -50,8 +49,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrl: './assessment-creation.component.scss',
 })
 export class AssessmentCreationComponent implements OnInit {
-  tabMenuList: TabMenuList[] = [];
-  activeItem!: TabMenuList;
+  tabMenuList: AssessmentsTab[] = [];
+  activeItem!: AssessmentsTab;
   activeTabData = 0;
   // tabMenu
   skillsQuiz = true;
@@ -70,7 +69,11 @@ export class AssessmentCreationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tabMenuList = [{ label: 'Skills quiz' }, { label: 'Local repository' }, { label: 'Global repository' }];
+    this.tabMenuList = [
+      { label: 'Skills quiz', data: this.assessmentCreationService.skillsQuizData },
+      { label: 'Local repository', data: this.assessmentCreationService.localRepositoryData },
+      { label: 'Global repository', data: this.assessmentCreationService.globalRepositoryData },
+    ];
     this.activeItem = this.tabMenuList[0];
 
     this.assessmentCreationService.getAllQuizzes().subscribe();
