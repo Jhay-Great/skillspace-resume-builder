@@ -3,6 +3,7 @@ import { QuizFormComponent } from '../quiz-form/quiz-form.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { Subscription } from 'rxjs';
+import { CreateQuizData } from '../../models/assessments.model';
 
 @Component({
   selector: 'app-update-quiz',
@@ -19,17 +20,21 @@ export class UpdateQuizComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  onSubmit(formData: FormData) {
-    // if (this.quizId) {
-    //   this.assessmentCreationService.updateQuiz(formData, this.quizId).subscribe({
-    //     next: () => {
-    //       this.toastService.showSuccess('Quiz updated successfully', 'Success');
-    //     },
-    //     error: (err) => {
-    //       this.toastService.showError(err.error.message, 'Error');
-    //     },
-    //   });
-    // }
+  onSubmit(quizData: CreateQuizData) {
+    if (quizData) {
+      console.log('quiz data for update: ', quizData);
+      this.assessmentCreationService.updateQuiz(quizData, this.quizId as number).subscribe({
+        next: (res) => {
+          console.log('response from update quiz: ', res);
+          this.toastService.showSuccess('Success', 'Quiz updated Successfully.');
+          this.assessmentCreationService.updateQuizVisible.set(false)
+        },
+        error: (err) => {
+          console.log("error from quiz update: ", err)
+          this.toastService.showError('Error', 'Quiz update Error');
+        },
+      });
+    }
   }
 
   ngOnInit() {
@@ -37,6 +42,4 @@ export class UpdateQuizComponent implements OnInit {
       // fetch the quiz by its id and pass it to the form
     }
   }
-
-
 }
