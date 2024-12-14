@@ -15,7 +15,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 // import interface
-import { mockDetails, Programme, TabMenuList } from '../../../core/interfaces/interfaces';
+import {
+  ChangeHistory,
+  mockDetails,
+  Programme,
+  ProgrammeChangeHistory,
+  TabMenuList,
+} from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import programme service
 import { ProgrammeService } from '../program-service/programme.service';
@@ -225,8 +231,11 @@ export class CompanyComponent {
     this.changeHistoryTable = false;
   }
   // open history table
-  openChangeHistoryTable() {
-    this.changeHistoryTable = true;
+  openChangeHistoryTable(data: ChangeHistory[]) {
+    // assings an array of currently clicked programme history
+    this.programmeService.changesHistory = data;
+    console.log(this.programmeService.changesHistory);
+    if (!this.changeHistoryTable) this.changeHistoryTable = true;
   }
 
   // publish programme
@@ -259,6 +268,29 @@ export class CompanyComponent {
     const suffix = this.getDaySuffix(day);
     // Format the date as "4th June 2023"
     return `${day}${suffix} ${month} ${year}`;
+  }
+  formatDateWithTime(input: string): string {
+    const date = new Date(input);
+  
+    // Format the day with suffix (e.g., 13th, 1st)
+    const day = date.getDate();
+    const daySuffix =
+      day % 10 === 1 && day !== 11 ? 'st' :
+      day % 10 === 2 && day !== 12 ? 'nd' :
+      day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+  
+    // Format the month
+    const month = date.toLocaleString('default', { month: 'long' });
+  
+    // Get the year
+    const year = date.getFullYear();
+  
+    // Format the time (HH:mm)
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+    // Combine everything
+    return `${day}${daySuffix} ${month} ${year}: ${hours}:${minutes}`;
   }
 
   // Function to get the suffix for the day (st, nd, rd, th)

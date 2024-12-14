@@ -3,7 +3,7 @@ import { environment } from '@src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { take } from 'rxjs';
-import { Programme, Quiz, QuizResponse } from '@src/app/core/interfaces/interfaces';
+import { Programme, ProgrammeChangeHistory, Quiz, QuizResponse } from '@src/app/core/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +19,7 @@ export class ProgrammeService {
   updatingProgram = false;
   duplicatingProgram = false;
   currentUpdatingProgram: Programme | null = null;
+  changesHistory!: ProgrammeChangeHistory[] 
 
   // programme to move or delete
   programmeToMoveOrDelete!: Programme;
@@ -56,7 +57,7 @@ export class ProgrammeService {
       .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
-        // console.log(this.allProgrammes);
+        console.log(this.allProgrammes);
       });
   }
   // get all quizes(assesment for badges)
@@ -107,13 +108,13 @@ export class ProgrammeService {
   updateProgram(id: number | null, data: Programme) {
     // duplicating a program
     if (this.duplicatingProgram) {
-      console.log('Duplicating');
       const duplicatedData = { ...data };
       duplicatedData.status = 'DRAFT';
       this.createProgram(duplicatedData);
       this.duplicatingProgram = false;
       return;
     }
+
     const changedFields: string[] = [];
     const dataToSend = {
       programs: data,
@@ -124,18 +125,24 @@ export class ProgrammeService {
     if (this.currentUpdatingProgram) {
       const previous = this.currentUpdatingProgram;
 
-      this.allProgrammes.map((programme: Programme) => {
+      this.allProgrammes.forEach((programme: Programme) => {
         if (programme.id === id) {
           // Compare fields and track changes
-          for (const key in data) {
-            if (data[key as keyof Programme] !== previous[key as keyof Programme]) {
+          Object.keys(data).forEach((key) => {
+            if (
+              key in previous && // Ensure key exists in previous
+              data[key as keyof Programme] !== previous[key as keyof Programme] && // Strict comparison
+              !(data[key as keyof Programme] == null && previous[key as keyof Programme] == null) // Handle null/undefined
+            ) {
               changedFields.push(key);
             }
-          }
+          });
+
           // Update the programme with new data
-          Object.assign(programme, data);
+          Object.assign(programme, data); // Only update the matching program
         }
       });
+      console.log(changedFields);
     }
 
     // check if status is published then add changes made

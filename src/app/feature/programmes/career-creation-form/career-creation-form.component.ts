@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { environment } from '@src/environments/environment.development';
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';

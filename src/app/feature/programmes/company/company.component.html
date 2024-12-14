@@ -153,7 +153,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p (click)="updateProgramme(data,false)" class="interactive-txt">Update</p>
+                  <p (click)="updateProgramme(data, false)" class="interactive-txt">Update</p>
                   <!-- duplicate icon -->
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -162,7 +162,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p (click)="updateProgramme(data,true)" class="interactive-txt">Duplicate</p>
+                  <p (click)="updateProgramme(data, true)" class="interactive-txt">Duplicate</p>
 
                   <!-- remove svg -->
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -203,7 +203,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p (click)="updateProgramme(data,false)" class="interactive-txt">Update</p>
+                  <p (click)="updateProgramme(data, false)" class="interactive-txt">Update</p>
                   <!-- history icon -->
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -215,7 +215,7 @@
                   </svg>
 
                   <!--  -->
-                  <p (click)="openChangeHistoryTable()" class="interactive-txt">History</p>
+                  <p (click)="openChangeHistoryTable(data.programHistory)" class="interactive-txt">History</p>
 
                   <!-- remove svg -->
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +250,11 @@
       <!--  -->
 
       <!-- Change History Data Table -->
-      <p-table [value]="mockHistory" *ngIf="publishedProgrammes && changeHistoryTable" class="historytable">
+      <p-table
+        [value]="programmeService.changesHistory"
+        *ngIf="publishedProgrammes && changeHistoryTable"
+        class="historytable"
+      >
         <ng-template pTemplate="header">
           <th>
             Change History
@@ -274,8 +278,8 @@
           <tr class="history-td">
             <td>
               <div class="history-wrap">
-                <p class="date">{{ data.name }}</p>
-                <p class="infotext">{{ data.description }}</p>
+                <p class="date">{{ formatDateWithTime(data.changeTimestamp) }}</p>
+                <p class="infotext">{{ data.changeDescription }}</p>
               </div>
             </td>
           </tr>

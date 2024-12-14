@@ -82,8 +82,14 @@ export interface QuizOptions {
 }
 
 export interface QuizResponse {
-  data: {content:any};
+  data: { content: any };
   message: string;
   statusCode: number;
   success: boolean;
+}
+
+export interface ProgrammeChangeHistory {
+  id: number;
+  changeTimestamp: Date;
+  changeDescription: string;
 }
