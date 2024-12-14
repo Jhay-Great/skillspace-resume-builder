@@ -15,8 +15,9 @@ export class ProgrammeService {
   ) {}
 
   allProgrammes: Programme[] = [];
-  allQuizzes!: Quiz[] ;
+  allQuizzes!: Quiz[];
   updatingProgram = false;
+  duplicatingProgram = false;
   currentUpdatingProgram: Programme | null = null;
 
   // programme to move or delete
@@ -55,6 +56,7 @@ export class ProgrammeService {
       .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
+        // console.log(this.allProgrammes);
       });
   }
   // get all quizes(assesment for badges)
@@ -103,6 +105,15 @@ export class ProgrammeService {
 
   // update programmes
   updateProgram(id: number | null, data: Programme) {
+    // duplicating a program
+    if (this.duplicatingProgram) {
+      console.log('Duplicating');
+      const duplicatedData = { ...data };
+      duplicatedData.status = 'DRAFT';
+      this.createProgram(duplicatedData);
+      this.duplicatingProgram = false;
+      return;
+    }
     const changedFields: string[] = [];
     const dataToSend = {
       programs: data,
@@ -146,6 +157,8 @@ export class ProgrammeService {
           this.showError(error.error.message);
         },
       });
+    // set updating to false
+    this.updatingProgram = false;
   }
 
   // delete program

@@ -15,11 +15,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 // import interface
-import {
-  mockDetails,
-  Programme,
-  TabMenuList,
-} from '../../../core/interfaces/interfaces';
+import { mockDetails, Programme, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import programme service
 import { ProgrammeService } from '../program-service/programme.service';
@@ -42,7 +38,7 @@ import { DateSuffixPipe } from '@src/app/core/pipes/datesuffix/date-suffix.pipe'
     ButtonModule,
     CalendarModule,
     DateSuffixPipe,
-    TagComponent
+    TagComponent,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -117,11 +113,7 @@ export class CompanyComponent {
   changeHistoryTable = false;
 
   ngOnInit() {
-    this.tabMenuList = [
-      { label: 'Career programmes' },
-      { label: 'Saved drafts' },
-      { label: 'Published programmes' },
-    ];
+    this.tabMenuList = [{ label: 'Career programmes' }, { label: 'Saved drafts' }, { label: 'Published programmes' }];
 
     this.activeItem = this.tabMenuList[0];
     // fetch programmes
@@ -246,11 +238,16 @@ export class CompanyComponent {
     this.programmeService.deleteProgramme(id, programme);
   }
   // update programme
-  updateProgramme(programme: Programme) {
+  updateProgramme(programme: Programme, duplicate: boolean) {
+    // enable updating
     this.programmeService.updatingProgram = true;
+    if (duplicate) {
+      this.programmeService.duplicatingProgram = true;
+    }
     this.programmeService.currentUpdatingProgram = programme;
     this.openForm();
   }
+
   // date filter function
   formatSelectedDate(event: Date) {
     const selectedDate = event;
