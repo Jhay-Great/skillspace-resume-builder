@@ -73,7 +73,7 @@
         }
       </div>
 
-      @if (getActiveTabData() | async; as data) {
+      @if (getActiveTabData(); as data) {
         <p-table #dt1 [value]="data" [globalFilterFields]="['name']">
           <!-- table header -->
 
@@ -90,15 +90,16 @@
           </ng-template>
 
           <!-- table body -->
+
           <ng-template pTemplate="body" let-data>
             <!-- Skills Quiz -->
             <tr class="stylerowsbackground" *ngIf="skillsQuiz">
               <td>{{ data.name }}</td>
-              <td>{{ data.isGlobal? "Global Repository" : "Local Repository" }}</td>
+              <td>{{ data.isGlobal ? 'Global Repository' : 'Local Repository' }}</td>
               <!-- <td>{{ data.location }}</td> -->
               <td>{{ data.duration }}</td>
-              <td>{{ data.passMark  }}%</td>
-              <td>{{ data.createdAt | date:"MMMM dd, yyyy" }}</td>
+              <td>{{ data.passMark }}%</td>
+              <td>{{ data.createdAt | date: 'MMMM dd, yyyy' }}</td>
 
               <td class="action">
                 <p-button
@@ -166,6 +167,20 @@
             </tr>
           </ng-template>
         </p-table>
+      }
+      <!-- Loading spinner  -->
+      @if (getActiveTabLoadingState()) {
+        <div class="custom-loader">
+          <div class="loader">
+            <p-progressSpinner
+              aria-label="Loading"
+              styleClass="loader-lg"
+              strokeWidth="4"
+              animationDuration=".5s"
+              [title]="'Loading contents...'"
+            />
+          </div>
+        </div>
       }
 
       <!--  -->
