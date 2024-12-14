@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { TabMenuList } from '@src/app/core/interfaces/interfaces';
 import { BadgeModule } from 'primeng/badge';
@@ -20,8 +20,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { CreateQuizComponent } from '../../components/create-quiz/create-quiz.component';
 import { UpdateQuizComponent } from '../../components/update-quiz/update-quiz.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
-import { Observable, of } from 'rxjs';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-assessment-creation',
@@ -43,8 +43,8 @@ import { ToastService } from '@src/app/core/services/toast-service/toast.service
     TabViewModule,
     CreateQuizComponent,
     UpdateQuizComponent,
-    AsyncPipe,
     DatePipe,
+    ProgressSpinnerModule,
   ],
   templateUrl: './assessment-creation.component.html',
   styleUrl: './assessment-creation.component.scss',
@@ -61,41 +61,35 @@ export class AssessmentCreationComponent implements OnInit {
   selectedQuiz: Quiz | null = null;
 
   @ViewChild('tieredMenu') tieredMenu!: TieredMenu;
-
   @ViewChild('dt1') dt1!: Table;
-
-  skillsQuizData$!: Observable<any[]>;
-  localRepositoryData$!: Observable<any[]>;
-  globalRepositoryData$!: Observable<any[]>;
-
-
 
   constructor(
     private confirmationService: ConfirmationService,
     public assessmentCreationService: AssessmentCreationService,
     private toastService: ToastService
-  ) {
-    this.skillsQuizData$ = this.assessmentCreationService.getAllQuizzes();
-    this.localRepositoryData$ = this.assessmentCreationService.getQuizzesByLocation({
-      location: 'local',
-      page: 0,
-      size: 10,
-    });
-    this.globalRepositoryData$ = this.assessmentCreationService.getQuizzesByLocation({
-      location: 'global',
-      page: 0,
-      size: 10,
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.tabMenuList = [{ label: 'Skills quiz' }, { label: 'Local repository' }, { label: 'Global repository' }];
     this.activeItem = this.tabMenuList[0];
 
-    // this.skillsQuizData$.subscribe((data) => console.log('Quiz data: ', data));
-    // this.globalRepositoryData$.subscribe((data) => console.log('Global repository data: ', data));
-    // this.localRepositoryData$.subscribe((data) => console.log('Local repository data: ', data));
+    this.assessmentCreationService.getAllQuizzes().subscribe();
+    this.assessmentCreationService
+      .getQuizzesByLocation({
+        location: 'local',
+        page: 0,
+        size: 10,
+      })
+      .subscribe();
+    this.assessmentCreationService
+      .getQuizzesByLocation({
+        location: 'global',
+        page: 0,
+        size: 10,
+      })
+      .subscribe();
 
+    console.log('skills quiz data: ', this.assessmentCreationService.skillsQuizData());
     this.tieredMenuItems = [
       {
         label: 'Move',
@@ -179,13 +173,26 @@ export class AssessmentCreationComponent implements OnInit {
   getActiveTabData() {
     switch (this.activeTabData) {
       case 0:
-        return this.skillsQuizData$; 
+        return this.assessmentCreationService.skillsQuizData();
       case 1:
-        return this.localRepositoryData$; 
+        return this.assessmentCreationService.localRepositoryData();
       case 2:
-        return this.globalRepositoryData$; 
+        return this.assessmentCreationService.globalRepositoryData();
       default:
-        return this.skillsQuizData$;
+        return this.assessmentCreationService.skillsQuizData();
+    }
+  }
+
+  getActiveTabLoadingState() {
+    switch (this.activeTabData) {
+      case 0:
+        return this.assessmentCreationService.isSkillsQiuzLoading();
+      case 1:
+        return this.assessmentCreationService.isLocalRepositoryLoading();
+      case 2:
+        return this.assessmentCreationService.isGlobalRepositoryLoading();
+      default:
+        return this.assessmentCreationService.isSkillsQiuzLoading();
     }
   }
 
@@ -228,7 +235,6 @@ export class AssessmentCreationComponent implements OnInit {
           });
         } else {
           // make a request to move to local repository
-
           this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'local').subscribe({
             next: (res) => {
               console.log('response from move to global: ', res);
