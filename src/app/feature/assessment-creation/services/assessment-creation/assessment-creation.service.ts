@@ -36,7 +36,22 @@ export class AssessmentCreationService {
   constructor(private http: HttpClient) {}
 
   createQuiz(quiz: CreateQuizData) {
-    return this.http.post<FormData>(`${environment.BASE_API}/v1/quizzes/create`, quiz);
+    return this.http.post<FormData>(`${environment.BASE_API}/v1/quizzes/create`, quiz).pipe(
+      map((res: any) => {
+        console.log('response from create: ', res);
+        // Add the new quiz data to the skills quiz data
+        this.skillsQuizData.set([...this.skillsQuizData(), res.data]);
+
+        // Check if the quiz is global or local and update the respective data
+        if (res.data.isGlobal) {
+          this.globalRepositoryData.set([...this.globalRepositoryData(), res.data]);
+        } else {
+          this.localRepositoryData.set([...this.localRepositoryData(), res.data]);
+        }
+
+        return res.data;
+      })
+    );
   }
 
   getAllQuizzes(): Observable<any[]> {
@@ -50,6 +65,22 @@ export class AssessmentCreationService {
       }),
       catchError((error) => {
         this.isSkillsQiuzLoading.set(false);
+        throw error;
+      })
+    );
+  }
+
+  //  v1/quizzes/${id}/getQuizzesById
+
+  getQuizById(quizId: number): Observable<any[]> {
+    return this.http.get<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/getQuizById `).pipe(
+      take(1),
+      retry(3),
+      map((res: any) => {
+        console.log('quiz by id: ', res);
+        return res.data;
+      }),
+      catchError((error) => {
         throw error;
       })
     );
@@ -117,6 +148,12 @@ export class AssessmentCreationService {
             if (!existingGlobalQuiz) {
               this.globalRepositoryData.set([...this.globalRepositoryData(), updatedQuiz]);
             }
+          } else {
+            // Check if the quiz is in global data and remove it
+            this.globalRepositoryData.set(this.globalRepositoryData().filter((quiz) => quiz.id !== quizId));
+
+            // Add the quiz to the local data
+            this.localRepositoryData.set([...this.localRepositoryData(), updatedQuiz]);
           }
           return res.data.content;
         })
@@ -129,16 +166,45 @@ export class AssessmentCreationService {
       map((res: any) => {
         // Update the signals after deleting a quiz
         this.skillsQuizData.set(this.skillsQuizData().filter((quiz) => quiz.id !== quizId));
-        // update the local/global signals 
+        // update the local/global signals
         this.localRepositoryData.set(this.localRepositoryData().filter((quiz) => quiz.id !== quizId));
         this.globalRepositoryData.set(this.globalRepositoryData().filter((quiz) => quiz.id !== quizId));
 
-        return res; 
+        return res;
       })
     );
   }
 
   updateQuiz(formData: Partial<CreateQuizData>, quizId: number) {
-    return this.http.put<any>(`${environment.BASE_API}/v1/quizzes/update/${quizId}`, formData);
+    return this.http.put<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/update`, formData).pipe(
+      take(1),
+      map((res: any) => {
+        const updatedQuiz = res.data;
+
+        // Update the skillsQuizData signal
+        this.skillsQuizData.set(
+          this.skillsQuizData().map((quiz) => (quiz.id === quizId ? { ...quiz, ...updatedQuiz } : quiz))
+        );
+
+        // Check if the updated quiz is global or local and update the data
+        if (updatedQuiz.isGlobal) {
+          // Update global repository data
+          this.globalRepositoryData.set(
+            this.globalRepositoryData().map((quiz) => (quiz.id === quizId ? updatedQuiz : quiz))
+          );
+          // Remove from local if it exists
+          this.localRepositoryData.set(this.localRepositoryData().filter((quiz) => quiz.id !== quizId));
+        } else {
+          // Update local repository data
+          this.localRepositoryData.set(
+            this.localRepositoryData().map((quiz) => (quiz.id === quizId ? updatedQuiz : quiz))
+          );
+          // Remove from global if it exists
+          this.globalRepositoryData.set(this.globalRepositoryData().filter((quiz) => quiz.id !== quizId));
+        }
+
+        return res.data;
+      })
+    );
   }
 }
