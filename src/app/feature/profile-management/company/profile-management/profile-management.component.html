@@ -1,4 +1,4 @@
-<app-page-header-description
+<app-page-header-description 
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
@@ -40,14 +40,14 @@
           <label for="username">Phone number</label>
           <p class="description">{{ description }}</p>
           <ngx-material-intl-tel-input
-            [fieldControl]="contactControl"
-            [iconMakeCall]="false"
-            [enablePlaceholder]="true"
-            [autoSelectedCountry]="selectedCountry"
-            placeholder="Enter your telephone number"
-            [required]="true"
-            [autoIpLookup]="false"
-          ></ngx-material-intl-tel-input>
+          [fieldControl]="contactControl"
+          [iconMakeCall]="false"
+          [enablePlaceholder]="true"
+          [autoSelectedCountry]="selectedCountry"
+          placeholder="Enter your telephone number"
+          [required]="true"
+          [autoIpLookup]="false"
+        ></ngx-material-intl-tel-input>
         </div>
 
         <!-- website -->
@@ -81,6 +81,8 @@
           (uploadedFile)="onUpload($event, 'certificate')"
         />
       </form>
+       
+      
     </p-tabPanel>
 
     <!-- security -->
@@ -93,16 +95,16 @@
 
       <form [formGroup]="securityForm">
         <!-- old password -->
-        <app-input-field
+        <app-input-field 
           [label]="'Old Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
           [placeholder]="'Old password'"
           [isDisabled]="true"
         />
-
+        
         <!-- new password -->
-        <app-input-field
+        <app-input-field 
           [label]="'New Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
@@ -118,7 +120,7 @@
         }
 
         <!-- confirm password -->
-        <app-input-field
+        <app-input-field 
           [label]="'Confirm Password'"
           [type]="'password'"
           [svgIcon]="'lock'"
@@ -136,4 +138,5 @@
     </p-tabPanel>
   </p-tabView>
   <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
+
 </section>

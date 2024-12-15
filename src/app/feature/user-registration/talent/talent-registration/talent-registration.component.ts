@@ -96,4 +96,5 @@ export class TalentRegistrationComponent implements OnInit {
   reset() {
     this.talentForm.reset();
   }
+  
 }

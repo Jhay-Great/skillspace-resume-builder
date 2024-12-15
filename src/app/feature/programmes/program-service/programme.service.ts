@@ -25,7 +25,7 @@ export class ProgrammeService {
   programmeToMoveOrDelete!: Programme;
 
   // Toast notification
-  private successToast(message: string = 'Programme created successfully') {
+  private successToast(message: string = 'Programme created successfullt') {
     this.toastService.showSuccess('Congratulations', message, 'top-right');
   }
   private showError(message: string) {
@@ -181,8 +181,9 @@ export class ProgrammeService {
   deleteProgramme(id: number, _programme: Programme) {
     // make api call
     this.http
-      .delete(environment.BASE_API + environment.DELETE_PROGRAMME + `${id}`)
-      .pipe(take(1))
+      .delete(environment.BASE_API + environment.DELETE_PROGRAMME + `${id}`).pipe(
+        take(1)
+      )
       .subscribe({
         next: (_data) => {
           this.successToast('Programme deleted successfully');

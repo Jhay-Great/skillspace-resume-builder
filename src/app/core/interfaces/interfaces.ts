@@ -13,23 +13,23 @@ export interface mockDetails {
 
 // carrier Programme
 export interface Programme {
-  id: number;
-  userId: number;
-  name: string;
-  description: string;
-  requirements: string[];
+  id:             number;
+  userId:         number;
+  name:           string;
+  description:    string;
+  requirements:   string[];
   requiredBadges: string[];
   optionalBadges: string[];
-  startDate: Date;
-  endDate: Date;
-  status: string;
-  changeHistory?: ChangeHistory[];
+  startDate:      Date;
+  endDate:        Date;
+  status:         string;
+  changeHistory?:  ChangeHistory[];
 }
 
 export interface ChangeHistory {
-  id: number;
-  programs: string;
-  changeTimestamp: Date;
+  id:                number;
+  programs:          string;
+  changeTimestamp:   Date;
   changeDescription: string;
 }
 
