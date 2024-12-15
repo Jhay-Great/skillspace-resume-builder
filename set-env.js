@@ -20,18 +20,12 @@ if (key && value) {
 const envConfigFile =`export const environment = {
   production: ${process.env['NODE_ENV'] === 'production'} || '',
 
-    // base api
     COMPANY_PROGRAMMES_BASE_API: ${process.env['COMPANY_PROGRAMMES_BASE_API']} || '',
     NEW_ADDRESS: ${process.env['NEW_ADDRESS']} || '',
     AUTH_ADDRESS: ${process.env['AUTH_ADDRESS']} || '',
-    // savior's deployment
-    // BASE_API: ${process.env['BASE_API']} || '',
-    // amalitech server
     BASE_API: ${process.env['BASE_API']} || '',
-    // PORT NUMBER
     AUTH_PORT: ${process.env['AUTH_PORT']} || '',
     SERVICE_PORT: ${process.env['SERVICE_PORT']} || '',
-    // endpoints
     COMPANY_ENDPOINT: ${process.env['COMPANY_ENDPOINT']} || '',
     TALENT_ENDPOINT: ${process.env['TALENT_ENDPOINT']} || '',
     OTP_ENDPOINT: ${process.env['OTP_ENDPOINT']} || '',
@@ -61,7 +55,7 @@ const envConfigFile =`export const environment = {
   
 };
 `;
-// console.log(process.env);
+console.log(process.env);
 // // Write the environment file
 fs.writeFileSync(targetPath, envConfigFile, 'utf8');
 // console.log(`Environment file created at ${targetPath}`); 
