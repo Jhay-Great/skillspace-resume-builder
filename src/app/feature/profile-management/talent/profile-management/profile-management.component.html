@@ -108,7 +108,11 @@
               <div class="projeclink-wrap">
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a portfolio link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a portfolio link to your profile" 
+                    [formControlName]="$index"
+                  />
                 </p-iconField>
                 <div class="btns-wrap">
                   @if ($index === portfolios.controls.length - 1) {

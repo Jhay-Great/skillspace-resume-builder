@@ -85,7 +85,7 @@ export class ProfileManagementComponent {
   ) {
     // personal details form
     this.personalDetailsForm = this.fb.group({
-      // profilePicture: [''],
+      profilePicture: [''],
       fullName: ['', Validators.required],
       email: [''],
       contact: ['', Validators.required],
@@ -196,7 +196,15 @@ export class ProfileManagementComponent {
           this.formData = response;
           
           this.personalDetailsForm.patchValue(response);
+          this.personalDetailsForm.patchValue({
+            linkedIn: response.socialMediaLinks[0],
+            instagram: response.socialMediaLinks[1],
+          });
           this.educationForm.patchValue(response);
+          this.educationForm.patchValue({
+            educationStartDate: new Date(response.educationStartDate),
+            educationEndDate: new Date(response.educationEndDate),
+          });
           const emailControl = getFormControl(this.personalDetailsForm, 'email');
           emailControl?.disable();
 
@@ -251,22 +259,39 @@ export class ProfileManagementComponent {
         //   // company details form
           case 0: {
             const companyDetailsData = this.validateForm(this.personalDetailsForm);
-            console.log(companyDetailsData);
+            console.log('initial value from form: ', companyDetailsData);
             if (!companyDetailsData) return;
-            const { instagram, linkedIn, contact, fullName, introduction, cv, portfolioLinks } = companyDetailsData;
-            const data = { socialMediaLinks: [instagram, linkedIn], contact, introduction,  cv, portfolioLinks, fullName }
-            const modified = { 
-              ...data, 
-              socialMediaLinks: this.arrayToCommaSeparatedString([instagram, linkedIn]), 
-              portfolioLinks: this.arrayToCommaSeparatedString(portfolioLinks)
-            };
-            console.log('modified data: ', modified);
+            const { instagram, linkedIn, contact, fullName, introduction, cv, portfolioLinks, profilePicture } = companyDetailsData;
+            const data = { socialMediaLinks: [linkedIn, instagram], contact, introduction,  cv, portfolioLinks, fullName,  }
+            // const modified = { 
+            //   ...data, 
+            //   socialMediaLinks: this.arrayToCommaSeparatedString([instagram, linkedIn]), 
+            //   portfolioLinks: this.arrayToCommaSeparatedString(portfolioLinks)
+            // };
+            // console.log('modified data: ', modified);
             // const data = { socialMediaLinks: this.arrayToCommaSeparatedString([instagram, linkedIn]), contact, introduction,  cv, portfolioLinks, fullName }
             const updatedFormData = extractUpdatedFields(data, this.formData); 
-            console.log(data, updatedFormData);
+            console.log('data after comparison: ', data, updatedFormData);
+
+
+            const transformedData = {
+              ...updatedFormData,
+              ...(updatedFormData.socialMediaLinks && {
+                socialMediaLinks: this.arrayToCommaSeparatedString(updatedFormData.socialMediaLinks),
+              }),
+              ...(updatedFormData.portfolioLinks && {
+                portfolioLinks: this.arrayToCommaSeparatedString(updatedFormData.portfolioLinks),
+              }),
+            };
+            
+            console.log('Transformed Data to be sent to server: ', transformedData);
+            
+            
             // const companyFormData = createFromData(data);
             // const formData = createFromData(updatedFormData);
-            // this.onSubmit(formData);
+            const formData = createFromData(transformedData);
+            console.log('formdata: ', formData);
+            this.onSubmit(formData);
             break;
           }
           // document form data
