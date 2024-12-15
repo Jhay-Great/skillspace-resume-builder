@@ -11,7 +11,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RippleModule } from 'primeng/ripple';
 import { Table, TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { AssessmentsTab, Quiz } from '../../models/assessments.model';
+import { AssessmentCreationQuiz, AssessmentsTab } from '../../models/assessments.model';
 import { ExtendedConfirmation } from '@src/app/core/interfaces/confirmation.interface';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
@@ -57,7 +57,7 @@ export class AssessmentCreationComponent implements OnInit {
   localRepository = false;
   globalRepository = false;
   tieredMenuItems: MenuItem[] | undefined;
-  selectedQuiz: Quiz | null = null;
+  selectedQuiz: AssessmentCreationQuiz | null = null;
 
   @ViewChild('tieredMenu') tieredMenu!: TieredMenu;
   @ViewChild('dt1') dt1!: Table;
@@ -125,7 +125,7 @@ export class AssessmentCreationComponent implements OnInit {
         label: 'Delete',
         icon: 'pi pi-trash',
         command: () => {
-          this.confirmDeleteModal(this.selectedQuiz as Quiz);
+          this.confirmDeleteModal(this.selectedQuiz as AssessmentCreationQuiz);
         },
       },
     ];
@@ -207,7 +207,7 @@ export class AssessmentCreationComponent implements OnInit {
     this.assessmentCreationService.showUpdateQuizModal();
   }
 
-  openTieredMenu(event: Event, quiz: Quiz) {
+  openTieredMenu(event: Event, quiz: AssessmentCreationQuiz) {
     this.selectedQuiz = quiz;
     this.tieredMenu.toggle(event);
   }
@@ -256,7 +256,7 @@ export class AssessmentCreationComponent implements OnInit {
     } as ExtendedConfirmation);
   }
 
-  confirmDeleteModal(item: Quiz) {
+  confirmDeleteModal(item: AssessmentCreationQuiz) {
     this.confirmationService.confirm({
       header: 'Delete skills quiz',
       message: `Are you sure you want to delete ${item.name}? This action cannot be reversed.`,
