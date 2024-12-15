@@ -7,15 +7,35 @@ export interface Quiz {
   dateCreated: string;
 }
 
+// export interface createQuiz {
+
+// }
+
+export interface AssessmentCreationQuiz {
+  id: number;
+  name: string;
+  badge: string;
+  duration: number;
+  passMark: number;
+  isGlobal: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  retakeOption: number;
+  totalScore: number;
+  questions: createQuizQuestion[];
+}
+
 export interface createQuizOptions {
-  description: string;
+  id: number;
+  text: string;
   isCorrect: boolean;
 }
 
 export interface createQuizQuestion {
+  id: number;
   description: string;
-  points: string;
-  imageFile?: string;
+  points: number;
   options: createQuizOptions[];
 }
 
@@ -36,34 +56,49 @@ export interface getQuizBylocationParams {
   size: number;
 }
 
-export interface getAllQuizzesResponse {
-  data: {
-    content: Quiz[]; // Replace 'Quiz' with the appropriate interface/type for your quiz objects
-    empty: boolean;
-    first: boolean;
-    last: boolean;
-    number: number;
-    numberOfElements: number;
-    pageable: {
-      pageNumber: number;
-      pageSize: number;
-      sort: any[]; // Replace 'any[]' with the appropriate type if the sort structure is defined
-      offset: number;
-      paged: boolean;
-      unpaged: boolean;
-    };
-    size: number;
-    sort: any[]; // Replace 'any[]' with the appropriate type
-    totalElements: number;
-    totalPages: number;
-  };
+export interface AssessmentCreationResponse {
   message: string;
   statusCode: number;
   success: boolean;
 }
+export interface ResponseData {
+  content: AssessmentCreationQuiz[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: number[];
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  size: number;
+  sort: number[];
+  totalElements: number;
+  totalPages: number;
+};
 
+export interface getQuizByIdResponse extends AssessmentCreationResponse {
+  data: AssessmentCreationQuiz;
+}
 
-export interface AssessmentsTab { 
-  label: string; 
-  data: any
+export interface getQuizzesByLocationResponse extends AssessmentCreationResponse {
+  data: ResponseData
+}
+
+export interface deleteQuizResponse extends AssessmentCreationResponse {
+  data: null
+}
+
+export interface getAllQuizzesResponse extends AssessmentCreationResponse {
+  data: ResponseData
+}
+
+export interface AssessmentsTab {
+  label: string;
+  data: any;
 }
