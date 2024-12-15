@@ -25,11 +25,12 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { ProfileManagementService } from '../../services/profile-management.service';
 import { createFromData, onFileUpload } from '@shared/utils/file-upload';
-import { extractUpdatedFields, getFormControl } from '@shared/utils/form-utils';
+import { extractUpdatedFields, getFormControl, hasError, hasFormError } from '@shared/utils/form-utils';
 import { confirmPasswordValidator, passwordStrengthValidator } from '@src/app/shared/utils/password.validator';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 import { TalentProfile } from '@src/app/core/interfaces/profile-management.interface';
+import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
 
 @Component({
   selector: 'app-profile-management',
@@ -50,7 +51,8 @@ import { TalentProfile } from '@src/app/core/interfaces/profile-management.inter
     InputFieldComponent,
     NgxMaterialIntlTelInputComponent,
     InputTextareaModule,
-  ],
+    FormErrorMessageComponent
+],
   templateUrl: './profile-management.component.html',
   styleUrl: './profile-management.component.scss',
 })
@@ -74,6 +76,10 @@ export class ProfileManagementComponent {
   transcript: string | null = null;
   activeTabIndex = 0;
   formData!: TalentProfile;
+
+  // reusable methods
+    hasFormError = hasFormError;
+    hasError = hasError;
 
   constructor(
     private fb: FormBuilder,
@@ -249,7 +255,7 @@ export class ProfileManagementComponent {
               this.toastService.showSuccess('Successful', 'Successfully updated', 'top-right');
             },
             error: (errorMessage) => {
-              this.toastService.showError('Error', errorMessage, 'top-right');
+              this.toastService.showError('Error', errorMessage ?? 'Sorry an unexpected error occurred', 'top-right');
             },
           });
       }
@@ -318,10 +324,11 @@ export class ProfileManagementComponent {
           }
           // security form data
           case 2: {
-            // const securityData = this.validateForm(this.securityForm);
-            // if (!securityData) return;
-            // this.onSubmit(securityData);
-            // this.securityForm.reset();
+            console.log(this.securityForm.value)
+            const securityData = this.validateForm(this.securityForm);
+            if (!securityData) return;
+            this.onSubmit(securityData);
+            this.securityForm.reset();
             break;
           }
         }

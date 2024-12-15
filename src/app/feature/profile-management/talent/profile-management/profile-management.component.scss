@@ -39,6 +39,12 @@
   .form-wrap {
     min-height: 20rem;
 
+    header {
+      width: 50%;
+      margin: auto;
+      padding: 0.5rem;
+    }
+
     form {
       // width: fit-content;\
       width: 50%;
