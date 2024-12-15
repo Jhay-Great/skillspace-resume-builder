@@ -56,54 +56,6 @@ export class CompanyComponent {
   deleteModal = false;
   // move to draft modal
   publishModal = false;
-
-  mockdraft: mockDetails[] = [
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th September 2023',
-      end: '10th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Data Science',
-      description: 'This programme is built for everyone',
-      start: '27th october 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th January 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-  ];
-
-  mockHistory: mockDetails[] = [
-    {
-      name: 'May 30th 2023',
-      description: 'Changed Programm Start Date',
-      start: '4th September 2023',
-      end: '10th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'May 20th 2023',
-      description: 'Changed: Program title',
-      start: '27th october 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'October 40th 1945',
-      description: 'Changed Programme end date',
-      start: '4th January 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-  ];
   // tabMenu
   careerProgrammes = true;
   savedDraft = false;
