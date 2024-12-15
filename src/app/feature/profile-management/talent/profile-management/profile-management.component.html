@@ -27,8 +27,8 @@
           <app-drag-n-drop-file-input
             [label]="'Profile Picture'"
             [accept]="'image/png'"
-            [previewUpload]="logo"
-            (uploadedFile)="onUpload($event, personalDetailsForm, 'logo')"
+            [previewUpload]="profilePicture"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'profilePicture')"
           />
           <!-- <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/png'" /> -->
           <!-- talent name -->
@@ -188,7 +188,7 @@
                 <input id="name" 
                   type="text" 
                   pInputText 
-                  formControlName="name" 
+                  formControlName="schoolName" 
                   placeholder="Enter school's name" />
               </div>
             </div>
@@ -203,7 +203,7 @@
                   id="address"
                   type="text"
                   pInputText
-                  formControlName="address"
+                  formControlName="schoolAddress"
                   placeholder="Enter address of school"
                 />
               </div>
@@ -296,7 +296,7 @@
                 [style]="{ width: '100%' }"
                 [options]="status"
                 placeholder="Select a City"
-                formControlName="status"
+                formControlName="educationStatus"
                 [editable]="true"
                 optionLabel="label"
               />
@@ -311,7 +311,7 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="dates-wrap">
                 <i class="pi pi-calendar"></i>
-                <p-calendar formControlName="startDate" />
+                <p-calendar formControlName="educationStartDate" />
               </div>
             </div>
             <!-- end date-->
@@ -320,7 +320,7 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="dates-wrap">
                 <i class="pi pi-calendar"></i>
-                <p-calendar formControlName="endDate" />
+                <p-calendar formControlName="educationEndDate" />
               </div>
             </div>
           </div>
@@ -328,7 +328,7 @@
             [label]="'Academic transcript'" 
             [accept]="'.pdf'" 
             [previewUpload]="transcript"
-            (uploadedFile)="onUpload($event, educationForm, 'transcript')"
+            (uploadedFile)="onUpload($event, educationForm, 'academicTranscript')"
           />
         </form>
       </div>

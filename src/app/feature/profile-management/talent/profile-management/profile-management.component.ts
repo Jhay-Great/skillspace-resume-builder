@@ -69,7 +69,7 @@ export class ProfileManagementComponent {
   // education form status
   status: Status[] = [];
   defaultNumberCountry: CountryISO = CountryISO.Ghana;
-  logo: string | null = null;
+  profilePicture: string | null = null;
   cv: string | null = null;
   transcript: string | null = null;
   activeTabIndex = 0;
@@ -83,8 +83,9 @@ export class ProfileManagementComponent {
     private toastService: ToastService,
     private localStorageService: LocalStorageService,
   ) {
-    // perfonal details form
+    // personal details form
     this.personalDetailsForm = this.fb.group({
+      // profilePicture: [''],
       fullName: ['', Validators.required],
       email: [''],
       contact: ['', Validators.required],
@@ -96,15 +97,15 @@ export class ProfileManagementComponent {
     });
     // education form
     this.educationForm = this.fb.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
+      schoolName: ['', Validators.required],
+      schoolAddress: ['', Validators.required],
       country: [this.selectedCountry, Validators.required],
       qualificationLevel: ['', Validators.required],
       programme: ['', Validators.required],
-      status: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      transcript: ['', Validators.required],
+      educationStatus: ['', Validators.required],
+      educationStartDate: ['', Validators.required],
+      educationEndDate: ['', Validators.required],
+      academicTranscript: ['', Validators.required],
     });
     // security form
     this.securityForm = this.fb.group({
@@ -188,7 +189,12 @@ export class ProfileManagementComponent {
       this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: response => {
           console.log(response);
+          const { cv, academicTranscript, profilePicture } = response;
+          this.cv = cv;
+          this.transcript = academicTranscript;
+          this.profilePicture = profilePicture;
           this.formData = response;
+          
           this.personalDetailsForm.patchValue(response);
           this.educationForm.patchValue(response);
           const emailControl = getFormControl(this.personalDetailsForm, 'email');
@@ -223,13 +229,15 @@ export class ProfileManagementComponent {
     }
 
       onSubmit<T>(data: T) {
+        console.log(data);
         const id: number | null = this.localStorageService.getItem('userId');
         if (!id) return;
         this.profileManagementService
           .updateTalentProfile(data, id)
           .pipe(take(1))
           .subscribe({
-            next: () => {
+            next: (response) => {
+              console.log(response);
               this.toastService.showSuccess('Successful', 'Successfully updated', 'top-right');
             },
             error: (errorMessage) => {
@@ -247,19 +255,38 @@ export class ProfileManagementComponent {
             if (!companyDetailsData) return;
             const { instagram, linkedIn, contact, fullName, introduction, cv, portfolioLinks } = companyDetailsData;
             const data = { socialMediaLinks: [instagram, linkedIn], contact, introduction,  cv, portfolioLinks, fullName }
-            const updatedFormData = extractUpdatedFields(data, this.formData);
+            const modified = { 
+              ...data, 
+              socialMediaLinks: this.arrayToCommaSeparatedString([instagram, linkedIn]), 
+              portfolioLinks: this.arrayToCommaSeparatedString(portfolioLinks)
+            };
+            console.log('modified data: ', modified);
+            // const data = { socialMediaLinks: this.arrayToCommaSeparatedString([instagram, linkedIn]), contact, introduction,  cv, portfolioLinks, fullName }
+            const updatedFormData = extractUpdatedFields(data, this.formData); 
             console.log(data, updatedFormData);
             // const companyFormData = createFromData(data);
-            const formData = createFromData(updatedFormData);
-            this.onSubmit(formData);
+            // const formData = createFromData(updatedFormData);
+            // this.onSubmit(formData);
             break;
           }
           // document form data
           case 1: {
             const educationData = this.validateForm(this.educationForm);
             if (!educationData) return;
+            const { country, ...remainingData } = educationData;
 
-            const updatedFormData = extractUpdatedFields(educationData, this.formData);            // const documentFormData = createFromData(documentData);
+            const updatedEducationData = {
+              ...remainingData,
+              schoolCountry: country?.name,
+              educationStatus: educationData.educationStatus?.label,
+              educationStartDate: this.formatDate(educationData.educationStartDate),
+              educationEndDate: this.formatDate(educationData.educationEndDate),
+            };
+
+            // console.log('updating country: ', updatedEducationData);
+
+            const updatedFormData = extractUpdatedFields(updatedEducationData, this.formData);        
+            console.log('updated data: ', updatedFormData);
             const formData = createFromData(updatedFormData);
             this.onSubmit(formData);
             break;
@@ -278,5 +305,13 @@ export class ProfileManagementComponent {
       onTabChange(event: { index: number }): void {
         this.activeTabIndex = event.index;
         console.log(this.activeTabIndex);
+      }
+
+      formatDate(date: Date): string {
+        return date.toISOString().split('T')[0];
+      }
+
+      arrayToCommaSeparatedString<T>(arr: T[]): string {
+        return arr.join(', ');
       }
 }
