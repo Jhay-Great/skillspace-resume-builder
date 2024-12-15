@@ -3,7 +3,7 @@ import { environment } from '@src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { take } from 'rxjs';
-import { Programme, Quiz, QuizResponse } from '@src/app/core/interfaces/interfaces';
+import { Programme, ProgrammeChangeHistory, Quiz, QuizResponse } from '@src/app/core/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +15,11 @@ export class ProgrammeService {
   ) {}
 
   allProgrammes: Programme[] = [];
-  allQuizzes!: Quiz[] ;
+  allQuizzes!: Quiz[];
   updatingProgram = false;
+  duplicatingProgram = false;
   currentUpdatingProgram: Programme | null = null;
+  changesHistory!: ProgrammeChangeHistory[];
 
   // programme to move or delete
   programmeToMoveOrDelete!: Programme;
@@ -55,6 +57,7 @@ export class ProgrammeService {
       .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
+        this.successToast('Programmes Updated Successfully');
       });
   }
   // get all quizes(assesment for badges)
@@ -80,16 +83,23 @@ export class ProgrammeService {
   // publish programmes
   publishProgram(id: number, programme: Programme) {
     const programmeData = programme;
-    // make api call
-    this.http.put(environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`, programmeData);
     // update the status in the ui
     this.allProgrammes.map((programme: Programme) => {
       if (programme.id === programmeData.id) {
         programme.status = 'PUBLISHED';
       }
     });
+    // make api call
+    this.http
+      .put(environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`, programmeData)
+      .subscribe((response) => {
+        console.log('published', response);
+      });
 
     this.successToast('Programme published successfully');
+    setTimeout(() => {
+      this.getPrograms();
+    }, 1000);
   }
 
   // move to draft
@@ -99,10 +109,21 @@ export class ProgrammeService {
         programme.status = 'DRAFT';
       }
     });
+    // update programmes
+    this.getPrograms();
   }
 
   // update programmes
   updateProgram(id: number | null, data: Programme) {
+    // duplicating a program
+    if (this.duplicatingProgram) {
+      const duplicatedData = { ...data };
+      duplicatedData.status = 'DRAFT';
+      this.createProgram(duplicatedData);
+      this.duplicatingProgram = false;
+      return;
+    }
+
     const changedFields: string[] = [];
     const dataToSend = {
       programs: data,
@@ -113,16 +134,19 @@ export class ProgrammeService {
     if (this.currentUpdatingProgram) {
       const previous = this.currentUpdatingProgram;
 
-      this.allProgrammes.map((programme: Programme) => {
+      this.allProgrammes.forEach((programme: Programme) => {
         if (programme.id === id) {
           // Compare fields and track changes
           for (const key in data) {
-            if (data[key as keyof Programme] !== previous[key as keyof Programme]) {
+            if (
+              key in previous && // Ensure key exists in previous
+              data[key as keyof Programme] !== previous[key as keyof Programme] // Compare values
+            ) {
               changedFields.push(key);
             }
           }
           // Update the programme with new data
-          Object.assign(programme, data);
+          Object.assign(programme, data); // Only update the matching program
         }
       });
     }
@@ -141,11 +165,16 @@ export class ProgrammeService {
       .subscribe({
         next: (_data) => {
           this.successToast('Programme updated successfully');
+          // update programmes
+          this.getPrograms();
         },
         error: (error) => {
           this.showError(error.error.message);
         },
       });
+
+    // set updating to false
+    this.updatingProgram = false;
   }
 
   // delete program
@@ -159,6 +188,8 @@ export class ProgrammeService {
         next: (_data) => {
           this.successToast('Programme deleted successfully');
           this.allProgrammes = this.allProgrammes.filter((programme: Programme) => programme.id !== id);
+          // update programmes
+          this.getPrograms();
         },
         error: (error) => {
           this.showError(error.error.message);

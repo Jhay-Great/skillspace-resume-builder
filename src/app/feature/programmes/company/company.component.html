@@ -25,14 +25,10 @@
       </div>
 
       <!-- date filter -->
-      <div
-        *ngIf="careerProgrammes"
-        [style]="{ marginLeft: '1rem' }"
-        class="flex align-items-center"
-      >
+      <div *ngIf="careerProgrammes" [style]="{ marginLeft: '1rem' }" class="flex align-items-center">
         <p-calendar
           [style]="{ width: '7rem' }"
-          (onSelect)="dt1.filter(formatSelectedDate($event), 'startDate', 'contains')"
+          (onSelect)="dt1.filter(formatToDateString($event), 'startDate', 'equals')"
           placeholder="Select Date"
           [showButtonBar]="true"
           (onClearClick)="dt1.filter(null, 'startDate', 'equals')"
@@ -68,13 +64,11 @@
           activeTabData === 0
             ? programmeService.allProgrammes
             : activeTabData === 1
-            ? programmeService.draftProgram()
-            : programmeService.publishedProgram()
+              ? programmeService.draftProgram()
+              : programmeService.publishedProgram()
         "
         [globalFilterFields]="['name']"
-        [ngClass]="
-          publishedProgrammes && changeHistoryTable ? 'shrink' : 'expand'
-        "
+        [ngClass]="publishedProgrammes && changeHistoryTable ? 'shrink' : 'expand'"
       >
         <!-- table header -->
 
@@ -95,27 +89,18 @@
           <!-- Career programmes -->
           <tr class="stylerowsbackground" *ngIf="careerProgrammes">
             <td>{{ data.name }}</td>
-            <td>{{ data.description.slice(0, 16) + "..." }}</td>
+            <td>{{ data.description.slice(0, 16) + '...' }}</td>
             <td>{{ data.startDate | dateSuffix }}</td>
             <td>{{ data.endDate | dateSuffix }}</td>
             <!--  ACTION REMEMBERANCE!! this class below will be applied conditionally using ngClass -->
             <td class="draft">
-              <!-- <span>{{ data.status }}</span> -->
               <app-tag [status]="data.status" />
             </td>
             <td class="action">
               <p-overlayPanel #op>
                 <div class="float">
-                  <p
-                    *ngIf="data.status === 'DRAFT'"
-                    (click)="confirmModal('publish', data)"
-                    label="Show"
-                  >
-                    Move
-                  </p>
-                  <p (click)="confirmModal('delete', data)" label="Show">
-                    Delete
-                  </p>
+                  <p *ngIf="data.status === 'DRAFT'" (click)="confirmModal('publish', data)" label="Show">Move</p>
+                  <p (click)="confirmModal('delete', data)" label="Show">Delete</p>
                 </div>
               </p-overlayPanel>
               <svg
@@ -161,44 +146,26 @@
                 </div>
                 <div class="tools">
                   <!-- update svg -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M4.20974 20.5201C4.1135 20.5211 4.01802 20.503 3.92877 20.467C3.83953 20.431 3.7583 20.3776 3.68974 20.3101C3.61115 20.2324 3.55067 20.1384 3.51264 20.0347C3.47461 19.931 3.45996 19.8201 3.46974 19.7101L3.77974 15.8701C3.79304 15.6917 3.87132 15.5245 3.99974 15.4001L15.0597 4.34007C15.676 3.76298 16.4959 3.45373 17.3397 3.48007C18.1781 3.48658 18.9826 3.81193 19.5897 4.39007C20.1721 4.98807 20.507 5.78403 20.5274 6.61849C20.5478 7.45296 20.2522 8.26433 19.6997 8.89007L8.62974 20.0001C8.50585 20.1235 8.34361 20.2011 8.16974 20.2201L4.27974 20.5701L4.20974 20.5201ZM5.20974 16.2601L4.99974 19.0001L7.73974 18.7501L18.6397 7.83007C18.8523 7.57855 18.9881 7.2713 19.0312 6.94485C19.0742 6.61839 19.0226 6.28643 18.8826 5.98842C18.7425 5.6904 18.5199 5.43886 18.2411 5.26366C17.9623 5.08846 17.639 4.99697 17.3097 5.00007C17.0933 4.98633 16.8764 5.01645 16.6719 5.08862C16.4674 5.16079 16.2796 5.27353 16.1197 5.42007L5.20974 16.2601Z"
                       fill="#64748B"
                     />
                   </svg>
                   <!--  -->
-                  <p (click)="updateProgramme(data)" class="interactive-txt">Update</p>
+                  <p (click)="updateProgramme(data, false)" class="interactive-txt">Update</p>
                   <!-- duplicate icon -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M19.53 8L14 2.47C13.8595 2.32931 13.6688 2.25018 13.47 2.25H11C10.2707 2.25 9.57118 2.53973 9.05546 3.05546C8.53973 3.57118 8.25 4.27065 8.25 5V6.25H7C6.27065 6.25 5.57118 6.53973 5.05546 7.05546C4.53973 7.57118 4.25 8.27065 4.25 9V19C4.25 19.7293 4.53973 20.4288 5.05546 20.9445C5.57118 21.4603 6.27065 21.75 7 21.75H14C14.7293 21.75 15.4288 21.4603 15.9445 20.9445C16.4603 20.4288 16.75 19.7293 16.75 19V17.75H17C17.7293 17.75 18.4288 17.4603 18.9445 16.9445C19.4603 16.4288 19.75 15.7293 19.75 15V8.5C19.7421 8.3116 19.6636 8.13309 19.53 8ZM14.25 4.81L17.19 7.75H14.25V4.81ZM15.25 19C15.25 19.3315 15.1183 19.6495 14.8839 19.8839C14.6495 20.1183 14.3315 20.25 14 20.25H7C6.66848 20.25 6.35054 20.1183 6.11612 19.8839C5.8817 19.6495 5.75 19.3315 5.75 19V9C5.75 8.66848 5.8817 8.35054 6.11612 8.11612C6.35054 7.8817 6.66848 7.75 7 7.75H8.25V15C8.25 15.7293 8.53973 16.4288 9.05546 16.9445C9.57118 17.4603 10.2707 17.75 11 17.75H15.25V19ZM17 16.25H11C10.6685 16.25 10.3505 16.1183 10.1161 15.8839C9.8817 15.6495 9.75 15.3315 9.75 15V5C9.75 4.66848 9.8817 4.35054 10.1161 4.11612C10.3505 3.8817 10.6685 3.75 11 3.75H12.75V8.5C12.7526 8.69811 12.8324 8.88737 12.9725 9.02747C13.1126 9.16756 13.3019 9.24741 13.5 9.25H18.25V15C18.25 15.3315 18.1183 15.6495 17.8839 15.8839C17.6495 16.1183 17.3315 16.25 17 16.25Z"
                       fill="#6B6B6B"
                     />
                   </svg>
                   <!--  -->
-                  <p>Duplicate</p>
+                  <p (click)="updateProgramme(data, true)" class="interactive-txt">Duplicate</p>
 
                   <!-- remove svg -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z"
                       fill="#64748B"
@@ -213,7 +180,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p class="interactive-txt">Remove</p>
+                  <p (click)="confirmModal('delete', data)" class="interactive-txt">Remove</p>
                 </div>
               </div>
             </td>
@@ -229,28 +196,16 @@
                 </div>
                 <div class="tools">
                   <!-- update svg -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M4.20974 20.5201C4.1135 20.5211 4.01802 20.503 3.92877 20.467C3.83953 20.431 3.7583 20.3776 3.68974 20.3101C3.61115 20.2324 3.55067 20.1384 3.51264 20.0347C3.47461 19.931 3.45996 19.8201 3.46974 19.7101L3.77974 15.8701C3.79304 15.6917 3.87132 15.5245 3.99974 15.4001L15.0597 4.34007C15.676 3.76298 16.4959 3.45373 17.3397 3.48007C18.1781 3.48658 18.9826 3.81193 19.5897 4.39007C20.1721 4.98807 20.507 5.78403 20.5274 6.61849C20.5478 7.45296 20.2522 8.26433 19.6997 8.89007L8.62974 20.0001C8.50585 20.1235 8.34361 20.2011 8.16974 20.2201L4.27974 20.5701L4.20974 20.5201ZM5.20974 16.2601L4.99974 19.0001L7.73974 18.7501L18.6397 7.83007C18.8523 7.57855 18.9881 7.2713 19.0312 6.94485C19.0742 6.61839 19.0226 6.28643 18.8826 5.98842C18.7425 5.6904 18.5199 5.43886 18.2411 5.26366C17.9623 5.08846 17.639 4.99697 17.3097 5.00007C17.0933 4.98633 16.8764 5.01645 16.6719 5.08862C16.4674 5.16079 16.2796 5.27353 16.1197 5.42007L5.20974 16.2601Z"
                       fill="#64748B"
                     />
                   </svg>
                   <!--  -->
-                  <p (click)="updateProgramme(data)" class="interactive-txt">Update</p>
+                  <p (click)="updateProgramme(data, false)" class="interactive-txt">Update</p>
                   <!-- history icon -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
@@ -260,18 +215,10 @@
                   </svg>
 
                   <!--  -->
-                  <p (click)="openChangeHistoryTable()" class="interactive-txt">
-                    History
-                  </p>
+                  <p (click)="openChangeHistoryTable(data.programHistory)" class="interactive-txt">History</p>
 
                   <!-- remove svg -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z"
                       fill="#64748B"
@@ -286,7 +233,7 @@
                     />
                   </svg>
                   <!--  -->
-                  <p class="interactive-txt">Remove</p>
+                  <p (click)="confirmModal('delete', data)" class="interactive-txt">Remove</p>
                 </div>
               </div>
             </td>
@@ -304,7 +251,7 @@
 
       <!-- Change History Data Table -->
       <p-table
-        [value]="mockdraft"
+        [value]="programmeService.changesHistory"
         *ngIf="publishedProgrammes && changeHistoryTable"
         class="historytable"
       >
@@ -331,8 +278,8 @@
           <tr class="history-td">
             <td>
               <div class="history-wrap">
-                <p class="date">{{ data.name }}</p>
-                <p class="infotext">{{ data.name }}</p>
+                <p class="date">{{ formatDateWithTime(data.changeTimestamp) }}</p>
+                <p class="infotext">{{ data.changeDescription }}</p>
               </div>
             </td>
           </tr>
@@ -348,18 +295,12 @@
 <div class="modal" *ngIf="formModal">
   <!-- form modal -->
   <div *ngIf="formModal" class="form">
-    <app-career-creation-form
-      (closeForm)="closeForm()"
-    ></app-career-creation-form>
+    <app-career-creation-form (closeForm)="closeForm()"></app-career-creation-form>
   </div>
 </div>
 
 <p-dialog
-  [header]="
-    deleteModal
-      ? 'Delete career programme'
-      : 'Move career programme to Published'
-  "
+  [header]="deleteModal ? 'Delete career programme' : 'Move career programme to Published'"
   [(visible)]="visible"
   [modal]="true"
   [style]="{ width: '35rem' }"
@@ -367,15 +308,10 @@
   <!-- confirm move to publish content -->
   <ng-container *ngIf="publishModal">
     <div class="confirmDraft-wrap">
-      <p>
-        Are you sure that you want to move career programme to Publish? This
-        action cannot be reversed.
-      </p>
+      <p>Are you sure that you want to move career programme to Publish? This action cannot be reversed.</p>
       <div class="control-btn">
         <button (click)="visible = false" class="cancel-btn">Cancel</button>
-        <button (click)="confirmation('publish')" class="confirm-btn-move">
-          Move
-        </button>
+        <button (click)="confirmation('publish')" class="confirm-btn-move">Move</button>
       </div>
     </div>
   </ng-container>
@@ -383,15 +319,10 @@
   <!-- confirm delete content -->
   <ng-container *ngIf="deleteModal">
     <div class="confirmDelete-wrap">
-      <p>
-        Are you sure that you want to delete career programme? This action
-        cannot be reversed.
-      </p>
+      <p>Are you sure that you want to delete career programme? This action cannot be reversed.</p>
       <div class="control-btn">
         <button (click)="visible = false" class="cancel-btn">Cancel</button>
-        <button (click)="confirmation('delete')" class="confirm-btn-delete">
-          Delete
-        </button>
+        <button (click)="confirmation('delete')" class="confirm-btn-delete">Delete</button>
       </div>
     </div>
   </ng-container>

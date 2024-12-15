@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { environment } from '@src/environments/environment.development';
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
@@ -60,8 +59,11 @@ export class CareerCreationFormComponent {
       this.careerForm.patchValue({
         startDate: new Date(programmeToUpdate.startDate),
         endDate: new Date(programmeToUpdate.endDate),
+        requiredBadges: [programmeToUpdate.requiredBadges[0]],
+        optionalBadges: [programmeToUpdate.optionalBadges[0]],
       });
     }
+
     // get all quizes (badges)
     this.badges = this.programmeService.allQuizzes;
   }
@@ -84,9 +86,17 @@ export class CareerCreationFormComponent {
   removeField(index: number) {
     this.requirements.removeAt(index);
   }
+  // get badge(assesment name) with id
+  getBadgeName(id: string) {
+    const badgeId = Number(id)
+    return this.badges.find((badge) => badge.id === badgeId)?.name;
+  }
 
   // closeform
   close() {
+    // toggle editing off
+    this.programmeService.updatingProgram = false;
+    // close form and set currentUpdatingprogram to null
     this.closeForm.emit();
     this.programmeService.currentUpdatingProgram = null;
   }
@@ -133,15 +143,13 @@ export class CareerCreationFormComponent {
     if (this.careerForm.valid) {
       // extract form value
       const formData = this.careerForm.value;
-      console.log(formData);
 
       // patch dates
       formData.startDate = this.formatDateToISO(formData.startDate);
       formData.endDate = this.formatDateToISO(formData.endDate);
-      // apply selected quiz id (badge)
+      // apply selected quiz id (badge) for new programmes
       formData.requiredBadges = [formData.requiredBadges.id];
       formData.optionalBadges = [formData.optionalBadges.id];
-      console.log(formData.requiredBadges, formData.optionalBadges);
 
       // patch user id
       const userId = JSON.parse(this.localStorageService.getUserId('userId'));
@@ -157,6 +165,10 @@ export class CareerCreationFormComponent {
       }
       if (saveType === 'update') {
         const programmeId = this.programmeService.currentUpdatingProgram?.id;
+        // reassign allready created badges
+        formData.requiredBadges = [this.programmeService.currentUpdatingProgram?.requiredBadges[0]];
+        formData.optionalBadges = [this.programmeService.currentUpdatingProgram?.optionalBadges[0]];
+        // update
         this.programmeService.updateProgram(programmeId ? programmeId : null, formData);
         this.programmeService.currentUpdatingProgram = null;
       }
