@@ -33,6 +33,10 @@ export class ProfileManagementService {
       })
     )
   }
+  getTalentDataa(): Observable<TalentProfileResponseData> {
+    const api = `${this.BASE_API}/${this.GET_TALENT_DATA}`;
+    return this.get<TalentProfileResponseData>(api)
+  }
 
   // private method to make the PUT request
   private update<D, T>(api: string, data: D): Observable<T> {

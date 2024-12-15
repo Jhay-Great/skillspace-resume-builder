@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, computed, DestroyRef, effect, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormArray, FormGroup, FormBuilder, Validators, FormsModule, FormControl } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -31,6 +31,10 @@ import { ToastService } from '@src/app/core/services/toast-service/toast.service
 import { LocalStorageService } from '@src/app/core/services/localStorageService/local-storage.service';
 import { TalentProfile } from '@src/app/core/interfaces/profile-management.interface';
 import { FormErrorMessageComponent } from "../../../../shared/components/form-error-message/form-error-message.component";
+import { Store } from '@ngrx/store';
+import { AppState } from '@src/app/core/state/appState';
+import { onLoadTalentData } from '../state/talentProfile.action';
+import { selectTalentProfile } from '../state/talentProfile.selector';
 
 @Component({
   selector: 'app-profile-management',
@@ -81,6 +85,11 @@ export class ProfileManagementComponent {
     hasFormError = hasFormError;
     hasError = hasError;
 
+  // signals
+  talentProfileSignal: Signal<TalentProfile | null> = computed(() => this.store.selectSignal(selectTalentProfile)()|| null);
+  hasTalentProfile = computed(() => !!this.talentProfileSignal());
+  // talentData: Signal<TalentProfile | null> = computed(() => this.store.selectSignal(selectTalentProfile)());
+
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
@@ -88,6 +97,7 @@ export class ProfileManagementComponent {
     private destroyRef: DestroyRef,
     private toastService: ToastService,
     private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
   ) {
     // personal details form
     this.personalDetailsForm = this.fb.group({
@@ -119,6 +129,13 @@ export class ProfileManagementComponent {
       newPassword: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
       confirmPassword: ['', [Validators.required]],
     }, {validators: confirmPasswordValidator('newPassword', 'confirmPassword')});
+
+    effect(() => {
+      const talentProfile = this.talentProfileSignal();
+      if (talentProfile) {
+        this.populateField(talentProfile);
+      }
+    }, { allowSignalWrites: true });
   }
 
   // getter for portfolio form array
@@ -158,8 +175,10 @@ export class ProfileManagementComponent {
   }
 
   ngOnInit() {
+    // dispatching an action
+      this.store.dispatch(onLoadTalentData());
     // update profile
-    this.populateField();
+    // this.populateField();
     // fetches countries for education form
     this.getCountries();
     // assigns status for education select dropdown
@@ -190,35 +209,70 @@ export class ProfileManagementComponent {
       }
     }
 
-    populateField() {
+    populateField(response: TalentProfile) {
+      if (!response) return;
+      // dispatching an action
+      // this.store.dispatch(onLoadTalentData());
       // getting talent data
-      this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        next: response => {
-          console.log(response);
-          const { cv, academicTranscript, profilePicture } = response;
-          this.cv = cv;
-          this.transcript = academicTranscript;
-          this.profilePicture = profilePicture;
-          this.formData = response;
-          
-          this.personalDetailsForm.patchValue(response);
-          this.personalDetailsForm.patchValue({
-            linkedIn: response.socialMediaLinks[0],
-            instagram: response.socialMediaLinks[1],
-          });
-          this.educationForm.patchValue(response);
-          this.educationForm.patchValue({
-            educationStartDate: new Date(response.educationStartDate),
-            educationEndDate: new Date(response.educationEndDate),
-          });
-          const emailControl = getFormControl(this.personalDetailsForm, 'email');
-          emailControl?.disable();
+      // next: response => {
+        console.log(response);
+        const { cv, academicTranscript, profilePicture } = response;
+        this.cv = cv;
+        this.transcript = academicTranscript;
+        this.profilePicture = profilePicture;
+        this.formData = response;
+        
+        this.personalDetailsForm.patchValue(response);
+        this.personalDetailsForm.patchValue({
+          linkedIn: response.socialMediaLinks[0],
+          instagram: response.socialMediaLinks[1],
+        });
 
-        },
-        error: error => {
-          console.log(error);
-        }
-      })
+        
+        this.educationForm.patchValue(response);
+        console.log('response data: ', response);
+        this.educationForm.patchValue({
+          educationStartDate: new Date(response.educationStartDate),
+          educationEndDate: new Date(response.educationEndDate),
+        });
+        console.log('another response data: ', response);
+        console.log(this.educationForm.value);
+        const emailControl = getFormControl(this.personalDetailsForm, 'email');
+        emailControl?.disable();
+
+      // },
+      // this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      //   error: error => {
+      //     console.log(error);
+      //   }
+      // })
+      // this.profileManagementService.getTalentData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      //   next: response => {
+      //     console.log(response);
+      //     const { cv, academicTranscript, profilePicture } = response;
+      //     this.cv = cv;
+      //     this.transcript = academicTranscript;
+      //     this.profilePicture = profilePicture;
+      //     this.formData = response;
+          
+      //     this.personalDetailsForm.patchValue(response);
+      //     this.personalDetailsForm.patchValue({
+      //       linkedIn: response.socialMediaLinks[0],
+      //       instagram: response.socialMediaLinks[1],
+      //     });
+      //     this.educationForm.patchValue(response);
+      //     this.educationForm.patchValue({
+      //       educationStartDate: new Date(response.educationStartDate),
+      //       educationEndDate: new Date(response.educationEndDate),
+      //     });
+      //     const emailControl = getFormControl(this.personalDetailsForm, 'email');
+      //     emailControl?.disable();
+
+      //   },
+      //   error: error => {
+      //     console.log(error);
+      //   }
+      // })
     }
 
     validateForm(form: FormGroup) {

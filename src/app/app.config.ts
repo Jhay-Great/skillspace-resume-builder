@@ -13,6 +13,8 @@ import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
 import { refreshTokenInterceptor } from './core/interceptors/auth/refresh-token/refresh-token.interceptor';
 import { ApplicantsApprovalEffect } from './feature/user-registration/state/approval.effects';
 import { applicantsApprovalReducer } from './feature/user-registration/state/approval.reducers';
+import { TalentProfileEffect } from './feature/profile-management/talent/state/talentProfile.effect';
+import { talentProfileReducer } from './feature/profile-management/talent/state/talentProfile.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,8 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor])),
     provideStore(),
-    provideEffects(ApplicantsApprovalEffect),
+    provideEffects(ApplicantsApprovalEffect, TalentProfileEffect),
     provideState('applicants', applicantsApprovalReducer),
+    provideState('talentProfile', talentProfileReducer),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     MessageService,
     ConfirmationService,

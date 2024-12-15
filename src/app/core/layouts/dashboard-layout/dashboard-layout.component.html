@@ -7,15 +7,41 @@
 
   <!-- navigation container -->
   <section class="user-actions-container">
-    <div class="notification">
+    <!-- <div class="notification">
       <img src="assets/svgs/notification-alert.svg" alt="notification svg icon" />
-    </div>
+    </div> -->
     <div class="user-avatar">
-      <img src="assets/images/Avatar.png" alt="default user avatar" />
+      @if (!talentData()?.profilePicture) {
+        <p-avatar 
+          [label]="talentData()?.fullName || 'User' | initials" 
+          shape="circle" 
+          [style]="{ 'font-size': '0.875rem' }" 
+        />
+      } @else {
+        <img [src]="talentData()?.profilePicture" [alt]="talentData()?.fullName" />
+      }
+      @if (authService.userRole === 'ADMIN') {
+        <img src="assets/images/Avatar.png" alt="default user avatar" />
+      }
     </div>
-    <div class="dropdown-btn">
+    <div class="user-credentials-name-email">
+
+      @if (authService.userRole === 'ADMIN') {
+        <p class="name">Admin</p>
+      }
+      @if (authService.userRole === 'TALENT') {
+        <p class="name"> {{ talentData()?.fullName }} </p>
+        <p class="email"> {{ talentData()?.email }} </p>
+      }
+      @if (authService.userRole === 'COMPANY') {
+        <p class="name"> {{ talentData()?.fullName }} </p>
+        <p class="email"> {{ talentData()?.email }} </p>
+      }
+
+    </div>
+    <!-- <div class="dropdown-btn">
       <img src="assets/svgs/arrow-drop-down.svg" alt="dropdown svg icon" />
-    </div>
+    </div> -->
   </section>
 </header>
 
