@@ -1,7 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
-import { CreateQuizData, getQuizBylocationParams } from '../../models/assessments.model';
+import {
+  AssessmentCreationQuiz,
+  CreateQuizData,
+  deleteQuizResponse,
+  getAllQuizzesResponse,
+  getQuizByIdResponse,
+  getQuizBylocationParams,
+  getQuizzesByLocationResponse,
+} from '../../models/assessments.model';
 import { catchError, map, Observable, retry, take } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -10,9 +18,9 @@ export class AssessmentCreationService {
   createQuizVisible = signal(false);
   updateQuizVisible = signal(false);
 
-  skillsQuizData = signal<any[]>([]);
-  localRepositoryData = signal<any[]>([]);
-  globalRepositoryData = signal<any[]>([]);
+  skillsQuizData = signal<AssessmentCreationQuiz[]>([]);
+  localRepositoryData = signal<AssessmentCreationQuiz[]>([]);
+  globalRepositoryData = signal<AssessmentCreationQuiz[]>([]);
 
   isSkillsQiuzLoading = signal<boolean>(true);
   isLocalRepositoryLoading = signal<boolean>(true);
@@ -36,8 +44,8 @@ export class AssessmentCreationService {
   constructor(private http: HttpClient) {}
 
   createQuiz(quiz: CreateQuizData) {
-    return this.http.post<FormData>(`${environment.BASE_API}/v1/quizzes/create`, quiz).pipe(
-      map((res: any) => {
+    return this.http.post<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/create`, quiz).pipe(
+      map((res: getQuizByIdResponse) => {
         console.log('response from create: ', res);
         // Add the new quiz data to the skills quiz data
         this.skillsQuizData.set([...this.skillsQuizData(), res.data]);
@@ -54,13 +62,15 @@ export class AssessmentCreationService {
     );
   }
 
-  getAllQuizzes(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.BASE_API}/v1/quizzes/getAllQuizzes`).pipe(
+  getAllQuizzes(): Observable<AssessmentCreationQuiz[]> {
+    return this.http.get<getAllQuizzesResponse>(`${environment.BASE_API}/v1/quizzes/getAllQuizzes`).pipe(
       take(1),
       retry(3),
-      map((res: any) => {
+      map((res: getAllQuizzesResponse) => {
         this.skillsQuizData.set(res.data.content);
         this.isSkillsQiuzLoading.set(false);
+        console.log('get all quizzes response: ', res);
+        console.log('all quizzes: ', res.data.content);
         return res.data.content;
       }),
       catchError((error) => {
@@ -71,12 +81,11 @@ export class AssessmentCreationService {
   }
 
   //  v1/quizzes/${id}/getQuizzesById
-
-  getQuizById(quizId: number): Observable<any[]> {
-    return this.http.get<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/getQuizById `).pipe(
+  getQuizById(quizId: number): Observable<AssessmentCreationQuiz> {
+    return this.http.get<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/${quizId}/getQuizById`).pipe(
       take(1),
       retry(3),
-      map((res: any) => {
+      map((res: getQuizByIdResponse) => {
         console.log('quiz by id: ', res);
         return res.data;
       }),
@@ -93,13 +102,13 @@ export class AssessmentCreationService {
       .set('size', params.size.toString());
 
     return this.http
-      .get<any[]>(`${environment.BASE_API}/v1/quizzes/getQuizzesByLocation`, {
+      .get<getQuizzesByLocationResponse>(`${environment.BASE_API}/v1/quizzes/getQuizzesByLocation`, {
         params: httpParams,
       })
       .pipe(
         take(1),
         retry(3),
-        map((res: any) => {
+        map((res: getQuizzesByLocationResponse) => {
           if (params.location === 'local') {
             this.localRepositoryData.set(res.data.content);
             this.isLocalRepositoryLoading.set(false);
@@ -108,6 +117,8 @@ export class AssessmentCreationService {
             this.globalRepositoryData.set(res.data.content);
             this.isGlobalRepositoryLoading.set(false);
           }
+
+          console.log('response from get quizz by location: ', res);
 
           return res.data.content;
         }),
@@ -127,10 +138,14 @@ export class AssessmentCreationService {
     const httpParams = new HttpParams().set('newLocation', newLocation);
 
     return this.http
-      .patch<any>(`${environment.BASE_API}/v1/quizzes/move/${quizId}/location`, {}, { params: httpParams })
+      .patch<getQuizByIdResponse>(
+        `${environment.BASE_API}/v1/quizzes/move/${quizId}/location`,
+        {},
+        { params: httpParams }
+      )
       .pipe(
         take(1),
-        map((res: any) => {
+        map((res: getQuizByIdResponse) => {
           const updatedQuiz = res.data;
           // find the quiz id in all the various data and update it with the current Response.data.content
 
@@ -155,15 +170,16 @@ export class AssessmentCreationService {
             // Add the quiz to the local data
             this.localRepositoryData.set([...this.localRepositoryData(), updatedQuiz]);
           }
-          return res.data.content;
+          return res.data;
         })
       );
   }
 
   deleteQuiz(quizId: number) {
-    return this.http.delete<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/delete`).pipe(
+    return this.http.delete<deleteQuizResponse>(`${environment.BASE_API}/v1/quizzes/${quizId}/delete`).pipe(
       take(1),
-      map((res: any) => {
+      map((res: deleteQuizResponse) => {
+        console.log("delete response:", res)
         // Update the signals after deleting a quiz
         this.skillsQuizData.set(this.skillsQuizData().filter((quiz) => quiz.id !== quizId));
         // update the local/global signals
@@ -176,9 +192,9 @@ export class AssessmentCreationService {
   }
 
   updateQuiz(formData: Partial<CreateQuizData>, quizId: number) {
-    return this.http.put<any>(`${environment.BASE_API}/v1/quizzes/${quizId}/update`, formData).pipe(
+    return this.http.put<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/${quizId}/update`, formData).pipe(
       take(1),
-      map((res: any) => {
+      map((res: getQuizByIdResponse) => {
         const updatedQuiz = res.data;
 
         // Update the skillsQuizData signal
