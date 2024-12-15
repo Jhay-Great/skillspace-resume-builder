@@ -1,0 +1,55 @@
+<div class="quiz-taking-container bg-white">
+  @if (quiz$ | async; as quiz) {
+    <div>
+      <div class="quiz-header">
+        <h2>{{ quiz.name }}</h2>
+        <p>Duration: {{ quiz.duration }} minutes</p>
+      </div>
+
+      <div class="quiz-content">
+        <form [formGroup]="quizForm">
+          <div formArrayName="questions">
+            @for (question of quiz.questions; track $index) {
+              <div [formGroupName]="$index" class="question-item">
+                <p>{{ question.description }}</p>
+                <!-- Add your question rendering logic here -->
+                <div class="input-group-container options">
+                  @for (option of question.options; track $index) {
+                    <div class="option-item">
+                      <!-- <p-radioButton  [inputId]="option.text" [value]="option.text" formControlName="selectedOption" />
+                      <label [for]="option.text" class="ml-2">
+                        {{ option.text }}
+                      </label> -->
+
+                      <label [for]="option.text">
+                        <input
+                          type="radio"
+                          [id]="option.text"
+                          formControlName="selectedOption_{{ question.id }}"
+                          value="Netflix"
+                        />
+
+                        {{ option.text }}</label
+                      >
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="form-actions">
+            <p-button
+              (onClick)="submitQuiz()"
+              label="Submit"
+              severity="primary"
+              [disabled]="quizForm.invalid"
+            ></p-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  } @else {
+    <p>Loading quiz...</p>
+  }
+</div>

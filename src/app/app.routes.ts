@@ -145,20 +145,12 @@ export const routes: Routes = [
         title: 'Assessment Creation',
       },
       {
-        path: 'programme-application',
+        path: 'assessments',
         loadComponent: () =>
-          import('./feature/programme-application/programme-application/programme-application.component').then(
-            (pa) => pa.ProgrammeApplicationComponent
+          import('./feature/assessment-taking/pages/assessment-taking/assessment-taking.component').then(
+            (at) => at.AssessmentTakingComponent
           ),
-        title: 'Programme Application',
-      },
-      {
-        path: 'applications',
-        loadComponent: () =>
-          import(
-            './feature/profile-management/talent/all-applications/all-applications/all-applications.component'
-          ).then((a) => a.AllApplicationsComponent),
-        title: 'Manage Applications',
+        title: 'Assessments',
       },
     ],
   },

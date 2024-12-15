@@ -3,6 +3,7 @@
 .container {
   height: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 2rem;
 
@@ -35,10 +36,6 @@
       height: 3rem;
       display: flex;
 
-      .status {
-        margin-inline-start: 1rem;
-      }
-
       .addform {
         background-color: var.$color-blue-500;
         height: 2.2rem;
@@ -58,93 +55,75 @@
       background-color: #f9fafb;
     }
 
-    // career programmes and saved programmes wrapper
-    .programmes-wrap {
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-      gap: 0.5rem;
+    // programme status styling
+    .draft {
+      span {
+        background-color: rgba(21, 173, 21, 0.204);
+        padding: 0.3rem;
+        border-radius: 100vw;
+      }
+    }
+    .action {
+      cursor: pointer;
+      width: 2rem;
+
+      // .floatMenu {
+      //   background-color: red;
+      // }
+    }
+
+    // draft and published programmes styling (classes named as special as they have special table apperance)
+    .special {
+      .wrapper {
+        background-color: #eff6ff;
+        padding-inline: 1rem;
+        height: 100%;
+        display: flex;
+        gap: 1.5rem;
+        justify-content: space-between;
+
+        // styles the info about the programme (name and date)
+        .info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.5rem;
+
+          .infohead {
+            font-weight: bold;
+            font-size: var.$medium;
+          }
+          .infodate {
+            color: var.$color-blue-gray-500;
+          }
+        }
+        // styles the control tools on the right (edit update and remove)
+        .tools {
+          display: flex;
+          justify-content: end;
+          align-items: center;
+          gap: 0.5rem;
+
+          // styles inside the tools text
+          .interactive-txt {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .tablescontainer {
       overflow-y: auto;
-    }
-
-    // view programme wrapper
-    .viewPrograme {
       height: 100%;
-      overflow-y: auto;
-    }
-  }
-}
-
-// form modal
-.modal {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.346);
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  padding: 2rem;
-
-  .form {
-    background-color: white;
-    width: 30rem;
-    height: 100%;
-    overflow-y: auto;
-    // hide scroll bar
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    scrollbar-width: none;
-    &.applyprograme {
-      border-radius: 0.5rem;
     }
   }
 }
 
 // primeng styling
+// table
 
 // float Menu
 
-::ng-deep .p-overlaypanel {
-  margin-block-start: -3rem;
-  width: 8rem;
-  height: 5rem;
-}
-::ng-deep .p-overlaypanel-content {
-  background-color: white;
-  padding: 0;
-  height: 100%;
-  .float {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    p {
-      height: 50%;
-      display: flex;
-      align-items: center;
-      padding-inline-start: 0.2rem;
-      cursor: pointer;
-      &:hover {
-        background-color: #eff6ff;
-      }
-    }
-  }
-}
-
-::ng-deep .p-splitbutton-defaultbutton {
-  background-color: white;
-  border: transparent;
-  color: black;
-}
-::ng-deep .p-splitbutton-menubutton {
-  background-color: white;
-  color: black;
-  border: none;
-}
-::ng-deep .p-button-label {
-  font-weight: normal;
-}
 ::ng-deep p-dialog {
   .confirmDraft-wrap,
   .confirmDelete-wrap {
@@ -180,5 +159,24 @@
         color: white;
       }
     }
+  }
+}
+
+.btn-unset {
+  border: none;
+  background-color: transparent;
+  padding-inline: 0.5rem;
+}
+
+.tablescontainer {
+  position: relative;
+
+  .create-quiz-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var.$color-blue-gray-50;
   }
 }
