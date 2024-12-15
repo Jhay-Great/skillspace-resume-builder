@@ -4,10 +4,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { createFromData } from '@src/app/shared/utils/file-upload';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
-import { CreateQuizData } from '../../models/assessments.model';
-import { Observable } from 'rxjs';
+import { AssessmentCreationQuiz, CreateQuizData, createQuizOptions, createQuizQuestion } from '../../models/assessments.model';
 
 interface Question {
   description: string;
@@ -81,7 +79,7 @@ export class QuizFormComponent implements OnInit {
     });
   }
 
-  patchFormWithQuizData(quiz: any): void {
+  patchFormWithQuizData(quiz: AssessmentCreationQuiz): void {
     this.quizForm.patchValue({
       name: quiz.name,
       duration: quiz.duration,
@@ -93,12 +91,12 @@ export class QuizFormComponent implements OnInit {
 
     // Populate questions
     const questionsArray = this.questions;
-    quiz.questions.forEach((question: any) => {
+    quiz.questions.forEach((question: createQuizQuestion) => {
       const questionGroup = this.fb.group({
         description: [question.description, Validators.required],
         points: [question.points, Validators.required],
         options: this.fb.array(
-          question.options.map((option: any) =>
+          question.options.map((option: createQuizOptions) =>
             this.fb.group({
               text: [option.text, Validators.required],
               isCorrect: [option.isCorrect],
