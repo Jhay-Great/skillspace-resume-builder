@@ -15,13 +15,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 // import interface
-import {
-  ChangeHistory,
-  mockDetails,
-  Programme,
-  ProgrammeChangeHistory,
-  TabMenuList,
-} from '../../../core/interfaces/interfaces';
+import { ChangeHistory, mockDetails, Programme, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import programme service
 import { ProgrammeService } from '../program-service/programme.service';
