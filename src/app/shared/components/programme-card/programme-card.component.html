@@ -2,8 +2,10 @@
   <!-- head -->
   <div class="head">
     <div class="left">
-      <span class="logo"></span>
-      <p class="font-head">Google</p>
+      <span class="logo">
+        <img [src]="programme.Logo" alt="">
+      </span>
+      <p class="font-head">{{ programme.companyName }}</p>
     </div>
     <div class="right">
       <app-tag [status]="'open'"></app-tag>
@@ -21,14 +23,14 @@
   <p>Posted: <span class="font-xs">2 days ago</span></p>
   <div class="details">
     <div class="wrap">
-      <p class="font-head programme-title">{{ programme }}</p>
+      <p class="font-head programme-title">{{ programme.name }}</p>
       <div class="date-wrap">
         <img src="../../../../assets/svgs/date.svg" alt="date" />
-        <p class="font-sm">Sep 16 - Sep 24,2024</p>
+        <p class="font-sm">{{formatDateRange(programme.startDate,programme.endDate)}}</p>
       </div>
       <div class="badge-wrap">
-        <button class="badge font-sm">Google/JavaScript</button>
-        <button class="badge font-sm">Google/React</button>
+        <button class="badge font-sm">{{programme.requiredBadges}}</button>
+        <button class="badge font-sm">{{programme.optionalBadges}}</button>
       </div>
     </div>
   </div>

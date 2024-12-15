@@ -26,6 +26,21 @@ export interface Programme {
   changeHistory?: ChangeHistory[];
 }
 
+export interface CompanyProgramme {
+  Logo: string;
+  companyId: number;
+  companyName: string;
+  description: string;
+  endDate: Date;
+  id: number;
+  name: string;
+  optionalBadges: number[];
+  requiredBadges: number[];
+  requirements: string[];
+  startDate: Date;
+  status: string;
+}
+
 export interface ChangeHistory {
   id: number;
   programs: string;
@@ -36,20 +51,19 @@ export interface ChangeHistory {
 export interface Country {
   // name: string;
   // flags: string;
-  name: {common:string};
-  flags: {svg:string};
+  name: { common: string };
+  flags: { svg: string };
 }
-export interface CountriesData{
-  name: string
-  flag: string 
+export interface CountriesData {
+  name: string;
+  flag: string;
 }
 
 export interface Status {
   label: string;
 }
 
-export interface mockData  {
-  name: string
-  date: Date
+export interface mockData {
+  name: string;
+  date: Date;
 }
-
