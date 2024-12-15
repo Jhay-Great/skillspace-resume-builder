@@ -2,16 +2,20 @@ import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
-import {  take } from 'rxjs';
-import { Programme } from '@src/app/core/interfaces/interfaces';
+import { take } from 'rxjs';
+import { Programme, Quiz, QuizResponse } from '@src/app/core/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProgrammeService {
-  constructor(private http: HttpClient, private toastService: ToastService) {}
+  constructor(
+    private http: HttpClient,
+    private toastService: ToastService
+  ) {}
 
   allProgrammes: Programme[] = [];
+  allQuizzes!: Quiz[] ;
   updatingProgram = false;
   currentUpdatingProgram: Programme | null = null;
 
@@ -29,11 +33,8 @@ export class ProgrammeService {
   createProgram(data: Programme) {
     // save to server
     this.http
-      .post(
-        environment.COMPANY_PROGRAMMES_BASE_API +
-          environment.CREATE_PROGRAM_ENDPOINT,
-        data
-      ).pipe(take(1))
+      .post(environment.COMPANY_PROGRAMMES_BASE_API + environment.CREATE_PROGRAM_ENDPOINT, data)
+      .pipe(take(1))
       .subscribe({
         next: () => {
           this.getPrograms();
@@ -50,36 +51,37 @@ export class ProgrammeService {
   // get all programmes
   getPrograms() {
     this.http
-      .get<Programme[]>(
-        environment.COMPANY_PROGRAMMES_BASE_API + environment.GET_ALL_PROGRAMMES
-      ).pipe(take(1))
+      .get<Programme[]>(environment.COMPANY_PROGRAMMES_BASE_API + environment.GET_ALL_PROGRAMMES)
+      .pipe(take(1))
       .subscribe((data) => {
         this.allProgrammes = data;
+      });
+  }
+  // get all quizes(assesment for badges)
+  getQuizes() {
+    this.http
+      .get<QuizResponse>(environment.COMPANY_PROGRAMMES_BASE_API + environment.GET_ALL_QUIZZES)
+      .pipe(take(1))
+      .subscribe((data) => {
+        this.allQuizzes = data.data.content;
       });
   }
 
   // get draft programmes
   draftProgram() {
-    return this.allProgrammes.filter(
-      (programme: Programme) => programme.status === 'DRAFT'
-    );
+    return this.allProgrammes.filter((programme: Programme) => programme.status === 'DRAFT');
   }
 
   // get published programmes
   publishedProgram() {
-    return this.allProgrammes.filter(
-      (programme: Programme) => programme.status === 'PUBLISHED'
-    );
+    return this.allProgrammes.filter((programme: Programme) => programme.status === 'PUBLISHED');
   }
 
   // publish programmes
   publishProgram(id: number, programme: Programme) {
     const programmeData = programme;
     // make api call
-    this.http.put(
-      environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`,
-      programmeData
-    );
+    this.http.put(environment.BASE_API + environment.PUBLISH_PROGRAMME + `${id}/publish`, programmeData);
     // update the status in the ui
     this.allProgrammes.map((programme: Programme) => {
       if (programme.id === programmeData.id) {
@@ -105,6 +107,7 @@ export class ProgrammeService {
     const dataToSend = {
       programs: data,
     };
+
     let changesMade = 'Changed: ';
 
     if (this.currentUpdatingProgram) {
@@ -114,9 +117,7 @@ export class ProgrammeService {
         if (programme.id === id) {
           // Compare fields and track changes
           for (const key in data) {
-            if (
-              data[key as keyof Programme] !== previous[key as keyof Programme]
-            ) {
+            if (data[key as keyof Programme] !== previous[key as keyof Programme]) {
               changedFields.push(key);
             }
           }
@@ -135,10 +136,8 @@ export class ProgrammeService {
     }
     // make api call to update program
     this.http
-      .put(
-        environment.BASE_API + environment.UPDATE_PROGRAMME + `${id}`,
-        dataToSend
-      ).pipe(take(1))
+      .put(environment.BASE_API + environment.UPDATE_PROGRAMME + `${id}`, dataToSend)
+      .pipe(take(1))
       .subscribe({
         next: (_data) => {
           this.successToast('Programme updated successfully');
@@ -159,9 +158,7 @@ export class ProgrammeService {
       .subscribe({
         next: (_data) => {
           this.successToast('Programme deleted successfully');
-          this.allProgrammes = this.allProgrammes.filter(
-            (programme: Programme) => programme.id !== id
-          );
+          this.allProgrammes = this.allProgrammes.filter((programme: Programme) => programme.id !== id);
         },
         error: (error) => {
           this.showError(error.error.message);
