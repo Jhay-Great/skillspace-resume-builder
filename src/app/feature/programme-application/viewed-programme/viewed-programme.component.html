@@ -1,0 +1,125 @@
+<div class="container">
+  <!-- header -->
+  <div class="header">
+    <div class="left">
+      <div class="comp-logoName">
+        <div class="logo">
+          <img [src]="programmeApplicationService.currentlyViewingProgramme.Logo" alt="logo" />
+        </div>
+        <p class="font-large">{{programmeApplicationService.currentlyViewingProgramme.companyName}}</p>
+      </div>
+      <p class="font-medium">Posted: <span class="font-xs">2 days ago</span></p>
+    </div>
+    <div class="right">
+      <app-tag [status]="'Available'"></app-tag>
+    </div>
+  </div>
+
+  <!-- programme details -->
+  <div class="details">
+    <p class="prog-Title">{{programmeApplicationService.currentlyViewingProgramme.name}}</p>
+    <p class="font-xs">
+      {{programmeApplicationService.currentlyViewingProgramme.description}}
+    </p>
+  </div>
+
+  <!-- programme overview -->
+  <div class="prog-overview">
+    <!-- overview -->
+    <div class="wrap">
+      <p class="font-medium">Program Overview</p>
+      <div class="overview-wrap">
+        <p class="font-xs">
+          Program Duration: {{formatDateRange(programmeApplicationService.currentlyViewingProgramme.startDate, programmeApplicationService.currentlyViewingProgramme.endDate)}}
+        </p>
+        <p class="font-xs">
+          Application Deadline: {{daysLeftToApply(programmeApplicationService.currentlyViewingProgramme.startDate)}}
+        </p>
+      </div>
+    </div>
+    <!-- required badges -->
+    <div class="wrap">
+      <p class="font-medium">Required Badge</p>
+      <div class="overview-wrap">
+        <p class="font-xs">
+          Make sure you have earned this required badges before applying
+        </p>
+        <div class="badge-wrap">
+          <button class="btn blue">JavaScript</button>
+        </div>
+      </div>
+    </div>
+    <!-- optional badges -->
+    <div class="wrap">
+      <p class="font-medium">Optional Badge</p>
+      <div class="overview-wrap">
+        <p class="font-xs">Earn this optional badges to apply now</p>
+        <div class="badge-wrap">
+          <button class="btn grey">UI/UX</button>
+        </div>
+      </div>
+    </div>
+    <!-- learning outcomes -->
+    <div class="wrap">
+      <p class="font-medium">Learning Outcomes</p>
+      <div class="overview-wrap">
+        <ul>
+          <li class="font-xs">
+            Master front-end technologies(HTML,CSS,JavaScript)
+          </li>
+          <li class="font-xs">
+            Build back-end services with Node.js and Express
+          </li>
+          <li class="font-xs">Collaborate using Git and Agile workflows</li>
+          <li class="font-xs">
+            Develop a fully functional full-stack application
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- qualifications -->
+    <div class="wrap">
+      <p class="font-medium">Qualifications</p>
+      <div class="overview-wrap">
+        <p class="font-xs">Eligibility Criteria</p>
+        <ul>
+          <li class="font-xs">
+            Minimum 1 year of experience in software development
+          </li>
+          <li class="font-xs">Completion of at least 2 skill assessments</li>
+          <li class="font-xs">
+            [Your profile is 85% complete, Update to apply]
+          </li>
+          <li class="font-xs">Learn how to use Git and GitHub</li>
+        </ul>
+        <p class="font-xs">Profile Requirements</p>
+        <ul>
+          <li class="font-xs">
+            Ensure your profile is up-to-date with the following:
+          </li>
+          <li class="font-xs">CV</li>
+          <li class="font-xs">LinkedIn profile</li>
+          <li class="font-xs">Portfolio or GitHub link</li>
+        </ul>
+      </div>
+    </div>
+    <!-- application process -->
+    <div class="wrap">
+      <p class="font-medium">Application process</p>
+      <div class="overview-wrap">
+        <ul>
+          <li class="font-xs">Complete your profile (if needed).</li>
+          <li class="font-xs">Ensure you have earned the required badges.</li>
+          <li class="font-xs">
+            Submit your application via the "Apply Now" button below
+          </li>
+          <li class="font-xs">
+            Upload necessary docaments (CV, cover letter, portfolio).
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- apply now -->
+    <button class="apply-btn" (click)="applyNow()">Apply now</button>
+  </div>
+</div>
