@@ -4,8 +4,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { createFromData } from '@src/app/shared/utils/file-upload';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
+import { AssessmentCreationQuiz, CreateQuizData, createQuizOptions, createQuizQuestion } from '../../models/assessments.model';
+
+interface Question {
+  description: string;
+  points: number;
+  image: File | null;
+  imageUrl: string | ArrayBuffer | null;
+  options: { text: string; isCorrect: boolean }[];
+}
 
 @Component({
   selector: 'app-quiz-form',
@@ -18,14 +26,16 @@ export class QuizFormComponent implements OnInit {
   quizForm: FormGroup;
   questionImages: Record<number, File | null> = {};
   questionImagePreviews: Record<number, string | ArrayBuffer | null> = {};
-  @Output() submitQuiz = new EventEmitter<FormData>();
-  @Input() isUpdate = false;
+  @Output() submitQuiz = new EventEmitter<CreateQuizData>();
+  @Input() quizId!: number | null;
+
 
   constructor(
     private fb: FormBuilder,
     private assessmentCreationService: AssessmentCreationService
   ) {
     this.quizForm = this.fb.group({});
+    // this.quiz$ = this.assessmentCreationService.getQuizById(this.quizId as number);
   }
 
   createOptionsFormGroup(): FormGroup {
@@ -39,13 +49,25 @@ export class QuizFormComponent implements OnInit {
     return this.fb.group({
       description: ['', Validators.required],
       points: ['', Validators.required],
-      image: [null],
-      imageUrl: [null],
+      // image: [null],
+      // imageUrl: [null],
       options: this.fb.array([this.createOptionsFormGroup()]),
     });
   }
 
   ngOnInit(): void {
+    if (this.quizId) {
+      this.assessmentCreationService.getQuizById(this.quizId as number).subscribe({
+        next: (quiz) => {
+          console.log('Quiz by id from component: ', quiz);
+          this.patchFormWithQuizData(quiz);
+        },
+        error: (err) => {
+          console.log('error from get quiz by Id: ', err);
+        },
+      });
+    }
+
     this.quizForm = this.fb.group({
       name: ['', Validators.required],
       duration: ['', Validators.required],
@@ -53,7 +75,36 @@ export class QuizFormComponent implements OnInit {
       badge: ['', Validators.required],
       isGlobal: [false],
       retakeOption: ['', Validators.required],
-      questions: this.fb.array([this.createQuestionFormGroup()]),
+      questions: this.fb.array(this.quizId ? [] : [this.createQuestionFormGroup()]), // if it is create quiz then initialize questions with one empty question else initialize questions with empty array
+    });
+  }
+
+  patchFormWithQuizData(quiz: AssessmentCreationQuiz): void {
+    this.quizForm.patchValue({
+      name: quiz.name,
+      duration: quiz.duration,
+      passMark: quiz.passMark,
+      badge: quiz.badge,
+      isGlobal: quiz.isGlobal,
+      retakeOption: quiz.retakeOption,
+    });
+
+    // Populate questions
+    const questionsArray = this.questions;
+    quiz.questions.forEach((question: createQuizQuestion) => {
+      const questionGroup = this.fb.group({
+        description: [question.description, Validators.required],
+        points: [question.points, Validators.required],
+        options: this.fb.array(
+          question.options.map((option: createQuizOptions) =>
+            this.fb.group({
+              text: [option.text, Validators.required],
+              isCorrect: [option.isCorrect],
+            })
+          )
+        ),
+      });
+      questionsArray.push(questionGroup);
     });
   }
 
@@ -117,8 +168,22 @@ export class QuizFormComponent implements OnInit {
   }
 
   onQuizSubmit() {
-    const formData = createFromData(this.quizForm.value);
-    this.submitQuiz.emit(formData);
+    const formValue = { ...this.quizForm.value };
+
+    // Convert string values to numbers
+    formValue.passMark = Number(formValue.passMark);
+    formValue.retakeOption = Number(formValue.retakeOption);
+    formValue.duration = Number(formValue.duration);
+
+    // Convert points to numbers for each question
+    formValue.questions = formValue.questions.map((question: Question) => ({
+      ...question,
+      points: Number(question.points),
+    }));
+
+    // const formData = createFromData(formValue);
+    // console.log('create quiz data: ', formValue);
+    this.submitQuiz.emit(formValue);
   }
 
   discard() {

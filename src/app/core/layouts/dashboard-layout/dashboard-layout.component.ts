@@ -94,12 +94,12 @@ export class DashboardLayoutComponent implements OnInit {
     },
     {
       name: 'Career Programmes',
-      path: 'career-programmes',
+      path: 'programme-application',
       icon: 'pi pi-graduation-cap',
     },
     {
       name: 'Assessments',
-      path: 'dashboard/assessments',
+      path: 'assessments',
       icon: 'pi pi-book',
     },
     {

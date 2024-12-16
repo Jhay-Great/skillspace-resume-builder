@@ -3,6 +3,7 @@ import { QuizFormComponent } from '../quiz-form/quiz-form.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { take } from 'rxjs';
+import { CreateQuizData } from '../../models/assessments.model';
 
 @Component({
   selector: 'app-create-quiz',
@@ -17,15 +18,16 @@ export class CreateQuizComponent {
     private toastService: ToastService
   ) {}
 
-  onSubmit(formData: FormData) {
-    if (!formData) return;
+  onSubmit(quizData: CreateQuizData) {
+    if (!quizData) return;
 
     this.assessmentCreationService
-      .createQuiz(formData)
+      .createQuiz(quizData)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.toastService.showSuccess('Quiz created successfully', 'Success');
+          this.assessmentCreationService.closeQuizModals();
         },
         error: (err) => {
           this.toastService.showError(err.error.message, 'Error');

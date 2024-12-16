@@ -1,4 +1,4 @@
-<app-page-header-description
+<app-page-header-description 
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
@@ -6,20 +6,17 @@
 <section class="container">
   <p-tabView  [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- closable text -->
-    <!-- <section class="pro-reminder">
-      <div class="reminder-tes">
-        !-- svg --
-        <img src="assets/svgs/proicon.svg" alt="icon" />
-        !-- text --
-        <p>Upgrade to use our <strong>Resume builder</strong></p>
-      </div>
-      !-- would be using prime icons for this --
-      <button class="close-btn">
-        <img src="assets/svgs/close.svg" alt="cancel" />
-      </button>
-    </section> -->
+    <section class="pro-reminder">
+        <div class="reminder-tes">
+            <!-- svg -->
+            <!-- text -->
+            <p>Upgrade to use our <strong>Resume builder</strong></p>
+        </div>
+        <!-- would be using prime icons for this -->
+        <button class="close-btn">x</button>
+    </section>
 
-    <!-- PERSONAL DETAILS  TAB-->
+    <!-- company details -->
     <p-tabPanel class="content-container" header="Personal details">
       <div class="form-wrap">
         <form [formGroup]="personalDetailsForm">
@@ -128,8 +125,6 @@
                 </div>
               </div>
             }
-          </div>
-
           <!-- Social media Links -->
           <div class="card flex flex-wrap justify-content-center gap-3 sociallinks">
             <label for="username">Social media Links</label>
@@ -171,11 +166,12 @@
             </div>
           </div>
           <!--  -->
-        </form>
-      </div>
+        </div>
+      </form>
+      </div> 
     </p-tabPanel>
 
-    <!-- EDUCATION TAB -->
+    <!-- documents -->
     <p-tabPanel header="Education">
       <!-- content goes here -->
       <div class="form-wrap">

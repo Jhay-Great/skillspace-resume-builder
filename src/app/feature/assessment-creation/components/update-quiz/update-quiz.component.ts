@@ -3,6 +3,7 @@ import { QuizFormComponent } from '../quiz-form/quiz-form.component';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 import { Subscription } from 'rxjs';
+import { CreateQuizData } from '../../models/assessments.model';
 
 @Component({
   selector: 'app-update-quiz',
@@ -11,23 +12,26 @@ import { Subscription } from 'rxjs';
   templateUrl: './update-quiz.component.html',
   styleUrl: './update-quiz.component.scss',
 })
-export class UpdateQuizComponent implements OnInit, OnDestroy {
+export class UpdateQuizComponent implements OnInit {
   @Input() quizId: number | null = null;
-  subscriptions!: Subscription;
 
   constructor(
     private assessmentCreationService: AssessmentCreationService,
     private toastService: ToastService
   ) {}
 
-  onSubmit(formData: FormData) {
-    if (this.quizId) {
-      this.subscriptions = this.assessmentCreationService.updateQuiz(formData, this.quizId).subscribe({
-        next: () => {
-          this.toastService.showSuccess('Quiz updated successfully', 'Success');
+  onSubmit(quizData: CreateQuizData) {
+    if (quizData) {
+      console.log('quiz data for update: ', quizData);
+      this.assessmentCreationService.updateQuiz(quizData, this.quizId as number).subscribe({
+        next: (res) => {
+          console.log('response from update quiz: ', res);
+          this.toastService.showSuccess('Success', 'Quiz updated Successfully.');
+          this.assessmentCreationService.updateQuizVisible.set(false)
         },
         error: (err) => {
-          this.toastService.showError(err.error.message, 'Error');
+          console.log("error from quiz update: ", err)
+          this.toastService.showError('Error', 'Quiz update Error');
         },
       });
     }
@@ -36,12 +40,6 @@ export class UpdateQuizComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.quizId) {
       // fetch the quiz by its id and pass it to the form
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
     }
   }
 }

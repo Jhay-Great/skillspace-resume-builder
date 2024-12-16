@@ -2,7 +2,7 @@
 <form class="create-quiz-form" [formGroup]="quizForm" (ngSubmit)="onQuizSubmit()">
   <div class="bg-white">
     <div class="header">
-      <h3 class="header-title">{{ isUpdate ? 'Update' : 'Create' }} quiz</h3>
+      <h3 class="header-title">{{ quizId ? 'Update' : 'Create' }} quiz </h3>
       <div class="save-to-global">
         <p-inputSwitch formControlName="isGlobal" id="save-to-global"></p-inputSwitch>
         <label for="save-to-global">Save to global repository</label>
@@ -42,11 +42,13 @@
 
         <div class="input-group">
           <label for="retake-option">Retake option</label>
-          <p-calendar
+          <input
+            type="text"
             id="retake-option"
+            pInputText
             formControlName="retakeOption"
-            placeholder="Select a retake option"
-          ></p-calendar>
+            placeholder="Enter retake option. eg 30"
+          />
         </div>
 
         <div class="input-group">
@@ -175,6 +177,7 @@
 
   <div class="form-actions">
     <p-button (onClick)="discard()" label="Discard" severity="primary" outlined></p-button>
-    <p-button type="submit" label="Save Quiz" severity="primary" [disabled]="quizForm.invalid" />
+    <p-button type="submit" [label]="quizId ? 'Save Changes': 'Add Quiz'" severity="primary" [disabled]="quizForm.invalid" />
+    
   </div>
 </form>

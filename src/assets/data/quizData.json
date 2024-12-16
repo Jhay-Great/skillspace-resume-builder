@@ -1,0 +1,236 @@
+[
+  {
+    "id": 1,
+    "name": "Front-end Quiz 1: Angular",
+    "duration": 30,
+    "questions": [
+      {
+        "id": 1,
+        "description": "What is the primary purpose of Angular?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To build single-page applications (SPAs)"
+          },
+          {
+            "id": 2,
+            "text": "To create server-side applications"
+          },
+          {
+            "id": 3,
+            "text": "To develop mobile apps"
+          },
+          {
+            "id": 4,
+            "text": "To design desktop software"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "duration": 30,
+        "description": "What is the role of a component in Angular?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To manage the data and logic of the application"
+          },
+          {
+            "id": 2,
+            "text": "To handle the routing and navigation"
+          },
+          {
+            "id": 3,
+            "text": "To provide services and utilities"
+          },
+          {
+            "id": 4,
+            "text": "To handle the user interface and presentation"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "description": "What is the purpose of the Angular CLI (Command Line Interface)?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To manage the development environment and project setup"
+          },
+          {
+            "id": 2,
+            "text": "To handle the deployment and hosting of the application"
+          },
+          {
+            "id": 3,
+            "text": "To provide a testing framework"
+          },
+          {
+            "id": 4,
+            "text": "To generate boilerplate code and project structure"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "description": "What is the role of the Angular router?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To manage the state and data of the application"
+          },
+          {
+            "id": 2,
+            "text": "To handle the user interface and styling"
+          },
+          {
+            "id": 3,
+            "text": "To provide dependency injection and services"
+          },
+          {
+            "id": 4,
+            "text": "To enable navigation and routing between different views"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "description": "What is the purpose of Angular's change detection mechanism?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To update the UI automatically when the data changes"
+          },
+          {
+            "id": 2,
+            "text": "To handle user input and events"
+          },
+          {
+            "id": 3,
+            "text": "To manage the application state and data flow"
+          },
+          {
+            "id": 4,
+            "text": "To provide a testing framework for the application"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "UI/UX Quiz 1",
+    "questions": [
+      {
+        "id": 1,
+        "description": "What is the primary goal of user experience (UX) design?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To create visually appealing interfaces"
+          },
+          {
+            "id": 2,
+            "text": "To maximize user productivity"
+          },
+          {
+            "id": 3,
+            "text": "To implement the latest design trends"
+          },
+          {
+            "id": 4,
+            "text": "To improve user satisfaction and ease of use"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "description": "What is the purpose of usability testing in UX design?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To validate the design's aesthetics"
+          },
+          {
+            "id": 2,
+            "text": "To measure the efficiency of the user interface"
+          },
+          {
+            "id": 3,
+            "text": "To ensure the design meets legal requirements"
+          },
+          {
+            "id": 4,
+            "text": "To identify and address user pain points"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "description": "Which of the following is a key principle of user-centered design?",
+        "options": [
+          {
+            "id": 1,
+            "text": "Minimalism"
+          },
+          {
+            "id": 2,
+            "text": "Consistency"
+          },
+          {
+            "id": 3,
+            "text": "Personalization"
+          },
+          {
+            "id": 4,
+            "text": "Empathy"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "description": "What is the role of information architecture in UX design?",
+        "options": [
+          {
+            "id": 1,
+            "text": "To create visually appealing layouts"
+          },
+          {
+            "id": 2,
+            "text": "To manage the content and structure of the application"
+          },
+          {
+            "id": 3,
+            "text": "To implement interactive animations and effects"
+          },
+          {
+            "id": 4,
+            "text": "To ensure the design meets accessibility guidelines"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "description": "Which of the following is a common UX design method?",
+        "options": [
+          {
+            "id": 1,
+            "text": "A/B testing"
+          },
+          {
+            "id": 2,
+            "text": "Agile development"
+          },
+          {
+            "id": 3,
+            "text": "Scrum"
+          },
+          {
+            "id": 4,
+            "text": "Pair programming"
+          }
+        ]
+      }
+    ]
+  }
+]

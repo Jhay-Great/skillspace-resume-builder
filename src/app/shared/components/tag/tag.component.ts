@@ -32,6 +32,7 @@ export class TagComponent {
       'available': 'success-class',
       'passed': 'success-class',
       'interview scheduled': 'success-class',
+      'successful': 'success-class',
     };
   }
 

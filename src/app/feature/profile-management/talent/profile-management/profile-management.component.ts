@@ -6,15 +6,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 // local imports
 import { PageHeaderDescriptionComponent } from '../../../../shared/components/page-header-description/page-header-description.component';
 import { DrapNDropFileInputComponent } from '@src/app/shared/components/drap-n-drop-file-input/drap-n-drop-file-input.component';
+
 // primeng modules
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
+// import { InputTextModule } from 'primeng/inputtext';
 
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
+
 // profile service
 import { ProfileService } from '../../profile service/profile.service';
 import { CountriesData, Country } from '@src/app/core/interfaces/interfaces';

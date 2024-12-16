@@ -15,7 +15,7 @@
   },
   "lint-staged": {
     "**/*.{ts,html,scss}": [
-     
+    
     ]
   },
   "private": true,

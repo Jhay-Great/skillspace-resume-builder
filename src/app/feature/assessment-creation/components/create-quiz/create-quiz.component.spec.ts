@@ -50,16 +50,4 @@ describe('CreateQuizComponent', () => {
     expect(mockAssessmentCreationService.createQuiz).toHaveBeenCalledWith(mockFormData);
     expect(mockToastService.showError).toHaveBeenCalledWith('Creation failed', 'Error');
   });
-
-  it('should unsubscribe from subscriptions on component destroy', () => {
-    const mockFormData = new FormData();
-    mockAssessmentCreationService.createQuiz.and.returnValue(of(mockFormData));
-
-    component.onSubmit(mockFormData);
-
-    const spy = spyOn(component['subscriptions'], 'unsubscribe');
-    fixture.destroy();
-
-    expect(spy).toHaveBeenCalled();
-  });
 });

@@ -1,0 +1,50 @@
+@use '../../../../scss/variables' as *;
+@use '../../../../scss/mixins' as *;
+
+.bg-white {
+  background-color: $color-white;
+  padding: 1.5rem;
+}
+
+.quiz-taking-container {
+  @include flex(column, 1.5rem);
+
+  .quiz-header {
+    @include flex('row', 1rem);
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .quiz-content {
+    form {
+      @include flex(column, 2rem);
+      
+      h3 {
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #667085;
+        margin-bottom: 1rem;
+      }
+
+      h4 {
+        font-weight: 500;
+      }
+      
+      .options {
+        @include flex(column, 0.5rem);
+        margin-top: 1rem;
+      }
+      
+      .submit-section{
+        position: sticky;
+        background-color: $color-white;
+        padding-top: .5rem;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
