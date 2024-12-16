@@ -73,7 +73,7 @@ export class DashboardLayoutComponent {
     },
     {
       name: 'Assessments',
-      path: 'dashboard/assessments',
+      path: 'assessments',
       icon: 'pi pi-book',
     },
     {

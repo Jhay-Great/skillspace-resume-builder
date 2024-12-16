@@ -52,3 +52,67 @@ export interface QuizToTake {
   duration: number;
   questions: Question[];
 }
+
+export interface AssessmentTakingOptions {
+  id: number;
+  text: string;
+}
+
+export interface AssessmentTakingQuestion {
+  id: number;
+  description: string;
+  options: AssessmentTakingOptions[];
+}
+
+export interface AssessmentTakingQuiz {
+  id: number;
+  name: string;
+  badge: string;
+  duration: number;
+  passmark: number;
+  questions: AssessmentTakingQuestion[];
+}
+
+export interface AssessmentTakingResponse {
+  message: string;
+  statusCode: number;
+  success: boolean;
+}
+export interface AssessmentTakingQuizResponse extends AssessmentTakingResponse {
+  data: AssessmentTakingQuiz;
+}
+export interface AssessmentTakingQuizzesResponse extends AssessmentTakingResponse {
+  data: AssessmentTakingQuiz[];
+}
+
+export interface SubmitQuizResponse extends AssessmentTakingResponse {
+  data: {
+    percentageScore: number;
+    status: string;
+    retryDate: string;
+    message: string;
+  };
+}
+
+export interface UserResponse {
+  id: null;
+  actualQuizId: number;
+  solvedQuestions: {
+    actualQuestionId: number;
+    answerId: number;
+  }[];
+}
+
+export interface TakeQuizError extends Error {
+  error: {
+    data: {
+      apiPath: string;
+      details: string;
+      errorMessage: string;
+      errorTime: string;
+    };
+    statusCode: number;
+    success: boolean;
+    message: string;
+  };
+}

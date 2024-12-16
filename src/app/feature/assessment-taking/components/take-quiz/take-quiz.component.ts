@@ -1,74 +1,105 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AssessmentTakingService } from '../../services/assessment-taking/assessment-taking.service';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Question, QuizToTake } from '../../models/quiz-taking.model';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AssessmentTakingQuiz, TakeQuizError, UserResponse } from '../../models/quiz-taking.model';
 import { Observable, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-take-quiz',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe, RadioButtonModule, ButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    AsyncPipe,
+    RadioButtonModule,
+    ButtonModule,
+    CommonModule,
+    ProgressSpinnerModule,
+  ],
+  providers: [DatePipe],
   templateUrl: './take-quiz.component.html',
   styleUrl: './take-quiz.component.scss',
 })
 export class TakeQuizComponent implements OnInit {
   @Input() quizId: number | null = null;
   quizForm!: FormGroup;
-  quiz$!: Observable<QuizToTake | undefined>;
-  quiz!: QuizToTake;
+  quiz$!: Observable<AssessmentTakingQuiz | undefined>;
+  quiz!: AssessmentTakingQuiz;
 
   constructor(
-    private assessmentTakingService: AssessmentTakingService,
-    private fb: FormBuilder
+    public assessmentTakingService: AssessmentTakingService,
+    private toastService: ToastService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
-    // if (this.quizId) {
-    //   this.quiz$ = assessmentTakingService.getQuiz(this.quizId);
-    // }
-    this.quiz$ = assessmentTakingService.getQuiz(this.quizId);
+    this.quiz$ = assessmentTakingService.getQuiz(this.quizId as number);
   }
 
   ngOnInit() {
-    this.quizForm = this.fb.group({
-      questions: this.fb.array([]),
-    });
-
-    this.quiz$ = this.assessmentTakingService.getQuiz(this.quizId).pipe(
+    this.quiz$ = this.assessmentTakingService.getQuiz(this.quizId as number).pipe(
       tap((quiz) => {
         if (quiz) {
+          this.quiz = quiz;
           this.initializeQuizForm(quiz);
         }
       })
     );
   }
 
-  private initializeQuizForm(quiz: QuizToTake) {
-    const questionsArray = this.quizForm.get('questions') as FormArray;
-    questionsArray.clear(); // Clear existing form controls
+  private initializeQuizForm(quiz: AssessmentTakingQuiz) {
+    const formControls: { [key: string]: FormControl<string | null> } = {};
 
     quiz.questions.forEach((question) => {
-      questionsArray.push(this.createQuestionForm(question));
+      formControls[`question_${question.id}`] = this.fb.control('');
     });
+
+    this.quizForm = this.fb.group(formControls);
   }
 
-  createQuestionForm(question: Question): FormGroup {
-    return this.fb.group({
-      [`selectedOption-${question.id}`]: [null],
-      questionId: [question.id],
-      text: [question.description],
-    });
+  get questions() {
+    return this.quizForm.get('questions');
   }
 
-  get questions(): FormArray {
-    return this.quizForm.get('questions') as FormArray;
+  isQuizFullyAnswered(): boolean {
+    return this.quiz.questions.every((question) => this.quizForm.get(`question_${question.id}`)?.value !== '');
   }
 
   submitQuiz() {
-    if (this.quizForm.valid) {
-      // console.log(this.quizForm.value);
-      // Implement your submission logic here
+    if (this.isQuizFullyAnswered()) {
+      const userResponse: UserResponse = {
+        id: null,
+        actualQuizId: this.quiz.id,
+        solvedQuestions: this.quiz.questions.map((question) => ({
+          actualQuestionId: question.id,
+          answerId: this.quizForm.get(`question_${question.id}`)?.value,
+        })),
+      };
+
+
+      // send response to backend.
+      this.assessmentTakingService.submitQuiz(userResponse).subscribe({
+        next: (res) => {
+          // show quiz results
+          if (res.status === 'SUCCESSFUL') {
+            this.toastService.showSuccess(
+              "Congratulations!, You've Earned a badge",
+              `You had a percentage score of ${res.percentageScore}%`
+            );
+          } else {
+            this.toastService.showError(
+              "Sorry, you didn't meet the pass mark",
+              `You can retry this quiz after ${this.datePipe.transform(res.retryDate, 'dd/MM/yyyy')}`
+            );
+          }
+
+          // close quiz
+          this.assessmentTakingService.closeTakeQuiz();
+        },
+      });
     }
   }
 }

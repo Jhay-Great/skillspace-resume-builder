@@ -7,49 +7,50 @@
       </div>
 
       <div class="quiz-content">
-        <form [formGroup]="quizForm">
-          <div formArrayName="questions">
-            @for (question of quiz.questions; track $index) {
-              <div [formGroupName]="$index" class="question-item">
-                <p>{{ question.description }}</p>
-                <!-- Add your question rendering logic here -->
-                <div class="input-group-container options">
-                  @for (option of question.options; track $index) {
-                    <div class="option-item">
-                      <!-- <p-radioButton  [inputId]="option.text" [value]="option.text" formControlName="selectedOption" />
-                      <label [for]="option.text" class="ml-2">
-                        {{ option.text }}
-                      </label> -->
-
-                      <label [for]="option.text">
-                        <input
-                          type="radio"
-                          [id]="option.text"
-                          formControlName="selectedOption_{{ question.id }}"
-                          value="Netflix"
-                        />
-
-                        {{ option.text }}</label
-                      >
-                    </div>
-                  }
-                </div>
+        <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
+          @for(question of quiz.questions; track question) {
+            <div class="quiz-question">
+              <h3>Question {{ $index + 1 }}</h3>
+              <h4>{{ question.description }}</h4>
+  
+              <div class="options">
+                @for (option of question.options; track $index) {
+                  <div class="option">
+                    <p-radioButton
+                      [inputId]="'q' + question.id + 'o' + option.id"
+                      [name]="'question_' + question.id"
+                      [value]="option.id"
+                      [formControlName]="'question_' + question.id"
+                    >
+                    </p-radioButton>
+                    <label [for]="'q' + question.id + 'o' + option.id">
+                      {{ option.text }}
+                    </label>
+                  </div>
+                }
               </div>
-            }
-          </div>
+            </div>
 
-          <div class="form-actions">
-            <p-button
-              (onClick)="submitQuiz()"
-              label="Submit"
-              severity="primary"
-              [disabled]="quizForm.invalid"
-            ></p-button>
+          }
+
+          <div class="submit-section">
+            <p-button label="Submit Quiz" type="submit" [disabled]="!isQuizFullyAnswered()"></p-button>
           </div>
         </form>
       </div>
     </div>
-  } @else {
-    <p>Loading quiz...</p>
+  }
+  @if (assessmentTakingService.isGetQuizLoading()) {
+    <div class="custom-loader">
+      <div class="loader">
+        <p-progressSpinner
+          aria-label="Loading"
+          styleClass="loader-lg"
+          strokeWidth="4"
+          animationDuration=".5s"
+          [title]="'Loading contents...'"
+        />
+      </div>
+    </div>
   }
 </div>
