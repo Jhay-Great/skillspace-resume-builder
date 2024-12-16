@@ -6,131 +6,45 @@
   padding: 1.5rem;
 }
 
-.create-quiz-form {
-  margin-top: 1rem;
+.quiz-taking-container {
+  @include flex(column, 1.5rem);
 
-  .header {
-    .save-to-global {
-      @include flex(row, 0.5rem);
-      align-items: center;
-      justify-content: flex-end;
-      margin-block: 0.5rem;
-    }
+  .quiz-header {
+    @include flex('row', 1rem);
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
   }
 
-  .form-container {
-    @include flex(column, 1rem);
+  .quiz-content {
+    form {
+      @include flex(column, 2rem);
+      
+      h3 {
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #667085;
+        margin-bottom: 1rem;
+      }
 
-    label {
-      color: $color-blue-gray-800;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
-
-    .questions-container {
-      margin-top: 1rem;
-
-      .questions {
-        @include flex(column, 3rem);
-
-        .question-item {
-          @include flex(column, 1rem);
-          .header {
-            @include flex(row, 0.5rem);
-            justify-content: space-between;
-            align-items: center;
-            // margin-bottom: 1rem;
-
-            h4 {
-              font-weight: 600;
-              font-size: 1.125rem;
-              color: #667085;
-            }
-
-            .actions {
-              @include flex(row, 0.5rem);
-
-              #question-image {
-                display: none;
-              }
-
-              ::ng-deep .p-button {
-                padding: 0.3rem;
-                width: fit-content;
-              }
-            }
-          }
-          .question {
-            .question-image {
-              width: 100%;
-              height: 20rem;
-              overflow: hidden;
-              border-radius: 0.5rem;
-
-              img {
-                width: auto;
-                max-width: 100%;
-                height: auto;
-                max-height: 100%;
-                object-fit: cover;
-              }
-            }
-          }
-        }
-
-        .options {
-          @include flex(column, 1rem);
-          .option-item {
-            width: 45%;
-            min-width: 30rem;
-            .header {
-              @include flex(row, 1rem);
-              justify-content: space-between;
-              margin-bottom: 0.5rem;
-
-              .input-group {
-                @include flex(row, 0.5rem);
-                align-items: center;
-              }
-            }
-          }
-        }
+      h4 {
+        font-weight: 500;
+      }
+      
+      .options {
+        @include flex(column, 0.5rem);
+        margin-top: 1rem;
+      }
+      
+      .submit-section{
+        position: sticky;
+        background-color: $color-white;
+        padding-top: .5rem;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
       }
     }
   }
-}
-
-#add-question {
-  margin-block: 1rem;
-  width: 100%;
-  justify-content: center;
-  gap: 0.5rem;
-  font-weight: 600;
-}
-
-.form-actions {
-  margin-bottom: 1rem;
-  @include flex(row, 1rem);
-  justify-content: flex-end;
-}
-
-:host ::ng-deep .p-inputswitch {
-  display: flex;
-  align-items: center;
-
-  height: 1.5rem;
-}
-
-:host ::ng-deep .p-calendar {
-  width: 100%;
 }
