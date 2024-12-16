@@ -1,0 +1,44 @@
+<div class="container">
+  <!-- head -->
+  <div class="head">
+    <div class="left">
+      <span class="logo">
+        <img [src]="programme.Logo" alt="" />
+      </span>
+      <p class="font-head">{{ programme.companyName }}</p>
+    </div>
+    <div class="right">
+      <app-tag [status]="'Available'"></app-tag>
+      <img class="moreIcon" (click)="op.toggle($event)" src="assets/svgs/more.svg" alt="more" />
+      <p-overlayPanel #op>
+        <div class="float">
+          <p (click)="viewedProgramme(programme)" class="floattext">View program</p>
+          @if (canMove) {
+            <p (click)="saveProgramme(programme)" class="floattext">Save for later</p>
+          }
+        </div>
+      </p-overlayPanel>
+    </div>
+  </div>
+
+  <!-- details -->
+  <p>Posted: <span class="font-xs">2 days ago</span></p>
+  <div class="details">
+    <div class="wrap">
+      <p class="font-head programme-title">{{ programme.name }}</p>
+      <div class="date-wrap">
+        <img src="../../../../assets/svgs/date.svg" alt="date" />
+        <p class="font-sm">{{ formatDateRange(programme.startDate, programme.endDate) }}</p>
+      </div>
+      <div class="badge-wrap">
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.requiredBadges[0]) }}</button>
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.optionalBadges[0]) }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Apply button -->
+  <div class="apply">
+    <button (click)="applyNow()" class="apply-btn">Apply now</button>
+  </div>
+</div>
