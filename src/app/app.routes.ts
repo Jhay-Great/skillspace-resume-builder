@@ -83,6 +83,11 @@ export const routes: Routes = [
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then((d) => d.DashboardLayoutComponent),
     children: [
       {
+        path: 'career-programmes',
+        loadComponent: () => import('./feature/programmes/company/company.component').then((d) => d.CompanyComponent),
+        title: 'Programmes',
+      },
+      {
         path: 'approvals',
         loadComponent: () =>
           import('./feature/user-registration/admin-approval/admin-dashboard/admin-dashboard.component').then(
@@ -160,6 +165,7 @@ export const routes: Routes = [
           ),
         title: 'Programme Application',
       },
+     
     ],
   },
 ];
