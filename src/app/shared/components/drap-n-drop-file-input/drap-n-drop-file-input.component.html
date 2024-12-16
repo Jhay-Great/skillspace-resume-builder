@@ -6,18 +6,21 @@
   <!-- upload preview -->
   @if (fileUploaded) {
     <section class="uploaded-file-container">
-      <div class="uploaded-file">
-        @if (accept() === '.pdf') {
-          <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon" />
-        } @else {
-          <div class="preview">
-            <img [src]="previewImage" alt="uploaded logo" />
-          </div>
-        }
-        <button class="uploaded-file-remove-btn" type="button" (click)="remove()">
-          <img src="assets/svgs/cross.svg" alt="close button svg icon" />
-        </button>
-      </div>
+      @if (previewImage) {
+        <div class="uploaded-file">
+          @if (accept() === '.pdf') {
+            <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon" />
+          } @else {
+            <div class="preview">
+              <img [src]="previewImage" alt="uploaded logo" />
+            </div>
+          }
+          <button class="uploaded-file-remove-btn" type="button" (click)="remove()">
+            <img src="assets/svgs/cross.svg" alt="close button svg icon" />
+          </button>
+        </div>
+        
+      }
       <small class="uploaded-file-name"> {{ filename | ellipsis }} </small>
     </section>
   }

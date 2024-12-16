@@ -213,7 +213,16 @@ export class ProfileManagementComponent implements OnInit {
       case 2: {
         const securityData = this.validateForm(this.securityForm);
         if (!securityData) return;
-        this.onSubmit(securityData);
+        const { newPassword } = securityData;
+        const data = { password: newPassword, email: this.userEmail};
+        this.profileService.changePassword(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+          next: () => {
+            this.toastService.showSuccess('Successful', 'Successfully updates password', 'top-right');
+          },
+          error: () => {
+          this.toastService.showError('Failed', 'Failed to update password', 'top-right');
+          }
+        })
         this.securityForm.reset();
         break;
       }

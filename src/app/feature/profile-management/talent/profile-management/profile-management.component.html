@@ -4,7 +4,7 @@
 />
 
 <section class="container">
-  <p-tabView>
+  <p-tabView  [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- closable text -->
     <section class="pro-reminder">
         <div class="reminder-tes">
@@ -18,110 +18,372 @@
 
     <!-- company details -->
     <p-tabPanel class="content-container" header="Personal details">
-      <!-- content goes here -->
-      <form>
-        <!-- talent name -->
-        <div class="card flex flex-wrap justify-content-center gap-3">
-          <label for="username">Display Name</label>
-          <p class="description">{{ description }}</p>
-          <p-iconField iconPosition="left">
-            <p-inputIcon styleClass="pi pi-user" />
-            <input type="text" pInputText placeholder="Enter company name " />
-          </p-iconField>
-        </div>
-
-        <!-- email -->
-        <div class="card flex flex-wrap justify-content-center gap-3">
-          <label for="username">Email</label>
-          <p class="description">{{ description }}</p>
-          <p-iconField iconPosition="left">
-            <p-inputIcon styleClass="pi pi-envelope" />
-            <input
-              class="email"
-              type="text"
-              [disabled]="true"
-              pInputText
-              placeholder="amalitech.ghana@gmail.com"
-            />
-          </p-iconField>
-        </div>
-
-
-        <!-- upload --
-        <div class="card upload">
-          <label for="username">Upload Logo</label>
-          <p class="description">{{ description }}</p>
-          <!-- would change false to property value when integration functionality --
-          @if (fileUploaded) {
-              <div class="uploaded-file">
-                <img src="assets/svgs/pdf-image.svg" alt="uploaded logo svg icon">
-                <button>
-                    <img src="assets/svgs/cross.svg" alt="close button svg icon">
-                </button>
-              </div>
-          }
-          <div class="upload-section"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-          >
-              <input type="file" accept="image/png" (change)="selectFile($event)" name="" id="">
-              @if (!fileUploaded) {
-                <div class="instructions">
-                  <img src="assets/svgs/drop-here-image.svg" alt="">
-                  <p class="drop-here">Drop image here</p>
-                  <p class="support-files">Supports: PNG, JPG, JPEG, PDF (10mb max)</p>
-                </div>
-              }@else {
-                <div class="preview">
-                  <!-- <img [src]="fileUploaded[0].name" alt=""> --
-                  <img [src]="previewImage" alt="">
-                </div>
-
-              }
-          </div>
-        </div> -->
-
-        <!-- email -->
-        <div class="card flex flex-wrap justify-content-center gap-3">
-            <label for="username">Portfolio links</label>
-            <p class="description">{{ description }}</p>
+      <div class="form-wrap">
+        <form [formGroup]="personalDetailsForm">
+          <!-- drag and drop -->
+          <app-drag-n-drop-file-input
+            [label]="'Profile Picture'"
+            [accept]="'image/png'"
+            [previewUpload]="profilePicture"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'profilePicture')"
+          />
+          <!-- <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/png'" /> -->
+          <!-- talent name -->
+          <div class="card flex flex-wrap justify-content-center gap-3">
+            <label for="username">Display Name</label>
+            <p class="description-txt">
+              This is what employers will see on your profile and what will appear on all your <br />
+              earned certificates.
+            </p>
             <p-iconField iconPosition="left">
-                <p-inputIcon styleClass="pi pi-envelope" />
-                <input
-                class="email"
-                type="text"
-                [disabled]="true"
-                pInputText
-                placeholder="amalitech.ghana@gmail.com"
-                />
+              <p-inputIcon styleClass="pi pi-user" />
+              <input type="text" 
+                pInputText 
+                placeholder="Enter display name " 
+                formControlName="fullName"
+              />
             </p-iconField>
-        </div>
+          </div>
 
-            
-        <!-- Social media Links -->
-        <div class="card flex flex-wrap justify-content-center gap-3">
-          <label for="username">Social media Links</label>
-          <p class="description">{{ description }}</p>
-          <p-iconField iconPosition="left">
-            <p-inputIcon styleClass="pi pi-link" />
-            <input type="text" pInputText placeholder="www.Seanlifer.com" />
-          </p-iconField>
+          <!-- email -->
+          <div class="card flex flex-wrap justify-content-center gap-3">
+            <label for="username">Email</label>
+            <p class="description-txt">{{ educationDescription }}</p>
+            <p-iconField iconPosition="left">
+              <p-inputIcon styleClass="pi pi-envelope" />
+              <input class="email" 
+                type="text"
+                pInputText 
+                placeholder="amalitech.ghana@gmail.com" 
+                formControlName="email"
+              />
+            </p-iconField>
+          </div>
+
+          <!-- phone number-->
+          <div class="card flex flex-wrap justify-content-center gap-3">
+            <label for="username">Phone number</label>
+            <p class="description-txt">{{ educationDescription }}</p>
+            <ngx-material-intl-tel-input
+              [fieldControl]="contactControl"
+              [iconMakeCall]="false"
+              [enablePlaceholder]="true"
+              [autoSelectedCountry]="defaultNumberCountry"
+              placeholder="Enter your telephone number"
+              [required]="true"
+              [autoIpLookup]="false"
+            ></ngx-material-intl-tel-input>
+          </div>
+
+          <!-- introduction -->
+          <div class="introduction-wrap">
+            <label for="introduction">Introduction</label>
+            <p class="description-txt">
+              This is your opening introduction to employers. Keep it concise and impactful, showcasing your strengths,
+              skills, and experience (in not more than 250 words).
+            </p>
+            <textarea rows="5" cols="30" 
+              pInputTextarea 
+              placeholder="Enter your introduction here"
+              formControlName="introduction"
+            ></textarea>
+          </div>
+
+          <!-- upload cv -->
+          <app-drag-n-drop-file-input 
+            [label]="'Upload CV'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="cv"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'cv')"
+          />
+
+          <!-- port folio and project links -->
+          <div formArrayName="portfolioLinks">
+            <label>Portfolio & project links</label>
+            <p class="description-txt">{{ educationDescription }}</p>
+            @for (link of portfolios.controls; track $index) {
+              <div class="projeclink-wrap">
+                <p-iconField iconPosition="left">
+                  <p-inputIcon styleClass="pi pi-link" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a portfolio link to your profile" 
+                    [formControlName]="$index"
+                  />
+                </p-iconField>
+                <div class="btns-wrap">
+                  @if ($index === portfolios.controls.length - 1) {
+                    <button (click)="addProjectLink()" type="button">
+                      <img src="../../../../../assets/svgs/addLink.svg" alt="add" />
+                    </button>
+                  }
+                  @if (portfolios.controls.length !== 1) {
+                    <button (click)="removeProjectLink($index)" type="button">
+                      <img src="../../../../../assets/svgs/removeLink.svg" alt="remove" />
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          <!-- Social media Links -->
+          <div class="card flex flex-wrap justify-content-center gap-3 sociallinks">
+            <label for="username">Social media Links</label>
+            <p class="description-txt">{{ description }}</p>
+            <!-- links -->
+            <!-- linkedin -->
+            <div class="links-wrap">
+              <div class="link-name-icon">
+                <img src="../../../../../assets/svgs/linkedIn.svg" alt="img" />
+                <p class="description-txt">LinkedIn</p>
+              </div>
+              <div>
+                <p-iconField iconPosition="left">
+                  <p-inputIcon styleClass="pi pi-link" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="linkedIn"
+                  />
+                </p-iconField>
+              </div>
+            </div>
+            <!-- instagram -->
+            <div class="links-wrap">
+              <div class="link-name-icon">
+                <img src="../../../../../assets/svgs/instagram.svg" alt="img" />
+                <p class="description-txt">Instagram</p>
+              </div>
+              <div>
+                <p-iconField iconPosition="left">
+                  <p-inputIcon styleClass="pi pi-link" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="instagram"
+                  />
+                </p-iconField>
+              </div>
+            </div>
+          </div>
+          <!--  -->
         </div>
-        
       </form>
+      </div> 
     </p-tabPanel>
 
     <!-- documents -->
     <p-tabPanel header="Education">
       <!-- content goes here -->
-      <p>hi</p>
+      <div class="form-wrap">
+        <!-- education form -->
+        <form class="formContainers" [formGroup]="educationForm">
+          <!-- name and adress wrap -->
+          <div class="inline-wrap">
+            <!-- name wrap -->
+            <div class="name-wrap">
+              <label for="name">Name</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-building"></i>
+                <input id="name" 
+                  type="text" 
+                  pInputText 
+                  formControlName="schoolName" 
+                  placeholder="Enter school's name" />
+              </div>
+            </div>
+
+            <!-- address wrap -->
+            <div class="address-wrap">
+              <label for="address">Address</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="p-input-icon-left">
+                <i class="pi pi-map-marker"></i>
+                <input
+                  id="address"
+                  type="text"
+                  pInputText
+                  formControlName="schoolAddress"
+                  placeholder="Enter address of school"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- country -->
+          <div class="country-wrap">
+            <label for="country">Country</label>
+            <p class="description-txt">{{ educationDescription }}</p>
+
+            <p-dropdown
+              id="country"
+              [options]="countries"
+              formControlName="country"
+              optionLabel="name"
+              [filter]="true"
+              [style]="{ width: '100%' }"
+              showClear="true"
+              placeholder="Select country"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item">
+                  <img
+                    [src]="educationForm.get('country')?.value.flag"
+                    alt="{{ educationForm.get('country')?.value.name }}"
+                    width="20"
+                  />
+
+                  <div>
+                    <img src="assets/svgs/arrow-drop-down.svg" alt="arrow" />
+                  </div>
+
+                  <span>{{ educationForm.get('country')?.value.name }}</span>
+                </div>
+              </ng-template>
+
+              <ng-template let-country pTemplate="item">
+                <div class="country-item">
+                  <img [src]="country.flag" alt="{{ country.name }}" width="20" />
+                  <span>{{ country.name }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+          <!-- Qualification -->
+          <div class="wrap">
+            <label for="qualificationLevel">Qualification level</label>
+            <p class="description-txt">This is what employers will see on your profile</p>
+            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+              <i class="pi pi-graduation-cap"></i>
+              <input
+                [style]="{ width: '100%' }"
+                id="qualificationLevel"
+                type="text"
+                pInputText
+                formControlName="qualificationLevel"
+                placeholder="Enter school's name"
+              />
+            </div>
+          </div>
+
+          <!-- Programme -->
+          <div class="wrap">
+            <label for="programme">Programme</label>
+            <p class="description-txt">This is what employers will see on yourprofile</p>
+            <div [style]="{ width: '100%' }" class="p-input-icon-left">
+              <i class="pi pi-receipt"></i>
+              <input
+                [style]="{ width: '100%' }"
+                id="programme"
+                type="text"
+                pInputText
+                formControlName="programme"
+                placeholder="Enter programme name"
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="wrap">
+            <label for="status">Status</label>
+            <p class="description-txt">This is what employers will see on yourprofile</p>
+            <div class="drop-select">
+              <i class="pi pi-list-check" style="margin-right: 8px"></i>
+              <p-dropdown
+                class="show-dropdown"
+                id="status"
+                [style]="{ width: '100%' }"
+                [options]="status"
+                placeholder="Select a City"
+                formControlName="educationStatus"
+                [editable]="true"
+                optionLabel="label"
+              />
+            </div>
+          </div>
+
+          <!-- start dates wrap -->
+          <div class="inline-wrap">
+            <!-- Starts date-->
+            <div class="startDate-wrap">
+              <label for="startDate">Start date</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="dates-wrap">
+                <i class="pi pi-calendar"></i>
+                <p-calendar formControlName="educationStartDate" />
+              </div>
+            </div>
+            <!-- end date-->
+            <div class="startDate-wrap">
+              <label for="startDate">End date</label>
+              <p class="description-txt">This is what employers will see on your <br />profile</p>
+              <div class="dates-wrap">
+                <i class="pi pi-calendar"></i>
+                <p-calendar formControlName="educationEndDate" />
+              </div>
+            </div>
+          </div>
+          <app-drag-n-drop-file-input 
+            [label]="'Academic transcript'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="transcript"
+            (uploadedFile)="onUpload($event, educationForm, 'academicTranscript')"
+          />
+        </form>
+      </div>
     </p-tabPanel>
 
     <!-- security -->
     <p-tabPanel header="Security">
       <!-- content goes here -->
-      <p>Bye</p>
+      <div class="form-wrap">
+        <header>
+          <p class="form-wrap-"> Change password </p>
+          <small>Update password details for security reasons</small>
+        </header>
+        <form [formGroup]="securityForm">
+          <!-- old password -->
+          <app-input-field
+            [label]="'Old Password'"
+            [type]="'password'"
+            [svgIcon]="'lock'"
+            [placeholder]="'Old password'"
+            [isDisabled]="true"
+          />
+          <!-- new password -->
+          <app-input-field
+            [label]="'New Password'"
+            [type]="'password'"
+            [svgIcon]="'lock'"
+            [placeholder]="'New password'"
+            formControlName="newPassword"
+          [hasError]="
+            securityForm.get('newPassword')?.touched &&
+            (securityForm.get('newPassword')?.errors?.['required'] || securityForm.get('newPassword')?.errors)
+          "
+          />
+          @if (hasError(securityForm, 'newPassword')) {
+            <app-form-error-message [message]="hasError(securityForm, 'newPassword')" />
+          }
+          <!-- confirm password -->
+          <app-input-field
+            [label]="'Confirm Password'"
+            [type]="'password'"
+            [svgIcon]="'lock'"
+            [placeholder]="'Confirm password'"
+            formControlName="confirmPassword"
+          [hasError]="
+            securityForm.get('confirmPassword')?.touched &&
+            (securityForm.get('confirmPassword')?.errors?.['required'] || securityForm.errors?.['passwordMismatch'])
+          "
+          />
+          @if (hasFormError(securityForm, 'confirmPassword', 'passwordMismatch')) {
+            <app-form-error-message [message]="hasFormError(securityForm, 'confirmPassword', 'passwordMismatch')" />
+          }
+        </form>
+      </div>
     </p-tabPanel>
   </p-tabView>
+  <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
 </section>

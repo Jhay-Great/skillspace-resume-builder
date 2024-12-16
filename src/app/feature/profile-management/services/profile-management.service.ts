@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
-import { CompanyProfileResponseData } from '@src/app/core/interfaces/profile-management.interface';
+import { catchError, Observable, retry, throwError, take, map } from 'rxjs';
+import { CompanyProfileResponseData, ProfileData, TalentProfile, TalentProfileResponseData } from '@src/app/core/interfaces/profile-management.interface';
 import { environment } from '@src/environments/environment.development';
 
 @Injectable({
@@ -10,7 +10,10 @@ import { environment } from '@src/environments/environment.development';
 export class ProfileManagementService {
   private BASE_API: string = environment.BASE_API;
   private COMPANY_PROFILE_ENDPOINT: string = environment.COMPANY_PROFILE_ENDPOINT;
+  private TALENT_PROFILE_ENDPOINT: string = environment.TALENT_PROFILE_ENDPOINT;
   private GET_COMPANY_DATA: string = environment.GET_COMPANY_PROFILE_ENDPOINT;
+  private GET_TALENT_DATA: string = environment.GET_TALENT_PROFILE_ENDPOINT;
+  private FORGOT_PASSWORD_ENDPOINT:string = environment.FORGOT_PASSWORD_ENDPOINT;
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +24,19 @@ export class ProfileManagementService {
   getCompanyData(): Observable<CompanyProfileResponseData> {
     const api = `${this.BASE_API}/${this.GET_COMPANY_DATA}`;
     return this.get(api);
+  }
+  getTalentData(): Observable<TalentProfile> {
+    const api = `${this.BASE_API}/${this.GET_TALENT_DATA}`;
+    return this.get<TalentProfileResponseData>(api).pipe(
+      take(1),
+      map(response => {
+        return response.data;
+      })
+    )
+  }
+  getTalentDataa(): Observable<TalentProfileResponseData> {
+    const api = `${this.BASE_API}/${this.GET_TALENT_DATA}`;
+    return this.get<TalentProfileResponseData>(api)
   }
 
   // private method to make the PUT request
@@ -37,5 +53,25 @@ export class ProfileManagementService {
         return throwError(() => message);
       })
     );
+  }
+
+  // UPDATE talent profile
+  updateTalentProfile<T>(data: T, id: number) {
+    return this.update(`${this.BASE_API}/${this.TALENT_PROFILE_ENDPOINT}/${id}/update`, data).pipe(
+      retry(3),
+      catchError((error) => {
+        const { message } = error.error;
+        return throwError(() => message);
+      })
+    );
+  }
+
+  private post<T>(data: T) {
+    return this.http.post(`${this.BASE_API}/${this.FORGOT_PASSWORD_ENDPOINT}`, data)
+  }
+
+  // change password
+  changePassword<T>(data:T) {
+    return this.post(data);
   }
 }

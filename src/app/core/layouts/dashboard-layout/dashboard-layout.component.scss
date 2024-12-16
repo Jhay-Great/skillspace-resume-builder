@@ -41,6 +41,16 @@ header {
                 height: 100%;
             }
         }
+        .user-credentials-name-email {
+            .name {
+                color: var.$color-blue-gray-800;
+                font-size: var.$small;
+            }
+            .email {
+                color: var.$color-blue-gray-500;
+                font-size: var.$xsmall;
+            }
+        }
     }
 }
 

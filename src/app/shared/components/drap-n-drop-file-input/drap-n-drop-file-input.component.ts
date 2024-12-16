@@ -74,6 +74,7 @@ export class DrapNDropFileInputComponent {
     } else if (file.type.startsWith('application/pdf')) {
       this.fileUploaded = true;
       this.displayFilename(file);
+      this.previewImage = file.name;
       this.uploadedFile.emit(file);
     } else {
       // handle error response or feedback here
