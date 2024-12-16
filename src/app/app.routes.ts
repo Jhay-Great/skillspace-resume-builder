@@ -152,6 +152,14 @@ export const routes: Routes = [
           ),
         title: 'Assessments',
       },
+      {
+        path: 'programme-application',
+        loadComponent: () =>
+          import('./feature/programme-application/programme-application/programme-application.component').then(
+            (pa) => pa.ProgrammeApplicationComponent
+          ),
+        title: 'Programme Application',
+      },
     ],
   },
 ];

@@ -123,3 +123,19 @@ export interface ProgrammeChangeHistory {
   changeTimestamp: Date;
   changeDescription: string;
 }
+
+export interface Badge {
+  createdBy: string;
+  publishedDate: Date;
+  quizId: number;
+  quizName: string;
+  requiredPassMark: number;
+  totalMark: number;
+}
+
+export interface BadgeResponse {
+  data: Badge[];
+  message: string;
+  statusCode: number;
+  success: boolean;
+}
