@@ -115,6 +115,10 @@
     .tablescontainer {
       overflow-y: auto;
       height: 100%;
+
+      .create-quiz-modal{
+        height: 100%
+      }
     }
   }
 }
