@@ -1,4 +1,4 @@
-  <div class="container">
+<div class="container">
   <div class="header">
     <p class="header-title">Assessments</p>
     <p class="header-subtitle">Take and retake quizzes to meet company's request.</p>
@@ -15,7 +15,7 @@
           </p-inputIcon>
           <input
             pInputText
-            [disabled]="assessmentTakingService.takeQuizVisible()"  
+            [disabled]="assessmentTakingService.takeQuizVisible()"
             [style]="{ width: '30rem' }"
             type="text"
             (input)="dt1.filterGlobal($any($event).target.value, 'contains')"
@@ -72,7 +72,7 @@
           <span class="font-bold">
             {{ tabMenu.label }}
           </span>
-          <p-badge value="8" severity="info" />
+          <p-badge [value]="tabMenu.data().length" severity="info" />
         </button>
       </ng-template>
     </p-tabMenu>
@@ -82,11 +82,11 @@
 
     <div class="tablescontainer">
       <!-- take quiz  -->
-      <div class="create-quiz-modal">
-        @if (assessmentTakingService.takeQuizVisible() && selectedQuizId) {
+      @if (assessmentTakingService.takeQuizVisible() && selectedQuizId) {
+        <div class="create-quiz-modal">
           <app-take-quiz [quizId]="selectedQuizId" />
-        }
-      </div>
+        </div>
+      }
       <!-- take quiz ends -->
 
       <!-- <div class="create-quiz-modal">
@@ -131,11 +131,11 @@
               <td>{{ data.score }}</td>
               <td>
                 <!-- status  -->
-                <app-tag [status]="data.badgeStatus" />
+                <app-tag [status]="data.status" />
               </td>
               <td>{{ data.badgeName }}</td>
-              <td>{{ data.lastModified }}</td>
-              <td>{{ data.nextRetry }}</td>
+              <td>{{ data.lastModified | date: 'MMMM dd, yyyy'  }}</td>
+              <td>{{ data.nextRetry | date: 'MMMM dd, yyyy'  }}</td>
 
               <td class="action">
                 <p-button
@@ -156,7 +156,7 @@
                   <div class="info">
                     <p class="infohead">{{ data.quizName }}</p>
                     <p class="infodate">
-                      Published: {{ data.publishedDate }} | Required pass mark: {{ data.requiredPassMark }} marks |
+                      Published: {{ data.publishedDate | date: 'MMMM dd, yyyy'  }} | Required pass mark: {{ data.requiredPassMark }} marks |
                       Total marks:
                       {{ data.totalMark }}
                     </p>
@@ -179,11 +179,11 @@
               <td>{{ data.score }}</td>
               <td>
                 <!-- status  -->
-                <app-tag [status]="data.badgeStatus" />
+                <app-tag [status]="data.status" />
               </td>
               <td>{{ data.badgeName }}</td>
-              <td>{{ data.lastModified }}</td>
-              <td>{{ data.nextRetry }}</td>
+              <td>{{ data.lastModified | date: 'MMMM dd, yyyy'  }}</td>
+              <td>{{ data.nextRetry | date: 'MMMM dd, yyyy'  }}</td>
 
               <td class="action">
                 <p-button
@@ -205,7 +205,7 @@
         </ng-template>
       </p-table>
       <!--  -->
-      
+
       <!-- Loading spinner  -->
       @if (getActiveTabLoadingState()) {
         <div class="custom-loader">
@@ -220,7 +220,6 @@
           </div>
         </div>
       }
-      
     </div>
   </div>
   <!-- table ends -->
