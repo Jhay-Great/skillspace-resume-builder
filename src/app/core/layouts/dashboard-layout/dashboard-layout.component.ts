@@ -9,11 +9,12 @@ import { UserRole } from '@src/app/feature/authentication/models/auth.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/appState';
 import { onLoadTalentData } from '@src/app/feature/profile-management/talent/state/talentProfile.action';
-import { selectTalentProfile } from '@src/app/feature/profile-management/talent/state/talentProfile.selector';
-import { TalentProfileData } from '@src/app/feature/profile-management/talent/state/talentProfile.reducer';
-import { TalentProfile } from '../../interfaces/profile-management.interface';
+import { isTalentProfileLoaded, selectTalentProfile } from '@src/app/feature/profile-management/talent/state/talentProfile.selector';
+import { ProfileData, TalentProfile } from '../../interfaces/profile-management.interface';
 import { AvatarModule } from 'primeng/avatar';
 import { InitialsPipe } from "../../pipes/initials/initials.pipe";
+import { onLoadCompanyData } from '@src/app/feature/profile-management/company/state/companyProfile.action';
+import { isCompanyProfileLoaded, selectCompanyProfile } from '@src/app/feature/profile-management/company/state/companyProfile.selector';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -24,34 +25,23 @@ import { InitialsPipe } from "../../pipes/initials/initials.pipe";
 })
 export class DashboardLayoutComponent implements OnInit {
   talentData: Signal<TalentProfile | null> = computed(() => this.store.selectSignal(selectTalentProfile)());
-  // talentData: Signal<TalentProfile | null> = computed(() => this.store.selectSignal(selectTalentProfile)());
-  // user!: Signal<TalentProfileData> ;
-  // applicants: Signal<ApplicantsData[]> = computed(() => this.store.selectSignal(allApplicants)());
-  // companyData: Signal<any[]> = this.store.selectSignal(selectCompanyData);
+  companyData: Signal<ProfileData | null> = computed(() => this.store.selectSignal(selectCompanyProfile)());
+  isCompanyProfileLoaded: Signal<boolean> = computed(() => this.store.selectSignal(isCompanyProfileLoaded)());
+  isTalentProfileLoaded: Signal<boolean> = computed(() => this.store.selectSignal(isTalentProfileLoaded)());
 
   constructor(
     public authService: AuthService,
     private confirmationService: ConfirmationService,
     private router: Router,
     private store: Store<AppState>
-  ) {
-    // effect(() => {
-    //   if (this.authService.userRole === 'TALENT') {
-    //     this.talentData = computed(() => this.store.selectSignal(selectTalentProfile)());
-    //     console.log('Talent Data:', this.talentData());
-    //   } else if (this.authService.userRole === 'COMPANY') {
-    //     // console.log('Company Data:', this.companyData());
-    //   }
-    // });
-  }
+  ) { }
 
   ngOnInit(): void {
     if (this.authService.userRole === 'TALENT') {
       this.store.dispatch(onLoadTalentData());
     }
     if (this.authService.userRole === 'COMPANY') {
-      // console.log('company login')
-      // this.store.dispatch(onLoadTalentData());
+      this.store.dispatch(onLoadCompanyData());
     }
 
     
@@ -88,11 +78,11 @@ export class DashboardLayoutComponent implements OnInit {
       path: '/dashboard/applicants',
       icon: 'pi pi-users',
     },
-    {
-      name: 'Messages',
-      path: 'dashboard/messages',
-      icon: 'pi pi-comments',
-    },
+    // {
+    //   name: 'Messages',
+    //   path: 'dashboard/messages',
+    //   icon: 'pi pi-comments',
+    // },
   ];
 
   // TALENT

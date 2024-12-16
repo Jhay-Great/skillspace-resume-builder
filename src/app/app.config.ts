@@ -15,6 +15,8 @@ import { ApplicantsApprovalEffect } from './feature/user-registration/state/appr
 import { applicantsApprovalReducer } from './feature/user-registration/state/approval.reducers';
 import { TalentProfileEffect } from './feature/profile-management/talent/state/talentProfile.effect';
 import { talentProfileReducer } from './feature/profile-management/talent/state/talentProfile.reducer';
+import { CompanyProfileEffect } from './feature/profile-management/company/state/companyProfile.effect';
+import { companyProfileReducer } from './feature/profile-management/company/state/companyProfile.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,9 +25,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor])),
     provideStore(),
-    provideEffects(ApplicantsApprovalEffect, TalentProfileEffect),
+    provideEffects(ApplicantsApprovalEffect, TalentProfileEffect, CompanyProfileEffect),
     provideState('applicants', applicantsApprovalReducer),
     provideState('talentProfile', talentProfileReducer),
+    provideState('companyProfile', companyProfileReducer),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     MessageService,
     ConfirmationService,
