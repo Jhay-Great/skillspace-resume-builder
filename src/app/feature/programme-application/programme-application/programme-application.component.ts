@@ -70,6 +70,8 @@ export class ProgrammeApplicationComponent {
   }
 
   ngOnInit() {
+    // get all badges names with id
+    this.programmeApplicationService.getBadgeNames()
     // get all available programmes
     this.programmeApplicationService
       .getAllAvailableProgrammes()
@@ -77,7 +79,6 @@ export class ProgrammeApplicationComponent {
       .subscribe({
         next: (data) => {
           this.all = data;
-          console.log(this.all[0]);
         },
         error: (error) => {
           console.log(error);

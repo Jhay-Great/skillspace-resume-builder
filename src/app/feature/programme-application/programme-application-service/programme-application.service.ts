@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
-import { CompanyProgramme } from '@src/app/core/interfaces/interfaces';
+import { Badge, BadgesResponse, CompanyProgramme } from '@src/app/core/interfaces/interfaces';
 import { take } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class ProgrammeApplicationService {
   constructor(private http: HttpClient) {}
 
   currentlyViewingProgramme!: CompanyProgramme;
+  badges!:Badge[]
 
   // get all available programmes
   getAllAvailableProgrammes() {
@@ -20,5 +21,19 @@ export class ProgrammeApplicationService {
   // apply for a programme
   applyForProgramme(programmeId: number) {
     return this.http.post(`${environment.BASE_API}${environment.APPLY_FOR_PROGRAMME}/${programmeId}`, {});
+  }
+
+  // get badge names with id
+  getBadgeNames() {
+     this.http.get<BadgesResponse>(environment.BASE_API + environment.GET_BADGE_NAME).subscribe({
+       next: (data) => {
+         this.badges = data.data;
+         console.log(this.badges);
+         
+       },
+       error: (error) => {
+         console.log(error);
+       },
+     });
   }
 }

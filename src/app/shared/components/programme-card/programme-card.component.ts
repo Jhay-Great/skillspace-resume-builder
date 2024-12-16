@@ -6,6 +6,7 @@ import { TagComponent } from '../tag/tag.component';
 import { CompanyProgramme, Quiz } from '@src/app/core/interfaces/interfaces';
 // programme application service
 import { ProgrammeApplicationService } from '@src/app/feature/programme-application/programme-application-service/programme-application.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-programme-card',
@@ -15,7 +16,7 @@ import { ProgrammeApplicationService } from '@src/app/feature/programme-applicat
   styleUrl: './programme-card.component.scss',
 })
 export class ProgrammeCardComponent {
-  constructor(private programmeApplicationService: ProgrammeApplicationService) {}
+  constructor(private programmeApplicationService: ProgrammeApplicationService, private router: Router) {}
 
   @Input() programme!: CompanyProgramme;
   @Output() openApplyNowForm: EventEmitter<void> = new EventEmitter();
@@ -38,6 +39,10 @@ export class ProgrammeCardComponent {
   saveProgramme(programme: CompanyProgramme) {
     this.moveToSaved.emit(programme);
   }
+  // fetch badge name with id
+  getBadgeName(badgeId: number): string {
+    return this.programmeApplicationService.badges.find((badge) => badge.quizId === badgeId)?.quizName || 'No badge';
+  }
   // formate date range
   formatDateRange(startDate: Date | string, endDate: Date | string): string {
     const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
@@ -49,5 +54,9 @@ export class ProgrammeCardComponent {
 
     const year = start.getFullYear(); // Assuming both dates are in the same year
     return `${startFormatted} - ${endFormatted}, ${year}`;
+  }
+  // redirect to quiz
+  redirectToAssessment(){
+    this.router.navigate([`dashboard/assessments/`]);
   }
 }

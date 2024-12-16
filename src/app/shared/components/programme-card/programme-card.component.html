@@ -31,8 +31,8 @@
         <p class="font-sm">{{ formatDateRange(programme.startDate, programme.endDate) }}</p>
       </div>
       <div class="badge-wrap">
-        <button class="badge font-sm">{{ programme.requiredBadges }}</button>
-        <button class="badge font-sm">{{ programme.optionalBadges }}</button>
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.requiredBadges[0]) }}</button>
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.optionalBadges[0]) }}</button>
       </div>
     </div>
   </div>
