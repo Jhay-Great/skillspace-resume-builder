@@ -1,4 +1,4 @@
-<app-page-header-description
+<app-page-header-description 
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
@@ -7,22 +7,19 @@
   <p-tabView>
     <!-- closable text -->
     <section class="pro-reminder">
-      <div class="reminder-tes">
-        <!-- svg -->
-        <img src="assets/svgs/proicon.svg" alt="icon" />
-        <!-- text -->
-        <p>Upgrade to use our <strong>Resume builder</strong></p>
-      </div>
-      <!-- would be using prime icons for this -->
-      <button class="close-btn">
-        <img src="assets/svgs/close.svg" alt="cancel" />
-      </button>
+        <div class="reminder-tes">
+            <!-- svg -->
+            <!-- text -->
+            <p>Upgrade to use our <strong>Resume builder</strong></p>
+        </div>
+        <!-- would be using prime icons for this -->
+        <button class="close-btn">x</button>
     </section>
 
     <!-- company details -->
     <p-tabPanel class="content-container" header="Personal details">
       <!-- content goes here -->
-      <form class="formContainers">
+      <form>
         <!-- talent name -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Display Name</label>
@@ -48,6 +45,7 @@
             />
           </p-iconField>
         </div>
+
 
         <!-- upload --
         <div class="card upload">
@@ -86,20 +84,21 @@
 
         <!-- email -->
         <div class="card flex flex-wrap justify-content-center gap-3">
-          <label for="username">Portfolio links</label>
-          <p class="description">{{ description }}</p>
-          <p-iconField iconPosition="left">
-            <p-inputIcon styleClass="pi pi-envelope" />
-            <input
-              class="email"
-              type="text"
-              [disabled]="true"
-              pInputText
-              placeholder="amalitech.ghana@gmail.com"
-            />
-          </p-iconField>
+            <label for="username">Portfolio links</label>
+            <p class="description">{{ description }}</p>
+            <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-envelope" />
+                <input
+                class="email"
+                type="text"
+                [disabled]="true"
+                pInputText
+                placeholder="amalitech.ghana@gmail.com"
+                />
+            </p-iconField>
         </div>
 
+            
         <!-- Social media Links -->
         <div class="card flex flex-wrap justify-content-center gap-3">
           <label for="username">Social media Links</label>
@@ -109,161 +108,14 @@
             <input type="text" pInputText placeholder="www.Seanlifer.com" />
           </p-iconField>
         </div>
+        
       </form>
     </p-tabPanel>
 
     <!-- documents -->
     <p-tabPanel header="Education">
       <!-- content goes here -->
-      <div class="educationFromWrap">
-
-        <!-- education form -->
-        <form class="formContainers" [formGroup]="educationForm">
-          <!-- name and adress wrap -->
-          <div class="nameAddress-wrap">
-            <!-- name wrap -->
-            <div class="name-wrap">
-              <label for="name">Name</label>
-              <p class="description-txt">
-                This is what employers will see on your <br />profile
-              </p>
-              <div class="p-input-icon-left">
-                <i class="pi pi-building"></i>
-                <input
-                  id="name"
-                  type="text"
-                  pInputText
-                  formControlName="name"
-                  placeholder="Enter school's name"
-                />
-              </div>
-            </div>
-
-            <!-- address wrap -->
-            <div class="address-wrap">
-              <label for="address">Address</label>
-              <p class="description-txt">
-                This is what employers will see on your <br />profile
-              </p>
-              <div class="p-input-icon-left">
-                <i class="pi pi-map-marker"></i>
-                <input
-                  id="address"
-                  type="text"
-                  pInputText
-                  formControlName="address"
-                  placeholder="Enter address of school"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- country -->
-          <div class="country-wrap">
-            <label for="country">Country</label>
-            <p class="description-txt">{{ educationDescription }}</p>
-            <!-- testing -->
-            <p-dropdown
-              id="country"
-              [options]="countries"
-              formControlName="country"
-              optionLabel="name"
-              [filter]="true"
-              [style]="{ width: '100%' }"
-              showClear="true"
-              placeholder="Select country"
-            >
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item">
-                  <img
-                    [src]="educationForm.get('country')?.value.flag"
-                    alt="{{ educationForm.get('country')?.value.name }}"
-                    width="20"
-                  />
-
-                  <div>
-                    <img
-                      src="../../../../../assets/svgs/arrow-drop-down.svg"
-                      alt="arrow"
-                    />
-                  </div>
-
-                  <span>{{ educationForm.get("country")?.value.name }}</span>
-                </div>
-              </ng-template>
-
-              <ng-template let-country pTemplate="item">
-                <div class="country-item">
-                  <img
-                    [src]="country.flag"
-                    alt="{{ country.name }}"
-                    width="20"
-                  />
-                  <span>{{ country.name }}</span>
-                </div>
-              </ng-template>
-            </p-dropdown>
-          </div>
-
-          <!-- Qualification -->
-          <div class="wrap">
-            <label for="qualificationLevel">Qualification level</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile
-            </p>
-            <div [style]="{ width: '100%' }" class="p-input-icon-left">
-              <i class="pi pi-graduation-cap"></i>
-              <input
-                [style]="{ width: '100%' }"
-                id="qualificationLevel"
-                type="text"
-                pInputText
-                formControlName="qualificationLevel"
-                placeholder="Enter school's name"
-              />
-            </div>
-          </div>
-
-          <!-- Programme -->
-          <div class="wrap">
-            <label for="programme">Programme</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile
-            </p>
-            <div [style]="{ width: '100%' }" class="p-input-icon-left">
-              <i class="pi pi-receipt"></i>
-              <input
-                [style]="{ width: '100%' }"
-                id="programme"
-                type="text"
-                pInputText
-                formControlName="programme"
-                placeholder="Enter programme name"
-              />
-            </div>
-          </div>
-
-          <!-- Status -->
-          <div class="wrap">
-            <label for="status">Status</label>
-            <p class="description-txt">
-              This is what employers will see on yourprofile 
-            </p>
-            <div [style]="{ width: '100%' }" class="p-input-icon-left">
-              <i class="pi pi-list-check" style="margin-right: 8px"></i>
-              <p-dropdown
-                id="status"
-                [style]="{ width: '100%' }"
-                [options]="status"
-                placeholder="Select a City"
-                formControlName="status"
-                [editable]="true"
-                optionLabel="label"
-              />
-            </div>
-          </div>
-        </form>
-      </div>
+      <p>hi</p>
     </p-tabPanel>
 
     <!-- security -->

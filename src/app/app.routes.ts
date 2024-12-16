@@ -145,12 +145,12 @@ export const routes: Routes = [
         title: 'Assessment Creation',
       },
       {
-        path: 'programme-application',
+        path: 'assessments',
         loadComponent: () =>
-          import(
-            './feature/programme-application/programme-application/programme-application.component'
-          ).then((pa) => pa.ProgrammeApplicationComponent),
-        title: 'Programme Application',
+          import('./feature/assessment-taking/pages/assessment-taking/assessment-taking.component').then(
+            (at) => at.AssessmentTakingComponent
+          ),
+        title: 'Assessments',
       },
     ],
   },

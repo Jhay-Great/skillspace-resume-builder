@@ -1,10 +1,11 @@
-@use "variables" as var;
+@use 'variables' as var;
 
 .container {
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow: hidden;
 
   .header {
     min-height: 3rem;
@@ -30,9 +31,11 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-y: hidden;
 
     .tablescontainer {
       display: flex;
+      overflow: hidden;
 
       // programmes table
       .shrink {
@@ -197,7 +200,9 @@
 // primeng styling
 // table
 
-// float Menu
+::ng-deep p-table {
+  overflow-y: auto;
+}
 
 ::ng-deep .p-overlaypanel {
   margin-block-start: -3rem;

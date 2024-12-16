@@ -1,20 +1,12 @@
-import { Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormGroup,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { FormErrorMessageComponent } from '@shared/components/form-error-message/form-error-message.component';
 import { RouterLink } from '@angular/router';
-import {
-  NgxMaterialIntlTelInputComponent,
-  CountryISO,
-} from 'ngx-material-intl-tel-input';
+import { NgxMaterialIntlTelInputComponent, CountryISO } from 'ngx-material-intl-tel-input';
 import { InputIconModule } from 'primeng/inputicon';
 import { UserRegistrationService } from '../../service/user-registration.service';
 import { confirmPasswordValidator } from '@src/app/shared/utils/password.validator';
@@ -25,6 +17,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-talent-registration',
   standalone: true,
   imports: [
+    CommonModule,
     InputFieldComponent,
     FormErrorMessageComponent,
     ReactiveFormsModule,
@@ -37,7 +30,7 @@ import { Subscription } from 'rxjs';
 })
 export class TalentRegistrationComponent implements OnInit {
   talentForm!: FormGroup;
-  isLoading: boolean = false;
+  isLoading = false;
   subscription!: Subscription;
 
   selectedCountry: CountryISO = CountryISO.Ghana;
@@ -47,7 +40,7 @@ export class TalentRegistrationComponent implements OnInit {
     private userRegistrationService: UserRegistrationService,
     private router: Router,
     private toastService: ToastService,
-    private destroyRef: DestroyRef,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +69,7 @@ export class TalentRegistrationComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          const { email, role } = response.data; 
+          const { email, role } = response.data;
           this.userRegistrationService.userEmail.set(email);
           this.reset();
           this.isLoading = false;
@@ -103,4 +96,5 @@ export class TalentRegistrationComponent implements OnInit {
   reset() {
     this.talentForm.reset();
   }
+  
 }

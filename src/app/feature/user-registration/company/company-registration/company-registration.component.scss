@@ -3,266 +3,265 @@
 @use 'functions' as func;
 
 .logo {
-    @include mix.flex(row, 0);
-    @include mix.flex-position(center, center);
+  @include mix.flex(row, 0);
+  @include mix.flex-position(center, center);
 
-    span {
-        font-size: var.$large;
-        font-weight: 600;
-        color: var.$color-blue-500;
-    }
+  span {
+    font-size: var.$large;
+    font-weight: 600;
+    color: var.$color-blue-500;
+  }
 }
 
 header {
-    @include mix.flex(column, 0.5);
+  @include mix.flex(column, 0.5);
+  @include mix.flex-position(center, center);
+  width: 100%;
+  height: 100%;
+
+  h1 {
+    font-size: var.$xxlarge;
+    color: var.$color-blue-gray-800;
+  }
+  .description {
+    font-size: var.$medium;
+    color: #667085;
+  }
+  nav {
+    @include mix.flex();
     @include mix.flex-position(center, center);
-    width: 100%;
-    height: 100%;
+    margin-top: 1.5rem;
 
-    h1 {
-        font-size: var.$xxlarge;
-        color: var.$color-blue-gray-800;
-    }
-    .description {
-        font-size: var.$medium;
-        color: #667085;
-    }
-    nav {
-        @include mix.flex();
-        @include mix.flex-position(center, center);
-        margin-top: 1.5rem;
+    .steppers {
+      @include mix.flex(row, 0.5rem);
+      @include mix.flex-position();
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
 
-        .steppers {
-            @include mix.flex(row, 0.5rem);
-            @include mix.flex-position();
-            cursor: pointer;
-
-            &.active {
-                p {
-                    color: var.$color-blue-500;
-
-                }
-                span {
-                    border-color: var.$color-blue-500;
-                    color: var.$color-blue-500;
-                }
-
-            }
-
-            span {
-                @include mix.flex(row, _);
-                @include mix.flex-position(center, center);
-                width: 1.25rem;
-                height: 1.25rem;
-                border-radius: 50%;
-                border: 0.063rem solid var.$color-blue-gray-400;
-                color: var.$color-blue-gray-400
-            }
-
-            p {
-                color: var.$color-blue-gray-400;
-                font-size: var.$medium;
-            }
+      &.active {
+        p {
+          color: var.$color-blue-500;
         }
+        span {
+          border-color: var.$color-blue-500;
+          color: var.$color-blue-500;
+        }
+      }
+
+      span {
+        @include mix.flex(row, _);
+        @include mix.flex-position(center, center);
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        border: 0.063rem solid var.$color-blue-gray-400;
+        color: var.$color-blue-gray-400;
+      }
+
+      p {
+        color: var.$color-blue-gray-400;
+        font-size: var.$medium;
+      }
     }
+  }
 }
 
 form {
+  @include mix.flex(column);
+
+  & > section {
     @include mix.flex(column);
-    
-    & > section {
-        @include mix.flex(column);
-
+  }
+  .fields {
+    label {
+      @include mix.label();
     }
-    .fields {
-        label {
-            @include mix.label();
-        }
-        .input-container {
-            @include mix.flex();
-            width: 100%;
-            height: fit-content;
-            position: relative;
+    .input-container {
+      @include mix.flex();
+      width: 100%;
+      height: fit-content;
+      position: relative;
 
-            img {
-                width: 1.25rem;
-                aspect-ratio: 1;
-                position: absolute;
-                top: 50%;
-                left: 0.625rem;
-                transform: translateY(-50%);
-            }
-            .password-icon {
-                right: 0.625rem;
-                left: auto;
-            }
-        }
-        input {
-            width: 100%;
-            height: 100%;
-            height: 3rem;
-            border-radius: 0.25rem;
-            padding: 0.75rem;
-            padding-left: 2.5rem;
-            border: 0.063rem solid var.$color-blue-gray-300;
-            outline: none;
-            font-size: var.$medium;
-
-            // error handling
-            &.has-error {
-                border: 0.063rem solid var.$color-red-600;
-            }
-    
-            &::placeholder {
-                color: var.$color-blue-gray-500;
-                font-size: var.$medium;
-            }
-    
-            &:focus, &:active {
-                border: 0.063rem solid var.$color-blue-500;
-            }
-        }
-        @include mix.flex(column, 0.5rem);
+      img {
+        width: 1.25rem;
+        aspect-ratio: 1;
+        position: absolute;
+        top: 50%;
+        left: 0.625rem;
+        transform: translateY(-50%);
+      }
+      .password-icon {
+        right: 0.625rem;
+        left: auto;
+      }
     }
+    input {
+      width: 100%;
+      height: 100%;
+      height: 3rem;
+      border-radius: 0.25rem;
+      padding: 0.75rem;
+      padding-left: 2.5rem;
+      border: 0.063rem solid var.$color-blue-gray-300;
+      outline: none;
+      font-size: var.$medium;
 
-    .upload-container {
-        position: relative;
-        border-radius: 0.25rem;
-        border: 0.063rem solid var.$color-blue-gray-300;
-        outline: none;
-        input {
-            opacity: 0;
-            z-index: 10;
-        }
-        span {
-            width: fit-content;
-        }
-        .custom-placeholder {
-            position: absolute;
-            inset: 0;
-            left: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var.$color-blue-gray-500;
-            font-size: var.$medium;
-        }
-        .choose-file {
-            border-bottom: 0.063rem solid #0F4B5F;
-            color: #0F4B5F;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+      // error handling
+      &.has-error {
+        border: 0.063rem solid var.$color-red-600;
+      }
 
+      &::placeholder {
+        color: var.$color-blue-gray-500;
+        font-size: var.$medium;
+      }
+
+      &:focus,
+      &:active {
+        border: 0.063rem solid var.$color-blue-500;
+      }
     }
+    @include mix.flex(column, 0.5rem);
+  }
 
-    button {
-        @include mix.primary-button();
-        padding-block: 0.625rem;
+  .upload-container {
+    position: relative;
+    border-radius: 0.25rem;
+    border: 0.063rem solid var.$color-blue-gray-300;
+    outline: none;
+    input {
+      opacity: 0;
+      z-index: 10;
     }
+    span {
+      width: fit-content;
+    }
+    .custom-placeholder {
+      position: absolute;
+      inset: 0;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var.$color-blue-gray-500;
+      font-size: var.$medium;
+    }
+    .choose-file {
+      border-bottom: 0.063rem solid #0f4b5f;
+      color: #0f4b5f;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 
+  button {
+    @include mix.primary-button();
+    padding-block: 0.625rem;
 
+    &.button-disabled {
+      @include mix.primary-button-disabled();
+    }
+  }
 }
 
 .log-in {
-    width: 100%;
-    height: fit-content;
-    text-align: center;
+  width: 100%;
+  height: fit-content;
+  text-align: center;
 
-    p {
-        font-size: var.$small;
-        font-weight: 400;
-        color: var.$color-blue-gray-800;
-        
-        a {
-            @include mix.link();
-        }
+  p {
+    font-size: var.$small;
+    font-weight: 400;
+    color: var.$color-blue-gray-800;
+
+    a {
+      @include mix.link();
     }
+  }
 }
 
 .info {
-    width: 100%;
-    height: fit-content;
-    text-align: center;
-    p {
-        font-size: var.$small;
-        font-weight: 400;
-        color: var.$color-blue-gray-800;
-        .terms_policy {
-            text-decoration: none;
-            border-bottom: 0.063rem solid var.$color-blue-gray-800;
-            color: var.$color-blue-gray-800;
-            cursor: pointer;
-        }
-
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  p {
+    font-size: var.$small;
+    font-weight: 400;
+    color: var.$color-blue-gray-800;
+    .terms_policy {
+      text-decoration: none;
+      border-bottom: 0.063rem solid var.$color-blue-gray-800;
+      color: var.$color-blue-gray-800;
+      cursor: pointer;
     }
+  }
 }
 // error handling
 .has-error {
-    border: 0.063rem solid var.$color-red-600;
+  border: 0.063rem solid var.$color-red-600;
 }
 // error-message
 .error-message {
-    font-size: var.$small;
-    color: var.$color-red-600;
+  font-size: var.$small;
+  color: var.$color-red-600;
 }
 
 // Remove or modify the phone icon
 ::ng-deep {
-    svg.icon.icon-tabler.icon-tabler-phone,
-    label#mat-mdc-form-field-label-2 {
-        display: none;
-    }
-    
-    div.mat-mdc-form-field-infix,
-    section .tel-form mat-form-field.prefix-form-field .mat-mdc-form-field-infix,
-    .mat-mdc-form-field-infix {
-        padding-block: 0 !important;
-    }
+  svg.icon.icon-tabler.icon-tabler-phone,
+  label#mat-mdc-form-field-label-2 {
+    display: none;
+  }
 
-    .mat-mdc-form-field-infix, mat-select#mat-select-0 {
-        display: flex;
-    }
+  div.mat-mdc-form-field-infix,
+  section .tel-form mat-form-field.prefix-form-field .mat-mdc-form-field-infix,
+  .mat-mdc-form-field-infix {
+    padding-block: 0 !important;
+  }
 
-    mat-hint#mat-mdc-hint-0 {
-        display: none;
-    }
+  .mat-mdc-form-field-infix,
+  mat-select#mat-select-0 {
+    display: flex;
+  }
 
-    input {
-        caret-color: blue;
-    }
-    input:hover {
-        background-color: transparent;
-    }
+  mat-hint#mat-mdc-hint-0 {
+    display: none;
+  }
 
-    div.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
-        background-color: red !important;
-    }
-    section.tel-formmat-form-field.mat-mdc-text-field-wrapper:hover {
-        background-color: red !important;
+  input {
+    caret-color: blue;
+  }
+  input:hover {
+    background-color: transparent;
+  }
 
-    }
-    .mdc-floating-label.mat-mdc-floating-label {
-        display: none;
-    }
-    
-    .tel-form {
-        height: 3.125rem;
-    }
-    .mat-mdc-select-trigger {
-        height: 3.125rem;
-    }
+  div.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
+    background-color: red !important;
+  }
+  section.tel-formmat-form-field.mat-mdc-text-field-wrapper:hover {
+    background-color: red !important;
+  }
+  .mdc-floating-label.mat-mdc-floating-label {
+    display: none;
+  }
 
-    .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
-        height: 3.125rem;
-        background: transparent !important;
-    }
-    .mat-mdc-form-field-flex {
-        height: 3.125rem;
-    }
-    input#mat-input-0 {
-        height: 3.125rem;
-    }
+  .tel-form {
+    height: 3.125rem;
+  }
+  .mat-mdc-select-trigger {
+    height: 3.125rem;
+  }
+
+  .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled:hover {
+    height: 3.125rem;
+    background: transparent !important;
+  }
+  .mat-mdc-form-field-flex {
+    height: 3.125rem;
+  }
+  input#mat-input-0 {
+    height: 3.125rem;
+  }
 }
-

@@ -1,62 +1,80 @@
-import { Component, ElementRef, EventEmitter, Input, Output, viewChild } from '@angular/core';
+import { Component, ElementRef, viewChild, input, output, effect } from '@angular/core';
 import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { EllipsisPipe } from '@core/pipes/truncate-with-ellipsis/ellipsis.pipe';
+import { extractFilename } from '../../utils/file-upload';
 
 @Component({
   selector: 'app-drag-n-drop-file-input',
   standalone: true,
-  imports: [],
+  imports: [EllipsisPipe],
   templateUrl: './drap-n-drop-file-input.component.html',
-  styleUrl: './drap-n-drop-file-input.component.scss'
+  styleUrl: './drap-n-drop-file-input.component.scss',
 })
 export class DrapNDropFileInputComponent {
-  description:string = 'This is what applicants will see on your profile.'
-  fileUploaded: File | null = null;
-  previewImage:string | null = null;
+  description = 'This is what applicants will see on your profile.';
+  fileUploaded = false;
+  previewImage: string | null | undefined = null;
+  filename: string | null = null;
   dropZone = viewChild<ElementRef>('DragNDropZone');
+  label = input.required<string | null>();
+  accept = input.required<string | null>();
+  previewUpload = input<string | null>();
+  uploadedFile = output<File | null>();
 
-  @Input () label:string | null = null;
-  @Input () accept:string | null = null;
-  @Output () uploadedFile = new EventEmitter<File | null>()
+  constructor(private toastService: ToastService) {
+    effect(() => {
+      this.previewImage = this.previewUpload();
+      this.fileUploaded = true;
+      if (this.previewImage) {
+        this.filename = extractFilename(this.previewImage);
+      }
+    });
+  }
 
-  constructor (
-    private toastService: ToastService,
-  ) {};
-
-  selectFile(event:Event) {
+  selectFile(event: Event) {
     const target = event.target as HTMLInputElement;
-    const file = target.files
+    const file = target.files;
     if (!file) return;
     this.handleFile(file[0]);
   }
 
-  onDragOver(event:DragEvent) {
+  onDragOver(event: DragEvent) {
     this.resetDefaultBrowserSettings(event);
     const container = event.currentTarget as HTMLElement;
     container.classList.add('on-drag');
-  };
-  onDragLeave(event:DragEvent) {
+  }
+  onDragLeave(event: DragEvent) {
     this.resetDefaultBrowserSettings(event);
     const container = event.currentTarget as HTMLElement;
     container.classList.remove('on-drag');
-  };
-  onDrop(event:DragEvent) {
+  }
+  onDrop(event: DragEvent) {
     this.resetDefaultBrowserSettings(event);
 
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       this.handleFile(files[0]);
     }
-  };
+  }
+
+  displayFilename(file: File) {
+    this.filename = file.name;
+  }
 
   private handleFile(file: File): void {
     if (file.type.startsWith('image/')) {
-      this.fileUploaded = file;
+      this.fileUploaded = true;
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.previewImage = e.target?.result as string;
+        this.displayFilename(file);
         this.uploadedFile.emit(file);
       };
       reader.readAsDataURL(file);
+    } else if (file.type.startsWith('application/pdf')) {
+      this.fileUploaded = true;
+      this.displayFilename(file);
+      this.uploadedFile.emit(file);
     } else {
       // handle error response or feedback here
       this.toastService.showError('Failed to upload', 'Incompatible file uploaded');
@@ -65,12 +83,12 @@ export class DrapNDropFileInputComponent {
   }
 
   remove() {
-    this.fileUploaded = null;
+    this.fileUploaded = false;
     const element = this.dropZone()?.nativeElement;
     element.value = null;
   }
 
-  private resetDefaultBrowserSettings (event:Event) {
+  private resetDefaultBrowserSettings(event: Event) {
     event.preventDefault();
     event.stopPropagation();
   }
