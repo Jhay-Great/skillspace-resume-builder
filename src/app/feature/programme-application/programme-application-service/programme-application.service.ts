@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@src/environments/environment.development';
-import { Badge, BadgesResponse, CompanyProgramme } from '@src/app/core/interfaces/interfaces';
+import { Badge, BadgeResponse, CompanyProgramme } from '@src/app/core/interfaces/interfaces';
 import { take } from 'rxjs';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class ProgrammeApplicationService {
 
   // get badge names with id
   getBadgeNames() {
-     this.http.get<BadgesResponse>(environment.BASE_API + environment.GET_BADGE_NAME).subscribe({
+     this.http.get<BadgeResponse>(environment.BASE_API + environment.GET_BADGE_NAME).subscribe({
        next: (data) => {
          this.badges = data.data;
          console.log(this.badges);
