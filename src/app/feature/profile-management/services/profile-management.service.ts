@@ -13,6 +13,7 @@ export class ProfileManagementService {
   private TALENT_PROFILE_ENDPOINT: string = environment.TALENT_PROFILE_ENDPOINT;
   private GET_COMPANY_DATA: string = environment.GET_COMPANY_PROFILE_ENDPOINT;
   private GET_TALENT_DATA: string = environment.GET_TALENT_PROFILE_ENDPOINT;
+  private FORGOT_PASSWORD_ENDPOINT:string = environment.FORGOT_PASSWORD_ENDPOINT;
 
   constructor(private http: HttpClient) {}
 
@@ -63,5 +64,14 @@ export class ProfileManagementService {
         return throwError(() => message);
       })
     );
+  }
+
+  private post<T>(data: T) {
+    return this.http.post(`${this.BASE_API}/${this.FORGOT_PASSWORD_ENDPOINT}`, data)
+  }
+
+  // change password
+  changePassword<T>(data:T) {
+    return this.post(data);
   }
 }

@@ -80,6 +80,7 @@ export class ProfileManagementComponent {
   transcript: string | null = null;
   activeTabIndex = 0;
   formData!: TalentProfile;
+  userEmail!:string;
 
   // reusable methods
     hasFormError = hasFormError;
@@ -216,11 +217,12 @@ export class ProfileManagementComponent {
       // getting talent data
       // next: response => {
         console.log(response);
-        const { cv, academicTranscript, profilePicture } = response;
+        const { cv, academicTranscript, profilePicture, email } = response;
         this.cv = cv;
         this.transcript = academicTranscript;
         this.profilePicture = profilePicture;
         this.formData = response;
+        this.userEmail = email
         
         this.personalDetailsForm.patchValue(response);
         this.personalDetailsForm.patchValue({
@@ -378,12 +380,28 @@ export class ProfileManagementComponent {
           }
           // security form data
           case 2: {
-            console.log(this.securityForm.value)
+
             const securityData = this.validateForm(this.securityForm);
             if (!securityData) return;
-            this.onSubmit(securityData);
+            const { newPassword } = securityData;
+            const data = { password: newPassword, email: this.userEmail};
+            this.profileManagementService.changePassword(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+              next: () => {
+                this.toastService.showSuccess('Successful', 'Successfully updates password', 'top-right');
+              },
+              error: () => {
+              this.toastService.showError('Failed', 'Failed to update password', 'top-right');
+              }
+            })
             this.securityForm.reset();
             break;
+            
+            // console.log(this.securityForm.value)
+            // const securityData = this.validateForm(this.securityForm);
+            // if (!securityData) return;
+            // this.onSubmit(securityData);
+            // this.securityForm.reset();
+            // break;
           }
         }
       }
