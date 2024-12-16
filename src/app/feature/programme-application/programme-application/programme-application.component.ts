@@ -21,8 +21,9 @@ import { FormsModule } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged, take } from 'rxjs/operators';
 // import interface
-import { CompanyProgramme, mockData, TabMenuList } from '../../../core/interfaces/interfaces';
+import { CompanyProgramme, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
+
 // import components
 import { ProgrammeCardComponent } from '@src/app/shared/components/programme-card/programme-card.component';
 import { ViewedProgrammeComponent } from '../viewed-programme/viewed-programme.component';
@@ -76,12 +77,13 @@ export class ProgrammeApplicationComponent {
       .subscribe({
         next: (data) => {
           this.all = data;
-          console.log(this.all);
+          console.log(this.all[0]);
         },
         error: (error) => {
           console.log(error);
         },
       });
+
     // asigns labels to Tabs
     this.tabMenuList = [{ label: 'Career programmes' }, { label: 'Saved programmes' }];
     // set active Tab
@@ -178,13 +180,20 @@ export class ProgrammeApplicationComponent {
     }
   }
   // view programm function
-  viewProgram() {
+  viewProgramme(programme: CompanyProgramme) {
+    this.programmeApplicationService.currentlyViewingProgramme = programme;
     this.resetTab();
     this.viewProgrammeDetails = true;
   }
-
+  // move programme to saved
+  moveToSaved(programme: CompanyProgramme) {
+    if (this.saved.includes(programme)) return;
+    this.saved.push(programme);
+  }
   // Date filter and search function
   onSearchOrDateFilter() {
+    console.log(this.dateFilter);
+
     // clears search and date filter if both are empty
     if (!this.searchString && !this.dateFilter) {
       this.activeTabData === 'all' ? this.setAllProgrammesTab() : this.setSavedProgrammesTab();
@@ -207,6 +216,7 @@ export class ProgrammeApplicationComponent {
     }
     // performs search and date filter
     if (this.searchString && this.dateFilter) {
+      const formattedDate = this.formatSelectedDate(new Date(this.dateFilter));
       this.displayFilteredProgrammes();
       this.filteredDateSearchData = activeDataToFilter.filter((programme: CompanyProgramme) => {
         return (
@@ -215,6 +225,13 @@ export class ProgrammeApplicationComponent {
         );
       });
     }
+  }
+
+  formatDateToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const day = date.getDate().toString().padStart(2, '0'); // Ensure day is two digits
+    return `${year}-${month}-${day}`;
   }
 
   // Modals Functionalities

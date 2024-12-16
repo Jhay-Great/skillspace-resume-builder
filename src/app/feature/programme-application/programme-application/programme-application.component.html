@@ -65,7 +65,7 @@
     @if (allProgrammes) {
       <div class="programmes-wrap">
         @for (programee of all; track $index) {
-          <app-programme-card (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
+          <app-programme-card (viewProgramme)="viewProgramme($event)" (moveToSaved)="moveToSaved($event)" (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
         }
       </div>
     }
@@ -73,7 +73,7 @@
     @if (savedProgrammes) {
       <div class="programmes-wrap">
         @for (programee of saved; track $index) {
-          <app-programme-card (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
+          <app-programme-card (viewProgramme)="viewProgramme($event)" [canMove]="false" (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
         }
       </div>
     }
@@ -82,14 +82,14 @@
     @if (filteringProgrammes) {
       <div class="programmes-wrap">
         @for (programee of filteredDateSearchData; track $index) {
-          <app-programme-card (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
+          <app-programme-card (viewProgramme)="viewProgramme($event)" (moveToSaved)="moveToSaved($event)"  (openApplyNowForm)="openForm()" [programme]="programee"></app-programme-card>
         }
       </div>
     }
     <!-- viewing a programme -->
     @if (viewProgrammeDetails) {
       <div class="viewPrograme">
-        <app-viewed-programme (openApplyNowForm)="openForm()"></app-viewed-programme>
+        <app-viewed-programme  (openApplyNowForm)="openForm()"></app-viewed-programme>
       </div>
     }
   </div>

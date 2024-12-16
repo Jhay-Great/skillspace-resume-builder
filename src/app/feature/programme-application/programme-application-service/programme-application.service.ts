@@ -10,12 +10,15 @@ import { take } from 'rxjs';
 export class ProgrammeApplicationService {
   constructor(private http: HttpClient) {}
 
+  currentlyViewingProgramme!: CompanyProgramme;
+
   // get all available programmes
   getAllAvailableProgrammes() {
     return this.http.get<CompanyProgramme[]>(environment.BASE_API + environment.GET_AVAILABLE_PROGRAMMES);
   }
-  // get all badges (assessment)
-  getAllBadges() {
-    return this.http.get<CompanyProgramme[]>(environment.BASE_API + environment.GET_ALL_QUIZZES);
+
+  // apply for a programme
+  applyForProgramme(programmeId: number) {
+    return this.http.post(environment.BASE_API + environment.APPLY_FOR_PROGRAMME, { programmeId });
   }
 }
