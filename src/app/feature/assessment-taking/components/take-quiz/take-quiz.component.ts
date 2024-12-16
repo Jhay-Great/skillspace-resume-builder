@@ -1,74 +1,84 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AssessmentTakingService } from '../../services/assessment-taking/assessment-taking.service';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Question, QuizToTake } from '../../models/quiz-taking.model';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AssessmentTakingQuiz,  UserResponse } from '../../models/quiz-taking.model';
 import { Observable, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-take-quiz',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe, RadioButtonModule, ButtonModule],
+  imports: [ReactiveFormsModule, AsyncPipe, RadioButtonModule, ButtonModule, CommonModule],
   templateUrl: './take-quiz.component.html',
   styleUrl: './take-quiz.component.scss',
 })
 export class TakeQuizComponent implements OnInit {
   @Input() quizId: number | null = null;
   quizForm!: FormGroup;
-  quiz$!: Observable<QuizToTake | undefined>;
-  quiz!: QuizToTake;
+  quiz$!: Observable<AssessmentTakingQuiz | undefined>;
+  quiz!: AssessmentTakingQuiz;
 
   constructor(
     private assessmentTakingService: AssessmentTakingService,
     private fb: FormBuilder
   ) {
-    // if (this.quizId) {
-    //   this.quiz$ = assessmentTakingService.getQuiz(this.quizId);
-    // }
-    this.quiz$ = assessmentTakingService.getQuiz(this.quizId);
+    this.quiz$ = assessmentTakingService.getQuiz(this.quizId as number);
   }
 
   ngOnInit() {
-    this.quizForm = this.fb.group({
-      questions: this.fb.array([]),
-    });
-
-    this.quiz$ = this.assessmentTakingService.getQuiz(this.quizId).pipe(
+    this.quiz$ = this.assessmentTakingService.getQuiz(this.quizId as number).pipe(
       tap((quiz) => {
         if (quiz) {
+          this.quiz = quiz;
           this.initializeQuizForm(quiz);
         }
       })
     );
   }
 
-  private initializeQuizForm(quiz: QuizToTake) {
-    const questionsArray = this.quizForm.get('questions') as FormArray;
-    questionsArray.clear(); // Clear existing form controls
+  private initializeQuizForm(quiz: AssessmentTakingQuiz) {
+    const formControls: { [key: string]: FormControl<string | null> } = {};
 
     quiz.questions.forEach((question) => {
-      questionsArray.push(this.createQuestionForm(question));
+      formControls[`question_${question.id}`] = this.fb.control('');
     });
+
+    this.quizForm = this.fb.group(formControls);
   }
 
-  createQuestionForm(question: Question): FormGroup {
-    return this.fb.group({
-      [`selectedOption-${question.id}`]: [null],
-      questionId: [question.id],
-      text: [question.description],
-    });
+  get questions() {
+    return this.quizForm.get('questions');
   }
 
-  get questions(): FormArray {
-    return this.quizForm.get('questions') as FormArray;
+  isQuizFullyAnswered(): boolean {
+    return this.quiz.questions.every((question) => this.quizForm.get(`question_${question.id}`)?.value !== '');
   }
 
   submitQuiz() {
-    if (this.quizForm.valid) {
-      // console.log(this.quizForm.value);
-      // Implement your submission logic here
+    if (this.isQuizFullyAnswered()) {
+      const userResponse: UserResponse = {
+        actualQuizId: this.quiz.id,
+        solvedQuestions: this.quiz.questions.map((question) => ({
+          actualQuestionId: question.id,
+          answerId: this.quizForm.get(`question_${question.id}`)?.value,
+        })),
+      };
+
+      // console.log('user response: ', userResponse);
+
+      
+      
+      // send response to backend.
+      this.assessmentTakingService.submitQuiz(userResponse).subscribe({
+        next: (res) => {
+          // show quiz results
+          
+          // close quiz
+          this.assessmentTakingService.closeTakeQuiz();
+        }
+      })
     }
   }
 }
