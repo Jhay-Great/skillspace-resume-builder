@@ -88,16 +88,31 @@ export interface AssessmentTakingQuizzesResponse extends AssessmentTakingRespons
 export interface SubmitQuizResponse extends AssessmentTakingResponse {
   data: {
     percentageScore: number;
-    status: number;
+    status: string;
     retryDate: string;
     message: string;
-  }
+  };
 }
 
 export interface UserResponse {
+  id: null;
   actualQuizId: number;
   solvedQuestions: {
     actualQuestionId: number;
     answerId: number;
   }[];
+}
+
+export interface TakeQuizError extends Error {
+  error: {
+    data: {
+      apiPath: string;
+      details: string;
+      errorMessage: string;
+      errorTime: string;
+    };
+    statusCode: number;
+    success: boolean;
+    message: string;
+  };
 }
