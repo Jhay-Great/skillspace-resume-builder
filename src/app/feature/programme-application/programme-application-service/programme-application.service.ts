@@ -19,6 +19,6 @@ export class ProgrammeApplicationService {
 
   // apply for a programme
   applyForProgramme(programmeId: number) {
-    return this.http.post(environment.BASE_API + environment.APPLY_FOR_PROGRAMME, { programmeId });
+    return this.http.post(`${environment.BASE_API}${environment.APPLY_FOR_PROGRAMME}/${programmeId}`, {});
   }
 }
