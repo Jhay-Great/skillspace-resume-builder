@@ -1,16 +1,26 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AssessmentTakingService } from '../../services/assessment-taking/assessment-taking.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AssessmentTakingQuiz,  UserResponse } from '../../models/quiz-taking.model';
+import { AssessmentTakingQuiz, TakeQuizError, UserResponse } from '../../models/quiz-taking.model';
 import { Observable, tap } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-take-quiz',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe, RadioButtonModule, ButtonModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    AsyncPipe,
+    RadioButtonModule,
+    ButtonModule,
+    CommonModule,
+    ProgressSpinnerModule,
+  ],
+  providers: [DatePipe],
   templateUrl: './take-quiz.component.html',
   styleUrl: './take-quiz.component.scss',
 })
@@ -21,8 +31,10 @@ export class TakeQuizComponent implements OnInit {
   quiz!: AssessmentTakingQuiz;
 
   constructor(
-    private assessmentTakingService: AssessmentTakingService,
-    private fb: FormBuilder
+    public assessmentTakingService: AssessmentTakingService,
+    private toastService: ToastService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
     this.quiz$ = assessmentTakingService.getQuiz(this.quizId as number);
   }
@@ -59,6 +71,7 @@ export class TakeQuizComponent implements OnInit {
   submitQuiz() {
     if (this.isQuizFullyAnswered()) {
       const userResponse: UserResponse = {
+        id: null,
         actualQuizId: this.quiz.id,
         solvedQuestions: this.quiz.questions.map((question) => ({
           actualQuestionId: question.id,
@@ -66,19 +79,27 @@ export class TakeQuizComponent implements OnInit {
         })),
       };
 
-      // console.log('user response: ', userResponse);
 
-      
-      
       // send response to backend.
       this.assessmentTakingService.submitQuiz(userResponse).subscribe({
         next: (res) => {
           // show quiz results
-          
+          if (res.status === 'SUCCESSFUL') {
+            this.toastService.showSuccess(
+              "Congratulations!, You've Earned a badge",
+              `You had a percentage score of ${res.percentageScore}%`
+            );
+          } else {
+            this.toastService.showError(
+              "Sorry, you didn't meet the pass mark",
+              `You can retry this quiz after ${this.datePipe.transform(res.retryDate, 'dd/MM/yyyy')}`
+            );
+          }
+
           // close quiz
           this.assessmentTakingService.closeTakeQuiz();
-        }
-      })
+        },
+      });
     }
   }
 }
