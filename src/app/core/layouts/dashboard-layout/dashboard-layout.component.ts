@@ -68,7 +68,7 @@ export class DashboardLayoutComponent {
     },
     {
       name: 'Career Programmes',
-      path: 'career-programmes',
+      path: 'programme-application',
       icon: 'pi pi-graduation-cap',
     },
     {
