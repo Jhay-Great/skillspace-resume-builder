@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Define the environment file path
-const targetPath = 'src/environments/environment.ts';
+const targetPath = 'src/environments/environment.development.ts';
 // Create the environment file content
 
 const args = process.argv.slice(2);
