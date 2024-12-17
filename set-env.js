@@ -45,7 +45,9 @@ const envConfigFile =`export const environment = {
     PUBLISH_PROGRAMME: ${process.env['PUBLISH_PROGRAMME']} || '',
     UPDATE_PROGRAMME: ${process.env['UPDATE_PROGRAMME']} || '',
     GET_ALL_QUIZZES: ${process.env['GET_ALL_QUIZZES']} || '',
-  
+    APPLY_FOR_PROGRAMME: ${process.env['APPLY_FOR_PROGRAMME']} || '',
+    APPLIED_PROGRAMMES: ${process.env['APPLIED_PROGRAMMES']} || '',
+    GET_BADGE_NAME: ${process.env['GET_BADGE_NAME']} || '',
     GET_ALL_APPLICANTS: ${process.env['GET_ALL_APPLICANTS']} || '',
     VIEW_APPLICANT_PROFILE: ${process.env['VIEW_APPLICANT_PROFILE']} || '',
     APPLICANT_SHORTLIST: ${process.env['APPLICANT_SHORTLIST']} || '',
