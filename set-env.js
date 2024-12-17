@@ -6,7 +6,7 @@ dotenv.config();
 
 // Define the environment file path
 const development = 'src/environments/environment.development.ts';
-const production = 'src/environments/environment.ts';
+// const production = 'src/environments/environment.ts';
 // Create the environment file content
 
 const args = process.argv.slice(2);
@@ -60,6 +60,6 @@ const envConfigFile =`export const environment = {
 console.log(process.env);
 // // Write the environment file
 fs.writeFileSync(development, envConfigFile, 'utf8');
-fs.writeFileSync(production, envConfigFile, 'utf8');
-console.log(`Environment file created at ${development}`); 
-console.log(`Environment file created at ${production}`); 
+// fs.writeFileSync(production, envConfigFile, 'utf8');
+// console.log(`Environment file created at ${development}`); 
+// console.log(`Environment file created at ${production}`); 
