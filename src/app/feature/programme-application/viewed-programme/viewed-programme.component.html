@@ -3,8 +3,10 @@
   <div class="header">
     <div class="left">
       <div class="comp-logoName">
-        <div class="logo"></div>
-        <p class="font-large">Google</p>
+        <div class="logo">
+          <img [src]="programmeApplicationService.currentlyViewingProgramme.Logo" alt="logo" />
+        </div>
+        <p class="font-large">{{programmeApplicationService.currentlyViewingProgramme.companyName}}</p>
       </div>
       <p class="font-medium">Posted: <span class="font-xs">2 days ago</span></p>
     </div>
@@ -15,12 +17,9 @@
 
   <!-- programme details -->
   <div class="details">
-    <p class="prog-Title">Software Engineering Internship</p>
+    <p class="prog-Title">{{programmeApplicationService.currentlyViewingProgramme.name}}</p>
     <p class="font-xs">
-      This 10-week training program will focus on mastering both front-end and
-      back-end web development skills using modern technologies. Talents will
-      work on real-world projects, collaborate with teams, and learn Agile
-      methodologies.
+      {{programmeApplicationService.currentlyViewingProgramme.description}}
     </p>
   </div>
 
@@ -31,34 +30,32 @@
       <p class="font-medium">Program Overview</p>
       <div class="overview-wrap">
         <p class="font-xs">
-          Program Duration: January 10, 2024 - March 25, 2024 (10 weeks)
+          Program Duration: {{formatDateRange(programmeApplicationService.currentlyViewingProgramme.startDate, programmeApplicationService.currentlyViewingProgramme.endDate)}}
         </p>
         <p class="font-xs">
-          Application Deadline: 5 Days Left to Apply (January 5, 2024)
+          Application Deadline: {{daysLeftToApply(programmeApplicationService.currentlyViewingProgramme.startDate)}}
         </p>
       </div>
     </div>
     <!-- required badges -->
     <div class="wrap">
-      <p class="font-medium">Required Badges</p>
+      <p class="font-medium">Required Badge</p>
       <div class="overview-wrap">
         <p class="font-xs">
-          Make sure you have earned these required badges before applying
+          Make sure you have earned this required badges before applying
         </p>
         <div class="badge-wrap">
           <button class="btn blue">JavaScript</button>
-          <button class="btn blue">React</button>
         </div>
       </div>
     </div>
     <!-- optional badges -->
     <div class="wrap">
-      <p class="font-medium">Optional Badges</p>
+      <p class="font-medium">Optional Badge</p>
       <div class="overview-wrap">
-        <p class="font-xs">Earn these optional badges to apply now</p>
+        <p class="font-xs">Earn this optional badges to apply now</p>
         <div class="badge-wrap">
           <button class="btn grey">UI/UX</button>
-          <button class="btn grey">Data Science</button>
         </div>
       </div>
     </div>

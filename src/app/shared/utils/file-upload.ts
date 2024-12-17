@@ -27,3 +27,15 @@ export const extractFilename = function (url: string): string {
   const filename = new URL(url).pathname.split('com_').pop() || '';
   return filename;
 };
+
+export const onDragDropUpload = function(form: FormGroup, file: File | null, controlName: string): void {
+  if (file?.type === 'application/pdf') {
+    onFileUpload(form, file, controlName);
+    return;
+  }
+
+  if (file?.type === 'image/png') {
+    onFileUpload(form, file, controlName);
+    return;
+  }
+}

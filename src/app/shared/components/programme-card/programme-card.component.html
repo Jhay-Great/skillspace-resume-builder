@@ -2,16 +2,20 @@
   <!-- head -->
   <div class="head">
     <div class="left">
-      <span class="logo"></span>
-      <p class="font-head">Google</p>
+      <span class="logo">
+        <img [src]="programme.Logo" alt="" />
+      </span>
+      <p class="font-head">{{ programme.companyName }}</p>
     </div>
     <div class="right">
-      <app-tag [status]="'open'"></app-tag>
+      <app-tag [status]="'Available'"></app-tag>
       <img class="moreIcon" (click)="op.toggle($event)" src="assets/svgs/more.svg" alt="more" />
       <p-overlayPanel #op>
         <div class="float">
-          <p class="floattext">View program</p>
-          <p class="floattext">Save for later</p>
+          <p (click)="viewedProgramme(programme)" class="floattext">View program</p>
+          @if (canMove) {
+            <p (click)="saveProgramme(programme)" class="floattext">Save for later</p>
+          }
         </div>
       </p-overlayPanel>
     </div>
@@ -21,14 +25,14 @@
   <p>Posted: <span class="font-xs">2 days ago</span></p>
   <div class="details">
     <div class="wrap">
-      <p class="font-head programme-title">{{ programme }}</p>
+      <p class="font-head programme-title">{{ programme.name }}</p>
       <div class="date-wrap">
         <img src="../../../../assets/svgs/date.svg" alt="date" />
-        <p class="font-sm">Sep 16 - Sep 24,2024</p>
+        <p class="font-sm">{{ formatDateRange(programme.startDate, programme.endDate) }}</p>
       </div>
       <div class="badge-wrap">
-        <button class="badge font-sm">Google/JavaScript</button>
-        <button class="badge font-sm">Google/React</button>
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.requiredBadges[0]) }}</button>
+        <button (click)="redirectToAssessment()" class="badge font-sm">{{ getBadgeName(programme.optionalBadges[0]) }}</button>
       </div>
     </div>
   </div>

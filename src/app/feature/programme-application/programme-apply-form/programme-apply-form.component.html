@@ -58,7 +58,7 @@
         <p class="font-medium no-bold">What is your preferred start date?</p>
         <div class="icon-left">
           <i class="pi pi-calendar"></i>
-          <p-calendar dateFormat="dd MM,yy" formControlName="startDate" placeholder="dd/mm/yy"></p-calendar>
+          <p-calendar formControlName="startDate" dateFormat="dd MM,yy" formControlName="startDate" placeholder="dd/mm/yy"></p-calendar>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
       <!-- apply now -->
       <div class="btn-wrap">
         <button (click)="close()" class="apply-btn cancel">Cancel</button>
-        <button class="apply-btn">Send application</button>
+        <button (click)="onSubmit()" class="apply-btn">Send application</button>
       </div>
     </form>
   </div>

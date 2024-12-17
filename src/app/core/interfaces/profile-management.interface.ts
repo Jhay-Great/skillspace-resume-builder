@@ -18,9 +18,11 @@ export interface ResponseObject {
   academicTranscript: string;
   introduction: string;
 }
-export interface CompanyProfileResponseData {
+export interface Response {
   statusCode: number;
   message: string;
+}
+export interface CompanyProfileResponseData extends Response {
   data: ProfileData;
 }
 export interface ErrorResponse {
@@ -28,4 +30,29 @@ export interface ErrorResponse {
   message: string;
   errorTime: string;
   apiPath: string;
+}
+
+export interface TalentProfileResponseData extends Response {
+  data: TalentProfile;
+}
+export interface TalentProfileUpdate {
+  fullName: string;
+  email: string;
+  contact: string;
+}
+export interface TalentProfile extends TalentProfileUpdate {
+  academicTranscript: string;
+  cv: string;
+  educationEndDate: string;
+  educationStartDate: string;
+  educationStatus: string;
+  introduction: string;
+  portfolioLinks: string[];
+  profilePicture: string;
+  programme: string;
+  qualificationLevel: string;
+  schoolAddress: string;
+  schoolCountry: string;
+  schoolName: string;
+  socialMediaLinks: string[];
 }

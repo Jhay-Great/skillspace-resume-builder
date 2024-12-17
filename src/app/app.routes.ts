@@ -83,6 +83,11 @@ export const routes: Routes = [
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then((d) => d.DashboardLayoutComponent),
     children: [
       {
+        path: 'career-programmes',
+        loadComponent: () => import('./feature/programmes/company/company.component').then((d) => d.CompanyComponent),
+        title: 'Programmes',
+      },
+      {
         path: 'approvals',
         loadComponent: () =>
           import('./feature/user-registration/admin-approval/admin-dashboard/admin-dashboard.component').then(
@@ -145,6 +150,14 @@ export const routes: Routes = [
         title: 'Assessment Creation',
       },
       {
+        path: 'assessments',
+        loadComponent: () =>
+          import('./feature/assessment-taking/pages/assessment-taking/assessment-taking.component').then(
+            (at) => at.AssessmentTakingComponent
+          ),
+        title: 'Assessments',
+      },
+      {
         path: 'programme-application',
         loadComponent: () =>
           import('./feature/programme-application/programme-application/programme-application.component').then(
@@ -152,14 +165,7 @@ export const routes: Routes = [
           ),
         title: 'Programme Application',
       },
-      {
-        path: 'applications',
-        loadComponent: () =>
-          import(
-            './feature/profile-management/talent/all-applications/all-applications/all-applications.component'
-          ).then((a) => a.AllApplicationsComponent),
-        title: 'Manage Applications',
-      },
+     
     ],
   },
 ];

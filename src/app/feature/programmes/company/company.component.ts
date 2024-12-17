@@ -15,11 +15,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CareerCreationFormComponent } from '../career-creation-form/career-creation-form.component';
 import { TagComponent } from '@src/app/shared/components/tag/tag.component';
 // import interface
-import {
-  mockDetails,
-  Programme,
-  TabMenuList,
-} from '../../../core/interfaces/interfaces';
+import { ChangeHistory, mockDetails, Programme, TabMenuList } from '../../../core/interfaces/interfaces';
 import { ButtonModule } from 'primeng/button';
 // import programme service
 import { ProgrammeService } from '../program-service/programme.service';
@@ -42,7 +38,7 @@ import { DateSuffixPipe } from '@src/app/core/pipes/datesuffix/date-suffix.pipe'
     ButtonModule,
     CalendarModule,
     DateSuffixPipe,
-    TagComponent
+    TagComponent,
   ],
   templateUrl: './company.component.html',
   styleUrl: './company.component.scss',
@@ -60,54 +56,6 @@ export class CompanyComponent {
   deleteModal = false;
   // move to draft modal
   publishModal = false;
-
-  mockdraft: mockDetails[] = [
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th September 2023',
-      end: '10th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Data Science',
-      description: 'This programme is built for everyone',
-      start: '27th october 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'Graduate Trainee Frontend',
-      description: 'This programme is built for everyone',
-      start: '4th January 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-  ];
-
-  mockHistory: mockDetails[] = [
-    {
-      name: 'May 30th 2023',
-      description: 'Changed Programm Start Date',
-      start: '4th September 2023',
-      end: '10th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'May 20th 2023',
-      description: 'Changed: Program title',
-      start: '27th october 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-    {
-      name: 'October 40th 1945',
-      description: 'Changed Programme end date',
-      start: '4th January 2023',
-      end: '4th June 2024',
-      status: 'Draft',
-    },
-  ];
   // tabMenu
   careerProgrammes = true;
   savedDraft = false;
@@ -117,11 +65,7 @@ export class CompanyComponent {
   changeHistoryTable = false;
 
   ngOnInit() {
-    this.tabMenuList = [
-      { label: 'Career programmes' },
-      { label: 'Saved drafts' },
-      { label: 'Published programmes' },
-    ];
+    this.tabMenuList = [{ label: 'Career programmes' }, { label: 'Saved drafts' }, { label: 'Published programmes' }];
 
     this.activeItem = this.tabMenuList[0];
     // fetch programmes
@@ -233,8 +177,10 @@ export class CompanyComponent {
     this.changeHistoryTable = false;
   }
   // open history table
-  openChangeHistoryTable() {
-    this.changeHistoryTable = true;
+  openChangeHistoryTable(data: ChangeHistory[]) {
+    // assings an array of currently clicked programme history
+    this.programmeService.changesHistory = data;
+    if (!this.changeHistoryTable) this.changeHistoryTable = true;
   }
 
   // publish programme
@@ -246,22 +192,56 @@ export class CompanyComponent {
     this.programmeService.deleteProgramme(id, programme);
   }
   // update programme
-  updateProgramme(programme: Programme) {
+  updateProgramme(programme: Programme, duplicate: boolean) {
+    // enable updating
     this.programmeService.updatingProgram = true;
+    if (duplicate) {
+      this.programmeService.duplicatingProgram = true;
+    }
+
     this.programmeService.currentUpdatingProgram = programme;
     this.openForm();
+
+    // hide changeHistory table if opened
+    this.hideChangeHistoryTable();
   }
-  // date filter function
-  formatSelectedDate(event: Date) {
-    const selectedDate = event;
-    // Get the day, month, and year
-    const day = selectedDate.getDate();
-    const month = selectedDate.toLocaleString('default', { month: 'long' }); // "June"
-    const year = selectedDate.getFullYear();
-    // Get the day suffix (st, nd, rd, th)
-    const suffix = this.getDaySuffix(day);
-    // Format the date as "4th June 2023"
-    return `${day}${suffix} ${month} ${year}`;
+
+  formatToDateString(input: string | Date): string {
+    const date = new Date(input);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+  // formats time and date for changeHistory Display
+  formatDateWithTime(input: string): string {
+    const date = new Date(input);
+
+    // Format the day with suffix (e.g., 13th, 1st)
+    const day = date.getDate();
+    const daySuffix =
+      day % 10 === 1 && day !== 11
+        ? 'st'
+        : day % 10 === 2 && day !== 12
+          ? 'nd'
+          : day % 10 === 3 && day !== 13
+            ? 'rd'
+            : 'th';
+
+    // Format the month
+    const month = date.toLocaleString('default', { month: 'long' });
+
+    // Get the year
+    const year = date.getFullYear();
+
+    // Format the time (HH:mm)
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    // Combine everything
+    return `${day}${daySuffix} ${month} ${year}: ${hours}:${minutes}`;
   }
 
   // Function to get the suffix for the day (st, nd, rd, th)

@@ -55,12 +55,6 @@
     <!-- Required badges -->
     <div class="requiredBadges">
       <label for="requiredBadges">Required badge</label>
-      <!-- <p-chips
-        class="requiredBadge"
-        [style]="{ width: '100%' }"
-        formControlName="requiredBadges"
-        placeholder="Enter required badges"
-      /> -->
       <div class="card flex justify-content-center">
         <p-dropdown
           [style]="{ width: '100%' }"
@@ -70,7 +64,11 @@
           filterBy="name"
           optionLabel="name"
           [showClear]="true"
-          placeholder="required badge"
+          placeholder="{{
+            programmeService.currentUpdatingProgram
+              ? getBadgeName(programmeService.currentUpdatingProgram.requiredBadges[0])
+              : 'required badge'
+          }}"
         >
           <ng-template pTemplate="selectedItem" let-selectedOption>
             <div class="flex align-items-center gap-2">
@@ -89,12 +87,6 @@
     <!-- Optional badges -->
     <div class="optionalBadges">
       <label>Optional badge</label>
-      <!-- <p-chips
-        class="optionalBadge"
-        [style]="{ width: '100%' }"
-        formControlName="optionalBadges"
-        placeholder="These badges are optional"
-      /> -->
       <div class="card flex justify-content-center">
         <p-dropdown
           [style]="{ width: '100%' }"
@@ -104,7 +96,11 @@
           filterBy="name"
           optionLabel="name"
           [showClear]="true"
-          placeholder="optional badge"
+          placeholder="{{
+            programmeService.currentUpdatingProgram
+              ? getBadgeName(programmeService.currentUpdatingProgram.optionalBadges[0])
+              : 'optional badge'
+          }}"
         >
           <ng-template pTemplate="selectedItem" let-selectedOption>
             <div class="flex align-items-center gap-2">

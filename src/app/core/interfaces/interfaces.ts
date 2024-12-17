@@ -26,6 +26,36 @@ export interface Programme {
   changeHistory?: ChangeHistory[];
 }
 
+export interface CompanyProgramme {
+  Logo: string;
+  companyId: number;
+  companyName: string;
+  description: string;
+  endDate: Date;
+  id: number;
+  name: string;
+  optionalBadges: number[];
+  requiredBadges: number[];
+  requirements: string[];
+  startDate: Date;
+  status: string;
+}
+
+export interface CompanyProgramme {
+  Logo: string;
+  companyId: number;
+  companyName: string;
+  description: string;
+  endDate: Date;
+  id: number;
+  name: string;
+  optionalBadges: number[];
+  requiredBadges: number[];
+  requirements: string[];
+  startDate: Date;
+  status: string;
+}
+
 export interface ChangeHistory {
   id: number;
   programs: string;
@@ -82,7 +112,29 @@ export interface QuizOptions {
 }
 
 export interface QuizResponse {
-  data: {content:any};
+  data: { content: any };
+  message: string;
+  statusCode: number;
+  success: boolean;
+}
+
+export interface ProgrammeChangeHistory {
+  id: number;
+  changeTimestamp: Date;
+  changeDescription: string;
+}
+
+export interface Badge {
+  createdBy: string;
+  publishedDate: Date;
+  quizId: number;
+  quizName: string;
+  requiredPassMark: number;
+  totalMark: number;
+}
+
+export interface BadgeResponse {
+  data: Badge[];
   message: string;
   statusCode: number;
   success: boolean;

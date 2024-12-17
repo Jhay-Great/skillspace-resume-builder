@@ -1,30 +1,33 @@
-<app-page-header-description
+<app-page-header-description 
   [title]="'Manage profile'"
   [description]="'Easily manage your profile to stay up to date'"
 />
 
 <section class="container">
-  <p-tabView>
+  <p-tabView  [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
     <!-- closable text -->
-    <!-- <section class="pro-reminder">
-      <div class="reminder-tes">
-        !-- svg --
-        <img src="assets/svgs/proicon.svg" alt="icon" />
-        !-- text --
-        <p>Upgrade to use our <strong>Resume builder</strong></p>
-      </div>
-      !-- would be using prime icons for this --
-      <button class="close-btn">
-        <img src="assets/svgs/close.svg" alt="cancel" />
-      </button>
-    </section> -->
+    <section class="pro-reminder">
+        <div class="reminder-tes">
+            <!-- svg -->
+            <!-- text -->
+            <p>Upgrade to use our <strong>Resume builder</strong></p>
+        </div>
+        <!-- would be using prime icons for this -->
+        <button class="close-btn">x</button>
+    </section>
 
-    <!-- PERSONAL DETAILS  TAB-->
+    <!-- company details -->
     <p-tabPanel class="content-container" header="Personal details">
       <div class="form-wrap">
         <form [formGroup]="personalDetailsForm">
           <!-- drag and drop -->
-          <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/*'" />
+          <app-drag-n-drop-file-input
+            [label]="'Profile Picture'"
+            [accept]="'image/png'"
+            [previewUpload]="profilePicture"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'profilePicture')"
+          />
+          <!-- <app-drag-n-drop-file-input [label]="'Profile Picture'" [accept]="'image/png'" /> -->
           <!-- talent name -->
           <div class="card flex flex-wrap justify-content-center gap-3">
             <label for="username">Display Name</label>
@@ -34,7 +37,11 @@
             </p>
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-user" />
-              <input type="text" pInputText placeholder="Enter company name " />
+              <input type="text" 
+                pInputText 
+                placeholder="Enter display name " 
+                formControlName="fullName"
+              />
             </p-iconField>
           </div>
 
@@ -44,7 +51,12 @@
             <p class="description-txt">{{ educationDescription }}</p>
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-envelope" />
-              <input class="email" type="text" [disabled]="true" pInputText placeholder="amalitech.ghana@gmail.com" />
+              <input class="email" 
+                type="text"
+                pInputText 
+                placeholder="amalitech.ghana@gmail.com" 
+                formControlName="email"
+              />
             </p-iconField>
           </div>
 
@@ -53,6 +65,7 @@
             <label for="username">Phone number</label>
             <p class="description-txt">{{ educationDescription }}</p>
             <ngx-material-intl-tel-input
+              [fieldControl]="contactControl"
               [iconMakeCall]="false"
               [enablePlaceholder]="true"
               [autoSelectedCountry]="defaultNumberCountry"
@@ -69,21 +82,34 @@
               This is your opening introduction to employers. Keep it concise and impactful, showcasing your strengths,
               skills, and experience (in not more than 250 words).
             </p>
-            <textarea rows="5" cols="30" pInputTextarea placeholder="Enter your introduction here"> </textarea>
+            <textarea rows="5" cols="30" 
+              pInputTextarea 
+              placeholder="Enter your introduction here"
+              formControlName="introduction"
+            ></textarea>
           </div>
 
           <!-- upload cv -->
-          <app-drag-n-drop-file-input [label]="'Upload CV'" [accept]="'application/pdf'" />
+          <app-drag-n-drop-file-input 
+            [label]="'Upload CV'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="cv"
+            (uploadedFile)="onUpload($event, personalDetailsForm, 'cv')"
+          />
 
           <!-- port folio and project links -->
-          <div formArrayName="projectLinks">
+          <div formArrayName="portfolioLinks">
             <label>Portfolio & project links</label>
             <p class="description-txt">{{ educationDescription }}</p>
             @for (link of portfolios.controls; track $index) {
               <div class="projeclink-wrap">
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a portfolio link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a portfolio link to your profile" 
+                    [formControlName]="$index"
+                  />
                 </p-iconField>
                 <div class="btns-wrap">
                   @if ($index === portfolios.controls.length - 1) {
@@ -99,8 +125,6 @@
                 </div>
               </div>
             }
-          </div>
-
           <!-- Social media Links -->
           <div class="card flex flex-wrap justify-content-center gap-3 sociallinks">
             <label for="username">Social media Links</label>
@@ -110,12 +134,16 @@
             <div class="links-wrap">
               <div class="link-name-icon">
                 <img src="../../../../../assets/svgs/linkedIn.svg" alt="img" />
-                <p class="description-txt">linkedIn</p>
+                <p class="description-txt">LinkedIn</p>
               </div>
               <div>
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a social media link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="linkedIn"
+                  />
                 </p-iconField>
               </div>
             </div>
@@ -128,17 +156,22 @@
               <div>
                 <p-iconField iconPosition="left">
                   <p-inputIcon styleClass="pi pi-link" />
-                  <input type="text" pInputText placeholder="Add a social media link to your profile" />
+                  <input type="text" 
+                    pInputText 
+                    placeholder="Add a social media link to your profile" 
+                    formControlName="instagram"
+                  />
                 </p-iconField>
               </div>
             </div>
           </div>
           <!--  -->
-        </form>
-      </div>
+        </div>
+      </form>
+      </div> 
     </p-tabPanel>
 
-    <!-- EDUCATION TAB -->
+    <!-- documents -->
     <p-tabPanel header="Education">
       <!-- content goes here -->
       <div class="form-wrap">
@@ -152,7 +185,11 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="p-input-icon-left">
                 <i class="pi pi-building"></i>
-                <input id="name" type="text" pInputText formControlName="name" placeholder="Enter school's name" />
+                <input id="name" 
+                  type="text" 
+                  pInputText 
+                  formControlName="schoolName" 
+                  placeholder="Enter school's name" />
               </div>
             </div>
 
@@ -166,7 +203,7 @@
                   id="address"
                   type="text"
                   pInputText
-                  formControlName="address"
+                  formControlName="schoolAddress"
                   placeholder="Enter address of school"
                 />
               </div>
@@ -197,7 +234,7 @@
                   />
 
                   <div>
-                    <img src="../../../../../assets/svgs/arrow-drop-down.svg" alt="arrow" />
+                    <img src="assets/svgs/arrow-drop-down.svg" alt="arrow" />
                   </div>
 
                   <span>{{ educationForm.get('country')?.value.name }}</span>
@@ -216,7 +253,7 @@
           <!-- Qualification -->
           <div class="wrap">
             <label for="qualificationLevel">Qualification level</label>
-            <p class="description-txt">This is what employers will see on yourprofile</p>
+            <p class="description-txt">This is what employers will see on your profile</p>
             <div [style]="{ width: '100%' }" class="p-input-icon-left">
               <i class="pi pi-graduation-cap"></i>
               <input
@@ -259,7 +296,7 @@
                 [style]="{ width: '100%' }"
                 [options]="status"
                 placeholder="Select a City"
-                formControlName="status"
+                formControlName="educationStatus"
                 [editable]="true"
                 optionLabel="label"
               />
@@ -274,7 +311,7 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="dates-wrap">
                 <i class="pi pi-calendar"></i>
-                <p-calendar formControlName="startDate" />
+                <p-calendar formControlName="educationStartDate" />
               </div>
             </div>
             <!-- end date-->
@@ -283,11 +320,16 @@
               <p class="description-txt">This is what employers will see on your <br />profile</p>
               <div class="dates-wrap">
                 <i class="pi pi-calendar"></i>
-                <p-calendar formControlName="endDate" />
+                <p-calendar formControlName="educationEndDate" />
               </div>
             </div>
           </div>
-          <app-drag-n-drop-file-input [label]="'Academic transcript'" [accept]="'application/pdf'" />
+          <app-drag-n-drop-file-input 
+            [label]="'Academic transcript'" 
+            [accept]="'.pdf'" 
+            [previewUpload]="transcript"
+            (uploadedFile)="onUpload($event, educationForm, 'academicTranscript')"
+          />
         </form>
       </div>
     </p-tabPanel>
@@ -296,6 +338,10 @@
     <p-tabPanel header="Security">
       <!-- content goes here -->
       <div class="form-wrap">
+        <header>
+          <p class="form-wrap-"> Change password </p>
+          <small>Update password details for security reasons</small>
+        </header>
         <form [formGroup]="securityForm">
           <!-- old password -->
           <app-input-field
@@ -311,16 +357,33 @@
             [type]="'password'"
             [svgIcon]="'lock'"
             [placeholder]="'New password'"
+            formControlName="newPassword"
+          [hasError]="
+            securityForm.get('newPassword')?.touched &&
+            (securityForm.get('newPassword')?.errors?.['required'] || securityForm.get('newPassword')?.errors)
+          "
           />
+          @if (hasError(securityForm, 'newPassword')) {
+            <app-form-error-message [message]="hasError(securityForm, 'newPassword')" />
+          }
           <!-- confirm password -->
           <app-input-field
             [label]="'Confirm Password'"
             [type]="'password'"
             [svgIcon]="'lock'"
             [placeholder]="'Confirm password'"
+            formControlName="confirmPassword"
+          [hasError]="
+            securityForm.get('confirmPassword')?.touched &&
+            (securityForm.get('confirmPassword')?.errors?.['required'] || securityForm.errors?.['passwordMismatch'])
+          "
           />
+          @if (hasFormError(securityForm, 'confirmPassword', 'passwordMismatch')) {
+            <app-form-error-message [message]="hasFormError(securityForm, 'confirmPassword', 'passwordMismatch')" />
+          }
         </form>
       </div>
     </p-tabPanel>
   </p-tabView>
+  <button class="save-changes-btn" type="submit" (click)="onSaveChanges()">Save changes</button>
 </section>

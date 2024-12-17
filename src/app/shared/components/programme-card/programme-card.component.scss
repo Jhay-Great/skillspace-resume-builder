@@ -1,7 +1,7 @@
 @use "variables" as var;
 
 .container {
-  border: 1px solid red;
+  border: 1px solid var.$color-blue-gray-300;
   height: fit-content;
   border-radius: 0.3rem;
   //   min-height: 18rem;
@@ -44,7 +44,6 @@
         width: 2rem;
         height: 2rem;
         border-radius: 100vw;
-        background-color: aqua;
         overflow: hidden;
       }
     }

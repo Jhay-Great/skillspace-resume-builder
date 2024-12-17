@@ -6,28 +6,27 @@ import { catchError, switchMap, throwError } from 'rxjs';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  
+  const localStorageService = inject(LocalStorageService);
+
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const notRefreshTokenRequest = !req.url.includes('/auth/refresh-token');
       const accessTokenExpired = error.status === 401;
-      
+
       if (accessTokenExpired && notRefreshTokenRequest) {
-        return refreshToken(authService, req, next);
+        return refreshToken(authService, localStorageService, req, next);
       }
       return throwError(() => error);
     })
   );
-  
 };
-
 
 function refreshToken(
   authService: AuthService,
+  localStorageService: LocalStorageService,
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) {
-  const localStorageService = inject(LocalStorageService);
   const refreshToken = localStorageService.getItem<string>('REFRESH-TOKEN');
 
   if (refreshToken) {
