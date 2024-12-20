@@ -122,6 +122,10 @@
   margin-bottom: 1rem;
   @include flex(row, 1rem);
   justify-content: flex-end;
+  position: sticky;
+  bottom: 0rem;
+  background: $color-white;
+  padding: 1rem 1.5rem;
 }
 
 :host ::ng-deep .p-inputswitch {
@@ -129,8 +133,4 @@
   align-items: center;
 
   height: 1.5rem;
-}
-
-:host ::ng-deep .p-calendar {
-  width: 100%;
 }
