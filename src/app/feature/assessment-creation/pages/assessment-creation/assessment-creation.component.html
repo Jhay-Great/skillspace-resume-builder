@@ -119,7 +119,7 @@
                 <div class="wrapper">
                   <div class="info">
                     <p class="infohead">{{ data.name }}</p>
-                    <p class="infodate">Last updated: October 3, 2024</p>
+                    <p class="infodate">Last updated: {{ data.updatedAt | date: 'MMMM dd, yyyy' }}</p>
                   </div>
                   <div class="tools">
                     <!-- update svg -->
@@ -152,7 +152,7 @@
                 <div class="wrapper">
                   <div class="info">
                     <p class="infohead">{{ data.name }}</p>
-                    <p class="infodate">Last updated: October 3, 2024</p>
+                    <p class="infodate">Last updated: {{ data.updatedAt | date: 'MMMM dd, yyyy' }}</p>
                   </div>
                   <div class="tools">
                     <!-- add to local button  -->
