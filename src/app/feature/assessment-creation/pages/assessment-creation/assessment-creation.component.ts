@@ -235,7 +235,7 @@ export class AssessmentCreationComponent implements OnInit {
         } else {
           // make a request to move to local repository
           this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'local').subscribe({
-            next: (res) => {
+            next: () => {
               this.toastService.showSuccess('Success', `${this.selectedQuiz?.name} moved to Local Repository`);
             },
             error: (err) => {
