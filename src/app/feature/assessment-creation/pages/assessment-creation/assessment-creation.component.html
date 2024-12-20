@@ -60,18 +60,20 @@
     <!-- Skills Quiz Table Content-->
 
     <div class="tablescontainer">
-      <div class="create-quiz-modal">
-        @if (assessmentCreationService.createQuizVisible()) {
+      @if (assessmentCreationService.createQuizVisible()) {
+        <div class="create-quiz-modal">
           <app-create-quiz />
-        }
+        </div>
+      }
 
-        @if (assessmentCreationService.updateQuizVisible()) {
-          <!--I'll be passing in the quiz i want to update later -->
-          @if (selectedQuiz) {
+      @if (assessmentCreationService.updateQuizVisible()) {
+        <!--I'll be passing in the quiz i want to update later -->
+        @if (selectedQuiz) {
+          <div class="create-quiz-modal">
             <app-update-quiz [quizId]="selectedQuiz.id" />
-          }
+          </div>
         }
-      </div>
+      }
 
       @if (getActiveTabData(); as data) {
         <p-table #dt1 [value]="data" [globalFilterFields]="['name']">
