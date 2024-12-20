@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
-// import { authGuard } from './core/guards/auth-guard/auth.guard';
-// import { roleGuard } from './core/guards/role-guard/role.guard';
+import { authGuard } from './core/guards/auth-guard/auth.guard';
+import { roleGuard } from './core/guards/role-guard/role.guard';
 
 export const routes: Routes = [
   {
@@ -78,7 +78,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./core/layouts/dashboard-layout/dashboard-layout.component').then((d) => d.DashboardLayoutComponent),
     children: [
@@ -105,12 +105,14 @@ export const routes: Routes = [
       },
       {
         path: 'company-programmes',
-        // data: {role: 'ADMIN'},
-        // canActivate: [roleGuard],
+        data: { role: 'COMPANY' },
+        canActivate: [roleGuard],
         loadComponent: () => import('./feature/programmes/company/company.component').then((d) => d.CompanyComponent),
       },
       {
         path: 'company-profile',
+        data: { role: 'COMPANY' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/profile-management/company/profile-management/profile-management.component').then(
             (cp) => cp.ProfileManagementComponent
@@ -119,6 +121,8 @@ export const routes: Routes = [
       },
       {
         path: 'talent-profile',
+        data: { role: 'TALENT' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/profile-management/talent/profile-management/profile-management.component').then(
             (tp) => tp.ProfileManagementComponent
@@ -127,6 +131,8 @@ export const routes: Routes = [
       },
       {
         path: 'applicants',
+        data: { role: 'COMPANY' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/applicant-review-feedback/pages/applicants/applicants.component').then(
             (a) => a.ApplicantsComponent
@@ -135,6 +141,8 @@ export const routes: Routes = [
       },
       {
         path: 'applicants/:id',
+        data: { role: 'COMPANY' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/applicant-review-feedback/pages/applicant-profile/applicant-profile.component').then(
             (ap) => ap.ApplicantProfileComponent
@@ -143,6 +151,8 @@ export const routes: Routes = [
       },
       {
         path: 'assessment-creation',
+        data: { role: 'COMPANY' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/assessment-creation/pages/assessment-creation/assessment-creation.component').then(
             (ac) => ac.AssessmentCreationComponent
@@ -151,6 +161,8 @@ export const routes: Routes = [
       },
       {
         path: 'assessments',
+        data: { role: 'TALENT' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/assessment-taking/pages/assessment-taking/assessment-taking.component').then(
             (at) => at.AssessmentTakingComponent
@@ -159,13 +171,14 @@ export const routes: Routes = [
       },
       {
         path: 'programme-application',
+        data: { role: 'TALENT' },
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./feature/programme-application/programme-application/programme-application.component').then(
             (pa) => pa.ProgrammeApplicationComponent
           ),
         title: 'Programme Application',
       },
-     
     ],
   },
 ];
