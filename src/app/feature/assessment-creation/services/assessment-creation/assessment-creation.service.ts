@@ -25,6 +25,9 @@ export class AssessmentCreationService {
   isSkillsQiuzLoading = signal<boolean>(true);
   isLocalRepositoryLoading = signal<boolean>(true);
   isGlobalRepositoryLoading = signal<boolean>(true);
+  isCreateQuizLoading = signal<boolean>(false);
+  isUpdateQuizLoading = signal<boolean>(false);
+  isQuizByIdLoading = signal<boolean>(false);
 
   showCreateQuizModal() {
     this.createQuizVisible.set(true);
@@ -44,8 +47,10 @@ export class AssessmentCreationService {
   constructor(private http: HttpClient) {}
 
   createQuiz(quiz: CreateQuizData) {
+    this.isCreateQuizLoading.set(true);
     return this.http.post<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/create`, quiz).pipe(
       map((res: getQuizByIdResponse) => {
+        this.isCreateQuizLoading.set(false);
         // Add the new quiz data to the skills quiz data
         this.skillsQuizData.set([...this.skillsQuizData(), res.data]);
 
@@ -57,6 +62,10 @@ export class AssessmentCreationService {
         }
 
         return res.data;
+      }),
+      catchError((error) => {
+        this.isCreateQuizLoading.set(false);
+        throw error;
       })
     );
   }
@@ -79,13 +88,16 @@ export class AssessmentCreationService {
 
   //  v1/quizzes/${id}/getQuizzesById
   getQuizById(quizId: number): Observable<AssessmentCreationQuiz> {
+    this.isQuizByIdLoading.set(true);
     return this.http.get<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/${quizId}/getQuizById`).pipe(
       take(1),
       retry(3),
       map((res: getQuizByIdResponse) => {
+        this.isQuizByIdLoading.set(false);
         return res.data;
       }),
       catchError((error) => {
+        this.isQuizByIdLoading.set(false);
         throw error;
       })
     );
@@ -159,12 +171,18 @@ export class AssessmentCreationService {
   }
 
   updateQuiz(formData: Partial<CreateQuizData>, quizId: number) {
+    this.isUpdateQuizLoading.set(true);
     return this.http.put<getQuizByIdResponse>(`${environment.BASE_API}/v1/quizzes/${quizId}/update`, formData).pipe(
       take(1),
       map((res: getQuizByIdResponse) => {
+        this.isUpdateQuizLoading.set(false);
         // refetch quizzes
         this.refetchQuizzes();
         return res.data;
+      }),
+      catchError((error) => {
+        this.isUpdateQuizLoading.set(false);
+        throw error;
       })
     );
   }
