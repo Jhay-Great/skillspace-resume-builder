@@ -210,6 +210,16 @@ export class AssessmentCreationComponent implements OnInit {
     this.tieredMenu.toggle(event);
   }
 
+  updateLocalQuiz(quiz: AssessmentCreationQuiz) {
+    this.selectedQuiz = quiz;
+    this.showUpdateQuizModal();
+  }
+
+  addGlobalQuizToLocal(quiz: AssessmentCreationQuiz){
+    this.selectedQuiz = quiz
+    this.confirmMoveModal('Local Repository');
+  }
+
   // confirmation modals
   confirmMoveModal(type: string) {
     this.confirmationService.confirm({

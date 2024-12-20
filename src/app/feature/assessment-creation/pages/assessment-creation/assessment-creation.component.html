@@ -127,6 +127,7 @@
                       severity="secondary"
                       icon="pi pi-pencil"
                       label="Update"
+                      (click)="updateLocalQuiz(data)"
                       [style]="{ color: '#64748B' }"
                       [link]="true"
                     />
@@ -156,7 +157,7 @@
                   </div>
                   <div class="tools">
                     <!-- add to local button  -->
-                    <p-button label="Add to local repository" severity="primary" outlined="true" />
+                    <p-button (click)="addGlobalQuizToLocal(data)" label="Add to local repository" severity="primary" outlined="true" />
                   </div>
                 </div>
               </td>
