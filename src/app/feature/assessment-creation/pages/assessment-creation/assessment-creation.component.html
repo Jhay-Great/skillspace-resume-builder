@@ -60,18 +60,20 @@
     <!-- Skills Quiz Table Content-->
 
     <div class="tablescontainer">
-      <div class="create-quiz-modal">
-        @if (assessmentCreationService.createQuizVisible()) {
+      @if (assessmentCreationService.createQuizVisible()) {
+        <div class="create-quiz-modal">
           <app-create-quiz />
-        }
+        </div>
+      }
 
-        @if (assessmentCreationService.updateQuizVisible()) {
-          <!--I'll be passing in the quiz i want to update later -->
-          @if (selectedQuiz) {
+      @if (assessmentCreationService.updateQuizVisible()) {
+        <!--I'll be passing in the quiz i want to update later -->
+        @if (selectedQuiz) {
+          <div class="create-quiz-modal">
             <app-update-quiz [quizId]="selectedQuiz.id" />
-          }
+          </div>
         }
-      </div>
+      }
 
       @if (getActiveTabData(); as data) {
         <p-table #dt1 [value]="data" [globalFilterFields]="['name']">
@@ -117,7 +119,7 @@
                 <div class="wrapper">
                   <div class="info">
                     <p class="infohead">{{ data.name }}</p>
-                    <p class="infodate">Last updated: October 3, 2024</p>
+                    <p class="infodate">Last updated: {{ data.updatedAt | date: 'MMMM dd, yyyy' }}</p>
                   </div>
                   <div class="tools">
                     <!-- update svg -->
@@ -125,6 +127,7 @@
                       severity="secondary"
                       icon="pi pi-pencil"
                       label="Update"
+                      (click)="updateLocalQuiz(data)"
                       [style]="{ color: '#64748B' }"
                       [link]="true"
                     />
@@ -150,11 +153,11 @@
                 <div class="wrapper">
                   <div class="info">
                     <p class="infohead">{{ data.name }}</p>
-                    <p class="infodate">Last updated: October 3, 2024</p>
+                    <p class="infodate">Last updated: {{ data.updatedAt | date: 'MMMM dd, yyyy' }}</p>
                   </div>
                   <div class="tools">
                     <!-- add to local button  -->
-                    <p-button label="Add to local repository" severity="primary" outlined="true" />
+                    <p-button (click)="addGlobalQuizToLocal(data)" label="Add to local repository" severity="primary" outlined="true" />
                   </div>
                 </div>
               </td>

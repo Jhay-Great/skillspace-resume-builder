@@ -91,8 +91,6 @@ export class AssessmentCreationComponent implements OnInit {
         size: 10,
       })
       .subscribe();
-
-    console.log('skills quiz data: ', this.assessmentCreationService.skillsQuizData());
     this.tieredMenuItems = [
       {
         label: 'Move',
@@ -212,6 +210,16 @@ export class AssessmentCreationComponent implements OnInit {
     this.tieredMenu.toggle(event);
   }
 
+  updateLocalQuiz(quiz: AssessmentCreationQuiz) {
+    this.selectedQuiz = quiz;
+    this.showUpdateQuizModal();
+  }
+
+  addGlobalQuizToLocal(quiz: AssessmentCreationQuiz){
+    this.selectedQuiz = quiz
+    this.confirmMoveModal('Local Repository');
+  }
+
   // confirmation modals
   confirmMoveModal(type: string) {
     this.confirmationService.confirm({
@@ -227,24 +235,20 @@ export class AssessmentCreationComponent implements OnInit {
           // make a request to move to global repository
 
           this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'global').subscribe({
-            next: (res) => {
-              console.log('response from move to global: ', res);
+            next: () => {
               this.toastService.showSuccess('Success', `${this.selectedQuiz?.name} moved to Global Repository`);
             },
             error: (err) => {
-              console.log('error from move to global: ', err);
               this.toastService.showError('Error', err.error.message);
             },
           });
         } else {
           // make a request to move to local repository
           this.assessmentCreationService.changeLocation(this.selectedQuiz?.id as number, 'local').subscribe({
-            next: (res) => {
-              console.log('response from move to global: ', res);
+            next: () => {
               this.toastService.showSuccess('Success', `${this.selectedQuiz?.name} moved to Local Repository`);
             },
             error: (err) => {
-              console.log('error from move to global: ', err);
               this.toastService.showError('Error', err.error.message);
             },
           });
@@ -267,12 +271,10 @@ export class AssessmentCreationComponent implements OnInit {
       accept: () => {
         // make a request to delete the item
         this.assessmentCreationService.deleteQuiz(item.id as number).subscribe({
-          next: (res) => {
-            console.log('response from delete: ', res);
+          next: () => {
             this.toastService.showSuccess('Success', `${item.name} deleted successfully`);
           },
           error: (err) => {
-            console.log('error from delete: ', err);
             this.toastService.showError('Error', err.error.message);
           },
         });

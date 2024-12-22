@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { TabMenuList } from '@src/app/core/interfaces/interfaces';
 import { AssessmentsTab, Quiz } from '@src/app/feature/assessment-creation/models/assessments.model';
-import { AssessmentCreationService } from '@src/app/feature/assessment-creation/services/assessment-creation/assessment-creation.service';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
@@ -18,7 +16,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
 import { TagModule } from 'primeng/tag';
-import { AllQuizzes, AvailableQuiz, DropdownItem } from '../../models/quiz-taking.model';
+import { DropdownItem } from '../../models/quiz-taking.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
@@ -80,98 +78,6 @@ export class AssessmentTakingComponent implements OnInit {
   }
 
   @ViewChild('tieredMenu') tieredMenu!: TieredMenu;
-
-  // allAssessmentsData: AllQuizzes[] = [
-  //   {
-  //     id: 1,
-  //     requiredQuizId: 2,
-  //     quizName: 'UI/UX Design Quiz 1',
-  //     companyName: 'Amalitech',
-  //     score: 10,
-  //     badgeStatus: 'Passed',
-  //     badgeName: 'UI/UX',
-  //     lastModified: '4th June 2023',
-  //     nextRetry: '4th June 2023',
-  //     totalRetries: 2,
-  //   },
-  //   {
-  //     id: 2,
-  //     requiredQuizId: 2,
-  //     quizName: 'UI/UX Design Quiz 2',
-  //     companyName: 'Hubtel',
-  //     score: 10,
-  //     badgeStatus: 'Passed',
-  //     badgeName: 'UI/UX',
-  //     lastModified: '4th June 2023',
-  //     nextRetry: '4th June 2023',
-  //     totalRetries: 2,
-  //   },
-  //   {
-  //     id: 3,
-  //     requiredQuizId: 2,
-  //     quizName: 'Frontend Quiz 1',
-  //     companyName: 'Amalitech',
-  //     score: 10,
-  //     badgeStatus: 'Failed',
-  //     badgeName: 'Frontend',
-  //     lastModified: '4th June 2023',
-  //     nextRetry: '4th June 2023',
-  //     totalRetries: 2,
-  //   },
-  // ];
-
-  // availableQuizzesData: AvailableQuiz[] = [
-  //   {
-  //     quizId: 1,
-  //     quizName: 'UI/UX Design Quiz 1',
-  //     publishedDate: 'October 3, 2024',
-  //     requiredPassMark: 60,
-  //     createdBy: 'Amalitech',
-  //     totalMark: 100,
-  //   },
-  //   {
-  //     quizId: 2,
-  //     quizName: 'Data Science Quiz 1',
-  //     publishedDate: 'October 3, 2024',
-  //     requiredPassMark: 60,
-  //     createdBy: 'Hubtel',
-  //     totalMark: 100,
-  //   },
-  //   {
-  //     quizId: 3,
-  //     quizName: 'Frontend Quiz 1',
-  //     publishedDate: 'October 3, 2024',
-  //     requiredPassMark: 60,
-  //     createdBy: 'Amalitech',
-  //     totalMark: 100,
-  //   },
-  // ];
-  // completedQuizzesData: AllQuizzes[] = [
-  //   {
-  //     id: 1,
-  //     requiredQuizId: 2,
-  //     quizName: 'UI/UX Design Quiz 1',
-  //     companyName: 'Amalitech',
-  //     score: 10,
-  //     badgeStatus: 'Passed',
-  //     badgeName: 'UI/UX',
-  //     lastModified: '4th June 2023',
-  //     nextRetry: '4th June 2023',
-  //     totalRetries: 2,
-  //   },
-  //   {
-  //     id: 2,
-  //     requiredQuizId: 2,
-  //     quizName: 'UI/UX Design Quiz 2',
-  //     companyName: 'Hubtel',
-  //     score: 10,
-  //     badgeStatus: 'Passed',
-  //     badgeName: 'Frontend',
-  //     lastModified: '4th June 2023',
-  //     nextRetry: '4th June 2023',
-  //     totalRetries: 2,
-  //   },
-  // ];
 
   constructor(public assessmentTakingService: AssessmentTakingService) {}
 
