@@ -5,37 +5,40 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AssessmentCreationService } from '../../services/assessment-creation/assessment-creation.service';
-import { AssessmentCreationQuiz, CreateQuizData, createQuizOptions, createQuizQuestion } from '../../models/assessments.model';
-
-interface Question {
-  description: string;
-  points: number;
-  image: File | null;
-  imageUrl: string | ArrayBuffer | null;
-  options: { text: string; isCorrect: boolean }[];
-}
+import {
+  AssessmentCreationQuiz,
+  CreateQuizData,
+  createQuizOptions,
+  createQuizQuestion,
+} from '../../models/assessments.model';
+import { ToastService } from '@src/app/core/services/toast-service/toast.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-quiz-form',
   standalone: true,
-  imports: [CalendarModule, InputTextModule, InputTextareaModule, ReactiveFormsModule, InputSwitchModule],
+  imports: [
+    CalendarModule,
+    InputTextModule,
+    InputTextareaModule,
+    ReactiveFormsModule,
+    InputSwitchModule,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './quiz-form.component.html',
   styleUrl: './quiz-form.component.scss',
 })
 export class QuizFormComponent implements OnInit {
   quizForm: FormGroup;
-  questionImages: Record<number, File | null> = {};
-  questionImagePreviews: Record<number, string | ArrayBuffer | null> = {};
   @Output() submitQuiz = new EventEmitter<CreateQuizData>();
   @Input() quizId!: number | null;
 
-
   constructor(
     private fb: FormBuilder,
-    private assessmentCreationService: AssessmentCreationService
+    public assessmentCreationService: AssessmentCreationService,
+    private toastService: ToastService
   ) {
     this.quizForm = this.fb.group({});
-    // this.quiz$ = this.assessmentCreationService.getQuizById(this.quizId as number);
   }
 
   createOptionsFormGroup(): FormGroup {
@@ -49,8 +52,6 @@ export class QuizFormComponent implements OnInit {
     return this.fb.group({
       description: ['', Validators.required],
       points: ['', Validators.required],
-      // image: [null],
-      // imageUrl: [null],
       options: this.fb.array([this.createOptionsFormGroup()]),
     });
   }
@@ -59,11 +60,10 @@ export class QuizFormComponent implements OnInit {
     if (this.quizId) {
       this.assessmentCreationService.getQuizById(this.quizId as number).subscribe({
         next: (quiz) => {
-          console.log('Quiz by id from component: ', quiz);
           this.patchFormWithQuizData(quiz);
         },
-        error: (err) => {
-          console.log('error from get quiz by Id: ', err);
+        error: () => {
+          this.toastService.showError('Error', 'Error fetching Quiz');
         },
       });
     }
@@ -116,12 +116,26 @@ export class QuizFormComponent implements OnInit {
     return this.questions.controls[questionIndex].get('options') as FormArray;
   }
 
-  getImagePreview(questionIndex: number): string | ArrayBuffer | null {
-    return this.questionImagePreviews[questionIndex] || null;
-  }
-
   addQuestion() {
     this.questions.push(this.createQuestionFormGroup());
+  }
+
+  cloneQuestion(questionIndex: number) {
+    console.log('about to clone quiz');
+    const questionToClone = this.questions.at(questionIndex) as FormGroup;
+    const clonedQuestion = this.fb.group({
+      description: [questionToClone.get('description')?.value, Validators.required],
+      points: [questionToClone.get('points')?.value, Validators.required],
+      options: this.fb.array(
+        questionToClone.get('options')?.value.map((option: { text: string; isCorrect: boolean }) =>
+          this.fb.group({
+            text: [option.text, Validators.required],
+            isCorrect: [option.isCorrect],
+          })
+        )
+      ),
+    });
+    this.questions.push(clonedQuestion);
   }
 
   addOption(questionIndex: number) {
@@ -133,38 +147,12 @@ export class QuizFormComponent implements OnInit {
   removeQuestion(index: number) {
     if (this.questions.length > 1) {
       this.questions.removeAt(index);
-      // Remove images associated with the question
-      delete this.questionImages[index];
-      delete this.questionImagePreviews[index];
     }
   }
 
   removeOption(questionIndex: number, optionIndex: number) {
     const optionsFormArray = this.questions.controls[questionIndex].get('options') as FormArray;
     optionsFormArray.removeAt(optionIndex);
-  }
-
-  handleFileInput(event: Event, questionIndex: number): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-
-      // Store the file
-      this.questionImages[questionIndex] = file;
-
-      // Create image preview
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        // Store the preview
-        this.questionImagePreviews[questionIndex] = e.target?.result || null;
-
-        // Update the form control with the file
-        const questionsArray = this.questions;
-        const questionGroup = questionsArray.at(questionIndex) as FormGroup;
-        questionGroup.patchValue({ image: file });
-      };
-      reader.readAsDataURL(file);
-    }
   }
 
   onQuizSubmit() {
@@ -176,13 +164,10 @@ export class QuizFormComponent implements OnInit {
     formValue.duration = Number(formValue.duration);
 
     // Convert points to numbers for each question
-    formValue.questions = formValue.questions.map((question: Question) => ({
+    formValue.questions = formValue.questions.map((question: createQuizQuestion) => ({
       ...question,
       points: Number(question.points),
     }));
-
-    // const formData = createFromData(formValue);
-    // console.log('create quiz data: ', formValue);
     this.submitQuiz.emit(formValue);
   }
 

@@ -6,8 +6,6 @@ import {
   AssessmentTakingQuiz,
   AssessmentTakingQuizResponse,
   AssessmentTakingQuizzesResponse,
-  AssessmentTakingResponse,
-  QuizToTake,
   SubmitQuizResponse,
   TakeQuizError,
   UserResponse,
@@ -58,13 +56,6 @@ export class AssessmentTakingService {
       })
     );
   }
-
-  // getQuiz(id: number | null): Observable<QuizToTake | undefined> {
-  //   return this.http.get<QuizToTake[]>(`assets/data/quizData.json`).pipe(
-  //     take(1),
-  //     map((res: QuizToTake[]) => res.find((quiz: QuizToTake) => quiz.id === id))
-  //   );
-  // }
 
   getAllQuizzes() {
     return this.http.get(`${environment.BASE_API}/v1/quizzes`);

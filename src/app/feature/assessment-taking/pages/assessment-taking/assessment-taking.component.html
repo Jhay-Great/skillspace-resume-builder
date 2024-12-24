@@ -89,18 +89,6 @@
       }
       <!-- take quiz ends -->
 
-      <!-- <div class="create-quiz-modal">
-          @if (assessmentCreationService.createQuizVisible()) {
-            <app-create-quiz />
-          }
-  
-          @if (assessmentCreationService.updateQuizVisible()) {
-           
-            @if (selectedQuiz) {
-              <app-update-quiz [quizId]="selectedQuiz.id" />
-            }
-          }
-        </div> -->
 
       <p-table #dt1 [value]="getActiveTabData()" [globalFilterFields]="['quizName', 'companyName', 'badgeName']">
         <!-- table header -->
